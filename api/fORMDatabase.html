@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMDatabase – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fORMDatabase</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fORMDatabase">Class Documentation</a></li>
+		<li><strong><a href="/api/fORMDatabase">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMDatabase.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li class="protected"><a href="#addHavingClause">addHavingClause()</a></li>
+	  			<li class="protected"><a href="#addOrderByClause">addOrderByClause()</a></li>
+	  			<li class="protected"><a href="#addPrimaryKeyWhereParams">addPrimaryKeyWhereParams()</a></li>
+	  			<li class="protected"><a href="#addWhereClause">addWhereClause()</a></li>
+	  			<li><a href="#attach">attach()</a></li>
+	  			<li class="protected"><a href="#injectFromAndGroupByClauses">injectFromAndGroupByClauses()</a></li>
+	  			<li class="protected"><a href="#makeCondition">makeCondition()</a></li>
+	  			<li class="protected"><a href="#parseSearchTerms">parseSearchTerms()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#retrieve">retrieve()</a></li>
+	  			<li class="protected"><a href="#splitHavingConditions">splitHavingConditions()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMColumn">fORMColumn</a></li>
+		<li><a href="fORMOrdering">fORMOrdering</a></li>
+		<li><a href="fORMRelated">fORMRelated</a></li>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fRecordSet">fRecordSet</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b32</span></div>
+<p class="short_description">Holds a single instance of the <a href="fDatabase">fDatabase</a> class and provides database manipulation functionality for ORM code</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b32</th><td>Added support to <a href="#addWhereClause"><tt>addWhereClause()</tt></a> for the <tt>^~</tt> and <tt>$~</tt> operators <span class="date">6/20/11</span></td></tr><tr><th>1.0.0b31</th><td>Fixed a bug with <a href="#addWhereClause"><tt>addWhereClause()</tt></a> generating invalid SQL <span class="date">5/10/11</span></td></tr><tr><th>1.0.0b30</th><td>Fixed insertFromAndGroupByClauses() to insert <tt>MAX()</tt> around columns in related tables in the <tt>ORDER BY</tt> clause when a <tt>GROUP BY</tt> is used <span class="date">2/3/11</span></td></tr><tr><th>1.0.0b29</th><td>Added code to handle old PCRE engines that don't support unicode character properties <span class="date">12/6/10</span></td></tr><tr><th>1.0.0b28</th><td>Fixed a bug in the <a href="fProgrammerException">fProgrammerException</a> that is thrown when an improperly formatted OR condition is provided <span class="date">11/24/10</span></td></tr><tr><th>1.0.0b27</th><td>Fixed <a href="#addWhereClause"><tt>addWhereClause()</tt></a> to ignore fuzzy search clauses with no values to match <span class="date">10/19/10</span></td></tr><tr><th>1.0.0b26</th><td>Fixed insertFromAndGroupByClauses() to handle SQL where a table is references in more than one capitalization <span class="date">7/26/10</span></td></tr><tr><th>1.0.0b25</th><td>Fixed insertFromAndGroupByClauses() to properly handle recursive relationships <span class="date">7/22/10</span></td></tr><tr><th>1.0.0b24</th><td>Fixed <a href="#parseSearchTerms"><tt>parseSearchTerms()</tt></a> to work with non-ascii terms <span class="date">6/30/10</span></td></tr><tr><th>1.0.0b23</th><td>Fixed error messages in <a href="#retrieve"><tt>retrieve()</tt></a> <span class="date">4/23/10</span></td></tr><tr><th>1.0.0b22</th><td>Added support for IBM DB2, fixed an issue with building record sets or records that have recursive relationships <span class="date">4/13/10</span></td></tr><tr><th>1.0.0b21</th><td>Changed <a href="#injectFromAndGroupByClauses"><tt>injectFromAndGroupByClauses()</tt></a> to be able to handle table aliases that contain other aliases inside of them <span class="date">3/3/10</span></td></tr><tr><th>1.0.0b20</th><td>Fixed a bug where joining to a table two separate ways could cause table alias issues and incorrect SQL to be generated <span class="date">12/16/09</span></td></tr><tr><th>1.0.0b19</th><td>Added the ability to compare columns with the <tt>=:</tt>, <tt>!:</tt>, <tt>&lt;:</tt>, <tt>&lt;=:</tt>, <tt>&gt;:</tt> and <tt>&gt;=:</tt> operators <span class="date">12/8/09</span></td></tr><tr><th>1.0.0b18</th><td>Fixed a bug affecting where conditions with columns that are not null but have a default value <span class="date">11/3/09</span></td></tr><tr><th>1.0.0b17</th><td>Added support for multiple databases <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b16</th><td>Internal Backwards Compatibility Break - Renamed methods and significantly changed parameters and functionality for SQL statements to use value placeholders, identifier escaping and to handle schemas <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b15</th><td>Streamlined intersection operator SQL and added support for the second value being NULL <span class="date">9/21/09</span></td></tr><tr><th>1.0.0b14</th><td>Added support for the intersection operator <tt>&gt;&lt;</tt> to createWhereClause() <span class="date">7/13/09</span></td></tr><tr><th>1.0.0b13</th><td>Added support for the <tt>AND LIKE</tt> operator <tt>&amp;~</tt> to createWhereClause() <span class="date">7/9/09</span></td></tr><tr><th>1.0.0b12</th><td>Added support for the <tt>NOT LIKE</tt> operator <tt>!~</tt> to createWhereClause() <span class="date">7/8/09</span></td></tr><tr><th>1.0.0b11</th><td>Added support for concatenated columns to escapeBySchema() <span class="date">6/19/09</span></td></tr><tr><th>1.0.0b10</th><td>Updated createWhereClause() to properly handle NULLs for arrays of values when doing = and != comparisons <span class="date">6/17/09</span></td></tr><tr><th>1.0.0b9</th><td>Changed replacement values in preg_replace() calls to be properly escaped <span class="date">6/11/09</span></td></tr><tr><th>1.0.0b8</th><td>Fixed a bug with creatingWhereClause() where a null value would not be escaped property <span class="date">5/12/09</span></td></tr><tr><th>1.0.0b7</th><td>Fixed a bug where an OR condition in createWhereClause() could not have one of the values be an array <span class="date">4/22/09</span></td></tr><tr><th>1.0.0b6</th><td>insertFromAndGroupByClauses() will no longer wrap ungrouped columns if in a CAST or CASE statement for ORDER BY clauses of queries with a GROUP BY clause <span class="date">3/23/09</span></td></tr><tr><th>1.0.0b5</th><td>Fixed <a href="#parseSearchTerms"><tt>parseSearchTerms()</tt></a> to include stop words when they are the only thing in the search string <span class="date">12/31/08</span></td></tr><tr><th>1.0.0b4</th><td>Fixed a bug where loading a related record in the same table through a one-to-many relationship caused recursion <span class="date">12/24/08</span></td></tr><tr><th>1.0.0b3</th><td>Fixed a bug from 1.0.0b2 <span class="date">12/5/08</span></td></tr><tr><th>1.0.0b2</th><td>Added support for != and &lt;&gt; to createWhereClause() and createHavingClause() <span class="date">12/4/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">8/4/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="addHavingClause" class="protected method static"><span class="resolution">::</span><span class="name">addHavingClause()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Creates a <tt>HAVING</tt> clause from an array of conditions</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">addHavingClause</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-var">$db</span><span class="php-code">,</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$params</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$conditions</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDatabase">fDatabase</a></td>
+				<td class="param_name">$db</td>
+				<td class="param_description">The database the query will be executed on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema for the database</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$params</td>
+				<td class="param_description">The params for the <a href="fDatabase#query"><tt>fDatabase::query()</tt></a> call</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table the query is being executed on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$conditions</td>
+				<td class="param_description">The array of conditions - see <a href="fRecordSet#build"><tt>fRecordSet::build()</tt></a> for format</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The params with the <tt>HAVING</tt> clause added
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="addOrderByClause" class="protected method static"><span class="resolution">::</span><span class="name">addOrderByClause()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Adds an <tt>ORDER BY</tt> clause to an array of params for an <a href="fDatabase#query"><tt>fDatabase::query()</tt></a> call</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">addOrderByClause</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-var">$db</span><span class="php-code">,</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$params</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$order_bys</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDatabase">fDatabase</a></td>
+				<td class="param_name">$db</td>
+				<td class="param_description">The database the query will be executed on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema object for the database the query will be executed on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$params</td>
+				<td class="param_description">The parameters for the <a href="fDatabase#query"><tt>fDatabase::query()</tt></a> call</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table any ambigious column references will refer to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$order_bys</td>
+				<td class="param_description">The array of order bys to use - see <a href="fRecordSet#build"><tt>fRecordSet::build()</tt></a> for format</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The params with a SQL <tt>ORDER BY</tt> clause added
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="addPrimaryKeyWhereParams" class="protected method static"><span class="resolution">::</span><span class="name">addPrimaryKeyWhereParams()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Add the appropriate SQL and params for a <tt>WHERE</tt> clause condition for primary keys of the table specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">addPrimaryKeyWhereParams</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$params</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table_alias</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema for the database the query will be run on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$params</td>
+				<td class="param_description">The currently constructed params for <a href="fDatabase#query"><tt>fDatabase::query()</tt></a> - the first param should be a SQL statement</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table to build the where clause for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table_alias</td>
+				<td class="param_description">The alias for the table</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The values array for the <a href="fActiveRecord">fActiveRecord</a> object</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values array for the <a href="fActiveRecord">fActiveRecord</a> object</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The params to pass to <a href="fDatabase#query"><tt>fDatabase::query()</tt></a>, including the new primary key where condition
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="addWhereClause" class="protected method static"><span class="resolution">::</span><span class="name">addWhereClause()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Adds a <tt>WHERE</tt> clause, from an array of conditions, to the parameters for an <a href="fDatabase#query"><tt>fDatabase::query()</tt></a> call</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">addWhereClause</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-var">$db</span><span class="php-code">,</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$params</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$conditions</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDatabase">fDatabase</a></td>
+				<td class="param_name">$db</td>
+				<td class="param_description">The database the query will be executed on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema for the database</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$params</td>
+				<td class="param_description">The parameters for the <a href="fDatabase#query"><tt>fDatabase::query()</tt></a> call</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table any ambigious column references will refer to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$conditions</td>
+				<td class="param_description">The array of conditions - see <a href="fRecordSet#build"><tt>fRecordSet::build()</tt></a> for format</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The params with the SQL <tt>WHERE</tt> clause added
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="attach" class="method static"><span class="resolution">::</span><span class="name">attach()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows attaching an <a href="fDatabase">fDatabase</a>-compatible objects for by ORM code</p>
+								<p>If a <tt>$name</tt> other than <tt>default</tt> is used, any <a href="fActiveRecord">fActiveRecord</a> classes  that should use it will need to be configured by passing the class name  and <tt>$name</tt> to mapClassToDatabase(). The <tt>$name</tt> parameter should be  unique per database or database master/slave setup.</p><p>The <tt>$role</tt> is used by code to allow for master/slave database setups.  There can only be one database object attached for either of the roles,  <tt>'read'</tt> or <tt>'write'</tt>. If the role <tt>'both'</tt> is specified, it will  be applied to both the <tt>'read'</tt> and <tt>'write'</tt> roles. Any sort of logic  for picking one out of multiple databases should be done before this  method is called.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">attach</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-var">$database</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>'default'<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$role</span><span class="php-code">=</span>'both' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDatabase">fDatabase</a></td>
+				<td class="param_name">$database</td>
+				<td class="param_description">An object that is compatible with <a href="fDatabase">fDatabase</a></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The name for the database instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$role</td>
+				<td class="param_description">If the database should be used for <tt>'read'</tt>, <tt>'write'</tt> or <tt>'both'</tt> operations</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="injectFromAndGroupByClauses" class="protected method static"><span class="resolution">::</span><span class="name">injectFromAndGroupByClauses()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Finds all of the table names in the SQL and creates the appropriate <tt>FROM</tt> and <tt>GROUP BY</tt> clauses with all necessary joins</p>
+								<p>The SQL string should contain two placeholders, <tt>:from_clause</tt> and  <tt>:group_by_clause</tt>, although the later may be omitted if necessary. All  columns should be qualified with their full table name.</p><p>Here is an example SQL string to pass in presumming that the tables  users and groups are in a relationship:</p><pre class="block "><code>SELECT users.* FROM :from_clause WHERE groups.group_id = 5 :group_by_clause ORDER BY lower(users.first_name) ASC</code></pre>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">injectFromAndGroupByClauses</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-var">$db</span><span class="php-code">,</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$params</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDatabase">fDatabase</a></td>
+				<td class="param_name">$db</td>
+				<td class="param_description">The database the query is to be executed on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema for the database</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$params</td>
+				<td class="param_description">The parameters for the <a href="fDatabase#query"><tt>fDatabase::query()</tt></a> call</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The main table to be queried</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The params with the SQL <tt>FROM</tt> and <tt>GROUP BY</tt> clauses injected
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="makeCondition" class="protected method static"><span class="resolution">::</span><span class="name">makeCondition()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Makes a condition for a SQL statement out of <a href="fDatabase#escape"><tt>fDatabase::escape()</tt></a> placeholders</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">makeCondition</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$comparison_operator</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema object for the database the query will be executed on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table to create the condition for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to make the condition for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$comparison_operator</td>
+				<td class="param_description">The comparison operator for the condition</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value for the condition, which allows the $comparison_operator to be tweaked for NULL values</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					A SQL condition using <a href="fDatabase#escape"><tt>fDatabase::escape()</tt></a> placeholders
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="parseSearchTerms" class="protected method static"><span class="resolution">::</span><span class="name">parseSearchTerms()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Parses a search string into search terms, supports quoted phrases and removes extra punctuation</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">parseSearchTerms</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$terms</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$ignore_stop_words</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$terms</td>
+				<td class="param_description">A text string from a form input to parse into search terms</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$ignore_stop_words</td>
+				<td class="param_description">If stop words should be ignored, this setting will be ignored if all words are stop words</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="retrieve" class="method static"><span class="resolution">::</span><span class="name">retrieve()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Return the instance of the <a href="fDatabase">fDatabase</a> class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-identifier">retrieve</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">=</span>'fActiveRecord'<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$role</span><span class="php-code">=</span>'either' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to retrieve the database for - if not specified, the default database will be returned</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$role</td>
+				<td class="param_description">If the database will be used for <tt>'write'</tt>, <tt>'read'</tt> or <tt>'either'</tt> operations</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The database instance
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="splitHavingConditions" class="protected method static"><span class="resolution">::</span><span class="name">splitHavingConditions()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Removed aggregate function calls from where conditions array and puts them in a having conditions array</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">splitHavingConditions</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$where_conditions</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$where_conditions</td>
+				<td class="param_description">The where conditions to look through for aggregate functions</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The conditions to be put in a <tt>HAVING</tt> clause
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

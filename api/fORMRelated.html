@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMRelated – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fORMRelated</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fORMRelated">Class Documentation</a></li>
+		<li><strong><a href="/api/fORMRelated">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMRelated.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li class="protected"><a href="#associateRecord">associateRecord()</a></li>
+	  			<li class="protected"><a href="#associateRecords">associateRecords()</a></li>
+	  			<li class="protected"><a href="#buildRecords">buildRecords()</a></li>
+	  			<li class="protected"><a href="#countRecords">countRecords()</a></li>
+	  			<li class="protected"><a href="#createRecord">createRecord()</a></li>
+	  			<li class="protected"><a href="#determineFirstPKColumn">determineFirstPKColumn()</a></li>
+	  			<li class="protected"><a href="#determineRequestFilter">determineRequestFilter()</a></li>
+	  			<li class="protected"><a href="#flagForAssociation">flagForAssociation()</a></li>
+	  			<li class="protected"><a href="#getOrderBys">getOrderBys()</a></li>
+	  			<li class="protected"><a href="#getPrimaryKeys">getPrimaryKeys()</a></li>
+	  			<li class="protected"><a href="#getRelatedRecordName">getRelatedRecordName()</a></li>
+	  			<li class="protected"><a href="#hasRecords">hasRecords()</a></li>
+	  			<li class="protected"><a href="#linkRecords">linkRecords()</a></li>
+	  			<li><a href="#overrideRelatedRecordName">overrideRelatedRecordName()</a></li>
+	  			<li class="protected"><a href="#populateRecords">populateRecords()</a></li>
+	  			<li class="protected"><a href="#reflect">reflect()</a></li>
+	  			<li><a href="#registerValidationNameMethod">registerValidationNameMethod()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li class="protected"><a href="#setCount">setCount()</a></li>
+	  			<li><a href="#setOrderBys">setOrderBys()</a></li>
+	  			<li class="protected"><a href="#setPrimaryKeys">setPrimaryKeys()</a></li>
+	  			<li class="protected"><a href="#setRecordSet">setRecordSet()</a></li>
+	  			<li class="protected"><a href="#store">store()</a></li>
+	  			<li class="protected"><a href="#storeManyToMany">storeManyToMany()</a></li>
+	  			<li class="protected"><a href="#storeOneToStar">storeOneToStar()</a></li>
+	  			<li class="protected"><a href="#validate">validate()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fRecordSet">fRecordSet</a></li>
+		<li><a href="fRequest">fRequest</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fRecordSet">fRecordSet</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b44</span></div>
+<p class="short_description">Handles related record tasks for <a href="fActiveRecord">fActiveRecord</a> classes</p>
+<div class="description"><p>The functionality of this class only works with single-field <tt>FOREIGN KEY</tt>  constraints.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b44</th><td>Added missing information for has and list methods to <a href="#reflect"><tt>reflect()</tt></a> <span class="date">9/7/11</span></td></tr><tr><th>1.0.0b43</th><td>Fixed some bugs in handling relationships between PHP 5.3 namespaced classes <span class="date">5/26/11</span></td></tr><tr><th>1.0.0b42</th><td>Fixed a bug with <a href="#associateRecords"><tt>associateRecords()</tt></a> not associating record set via primary key <span class="date">5/23/11</span></td></tr><tr><th>1.0.0b41</th><td>Fixed a bug in generating errors messages for many-to-many relationships <span class="date">3/7/11</span></td></tr><tr><th>1.0.0b40</th><td>Updated <a href="#getRelatedRecordName"><tt>getRelatedRecordName()</tt></a> to use <a href="fText">fText</a> if loaded <span class="date">2/2/11</span></td></tr><tr><th>1.0.0b39</th><td>Fixed a bug with <a href="#validate"><tt>validate()</tt></a> not properly removing validation messages about a related primary key value not being present yet, if the column and related column names were different <span class="date">11/24/10</span></td></tr><tr><th>1.0.0b38</th><td>Updated <a href="#overrideRelatedRecordName"><tt>overrideRelatedRecordName()</tt></a> to prefix any namespace from <tt>$class</tt> to <tt>$related_class</tt> if not already present <span class="date">11/24/10</span></td></tr><tr><th>1.0.0b37</th><td>Fixed a documentation typo <span class="date">11/4/10</span></td></tr><tr><th>1.0.0b36</th><td>Fixed <a href="#getPrimaryKeys"><tt>getPrimaryKeys()</tt></a> to not throw SQL exceptions <span class="date">10/20/10</span></td></tr><tr><th>1.0.0b35</th><td>Backwards Compatibility Break - changed the validation messages array to use nesting for child records <span class="date">10/3/10</span></td></tr><tr><th>1.0.0b35</th><td>Updated <a href="#getPrimaryKeys"><tt>getPrimaryKeys()</tt></a> to always return primary keys in a consistent order when no order bys are specified <span class="date">7/26/10</span></td></tr><tr><th>1.0.0b34</th><td>Updated the class to work with fixes in <a href="fORMRelated">fORMRelated</a> <span class="date">7/22/10</span></td></tr><tr><th>1.0.0b33</th><td>Fixed the related table populate action to use the plural underscore_notation version of the related class name <span class="date">7/8/10</span></td></tr><tr><th>1.0.0b32</th><td>Backwards Compatibility Break - related table populate action now use the underscore_notation version of the class name instead of the related table name, allowing for related tables in non-standard schemas <span class="date">6/23/10</span></td></tr><tr><th>1.0.0b31</th><td>Fixed <a href="#reflect"><tt>reflect()</tt></a> to properly show parameters for associate methods <span class="date">6/8/10</span></td></tr><tr><th>1.0.0b30</th><td>Fixed a bug where related record error messages could be overwritten if there were multiple related records with the same error <span class="date">5/29/10</span></td></tr><tr><th>1.0.0b29</th><td>Changed validation messages array to use column name keys <span class="date">5/26/10</span></td></tr><tr><th>1.0.0b28</th><td>Updated <a href="#associateRecords"><tt>associateRecords()</tt></a> to accept just a single <a href="fActiveRecord">fActiveRecord</a> <span class="date">5/6/10</span></td></tr><tr><th>1.0.0b27</th><td>Updated the class to force configure classes before peforming actions with them <span class="date">3/30/10</span></td></tr><tr><th>1.0.0b26</th><td>Fixed <a href="#reflect"><tt>reflect()</tt></a> to show the proper return values for <tt>associate</tt>, <tt>link</tt> and <tt>populate</tt> methods <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b25</th><td>Fixed a bug when storing a one-to-one related record with different column names on each end of the relationship <span class="date">3/4/10</span></td></tr><tr><th>1.0.0b24</th><td>Added the ability to associate a single record via primary key <span class="date">3/3/10</span></td></tr><tr><th>1.0.0b23</th><td>Fixed a column aliasing issue with SQLite <span class="date">1/25/10</span></td></tr><tr><th>1.0.0b22</th><td>Fixed a bug with associating a non-contiguous array of <a href="fActiveRecord">fActiveRecord</a> objects <span class="date">12/17/09</span></td></tr><tr><th>1.0.0b21</th><td>Added support for the $force_cascade parameter of <a href="fActiveRecord#store"><tt>fActiveRecord::store()</tt></a>, added <a href="#hasRecords"><tt>hasRecords()</tt></a> and fixed a bug with creating non-existent one-to-one related records <span class="date">12/16/09</span></td></tr><tr><th>1.0.0b20</th><td>Updated code for the new <a href="fORMDatabase">fORMDatabase</a> and <a href="fORMSchema">fORMSchema</a> APIs <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b19</th><td>Internal Backwards Compatibility Break - Added the <tt>$class</tt> parameter to <a href="#storeManyToMany"><tt>storeManyToMany()</tt></a> - also fixed <a href="#countRecords"><tt>countRecords()</tt></a> to work across all databases, changed SQL statements to use value placeholders, identifier escaping and support schemas <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b18</th><td>Fixed a bug in <a href="#countRecords"><tt>countRecords()</tt></a> that would occur when multiple routes existed to the table being counted <span class="date">10/5/09</span></td></tr><tr><th>1.0.0b17</th><td>Updated code for new <a href="fRecordSet">fRecordSet</a> API <span class="date">9/16/09</span></td></tr><tr><th>1.0.0b16</th><td>Fixed a bug with <a href="#createRecord"><tt>createRecord()</tt></a> not creating non-existent record when the related value is NULL <span class="date">8/25/09</span></td></tr><tr><th>1.0.0b15</th><td>Fixed a bug with <a href="#createRecord"><tt>createRecord()</tt></a> where foreign keys with a different column and related column name would not load properly <span class="date">8/17/09</span></td></tr><tr><th>1.0.0b14</th><td>Fixed a bug with <a href="#createRecord"><tt>createRecord()</tt></a> when a foreign key constraint is on a column other than the primary key <span class="date">8/10/09</span></td></tr><tr><th>1.0.0b13</th><td><a href="#setOrderBys"><tt>setOrderBys()</tt></a> now (properly) only recognizes *-to-many relationships <span class="date">7/31/09</span></td></tr><tr><th>1.0.0b12</th><td>Changed how related record values are set and how related validation messages are ignored because of recursive relationships <span class="date">7/29/09</span></td></tr><tr><th>1.0.0b11</th><td>Fixed some bugs with one-to-one relationships <span class="date">7/21/09</span></td></tr><tr><th>1.0.0b10</th><td>Fixed a couple of bugs with validating related records <span class="date">6/26/09</span></td></tr><tr><th>1.0.0b9</th><td>Fixed a bug where <a href="#store"><tt>store()</tt></a> would not save associations with no related records <span class="date">6/23/09</span></td></tr><tr><th>1.0.0b8</th><td>Changed <a href="#associateRecords"><tt>associateRecords()</tt></a> to work for *-to-many instead of just many-to-many relationships <span class="date">6/17/09</span></td></tr><tr><th>1.0.0b7</th><td>Updated code for new <a href="fORM">fORM</a> API, fixed API documentation bugs <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b6</th><td>Updated code to use new <a href="fValidationException#formatField"><tt>fValidationException::formatField()</tt></a> method <span class="date">6/4/09</span></td></tr><tr><th>1.0.0b5</th><td>Added <a href="#getPrimaryKeys"><tt>getPrimaryKeys()</tt></a> and <a href="#setPrimaryKeys"><tt>setPrimaryKeys()</tt></a>, renamed setRecords() to <a href="#setRecordSet"><tt>setRecordSet()</tt></a> and tallyRecords() to <a href="#setCount"><tt>setCount()</tt></a> <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b4</th><td>Updated code to handle new association method for related records and new <tt>$related_records</tt> structure, added <a href="#store"><tt>store()</tt></a> and <a href="#validate"><tt>validate()</tt></a> <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b3</th><td><a href="#associateRecords"><tt>associateRecords()</tt></a> can now accept an array of records or primary keys instead of only an <a href="fRecordSet">fRecordSet</a> <span class="date">6/1/09</span></td></tr><tr><th>1.0.0b2</th><td><a href="#populateRecords"><tt>populateRecords()</tt></a> now accepts any input field keys instead of sequential ones starting from 0 <span class="date">5/3/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">12/30/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="associateRecord" class="protected method static"><span class="resolution">::</span><span class="name">associateRecord()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Creates associations for one-to-one relationships</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">associateRecord</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a>|array|string|integer</span> <span class="php-var">$record</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to get the related values for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The class we are associating with the current record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a>|array|string|integer</td>
+				<td class="param_name">$record</td>
+				<td class="param_description">The record (or primary key of the record) to be associated</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to use between the current class and the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="associateRecords" class="protected method static"><span class="resolution">::</span><span class="name">associateRecords()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Creates associations for *-to-many relationships</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">associateRecords</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype"><a href="fRecordSet">fRecordSet</a>|array</span> <span class="php-var">$records_to_associate</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to get the related values for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The class we are associating with the current record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fRecordSet">fRecordSet</a>|array</td>
+				<td class="param_name">$records_to_associate</td>
+				<td class="param_description">An <a href="fRecordSet">fRecordSet</a>, an array or records, or an array of primary keys of the records to be associated</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to use between the current class and the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="buildRecords" class="protected method static"><span class="resolution">::</span><span class="name">buildRecords()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Builds a set of related records along a one-to-many or many-to-many relationship</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fRecordSet">fRecordSet</a></span> <span class="php-identifier">buildRecords</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to get the related values for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The values for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The class that is related to the current record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to follow for the class specified</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					A record set of the related records
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="countRecords" class="protected method static"><span class="resolution">::</span><span class="name">countRecords()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Counts the number of related one-to-many or many-to-many records</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">countRecords</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to get the related values for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The values for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The class that is related to the current record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to follow for the class specified</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The number of related records
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="createRecord" class="protected method static"><span class="resolution">::</span><span class="name">createRecord()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Builds the object for the related class specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">createRecord</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to create the related record for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$values</td>
+				<td class="param_description">The values existing in the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class name</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					An instance of the class specified
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="determineFirstPKColumn" class="protected method static"><span class="resolution">::</span><span class="name">determineFirstPKColumn()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Figures out the first primary key column for a related class that is not the related column</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">determineFirstPKColumn</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name of the main class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class being filtered for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The first primary key column in the related class
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="determineRequestFilter" class="protected method static"><span class="resolution">::</span><span class="name">determineRequestFilter()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Figures out what filter to pass to <a href="fRequest#filter"><tt>fRequest::filter()</tt></a> for the specified related class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">determineRequestFilter</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name of the main class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class being filtered for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The prefix to filter the request fields by
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="flagForAssociation" class="protected method static"><span class="resolution">::</span><span class="name">flagForAssociation()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets the related records for a *-to-many relationship to be associated upon <a href="fActiveRecord#store"><tt>fActiveRecord::store()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">flagForAssociation</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to associate the related records to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The class we are associating with the current record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to use between the current class and the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getOrderBys" class="protected method static"><span class="resolution">::</span><span class="name">getOrderBys()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Gets the ordering to use when returning an <a href="fRecordSet">fRecordSet</a> of related objects</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getOrderBys</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to get the order bys for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class the ordering rules apply to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related table, should be a column name in the current table or a join table name</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					An array of the order bys - see <a href="fRecordSet#build"><tt>fRecordSet::build()</tt></a> for format
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getPrimaryKeys" class="protected method static"><span class="resolution">::</span><span class="name">getPrimaryKeys()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Gets the primary keys of the related records for *-to-many relationships</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getPrimaryKeys</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to get the related primary keys for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The values for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The class that is related to the current record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to follow for the class specified</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The primary keys of the related records
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getRelatedRecordName" class="protected method static"><span class="resolution">::</span><span class="name">getRelatedRecordName()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the record name for a related class</p>
+								<p>The default record name of a related class is the result of  <a href="fGrammar#humanize"><tt>fGrammar::humanize()</tt></a> called on the class.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getRelatedRecordName</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype"></span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to get the related class name for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class to get the record name of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"></td>
+				<td class="param_name">$route</td>
+				<td class="param_description"></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The record name for the related class specified
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="hasRecords" class="protected method static"><span class="resolution">::</span><span class="name">hasRecords()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Indicates if a record has a one-to-one or any *-to-many related records</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">hasRecords</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to check related records for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The values for the record we are checking</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records for the record we are checking</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class we are checking for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="linkRecords" class="protected method static"><span class="resolution">::</span><span class="name">linkRecords()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Parses associations for many-to-many relationships from the page request</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">linkRecords</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to get link the related records to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class to populate</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="overrideRelatedRecordName" class="method static"><span class="resolution">::</span><span class="name">overrideRelatedRecordName()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows overriding of default record names or related records</p>
+								<p>The default record name of a related record is the result of  <a href="fGrammar#humanize"><tt>fGrammar::humanize()</tt></a> called on the class name.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">overrideRelatedRecordName</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$record_name</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to set the related record name for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The name of the related class, or an instance of it</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$record_name</td>
+				<td class="param_description">The human version of the related record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="populateRecords" class="protected method static"><span class="resolution">::</span><span class="name">populateRecords()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets the values for records in a one-to-many relationship with this record</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">populateRecords</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to populate the related records of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class to populate</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reflect" class="protected method static"><span class="resolution">::</span><span class="name">reflect()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Adds information about methods provided by this class to <a href="fActiveRecord">fActiveRecord</a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reflect</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$signatures</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$include_doc_comments</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to reflect the related record methods for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$signatures</td>
+				<td class="param_description">The associative array of <tt>{method_name} =&gt; {signature}</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$include_doc_comments</td>
+				<td class="param_description">If the doc block comments for each method should be included</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerValidationNameMethod" class="method static"><span class="resolution">::</span><span class="name">registerValidationNameMethod()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a method to use to get a name for a related record when doing validation</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerValidationNameMethod</span><span class="php-brackets">(</span> <span class="php-vartype">string|<a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|<a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to register the method for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class to register the method for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to be called on the related class that will return the name</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="setCount" class="protected method static"><span class="resolution">::</span><span class="name">setCount()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Records the number of related one-to-many or many-to-many records</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setCount</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$count</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to set the related records count for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The values for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The class that is related to the current record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$count</td>
+				<td class="param_description">The number of records</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to follow for the class specified</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setOrderBys" class="method static"><span class="resolution">::</span><span class="name">setOrderBys()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the ordering to use when returning an <a href="fRecordSet">fRecordSet</a> of related objects</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setOrderBys</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$order_bys</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class this ordering rule applies to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class we are getting info from</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$order_bys</td>
+				<td class="param_description">An array of the order bys for this table.column combination - see <a href="fRecordSet#build"><tt>fRecordSet::build()</tt></a> for format</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related table, this should be a column name in the current table or a join table name</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="setPrimaryKeys" class="protected method static"><span class="resolution">::</span><span class="name">setPrimaryKeys()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets the related records for *-to-many relationships, providing only primary keys</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setPrimaryKeys</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$primary_keys</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to set the related primary keys for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The class we are setting the records for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$primary_keys</td>
+				<td class="param_description">The records to set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to use between the current class and the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="setRecordSet" class="protected method static"><span class="resolution">::</span><span class="name">setRecordSet()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets the related records for *-to-many relationships</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setRecordSet</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype"><a href="fRecordSet">fRecordSet</a></span> <span class="php-var">$records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to set the related records for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records existing for the <a href="fActiveRecord">fActiveRecord</a> class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The class we are associating with the current record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fRecordSet">fRecordSet</a></td>
+				<td class="param_name">$records</td>
+				<td class="param_description">The records are associating</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to use between the current class and the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="store" class="protected method static"><span class="resolution">::</span><span class="name">store()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Stores any many-to-many associations or any one-to-many records that have been flagged for association</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">store</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$force_cascade</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to store the related records for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values for the main record being stored</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records array</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$force_cascade</td>
+				<td class="param_description">This flag will be passed to the <a href="fActiveRecord#delete"><tt>fActiveRecord::delete()</tt></a> method on related records that are being deleted</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="storeManyToMany" class="protected method static"><span class="resolution">::</span><span class="name">storeManyToMany()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Associates a set of many-to-many related records with the current record</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">storeManyToMany</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$relationship</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$related_info</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class the relationship is being stored for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values for the main record being stored</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$relationship</td>
+				<td class="param_description">The information about the relationship between this object and the records in the record set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$related_info</td>
+				<td class="param_description">An array containing the keys <tt>'record_set'</tt>, <tt>'count'</tt>, <tt>'primary_keys'</tt> and <tt>'associate'</tt></td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+						<!-- start protected method static -->
+			<h3 id="storeOneToStar" class="protected method static"><span class="resolution">::</span><span class="name">storeOneToStar()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Stores a set of one-to-many related records in the database</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">storeOneToStar</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$force_cascade</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to store the related records for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values for the main record being stored</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records array</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class being stored</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$force_cascade</td>
+				<td class="param_description">This flag will be passed to the <a href="fActiveRecord#delete"><tt>fActiveRecord::delete()</tt></a> method on related records that are being deleted</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When one of the &quot;many&quot; records throws an exception from <a href="fActiveRecord#store"><tt>fActiveRecord::store()</tt></a></dd></dl>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="validate" class="protected method static"><span class="resolution">::</span><span class="name">validate()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Validates any many-to-many associations or any one-to-many records that have been flagged for association</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">validate</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to validate the related records for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The values for the object</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records for the object</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

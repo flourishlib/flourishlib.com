@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fUTF8 – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fUTF8</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fUTF8">Class Documentation</a></li>
+		<li><strong><a href="/api/fUTF8">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fUTF8.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li class="protected"><a href="#ascii">ascii()</a></li>
+	  			<li><a href="#chr">chr()</a></li>
+	  			<li><a href="#clean">clean()</a></li>
+	  			<li><a href="#cmp">cmp()</a></li>
+	  			<li><a href="#explode">explode()</a></li>
+	  			<li><a href="#icmp">icmp()</a></li>
+	  			<li><a href="#inatcmp">inatcmp()</a></li>
+	  			<li><a href="#ipos">ipos()</a></li>
+	  			<li><a href="#ireplace">ireplace()</a></li>
+	  			<li><a href="#irpos">irpos()</a></li>
+	  			<li><a href="#istr">istr()</a></li>
+	  			<li><a href="#len">len()</a></li>
+	  			<li><a href="#lower">lower()</a></li>
+	  			<li><a href="#ltrim">ltrim()</a></li>
+	  			<li><a href="#natcmp">natcmp()</a></li>
+	  			<li><a href="#ord">ord()</a></li>
+	  			<li><a href="#pad">pad()</a></li>
+	  			<li><a href="#pos">pos()</a></li>
+	  			<li><a href="#replace">replace()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#rev">rev()</a></li>
+	  			<li><a href="#rpos">rpos()</a></li>
+	  			<li><a href="#rtrim">rtrim()</a></li>
+	  			<li><a href="#str">str()</a></li>
+	  			<li><a href="#sub">sub()</a></li>
+	  			<li><a href="#trim">trim()</a></li>
+	  			<li><a href="#ucfirst">ucfirst()</a></li>
+	  			<li><a href="#ucwords">ucwords()</a></li>
+	  			<li><a href="#upper">upper()</a></li>
+	  			<li><a href="#wordwrap">wordwrap()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fCookie">fCookie</a></li>
+		<li><a href="fEmail">fEmail</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fJSON">fJSON</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fPagination">fPagination</a></li>
+		<li><a href="fRecordSet">fRecordSet</a></li>
+		<li><a href="fRequest">fRequest</a></li>
+		<li><a href="fSQLTranslation">fSQLTranslation</a></li>
+		<li><a href="fURL">fURL</a></li>
+		<li><a href="fValidation">fValidation</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b15</span></div>
+<p class="short_description">Provides string functions for UTF-8 strings</p>
+<div class="description"><p>This class is implemented to provide a UTF-8 version of almost every built-in  PHP string function. For more information about UTF-8, please visit  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a>.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b15</th><td>Fixed a bug with using IBM's iconv implementation on AIX <span class="date">7/29/11</span></td></tr><tr><th>1.0.0b14</th><td>Added a workaround for iconv having issues in MAMP 1.9.4+ <span class="date">7/26/11</span></td></tr><tr><th>1.0.0b13</th><td>Fixed notices from being thrown when invalid data is sent to <a href="#clean"><tt>clean()</tt></a> <span class="date">6/10/11</span></td></tr><tr><th>1.0.0b12</th><td>Fixed a variable name typo in <a href="#sub"><tt>sub()</tt></a> <span class="date">5/9/11</span></td></tr><tr><th>1.0.0b11</th><td>Updated the class to not using phpinfo() to determine the iconv implementation <span class="date">11/4/10</span></td></tr><tr><th>1.0.0b10</th><td>Fixed a bug with capitalizing a lowercase i resulting in a dotted upper-case I <span class="date">11/1/10</span></td></tr><tr><th>1.0.0b9</th><td>Updated class to use <a href="fCore#startErrorCapture"><tt>fCore::startErrorCapture()</tt></a> instead of <tt>error_reporting()</tt> <span class="date">8/9/10</span></td></tr><tr><th>1.0.0b8</th><td>Removed <tt>e</tt> flag from preg_replace() calls <span class="date">6/8/10</span></td></tr><tr><th>1.0.0b7</th><td>Added the methods <a href="#trim"><tt>trim()</tt></a>, <a href="#rtrim"><tt>rtrim()</tt></a> and <a href="#ltrim"><tt>ltrim()</tt></a> <span class="date">5/11/10</span></td></tr><tr><th>1.0.0b6</th><td>Fixed <a href="#clean"><tt>clean()</tt></a> to work with PHP installs that use an iconv library that doesn't support //IGNORE <span class="date">3/2/10</span></td></tr><tr><th>1.0.0b5</th><td>Changed <a href="#ucwords"><tt>ucwords()</tt></a> to also uppercase words right after various punctuation <span class="date">9/18/09</span></td></tr><tr><th>1.0.0b4</th><td>Changed replacement values in preg_replace() calls to be properly escaped <span class="date">6/11/09</span></td></tr><tr><th>1.0.0b3</th><td>Fixed a parameter name in <a href="#rpos"><tt>rpos()</tt></a> from <tt>$search</tt> to <tt>$needle</tt> <span class="date">2/6/09</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug in <a href="#explode"><tt>explode()</tt></a> with newlines and zero-length delimiters <span class="date">2/5/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/1/08</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="ascii" class="protected method static"><span class="resolution">::</span><span class="name">ascii()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Maps UTF-8 ASCII-based latin characters, puntuation, symbols and number forms to ASCII</p>
+								<p>Any characters or symbols that can not be translated will be removed.</p><p>This function is most useful for situation that only allows ASCII, such  as in URLs.</p><p>Translates elements form the following unicode blocks:  </p><ul><li>Latin-1 Supplement</li><li>Latin Extended-A</li><li>Latin Extended-B</li><li>IPA Extensions</li><li>Latin Extended Additional</li><li>General Punctuation</li><li>Letterlike symbols</li><li>Number Forms</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">ascii</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to convert</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The input string in pure ASCII
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="chr" class="method static"><span class="resolution">::</span><span class="name">chr()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts a unicode value into a UTF-8 character</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">chr</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$unicode_code_point</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$unicode_code_point</td>
+				<td class="param_description">The character to create, either the <tt>U+hex</tt> or decimal code point</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The UTF-8 character
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="clean" class="method static"><span class="resolution">::</span><span class="name">clean()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Removes any invalid UTF-8 characters from a string or array of strings</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">clean</span><span class="php-brackets">(</span> <span class="php-vartype">array|string</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array|string</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The string or array of strings to clean</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The cleaned string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="cmp" class="method static"><span class="resolution">::</span><span class="name">cmp()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Compares strings, with the resulting order having latin characters that are based on ASCII letters placed after the relative ASCII characters</p>
+								<p>Please note that this function sorts based on English language sorting  rules only. Locale-sepcific sorting is done by  <a class="ext-link" href="http://php.net/strcoll"><span class="icon"><tt>strcoll()</tt></span></a>, however there are technical  limitations.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">cmp</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$str1</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$str2</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$str1</td>
+				<td class="param_description">The first string to compare</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$str2</td>
+				<td class="param_description">The second string to compare</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					&lt; 0 if $str1 &lt; $str2, 0 if they are equal, &gt; 0 if $str1 &gt; $str2
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="explode" class="method static"><span class="resolution">::</span><span class="name">explode()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Explodes a string on a delimiter</p>
+								<p>If no delimiter is provided, the string will be exploded with each  characters being an element in the array.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">explode</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$delimiter</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to explode</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$delimiter</td>
+				<td class="param_description">The string to explode on. If <tt>NULL</tt> or <tt>''</tt> this method will return one character per array index.</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The exploded string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="icmp" class="method static"><span class="resolution">::</span><span class="name">icmp()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Compares strings in a case-insensitive manner, with the resulting order having characters that are based on ASCII letters placed after the relative ASCII characters</p>
+								<p>Please note that this function sorts based on English language sorting  rules only. Locale-sepcific sorting is done by  <a class="ext-link" href="http://php.net/strcoll"><span class="icon"><tt>strcoll()</tt></span></a>, however there are technical  limitations.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">icmp</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$str1</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$str2</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$str1</td>
+				<td class="param_description">The first string to compare</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$str2</td>
+				<td class="param_description">The second string to compare</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					&lt; 0 if $str1 &lt; $str2, 0 if they are equal, &gt; 0 if $str1 &gt; $str2
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="inatcmp" class="method static"><span class="resolution">::</span><span class="name">inatcmp()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Compares strings using a natural order algorithm in a case-insensitive manner, with the resulting order having latin characters that are based on ASCII letters placed after the relative ASCII characters</p>
+								<p>Please note that this function sorts based on English language sorting  rules only. Locale-sepcific sorting is done by  <a class="ext-link" href="http://php.net/strcoll"><span class="icon"><tt>strcoll()</tt></span></a>, however there are technical  limitations.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">inatcmp</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$str1</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$str2</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$str1</td>
+				<td class="param_description">The first string to compare</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$str2</td>
+				<td class="param_description">The second string to compare</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					<tt>&lt; 0</tt> if <tt>$str1 &lt; $str2</tt>, <tt>0</tt> if they are equal, <tt>&gt; 0</tt> if <tt>$str1 &gt; $str2</tt>
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="ipos" class="method static"><span class="resolution">::</span><span class="name">ipos()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Finds the first position (in characters) of the search value in the string - case is ignored when doing performing a match</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">ipos</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$haystack</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$needle</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$offset</span><span class="php-code">=</span>0 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$haystack</td>
+				<td class="param_description">The string to search in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$needle</td>
+				<td class="param_description">The string to search for. This match will be done in a case-insensitive manner.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$offset</td>
+				<td class="param_description">The character position to start searching from</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The integer character position of the first occurence of the needle or <tt>FALSE</tt> if no match
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="ireplace" class="method static"><span class="resolution">::</span><span class="name">ireplace()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Replaces matching parts of the string, with matches being done in a a case-insensitive manner</p>
+								<p>If <tt>$search</tt> and <tt>$replace</tt> are both arrays and <tt>$replace</tt> is shorter,  the extra <tt>$search</tt> string will be replaced with an empty string. If  <tt>$search</tt> is an array and <tt>$replace</tt> is a string, all <tt>$search</tt> values  will be replaced with the string specified.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">ireplace</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$search</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$replace</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to perform the replacements on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$search</td>
+				<td class="param_description">The string (or array of strings) to search for - see method description for details</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$replace</td>
+				<td class="param_description">The string (or array of strings) to replace with - see method description for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The input string with the specified replacements
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="irpos" class="method static"><span class="resolution">::</span><span class="name">irpos()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Finds the last position (in characters) of the search value in the string - case is ignored when doing performing a match</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">irpos</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$haystack</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$needle</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$offset</span><span class="php-code">=</span>0 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$haystack</td>
+				<td class="param_description">The string to search in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$needle</td>
+				<td class="param_description">The string to search for. This match will be done in a case-insensitive manner.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$offset</td>
+				<td class="param_description">The character position to start searching from. A negative value will stop looking that many characters from the end of the string</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The integer character position of the last occurence of the needle or <tt>FALSE</tt> if no match
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="istr" class="method static"><span class="resolution">::</span><span class="name">istr()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Matches a string needle in the string haystack, returning a substring from the beginning of the needle to the end of the haystack</p>
+								<p>Can optionally return the part of the haystack before the needle. Matching  is done in a case-insensitive manner.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">istr</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$haystack</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$needle</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$before_needle</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$haystack</td>
+				<td class="param_description">The string to search in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$needle</td>
+				<td class="param_description">The string to search for. This match will be done in a case-insensitive manner.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$before_needle</td>
+				<td class="param_description">If a substring of the haystack before the needle should be returned instead of the substring from the needle to the end of the haystack</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The specified part of the haystack, or <tt>FALSE</tt> if the needle was not found
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="len" class="method static"><span class="resolution">::</span><span class="name">len()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Determines the length (in characters) of a string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">len</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to measure</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The number of characters in the string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="lower" class="method static"><span class="resolution">::</span><span class="name">lower()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts all uppercase characters to lowercase</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">lower</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to convert</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The input string with all uppercase characters in lowercase
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="ltrim" class="method static"><span class="resolution">::</span><span class="name">ltrim()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Trims whitespace, or any specified characters, from the beginning of a string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">ltrim</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$charlist</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to trim</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$charlist</td>
+				<td class="param_description">The characters to trim</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The trimmed string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="natcmp" class="method static"><span class="resolution">::</span><span class="name">natcmp()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Compares strings using a natural order algorithm, with the resulting order having latin characters that are based on ASCII letters placed after the relative ASCII characters</p>
+								<p>Please note that this function sorts based on English language sorting  rules only. Locale-sepcific sorting is done by  <a class="ext-link" href="http://php.net/strcoll"><span class="icon"><tt>strcoll()</tt></span></a>, however there are technical  limitations.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">natcmp</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$str1</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$str2</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$str1</td>
+				<td class="param_description">The first string to compare</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$str2</td>
+				<td class="param_description">The second string to compare</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					<tt>&lt; 0</tt> if <tt>$str1 &lt; $str2</tt>, <tt>0</tt> if they are equal, <tt>&gt; 0</tt> if <tt>$str1 &gt; $str2</tt>
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="ord" class="method static"><span class="resolution">::</span><span class="name">ord()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts a UTF-8 character to a unicode code point</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">ord</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$character</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$character</td>
+				<td class="param_description">The character to decode</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The U+hex unicode code point for the character
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="pad" class="method static"><span class="resolution">::</span><span class="name">pad()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Pads a string to the number of characters specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">pad</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$pad_length</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$pad_string</span><span class="php-code">=</span>' '<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$pad_type</span><span class="php-code">=</span>'right' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to pad</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$pad_length</td>
+				<td class="param_description">The character length to pad the string to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$pad_string</td>
+				<td class="param_description">The string to pad the source string with</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$pad_type</td>
+				<td class="param_description">The type of padding to do: <tt>'left'</tt>, <tt>'right'</tt>, <tt>'both'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The input string padded to the specified character width
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="pos" class="method static"><span class="resolution">::</span><span class="name">pos()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Finds the first position (in characters) of the search value in the string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">pos</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$haystack</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$needle</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$offset</span><span class="php-code">=</span>0 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$haystack</td>
+				<td class="param_description">The string to search in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$needle</td>
+				<td class="param_description">The string to search for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$offset</td>
+				<td class="param_description">The character position to start searching from</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The integer character position of the first occurence of the needle or <tt>FALSE</tt> if no match
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="replace" class="method static"><span class="resolution">::</span><span class="name">replace()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Replaces matching parts of the string</p>
+								<p>If <tt>$search</tt> and <tt>$replace</tt> are both arrays and <tt>$replace</tt> is shorter,  the extra <tt>$search</tt> string will be replaced with an empty string. If  <tt>$search</tt> is an array and <tt>$replace</tt> is a string, all <tt>$search</tt> values  will be replaced with the string specified.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">replace</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$search</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$replace</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to perform the replacements on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$search</td>
+				<td class="param_description">The string (or array of strings) to search for - see method description for details</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$replace</td>
+				<td class="param_description">The string (or array of strings) to replace with - see method description for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The input string with the specified replacements
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="rev" class="method static"><span class="resolution">::</span><span class="name">rev()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Reverses a string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">rev</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to reverse</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The reversed string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="rpos" class="method static"><span class="resolution">::</span><span class="name">rpos()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Finds the last position (in characters) of the search value in the string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">rpos</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$haystack</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$needle</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$offset</span><span class="php-code">=</span>0 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$haystack</td>
+				<td class="param_description">The string to search in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$needle</td>
+				<td class="param_description">The string to search for.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$offset</td>
+				<td class="param_description">The character position to start searching from. A negative value will stop looking that many characters from the end of the string</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The integer character position of the last occurence of the needle or <tt>FALSE</tt> if no match
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="rtrim" class="method static"><span class="resolution">::</span><span class="name">rtrim()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Trims whitespace, or any specified characters, from the end of a string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">rtrim</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$charlist</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to trim</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$charlist</td>
+				<td class="param_description">The characters to trim</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The trimmed string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="str" class="method static"><span class="resolution">::</span><span class="name">str()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Matches a string needle in the string haystack, returning a substring from the beginning of the needle to the end of the haystack</p>
+								<p>Can optionally return the part of the haystack before the needle.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">str</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$haystack</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$needle</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$before_needle</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$haystack</td>
+				<td class="param_description">The string to search in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$needle</td>
+				<td class="param_description">The string to search for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$before_needle</td>
+				<td class="param_description">If a substring of the haystack before the needle should be returned instead of the substring from the needle to the end of the haystack</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The specified part of the haystack, or <tt>FALSE</tt> if the needle was not found
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="sub" class="method static"><span class="resolution">::</span><span class="name">sub()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Extracts part of a string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">sub</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$start</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$length</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to extract from</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$start</td>
+				<td class="param_description">The zero-based starting index to extract from. Negative values will start the extraction that many characters from the end of the string.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$length</td>
+				<td class="param_description">The length of the string to extract. If an empty value is provided, the remainder of the string will be returned.</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The extracted subtring or <tt>FALSE</tt> if the start is out of bounds
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="trim" class="method static"><span class="resolution">::</span><span class="name">trim()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Trims whitespace, or any specified characters, from the beginning and end of a string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">trim</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$charlist</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to trim</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$charlist</td>
+				<td class="param_description">The characters to trim, .. indicates a range</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The trimmed string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="ucfirst" class="method static"><span class="resolution">::</span><span class="name">ucfirst()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts the first character of the string to uppercase.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">ucfirst</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to process</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The processed string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="ucwords" class="method static"><span class="resolution">::</span><span class="name">ucwords()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts the first character of every word to uppercase</p>
+								<p>Words are considered to start at the beginning of the string, or after any  whitespace character.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">ucwords</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to process</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The processed string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="upper" class="method static"><span class="resolution">::</span><span class="name">upper()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts all lowercase characters to uppercase</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">upper</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to convert</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The input string with all lowercase characters in uppercase
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="wordwrap" class="method static"><span class="resolution">::</span><span class="name">wordwrap()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Wraps a string to a specific character width</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">wordwrap</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$width</span><span class="php-code">=</span>75<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$break</span><span class="php-code">=</span>&quot;\n&quot;<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$cut</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to wrap</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$width</td>
+				<td class="param_description">The character width to wrap to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$break</td>
+				<td class="param_description">The string to insert as a break</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$cut</td>
+				<td class="param_description">If words longer than the character width should be split to fit</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The input string with all lowercase characters in uppercase
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

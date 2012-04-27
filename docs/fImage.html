@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fImage – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fImage">fImage</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fImage">Class Documentation</a></strong></li>
+<li><a href="/api/fImage">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fImage.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Configuration">Configuration</a></li>
+<li><a href="#ImageInformation">Image Information</a></li>
+<li><a href="#Modification">Modification</a>
+<ul>
+<li><a href="#Cropping">Cropping</a></li>
+<li><a href="#Desaturating">Desaturating</a></li>
+<li><a href="#Resizing">Resizing</a></li>
+</ul>
+</li>
+<li><a href="#SavingChanges">Saving Changes</a></li>
+</ul>
+
+<h2 id="FilesystemClasses">Filesystem Classes </h2>
+
+<ul>
+<li><a href="/docs/fFilesystem">fFilesystem</a></li>
+<li><a href="/docs/fFile">fFile</a>
+<ul>
+<li><strong>fImage</strong></li>
+</ul>
+</li>
+<li><a href="/docs/fDirectory">fDirectory</a></li>
+<li><a href="/docs/fUpload">fUpload</a></li>
+</ul>
+</div>
+
+<p>
+The fImage class is a representation of an image file on the filesystem. It provides all of the functionality of the <a href="/docs/fFile">fFile</a> class and adds the ability to perform image manipulation via GD or ImageMagick.
+</p>
+
+<h2 id="Configuration">Configuration</h2>
+
+<p>
+As mentioned above, the fImage class provide image manipulation by using either the command line program <a href="http://imagemagick.org">ImageMagick</a> or the <a href="http://php.net/gd">PHP GD extension</a>. fImage prefers ImageMagick since it provides superior performance and does not have the restriction of the PHP memory limit, like the GD extension does.
+</p>
+
+<p>
+If the GD extension is not installed and ImageMagick can not be found in a standard location, fImage will need to be configured with the location of ImageMagick. This can be done by passing the ImageMagick binarys directory to the static method <a href="/api/fImage#setImageMagickDirectory"><code>setImageMagickDirectory()</code></a>.
+</p>
+<pre class="block php"><code>// An example of manually configuring ImageMagick
+fImage::setImageMagickDirectory('/usr/local/imagemagick/bin');</code></pre>
+
+<p>
+ In addition to configuring the path to the ImageMagick binaries, it is also possible to set a temporary directory for ImageMagick to use when processing files. The <a href="/api/fImage#setImageMagickTempDir"><code>setImageMagickTempDir()</code></a> static method performs this task and takes a single parameter <code>$temp_dir</code>.
+</p>
+<pre class="block php"><code>// Setting a custom temporary directory for ImageMagick
+fImage::setImageMagickTempDir('/tmp/imagemagick');</code></pre>
+
+<h2 id="ImageInformation">Image Information</h2>
+
+<p>
+The fImage class includes a few methods to provide basic metadata about the image. <a href="/api/fImage#getWidth"><code>getWidth()</code></a> and <a href="/api/fImage#getHeight"><code>getHeight()</code></a> provide straight-forward access to image dimensions. <a href="/api/fImage#getDimensions"><code>getDimensions()</code></a> returns a two-element array of the width, then the height.
+</p>
+<pre class="block php"><code>$width  = $image-&gt;getWidth();
+$height = $image-&gt;getHeight();
+
+list($witdh, $height) = $image-&gt;getDimensions();</code></pre>
+
+<p>
+ The method <a href="/api/fImage#getType"><code>getType()</code></a> will return a string with the image type. Types include: <code>'jpg'</code>, <code>'gif'</code>, <code>'png'</code> and <code>'tif'</code>.
+</p>
+<pre class="block php"><code>$type = $image-&gt;getType();</code></pre>
+
+<h2 id="Modification">Modification</h2>
+
+<p>
+Probably the most significant functionality of the fImage class is the ability to modify an image. There are currently three different modifications that can be performed: <a href="/api/fImage#crop"><code>crop()</code></a>, <a href="/api/fImage#cropToRatio"><code>cropToRatio()</code></a>, <a href="/api/fImage#resize"><code>resize()</code></a> and <a href="/api/fImage#desaturate"><code>desaturate()</code></a>.
+</p>
+
+<p>
+Calling any of these modifications will not actually cause the changes to be written to disk until <a href="#SavingChanges"><code>saveChanges()</code></a> is called.
+</p>
+
+<h3 id="Cropping">Cropping</h3>
+
+<p>
+<a href="/api/fImage#crop"><code>crop()</code></a> accepts four parameters, the pixels dimensions for <code>$new_width</code> and <code>$new_height</code>, <code>$crop_from_x</code>, <code>$crop_from_y</code>, and will perform pixel-specific cropping.
+</p>
+<pre class="block php"><code>// Create a 16x16 icon from the top left of an image
+$image1 = new fImage('./example.gif');
+$image1-&gt;crop(16, 16, 0, 0);
+$image1-&gt;saveChanges();</code></pre>
+
+<p>
+ It is also possible to crop with <code>$crop_from_x</code> and <code>$crop_from_y</code> being a string position. The possible values for <code>$crop_from_x</code> are <code>left</code>, <code>center</code> and <code>right</code>. The possible values for <code>$crop_from_y</code> are <code>top</code>, <code>center</code> and <code>bottom</code>.
+</p>
+<pre class="block php"><code>// Create a 16x16 icon from the top right of an image
+$image1 = new fImage('./example.gif');
+$image1-&gt;crop(16, 16, 'right', 'top');
+$image1-&gt;saveChanges();</code></pre>
+
+<p>
+ <a href="/api/fImage#cropToRatio"><code>cropToRatio()</code></a> will crop the largest rectangle our of an image that conforms to the ratio passed in via <code>$ratio_width</code> and <code>$ratio_height</code>. By default, the crop is made from the center of the image.
+</p>
+<pre class="block php"><code>// Create a 32x32 icon from an image
+$image3 = new fImage('./example.gif');
+$image3-&gt;cropToRatio(1, 1);
+$image3-&gt;resize(32, 32);
+$image3-&gt;saveChanges();</code></pre>
+
+<p>
+ Similar to <a href="/api/fImage#crop"><code>crop()</code></a>, it is possible to crop to a ratio from a specific position in the image. The third parameter, <code>$horizontal_position</code> accepts either <code>left</code>, <code>center</code> or <code>right</code>. The fourth parameter, <code>$vertical_position</code>, accepts <code>top</code>, <code>center</code> or <code>bottom</code>.
+</p>
+<pre class="block php"><code>// Create a 32x32 icon from the bottom right of an image
+$image3 = new fImage('./example.gif');
+$image3-&gt;cropToRatio(1, 1, 'right', 'bottom');
+$image3-&gt;resize(32, 32);
+$image3-&gt;saveChanges();</code></pre>
+
+<h3 id="Desaturating">Desaturating</h3>
+
+<p>
+<a href="/api/fImage#desaturate"><code>desaturate()</code></a> will cause the image to lose all color information and become grayscale.
+</p>
+<pre class="block php"><code>// Change the image to be grayscale
+$image3 = new fImage('./example.gif');
+$image3-&gt;desaturate();
+$image3-&gt;saveChanges();</code></pre>
+
+<h3 id="Resizing">Resizing</h3>
+
+<p>
+<a href="/api/fImage#resize"><code>resize()</code></a> will scale the image to fit the canvas size defined by the parameters <code>$canvas_width</code> and <code>$canvas_height</code>. If either parameter is <code>empty()</code> or <code>0</code>, the image will be resized to fit the specified dimension.
+</p>
+<pre class="block php"><code>// Ensure an image is never wider than 250 pixels
+$image4 = new fImage('./example.gif');
+$image4-&gt;resize(250, 0);
+$image4-&gt;saveChanges();</code></pre>
+
+<p>
+ <code>resize()</code> can also accept an optional third parameter, <code>$allow_upsizing</code>. By default <code>resize()</code> will only make the image smaller, but when this is <code>TRUE</code> the image will be made to fit the dimensions even if it must be increased in size.
+</p>
+<pre class="block php"><code>// Make an image exactly 100 pixels wide
+$image5 = new fImage('./example.gif');
+$image5-&gt;resize(100, 0, TRUE);
+$image5-&gt;saveChanges();</code></pre>
+
+<h2 id="SavingChanges">Saving Changes</h2>
+
+<p>
+<a href="/api/fImage#saveChanges"><code>saveChanges()</code></a> can accept from zero to three parameters. The first optional parameter is the <code>$new_image_type</code> which can be <code>'jpg'</code>, <code>'gif'</code> or <code>'png'</code>. If no <code>$new_image_type</code> is specified, the image will be resaved in the current format.
+</p>
+<pre class="block php"><code>// Saving as a PNG
+$image2 = new fImage('./example.gif');
+$image2-&gt;resize(250, 0);
+$image2-&gt;saveChanges('png');</code></pre>
+
+<p>
+ If the <code>'jpg'</code> image type is specified, there is a second optional parameter, the <code>$jpeg_quality</code> to use. If no <code>$jpeg_quality</code> is specified, <code>90</code> is used as the default.
+</p>
+<pre class="block php"><code>// Saving as a 60 quality JPEG
+$image2 = new fImage('./example.gif');
+$image2-&gt;resize(250, 0);
+$image2-&gt;saveChanges('jpeg', 60);</code></pre>
+
+<p>
+ A third optional parameter, <code>$overwrite</code>, accepts a boolean and will cause a file with the same name and type to be overwritten. For example, if the file is currently <code>image.gif</code> and you call <code>saveChanges()</code> with the parameter <code>'jpg'</code> and another file named <code>image.jpg</code> exists, by default <code>image.gif</code> will be saved with changes as <code>image_copy1.jpg</code>. When <code>$overwrite</code> is <code>TRUE</code>, <code>image.jpg</code> will be overwritten.
+</p>
+<pre class="block php"><code>// Saving as a PNG and overwrite any existing example.png
+$image2 = new fImage('./example.gif');
+$image2-&gt;resize(250, 0);
+$image2-&gt;saveChanges('png', TRUE);</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

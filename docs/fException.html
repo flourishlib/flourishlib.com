@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fException – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fException">fException</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fException">Class Documentation</a></strong></li>
+<li><a href="/api/fException">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fException.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#Printing">Printing</a></li>
+<li><a href="#Modification">Modification</a></li>
+<li><a href="#ReorderingMessages">Reordering Messages</a></li>
+<li><a href="#SplittingMessages">Splitting Messages</a></li>
+<li><a href="#Backtraces">Backtraces</a></li>
+</ul>
+
+<h2 id="ExceptionClasses">Exception Classes </h2>
+
+<ul>
+<li><strong>fException</strong>
+<ul>
+<li><a href="/docs/fExpectedException">fExpectedException</a>
+<ul>
+<li><a href="/docs/fAuthorizationException">fAuthorizationException</a></li>
+<li><a href="/docs/fEmptySetException">fEmptySetException</a></li>
+<li><a href="/docs/fNoRemainingException">fNoRemainingException</a></li>
+<li><a href="/docs/fNoRowsException">fNoRowsException</a></li>
+<li><a href="/docs/fNotFoundException">fNotFoundException</a></li>
+<li><a href="/docs/fValidationException">fValidationException</a></li>
+</ul>
+</li>
+<li><a href="/docs/fUnexpectedException">fUnexpectedException</a>
+<ul>
+<li><a href="/docs/fConnectivityException">fConnectivityException</a></li>
+<li><a href="/docs/fEnvironmentException">fEnvironmentException</a></li>
+<li><a href="/docs/fProgrammerException">fProgrammerException</a></li>
+<li><a href="/docs/fSQLException">fSQLException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<p>
+fException is the base Flourish exception class. It supplements the standard Exception class methods most notably with the ability to easily print the exception to the screen, but it also adds the ability to change the exception message after the object is created.
+</p>
+
+<p>
+Exceptions are used throughout Flourish in an attempt to fail as noisily and quickly as possible when the code can not repair the situations. This follows the <a href="http://www.faqs.org/docs/artu/ch01s06.html#id2878538">Rule of Repair</a> from the <a href="http://www.faqs.org/docs/artu/">Art of Unix Programming</a>.
+</p>
+
+<p>
+The exceptions in Flourish purposefully use inheritance to allow for classification of exceptions when catching them. You probably dont ever really want to toss an fException, and normally wouldnt want to toss an <a href="/docs/fExpectedException">fExpectedException</a> or <a href="/docs/fUnexpectedException">fUnexpectedException</a>, but instead should use one of the specific sub-classes. However, when creating <code>catch</code> statements it may be beneficial to catch one of the generalized higher-level exception classes.
+</p>
+
+<p>
+<em>To the right you will see a list of all of the Flourish exception classes.</em>
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+fException has a constructor that is compatible with a normal exception class, but also adds the ability to be able to perform <a href="http://php.net/sprintf"><code>sprintf()</code></a> interpolation and hooks in with the <a href="/docs/fText">fText</a> class to allow for easy localization.
+</p>
+
+<p>
+The constructor requires just a single parameter, the message to be thrown. If that message contains any formatting codes that are compatible with <code>sprintf()</code>, additional parameters will be used for the values. If an extra parameters is passed, it will be set as the exception code.
+</p>
+
+<p>
+<em>Please note all of these example use <a href="/docs/fProgrammerException">fProgrammerException</a> since fException is abstract.</em>
+</p>
+<pre class="block php"><code>// Simple usage
+throw new fProgrammerException('The method specified does not exist');
+
+// Using sprintf for interpolation
+throw new fProgrammerException('The method specified, %s, does not exist', $method);
+
+// Adding an exception code
+throw new fProgrammerException('The method specified, %s, does not exist', $method, 1234);
+
+// An exception code without interpolation
+throw new fProgrammerException('The method specified does not exist', 1234);</code></pre>
+
+<p>
+ One of the main benefits of using interpolation is that the non-interpolated message will be passed to <a href="/api/fText#compose">fText::compose()</a> if <a href="/docs/fText">fText</a> has been loaded, which allows for localization of exception messages. This technique is used throughout Flourish.
+</p>
+
+<h2 id="Printing">Printing</h2>
+
+<p>
+The method <a href="/api/fException#printMessage"><code>printMessage()</code></a> allows for easy display and formatting of the message. It will echo a <code>&lt;p&gt;</code> tag containing the message if the message has no block-level HTML tags, or a <code>&lt;div&gt;</code> tag if the message contains block-level HTML. The tag will have a <code>class</code> attribute that is set to <code>exception {exception_class_name}</code>.
+</p>
+
+<p>
+The examples below use sub-classes of fException since it is abstract and thus can not be instantiated.
+</p>
+<pre class="block php"><code>$exception = new fValidationException('This is the message');
+$exception-&gt;printMessage();
+
+$exception2 = new fValidationException('&lt;p&gt;This is the message&lt;/p&gt;');
+$exception2-&gt;printMessage();</code></pre>
+
+<p>
+ Would output the following HTML:
+</p>
+<pre class="block html"><code>&lt;p class=&quot;exception validation_exception&quot;&gt;
+    This is the message
+&lt;/p&gt;
+&lt;div class=&quot;exception validation_exception&quot;&gt;
+    &lt;p&gt;This is the message&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+
+<h2 id="Modification">Modification</h2>
+
+<p>
+Sometimes when handling an error you need to modify the message in an exception, without losing the backtrace information. If you were to get the message from one exception, modify it, and then create a new exception with that message, the whole backtrace would be lost.
+</p>
+
+<p>
+In these situations it is essential to be able to modify the exception message. This can be done by passing the new message to the method <a href="/api/fException#setMessage"><code>setMessage()</code></a>. Here is an example:
+</p>
+<pre class="block php"><code>$exception = new fValidationException('This is a test');
+$exception-&gt;setMessage('This is the test');
+$exception-&gt;printMessage();</code></pre>
+
+<p>
+ The PHP above would echo the following HTML:
+</p>
+<pre class="block html"><code>&lt;p class=&quot;exception validation_exception&quot;&gt;
+    This is the test
+&lt;/p&gt;</code></pre>
+
+<h2 id="ReorderingMessages">Reordering Messages</h2>
+
+<p>
+Most of the validation in Flourish, such as <a href="/docs/fValidation">fValidation</a> and <a href="/docs/fActiveRecord">fActiveRecord</a>, create exception messages containing a list of all of the encountered errors. Sometimes it is necessary to reorder the list of errors so they coincide with the order of HTML form inputs.
+</p>
+
+<p>
+The method <a href="/api/fException#reorderMessage"><code>reorderMessage()</code></a> accepts any number of strings to match, and reorders the list items in the message based on the parameter order. Below is an example to show how it works. First, assume the exception contains the following message:
+</p>
+<pre class="block html"><code>&lt;p&gt;The following problems were found:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;Address: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Email: Please enter a value&lt;/li&gt;
+    &lt;li&gt;City: Please enter a value&lt;/li&gt;
+    &lt;li&gt;State: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Zip Code: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Last Name: Please enter a value&lt;/li&gt;
+    &lt;li&gt;First Name: Please enter a value&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<p>
+ The following PHP would reorder the list items:
+</p>
+<pre class="block php"><code>$exception-&gt;reorderMessage('First Name', 'Last', 'Email', 'Address');</code></pre>
+
+<p>
+ The exception message would then be changed to:
+</p>
+<pre class="block html"><code>&lt;p&gt;The following problems were found:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;First Name: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Last Name: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Email: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Address: Please enter a value&lt;/li&gt;
+    &lt;li&gt;City: Please enter a value&lt;/li&gt;
+    &lt;li&gt;State: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Zip Code: Please enter a value&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<p>
+ Any list items that do not match a parameter will be included at the end of the list, in the same order they existed in the original message.
+</p>
+
+<p>
+The matching of strings in done in a case-sensitive manner and the most-specific strings are matched first. Thus if the parameters to <code>reorderMessage()</code> were <code>Name</code> and <code>Last Name</code>, <code>Last Name:…</code> would be matched first and placed as the second list item. Then the <code>Name</code> string would match against <code>First Name:…</code> and it would be set as the first list item.
+</p>
+
+<h2 id="SplittingMessages">Splitting Messages</h2>
+
+<p>
+Most of the validation in Flourish, such as <a href="/docs/fValidation">fValidation</a> and <a href="/docs/fActiveRecord">fActiveRecord</a>, create exception messages containing a list of all of the encountered errors. These lists are built using HTML unordered lists. Sometimes when creating long forms, it is more usable to split the messages into multiple parts to display in the appropriate places on the form.
+</p>
+
+<p>
+The instance method <a href="/api/fException#splitMessage"><code>splitMessage()</code></a> accepts any number of arrays of strings, <code>$list_item_matches</code>, and returns an array of filtered messages. Any list item that contains one of the strings will be included in the corresponding filtered message, with the non-list portions of the message also being included in each filtered message.
+</p>
+
+<p>
+The easiest way to understand the functionality is to see an example. First, assume the exception contains the following message:
+</p>
+<pre class="block html"><code>&lt;p&gt;The following problems were found:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;First Name: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Last Name: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Email: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Address: Please enter a value&lt;/li&gt;
+    &lt;li&gt;City: Please enter a value&lt;/li&gt;
+    &lt;li&gt;State: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Zip Code: Please enter a value&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<p>
+ Passing these two <code>$list_item_matches</code> to <code>splitMessage()</code> would split the exception into two strings:
+</p>
+<pre class="block php"><code>list ($name_exception, $address_exception) = $exception-&gt;splitMessage(
+    array('First Name', 'Last Name', 'Email'),
+    array('Address', 'City', 'State', 'Zip Code')
+);</code></pre>
+
+<p>
+ The resulting strings would be:
+</p>
+<pre class="block html"><code>&lt;p&gt;The following problems were found:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;First Name: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Last Name: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Email: Please enter a value&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<p>
+ and
+</p>
+<pre class="block html"><code>&lt;p&gt;The following problems were found:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;Address: Please enter a value&lt;/li&gt;
+    &lt;li&gt;City: Please enter a value&lt;/li&gt;
+    &lt;li&gt;State: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Zip Code: Please enter a value&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<p>
+ Notice that the resulting strings will contain the list items in the same order that the strings are set to the <code>$list_item_matches</code> arrays. This allows re-ordering the list items while also filtering them.
+</p>
+
+<p>
+It is possible to pass any number of <code>$list_item_matches</code> to <code>splitMessage()</code>, resulting in an equal number of strings in the array result.
+</p>
+
+<p>
+If no list items are found in the message, the first value in the returned array will contain the original message and all other array values will be an empty string.
+</p>
+
+<h2 id="Backtraces">Backtraces</h2>
+
+<p>
+Every exception that is thrown include a full backtrace of all of the function and methods calls that lead up to the point when the exception was thrown. The base Exception class includes two methods to access the backtrace, <code>getTrace()</code> and <code>getTraceAsString()</code>. <code>getTrace()</code> returns an array of the information for each step in the backtrace, while <code>getTraceAsString()</code> formats all of the backtrace information into a string.
+</p>
+
+<p>
+fException includes two methods to supplement the built-in backtrace support, <a href="/api/fException#formatTrace"><code>formatTrace()</code></a> and <a href="/api/fException#printTrace"><code>printTrace()</code></a>. <code>formatTrace()</code> takes the formatted backtrace string and modifies it to be a little more readable. Below is an example of the type of output created.
+</p>
+<pre><code>{doc_root}/example.php(326): fActiveRecord-&gt;store()
+{doc_root}/inc/classes/trunk/classes/fActiveRecord.php(1386): fActiveRecord-&gt;validate()
+{doc_root}/inc/classes/trunk/classes/fActiveRecord.php(1564): fCore::toss('fValidationExce...', 'The followin...')</code></pre>
+
+<p>
+ The method <a href="/api/fException#printTrace"><code>printTrace()</code></a> takes the formatted trace and displays it inside of a <code>pre</code> tag with CSS classes in the format <code>exception {exception_class_name} trace</code>.
+</p>
+<pre class="block html"><code>&lt;pre class=&quot;exception validation_exception trace&quot;&gt;
+{doc_root}/example.php(326): fActiveRecord-&gt;store()
+{doc_root}/inc/classes/trunk/classes/fActiveRecord.php(1386): fActiveRecord-&gt;validate()
+{doc_root}/inc/classes/trunk/classes/fActiveRecord.php(1564): fCore::toss('fValidationExce...', 'The followin...')
+&lt;/pre&gt;</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMColumn – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fORMColumn</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fORMColumn">Class Documentation</a></li>
+		<li><strong><a href="/api/fORMColumn">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMColumn.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#configureEmailColumn">configureEmailColumn()</a></li>
+	  			<li><a href="#configureLinkColumn">configureLinkColumn()</a></li>
+	  			<li><a href="#configureNumberColumn">configureNumberColumn()</a></li>
+	  			<li><a href="#configureRandomColumn">configureRandomColumn()</a></li>
+	  			<li class="protected"><a href="#encodeNumberColumn">encodeNumberColumn()</a></li>
+	  			<li class="protected"><a href="#generate">generate()</a></li>
+	  			<li class="protected"><a href="#inspect">inspect()</a></li>
+	  			<li class="protected"><a href="#objectifyNumber">objectifyNumber()</a></li>
+	  			<li class="protected"><a href="#prepareLinkColumn">prepareLinkColumn()</a></li>
+	  			<li class="protected"><a href="#prepareNumberColumn">prepareNumberColumn()</a></li>
+	  			<li class="protected"><a href="#reflect">reflect()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li class="protected"><a href="#setEmailColumn">setEmailColumn()</a></li>
+	  			<li class="protected"><a href="#setRandomStrings">setRandomStrings()</a></li>
+	  			<li class="protected"><a href="#validateEmailColumns">validateEmailColumns()</a></li>
+	  			<li class="protected"><a href="#validateLinkColumns">validateLinkColumns()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fCryptography">fCryptography</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fHTML">fHTML</a></li>
+		<li><a href="fNumber">fNumber</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b15</span></div>
+<p class="short_description">Provides special column functionality for <a href="fActiveRecord">fActiveRecord</a> classes</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b15</th><td>Fixed a bug with empty string email values passing through required validation <span class="date">7/29/11</span></td></tr><tr><th>1.0.0b14</th><td>Updated code to work with the new <a href="fORM">fORM</a> API <span class="date">8/6/10</span></td></tr><tr><th>1.0.0b13</th><td>Fixed <a href="#reflect"><tt>reflect()</tt></a> to include some missing parameters <span class="date">6/8/10</span></td></tr><tr><th>1.0.0b12</th><td>Changed validation messages array to use column name keys <span class="date">5/26/10</span></td></tr><tr><th>1.0.0b11</th><td>Fixed a bug with <a href="#prepareLinkColumn"><tt>prepareLinkColumn()</tt></a> returning <tt>http://</tt> for empty link columns and not adding <tt>http://</tt> to links that contained a /, but did not start with it <span class="date">3/16/10</span></td></tr><tr><th>1.0.0b10</th><td>Fixed <a href="#reflect"><tt>reflect()</tt></a> to specify the value returned from <tt>set</tt> and <tt>generate</tt> methods, changed <a href="#generate"><tt>generate()</tt></a> methods to return the newly generated string <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b9</th><td>Changed email columns to be automatically trimmed if they are a value email address surrounded by whitespace <span class="date">3/14/10</span></td></tr><tr><th>1.0.0b8</th><td>Made the validation on link columns a bit more strict <span class="date">3/9/10</span></td></tr><tr><th>1.0.0b7</th><td>Updated code for the new <a href="fORMDatabase">fORMDatabase</a> and <a href="fORMSchema">fORMSchema</a> APIs <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b6</th><td>Changed SQL statements to use value placeholders, identifier escaping and schema support <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b5</th><td>Updated to use new <a href="fORM#registerInspectCallback"><tt>fORM::registerInspectCallback()</tt></a> method <span class="date">7/13/09</span></td></tr><tr><th>1.0.0b4</th><td>Updated code for new <a href="fORM">fORM</a> API <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b3</th><td>Updated code to use new <a href="fValidationException#formatField"><tt>fValidationException::formatField()</tt></a> method <span class="date">6/4/09</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug with objectifying number columns <span class="date">11/24/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">5/27/08</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="configureEmailColumn" class="method static"><span class="resolution">::</span><span class="name">configureEmailColumn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a column to be formatted as an email address</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">configureEmailColumn</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to set the column format</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to format as an email address</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="configureLinkColumn" class="method static"><span class="resolution">::</span><span class="name">configureLinkColumn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a column to be formatted as a link</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">configureLinkColumn</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to set the column format</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to format as a link</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="configureNumberColumn" class="method static"><span class="resolution">::</span><span class="name">configureNumberColumn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a column to be returned as an <a href="fNumber">fNumber</a> object from calls to <tt>get{ColumnName}()</tt></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">configureNumberColumn</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to set the column format</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to return as an <a href="fNumber">fNumber</a> object</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="configureRandomColumn" class="method static"><span class="resolution">::</span><span class="name">configureRandomColumn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a column to be a random string column - a random string will be generated when the record is saved</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">configureRandomColumn</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$type</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$length</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to set as a random column</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of random string, must be one of: <tt>'alphanumeric'</tt>, <tt>'alpha'</tt>, <tt>'numeric'</tt>, <tt>'hexadecimal'</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$length</td>
+				<td class="param_description">The length of the random string</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="encodeNumberColumn" class="protected method static"><span class="resolution">::</span><span class="name">encodeNumberColumn()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Encodes a number column by calling <a href="fNumber#__toString"><tt>fNumber::__toString()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">encodeNumberColumn</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The encoded number
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="generate" class="protected method static"><span class="resolution">::</span><span class="name">generate()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Generates a new random value for the column</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">generate</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The newly generated random value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="inspect" class="protected method static"><span class="resolution">::</span><span class="name">inspect()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Adds metadata about features added by this class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">inspect</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$metadata</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class being inspected</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column being inspected</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$metadata</td>
+				<td class="param_description">The array of metadata about a column</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="objectifyNumber" class="protected method static"><span class="resolution">::</span><span class="name">objectifyNumber()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Turns a numeric value into an <a href="fNumber">fNumber</a> object</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">objectifyNumber</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class this value is for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column the value is in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The <a href="fNumber">fNumber</a> object or raw value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="prepareLinkColumn" class="protected method static"><span class="resolution">::</span><span class="name">prepareLinkColumn()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Prepares a link column so that the link will work properly in an <tt>a</tt> tag</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">prepareLinkColumn</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The formatted link
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="prepareNumberColumn" class="protected method static"><span class="resolution">::</span><span class="name">prepareNumberColumn()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Prepares a number column by calling <a href="fNumber#format"><tt>fNumber::format()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">prepareNumberColumn</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The formatted link
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reflect" class="protected method static"><span class="resolution">::</span><span class="name">reflect()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Adjusts the <a href="fActiveRecord#reflect"><tt>fActiveRecord::reflect()</tt></a> signatures of columns that have been configured in this class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reflect</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$signatures</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$include_doc_comments</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to reflect</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$signatures</td>
+				<td class="param_description">The associative array of <tt>{method name} =&gt; {signature}</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$include_doc_comments</td>
+				<td class="param_description">If doc comments should be included with the signature</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="setEmailColumn" class="protected method static"><span class="resolution">::</span><span class="name">setEmailColumn()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets the value for an email column, trimming the value if it is a valid email</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">setEmailColumn</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The record object, to allow for method chaining
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="setRandomStrings" class="protected method static"><span class="resolution">::</span><span class="name">setRandomStrings()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets the appropriate column values to a random string if the object is new</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">setRandomStrings</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The formatted link
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="validateEmailColumns" class="protected method static"><span class="resolution">::</span><span class="name">validateEmailColumns()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Validates all email columns</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">validateEmailColumns</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$validation_messages</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$validation_messages</td>
+				<td class="param_description">An array of ordered validation messages</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="validateLinkColumns" class="protected method static"><span class="resolution">::</span><span class="name">validateLinkColumns()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Validates all link columns</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">validateLinkColumns</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$validation_messages</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$validation_messages</td>
+				<td class="param_description">An array of ordered validation messages</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMColumn – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fORMColumn">fORMColumn</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fORMColumn">Class Documentation</a></strong></li>
+<li><a href="/api/fORMColumn">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMColumn.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#EmailColumns">Email Columns</a></li>
+<li><a href="#LinkColumns">Link Columns</a></li>
+<li><a href="#NumberColumns">Number Columns</a></li>
+<li><a href="#RandomColumns">Random Columns</a></li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><strong>fORMColumn</strong></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fORMColumn class is an ORM plugin to provide miscellaneous additional functionality to individual columns.
+</p>
+
+<h2 id="EmailColumns">Email Columns</h2>
+
+<p>
+The static method <a href="/api/fORMColumn#configureEmailColumn"><code>configureEmailColumn()</code></a> sets a column to be validated as an email address. The first parameter is the <code>$class</code> the column is located in and the second parameter is the <code>$column</code>. As with most active record plugins, this method should normally be called from the <code>configure()</code> method. 
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMColumn::configureEmailColumn($this, 'email');
+    }
+}</code></pre>
+
+<h2 id="LinkColumns">Link Columns</h2>
+
+<p>
+Columns can be configured as a link column by passing the <code>$class</code> and <code>$column</code> to the static method <a href="/api/fORMColumn#configureLinkColumn">fORMColumn::configureLinkColumn()</a>. When the record is validated, the link will be checked to make sure it contains a valid domain name, however <code>http://</code> is not required. When calling the <code>prepare</code> method for the column, it will ensure that the link begings with <code>http://</code> for output into a HTML <code>&lt;a&gt;</code> tag.
+</p>
+<pre class="block php"><code>class NewsArticle extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMColumn::configureLinkColumn($this, 'link');
+    }
+}
+
+$news_article = new NewsArticle();
+$news_article-&gt;setLink('www.example.com');
+
+echo $news_article-&gt;getLink();
+echo $news_article-&gt;prepareLink();</code></pre>
+
+<p>
+ The above PHP would output the following:
+</p>
+<pre><code>www.example.com
+http://www.example.com</code></pre>
+
+<h2 id="NumberColumns">Number Columns</h2>
+
+<p>
+While <a href="/docs/fActiveRecord">fActiveRecord</a> automatically handles both integer and floating point numbers, sometimes it is necessary to have a columns value be represented as an <a href="/docs/fNumber">fNumber</a> object. The static method <a href="/api/fORMColumn#configureNumberColumn"><code>configureNumberColumn()</code></a> ensures that values loaded out of the database are automatically converted to an <a href="/docs/fNumber">fNumber</a> object. The first parameter is the <code>$class</code> and the second parameter is the <code>$column</code>.
+</p>
+<pre class="block php"><code>class Product extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMColumn::configureNumberColumn($this, 'weight');
+    }
+}</code></pre>
+
+<h2 id="RandomColumns">Random Columns</h2>
+
+<p>
+In some situations a random string is useful for providing security when resetting passwords, validating email accounts or establishing access authentication. The static method <a href="/api/fORMColumn#configureRandomColumn"><code>configureRandomColumn()</code></a> will cause a column to be set to a random string when the record is first saved and will allow generating a new random string at any time by calling <code>generateColumnName()</code>.
+</p>
+
+<p>
+<a href="/api/fORMColumn#configureRandomColumn"><code>configureRandomColumn()</code></a> accepts four parameters, the <code>$class</code> to be configured, the <code>$column</code>, the <code>$type</code> of random string (see <a href="/api/fCryptography#randomString">fCryptography::randomString()</a> for options) and the <code>$length</code> of the string.
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMColumn::configureRandomColumn($this, 'access_code', 'alphanumeric', 16);
+    }
+}
+
+// Create a new user and get their access code
+$user = new User();
+$user-&gt;store();
+$access_code = $user-&gt;getAccessCode();
+
+// Generate a new random string for the access code
+$user-&gt;generateAccessCode();
+$access_code = $user-&gt;getAccessCode();</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

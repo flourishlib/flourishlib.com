@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORM – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fORM">fORM</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fORM">Class Documentation</a></strong></li>
+<li><a href="/api/fORM">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORM.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#MappingClassestoTables">Mapping Classes to Tables</a></li>
+<li><a href="#TablesinOtherSchemas">Tables in Other Schemas</a></li>
+<li><a href="#MultipleDatabases">Multiple Databases</a></li>
+<li><a href="#ColumnandRecordNames">Column and Record Names</a></li>
+<li><a href="#SchemaCaching">Schema Caching</a></li>
+<li><a href="#ExtendingtheORM">Extending the ORM</a>
+<ul>
+<li><a href="#AddingMethodstofActiveRecord">Adding Methods to fActiveRecord</a></li>
+<li><a href="#AddingMethodstofRecordSet">Adding Methods to fRecordSet</a></li>
+<li><a href="#AddingFunctionalitytofActiveRecord">Adding Functionality to fActiveRecord</a>
+<ul>
+<li><a href="#CustomValidationUsingaHook">Custom Validation Using a Hook</a></li>
+</ul>
+</li>
+<li><a href="#fActiveRecordArrayStructures">fActiveRecord Array Structures</a>
+<ul>
+<li><a href="#values">$values</a></li>
+<li><a href="#old_values">$old_values</a></li>
+<li><a href="#related_records">$related_records</a></li>
+<li><a href="#cache">$cache</a></li>
+<li><a href="#validation_messages">$validation_messages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#DynamicfActiveRecordClasses">Dynamic fActiveRecord Classes</a></li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><strong>fORM</strong></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fORM class is a static class that implements core ORM functionality for much of the Flourish ORM. It provides means to configure and extend <a href="/docs/fActiveRecord">fActiveRecord</a> classes.
+</p>
+
+<h2 id="MappingClassestoTables">Mapping Classes to Tables</h2>
+
+<p>
+By default, when mapping <a href="/docs/fActiveRecord">fActiveRecord</a> classes to database tables, an <code>UpperCamelCase</code> singular class name will be mapped the the <code>underscore_notation</code> plural database table of the same noun. For example, the <code>User</code> class is mapped to the <code>users</code> table. The static method <a href="/api/fORM#mapClassToTable"><code>mapClassToTable()</code></a> allows overriding this default by passing the <code>$class</code> and <code>$table</code> in.
+</p>
+
+<p>
+The following example would set the <code>User</code> class to map to the <code>user</code> table instead of <code>users</code>. <em>This code should be executed during site-wide configuration and should <strong>not</strong> be placed inside of the <code>configure()</code> method for a class that extends <a href="/docs/fActiveRecord">fActiveRecord</a>.</em>
+</p>
+<pre class="block php"><code>// Class to table mapping should occur before any classes are used
+// such as when the database is attached via fORMDatabase::attach()
+fORMDatabase::attach($db);
+fORM::mapClassToTable('User', 'user');</code></pre>
+
+<p>
+ When writing custom ORM code, the class that is associated with a table can be determined by calling the static method <a href="/api/fORM#classize"><code>classize()</code></a> with the parameter <code>$table</code>.
+</p>
+<pre class="block php"><code>$class = fORM::classize($table);
+return new $class();</code></pre>
+
+<p>
+ To translate from the class to the database table simply pass the class to the static method <a href="/api/fORM#tablize"><code>tablize()</code></a>. The class can be either a class name or an instance of the class.
+</p>
+<pre class="block php"><code>$object = new User();
+$table  = fORM::tablize($object);</code></pre>
+
+<h2 id="TablesinOtherSchemas">Tables in Other Schemas</h2>
+
+<p>
+When a class models a table in a non-default schema (<code>public</code> for PostgreSQL, <code>dbo</code> for MSSQL and the username for Oracle and DB2), the static method <a href="/api/fORM#mapClassToTable"><code>mapClassToTable()</code></a> should be called with first parameter, the <code>$class</code> to map and the second parameter, <code>$table</code>, should be in the format <code>schema.table</code>.
+</p>
+
+<p>
+<em>This code should be executed during site-wide configuration and should <strong>not</strong> be placed inside of the <code>configure()</code> method for a class that extends <a href="/docs/fActiveRecord">fActiveRecord</a>.</em>
+</p>
+<pre class="block php"><code>// This maps the User class to the users table in the authorization schema
+fORM::mapClassToTable('User', 'authorization.users');</code></pre>
+
+<h2 id="MultipleDatabases">Multiple Databases</h2>
+
+<p>
+When multiple databases are configured via <a href="/docs/fORMDatabase">fORMDatabase</a>, classes can model tables on the non-<code>default</code> database by calling the method <a href="/api/fORM#mapClassToDatabase"><code>mapClassToDatabase()</code></a>. The first parameter is the <code>$class</code> to map, and the second is the <code>$name</code> of the database set in <a href="/api/fORMDatabase#attach">fORMDatabase::attach()</a>. 
+</p>
+<pre class="block php"><code>// Attach a second database as &quot;commerce_db&quot; and have the User class model the users table in it
+fORMDatabase::attach($db, 'commerce_db');
+fORM::mapClassToDatabase('User', 'commerce_db');</code></pre>
+
+<p>
+ <em>Like <a href="/api/fORM#mapClassToTable"><code>mapClassToTable()</code></a>, this code should be executed during site-wide configuration and should <strong>not</strong> be placed inside of the <code>configure()</code> method for a class that extends <a href="/docs/fActiveRecord">fActiveRecord</a>. This method is not required for classes modeling tables in the default database  if no <code>$name</code> was provided to <a href="/api/fORMDatabase#attach">fORMDatabase::attach()</a>, then the database is the default.</em>
+</p>
+
+<h2 id="ColumnandRecordNames">Column and Record Names</h2>
+
+<p>
+Whenever class and column names are used in messaging, such as in <a href="/docs/fValidationException">fValidationException</a>, the class or column name is run through <a href="/api/fGrammar#humanize">fGrammar::humanize()</a> to create a human-friendly version. Obviously in some situations this technique will not get capitalization or punctuation correct. The static methods <a href="/api/fORM#overrideRecordName"><code>overrideRecordName()</code></a> and <a href="/api/fORM#overrideColumnName"><code>overrideColumnName()</code></a> allow setting custom names for classes and columns respectively. <em>It is also possible to set a class name in the context of being a related classsee the <a href="/docs/fORMRelated#OverridingRelatedRecordNames">fORMRelated class documentation</a> for more details.</em>
+</p>
+
+<p>
+The example below shows changing the column <code>email</code> to display as <code>E-Mail</code> instead of <code>Email</code> and the <code>FaqEntry</code> class to display as <code>FAQ Entry</code> instead of <code>Faq Entry</code>.
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORM::overrideColumnName($this, 'email', 'E-Mail');
+    }
+}
+
+class FaqEntry extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORM::overrideRecordName($this, 'FAQ Entry');
+    }
+}</code></pre>
+
+<p>
+ <em>If you are having issues with your column names not being properly converted from CamelCase (for methods) to underscore_notation (for your database and HTML), please see the <a href="/docs/fGrammar#FixingNotationConversionIssues">Fixing Notation Conversion Issues</a> section on the <a href="/docs/fGrammar">fGrammar</a> page.</em>
+</p>
+
+<h2 id="SchemaCaching">Schema Caching</h2>
+
+<p>
+Since the schema information is dynamically pulled out of the database, this can add at least a few database calls to each request that is processed. If the database schema is not changing on a regular basis and  better performance is required, the schema can be cached by calling the static method <a href="/api/fORM#enableSchemaCaching"><code>enableSchemaCaching()</code></a>.
+</p>
+
+<p>
+<code>enableSchemaCaching()</code> accepts a single parameter, an <a href="/docs/fCache">fCache</a> object to cache the schema information to. This enables caching on the <a href="/docs/fDatabase">fDatabase</a>, <a href="/docs/fSQLTranslation">fSQLTranslation</a> and <a href="/docs/fSchema">fSchema</a> objects that are used for the ORM.
+</p>
+
+<p>
+An additional feature is that the cached schema information will be cleared if an <a href="/docs/fUnexpectedException">fUnexpectedException</a> is thrown. This would normally happen if a programmer tried to perform an action that was invalid based on the cached schema.
+</p>
+<pre class="block php"><code>fORM::enableSchemaCaching(new fCache('file', '/file/path/to/cache/file'));</code></pre>
+
+<h2 id="ExtendingtheORM">Extending the ORM</h2>
+
+<p>
+The Flourish ORM is built in such a way that it can be easily extended without having to actually extends individual classes. Both the <a href="/docs/fActiveRecord">fActiveRecord</a> and <a href="/docs/fRecordSet">fRecordSet</a> classes allow registering callbacks to handle methods that dont exist (and thus fall through to the <code>__call</code> magic method) while in addition, the <a href="/docs/fActiveRecord">fActiveRecord</a> class includes a number of predefined &quot;hooks&quot; that allow for injecting functionality using callbacks. There is further functionality that allows defining callbacks to handle the tasks of translating objects to scalar values, scalar values to objects and method reflection.
+</p>
+
+<p>
+A large part of the ORM classes built into Flourish use these features to implement their functionality:
+</p>
+
+<ul>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+</ul>
+
+<p>
+The two static methods <a href="/api/fORM#registerActiveRecordMethod"><code>registerActiveRecordMethod()</code></a> and <a href="/api/fORM#registerRecordSetMethod"><code>registerRecordSetMethod()</code></a> allow for setting callbacks to handle method calls for methods that dont exist in the <a href="/docs/fActiveRecord">fActiveRecord</a> and <a href="/docs/fRecordSet">fRecordSet</a> classes respectively. The static method <a href="/api/fORM#registerHookCallback"><code>registerHookCallback()</code></a> allows setting a hook to be executed at one of the pre-defined hooks in <a href="/docs/fActiveRecord">fActiveRecord</a>.
+</p>
+
+<p>
+Once a callback has been registered to handle a method call or hook, it will be automatically called at the appropriate time and will be passed the pre-defined parameters listed below. The actual work of calling the callback and passing the parameters is handled by the <a href="/docs/fActiveRecord">fActiveRecord</a> and <a href="/docs/fRecordSet">fRecordSet</a> classes so all that the end-developer needs to worry about is the callback parameter signature and the functionality in the callback.
+</p>
+
+<h3 id="AddingMethodstofActiveRecord">Adding Methods to fActiveRecord</h3>
+
+<p>
+<em>If you wish to add a method to a single <a href="/docs/fActiveRecord">fActiveRecord</a> class, simply create the method inside of that class. The following functionality is for the purpose of dynamically adding methods to <a href="/docs/fActiveRecord">fActiveRecord</a> at run time. This technique is used to create ORM plugins, such as <a href="/docs/fORMFile">fORMFile</a>, <a href="/docs/fORMOrdering">fORMOrdering</a>, etc.</em>
+</p>
+
+<p>
+<code>registerActiveRecordMethod()</code> accepts the <code>$class</code> and <code>$method</code> to register for and the <code>$callback</code> to register. The <code>$class</code> can also be <code>'*'</code> to register the callback for all <a href="/docs/fActiveRecord">fActiveRecord</a> classes. The <code>$callback</code> should be a callback for a method or function that accepts the following parameters:
+</p>
+
+<ul>
+<li><strong><code>$object</code></strong>: The <a href="/docs/fActiveRecord">fActiveRecord</a> instance</li>
+<li><strong><code>&amp;$values</code></strong>: The values array for the record</li>
+<li><strong><code>&amp;$old_values</code></strong>: The old values array for the record</li>
+<li><strong><code>&amp;$related_records</code></strong>: The related records array for the record</li>
+<li><strong><code>&amp;$cache</code></strong>: The cache array for the record</li>
+<li><strong><code>$method_name</code></strong>: The method that was called</li>
+<li><strong><code>$parameters</code></strong>: The parameters passed to the method</li>
+</ul>
+
+<p>
+The following example registers the method <code>toXML()</code>:
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORM::registerActiveRecordMethod($this, 'toXML', 'User::convertToXML');
+    }
+
+    public function convertToXML($object, &amp;$value, &amp;$old_values, &amp;$related_records, &amp;$cache, $method_name, $parameters)
+    {
+        // 
+    }
+}
+
+$user = new User();
+echo $user-&gt;toXML();</code></pre>
+
+<h3 id="AddingMethodstofRecordSet">Adding Methods to fRecordSet</h3>
+
+<p>
+<code>registerRecordSetMethod()</code> accepts the <code>$method</code> to register for and the <code>$callback</code> to register. The <code>$callback</code> should be a callback for a method or function that accepts the following parameters:
+</p>
+
+<ul>
+<li><strong><code>$object</code></strong>: The actual record set</li>
+<li><strong><code>$class</code></strong>: The class of each record</li>
+<li><strong><code>&amp;$records</code></strong>: The ordered array of <a href="/docs/fActiveRecord">fActiveRecord</a> objects</li>
+<li><strong><code>$method_name</code></strong>: The name of the method that was called</li>
+<li><strong><code>$parameters</code></strong>: The parameters passed to the method</li>
+</ul>
+
+<p>
+The following example adds a method named <code>toXML()</code> to all <a href="/docs/fRecordSet">fRecordSet</a> objects:
+</p>
+<pre class="block php"><code>class ORMXML
+{
+    public function extend()
+    {
+        fORM::registerRecordSetMethod('toXML', 'ORMXML::convertToXML');
+    }
+
+    public function convertToXML($object, $class, &amp;$records, $method_name, $parameters)
+    {
+        // 
+    }
+}
+
+ORMXML::extend();
+
+$users = fRecordSet::build('User');
+echo $users-&gt;toXML();</code></pre>
+
+<h3 id="AddingFunctionalitytofActiveRecord">Adding Functionality to fActiveRecord</h3>
+
+<p>
+Rather than requiring all additional functionality for <a href="/docs/fActiveRecord">fActiveRecord</a> classes to be defined in each class or requiring that methods be overridden in order to add functionality, the static method <a href="/api/fORM#registerHookCallback"><code>registerHookCallback()</code></a> allows callbacks to be registered that will be executed a predefined places. These hooks make it possible to write plugins for the ORM that can be easily reused.
+</p>
+
+<p>
+<code>registerHookCallback()</code> accepts three parameters, the <code>$class</code> and <code>$hook</code> to register for and the <code>$callback</code> to register. The <code>$class</code> can be either a class name or <code>'*'</code> to register for all <a href="/docs/fActiveRecord">fActiveRecord</a> classes. The <code>$hook</code> should be one of the hooks listed below:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Hook</strong></td>
+<td><strong>Location</strong></td>
+</tr>
+<tr>
+<td><code>'post::__construct()'</code></td>
+<td>At the very end of <code>__construct()</code></td>
+</tr>
+<tr>
+<td><code>'pre::delete()'</code></td>
+<td>At the very beginning <code>delete()</code></td>
+</tr>
+<tr>
+<td><code>'post-begin::delete()'</code></td>
+<td>After the database and filesystem transactions have been started</td>
+</tr>
+<tr>
+<td><code>'pre-commit::delete()'</code></td>
+<td>Just before the database and filesystem transactions are committed</td>
+</tr>
+<tr>
+<td><code>'post-commit::delete()'</code></td>
+<td>After the database and filesystem transactions have been committed</td>
+</tr>
+<tr>
+<td><code>'post-rollback::delete()'</code></td>
+<td>When an error occurs, right after the database and filesystem transactions are rolled back</td>
+</tr>
+<tr>
+<td><code>'post::delete()'</code></td>
+<td>At the very end of <code>delete()</code></td>
+</tr>
+<tr>
+<td><code>'post::loadFromIdentityMap()'</code></td>
+<td>Right after a record is attached to the identity map, is not triggered if loaded from a result</td>
+</tr>
+<tr>
+<td><code>'post::loadFromResult()'</code></td>
+<td>Right after a record is loaded from the database, is not triggered if loaded from the identity map</td>
+</tr>
+<tr>
+<td><code>'pre::populate()'</code></td>
+<td>At the very beginning of <code>populate()</code></td>
+</tr>
+<tr>
+<td><code>'post::populate()'</code></td>
+<td>At the very end of <code>populate()</code></td>
+</tr>
+<tr>
+<td><code>'pre::replicate()'</code></td>
+<td>At the very beginning of <code>replicate()</code>/<code>clone</code>, on the original record</td>
+</tr>
+<tr>
+<td><code>'post::replicate()'</code></td>
+<td>At the very end of <code>replicate()</code>/<code>clone</code>, on the original record</td>
+</tr>
+<tr>
+<td><code>'cloned::replicate()'</code></td>
+<td>At the very end of <code>replicate()</code>, on the newly cloned record</td>
+</tr>
+<tr>
+<td><code>'pre::store()'</code></td>
+<td>At the very beginning of <code>store()</code></td>
+</tr>
+<tr>
+<td><code>'post-begin::store()'</code></td>
+<td>After the database and filesystem transactions have been started</td>
+</tr>
+<tr>
+<td><code>'post-validate::store()'</code></td>
+<td>After validation successfully completes</td>
+</tr>
+<tr>
+<td><code>'pre-commit::store()'</code></td>
+<td>Just before the database and filesystem transactions are committed</td>
+</tr>
+<tr>
+<td><code>'post-commit::store()'</code></td>
+<td>After the database and filesystem transactions have been committed</td>
+</tr>
+<tr>
+<td><code>'post-rollback::store()'</code></td>
+<td>When an error occurs, right after the database and filesystem transactions are rolled back</td>
+</tr>
+<tr>
+<td><code>'post::store()'</code></td>
+<td>At the end of <code>store()</code>, just before the existence is changed, thus <code>$record-&gt;exists()</code> will still return <code>FALSE</code> for a new record</td>
+</tr>
+<tr>
+<td><code>'pre::validate()'</code></td>
+<td>Before any of the built-in validation is done, the <code>$validation_messages</code> array will be empty</td>
+</tr>
+<tr>
+<td><code>'post::validate()'</code></td>
+<td>After all of the built-in validation is done, the <code>$validation_messages</code> array will contain all of the messages, however the messages ordering is done <em>after</em> this hook</td>
+</tr>
+</tbody></table>
+
+<p>
+The <code>$callback</code> specified should have the following signature:
+</p>
+
+<ul>
+<li><strong><code>$object</code></strong>: The <a href="/docs/fActiveRecord">fActiveRecord</a> instance</li>
+<li><strong><code>&amp;$values</code></strong>: The values array for the record - see <a href="#values">$values</a> for details</li>
+<li><strong><code>&amp;$old_values</code></strong>: The old values array for the record - see <a href="#old_values">$old_values</a> for details</li>
+<li><strong><code>&amp;$related_records</code></strong>: The related records array for the record - see <a href="#related_records">$related_records</a> for details</li>
+<li><strong><code>&amp;$cache</code></strong>: The cache array for the record - see <a href="#cache">$cache</a> for details</li>
+</ul>
+
+<p>
+The two hooks, <code>'pre::validate()'</code> and <code>'post::validate()'</code> accept one extra parameter:
+</p>
+
+<ul>
+<li><strong><code>&amp;$validation_messages</code></strong>: An associative array of the error messages, with the keys being column or table names - see <a href="#validation_messages">$validation_messages</a> for details</li>
+</ul>
+
+<p>
+The three hooks, <code>'pre::replicate()'</code>, <code>'post::replicate()'</code> and <code>'cloned::replicate()'</code> accept one extra parameter:
+</p>
+
+<ul>
+<li><strong><code>$replication_level</code></strong>: An integer representing the level of recursion - the object being replicated will be <code>0</code>, children will be <code>1</code>, grandchildren <code>2</code> and so on</li>
+</ul>
+
+<h4 id="CustomValidationUsingaHook">Custom Validation Using a Hook</h4>
+
+<p>
+Below is an example of extending a <code>User</code> class to confirm that the password confirmation is identical to the password when using populate:
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORM::registerHookCallback($this, 'post::validate()', 'User::validatePassword');
+    }
+
+    static public function validatePassword($object, &amp;$values, &amp;$old_values, &amp;$related_records, &amp;$cache, &amp;$validation_messages)
+    {
+        // If a new password was set, it came through the request and does not match the field password confirmation, add an error message
+        if (fActiveRecord::hasOld($old_values, 'password') &amp;&amp; fRequest::get('password') &amp;&amp; fRequest::get('password') != fRequest::get('password_confirmation')) {
+            $validation_messages['password'] = 'Password: The value entered does not match Password Confirmation';
+        }     
+    }
+}</code></pre>
+
+<h3 id="fActiveRecordArrayStructures">fActiveRecord Array Structures</h3>
+
+<p>
+When writing callbacks for adding methods or functionality to <a href="/docs/fActiveRecord">fActiveRecord</a>, most often there will be a need to work with the <code>$values</code>, <code>$old_values</code>, <code>$related_records</code> and <code>$cache</code> arrays.
+</p>
+
+<p>
+Each of these arrays is implemented in such a way that all instances of an <a href="/docs/fActiveRecord">fActiveRecord</a> class that represent the same record will share the arrays. If a change is made to the values for one instance of <code>User</code> with the ID <code>1</code>, all other instance of <code>User</code> <code>1</code> will also see those changes.
+</p>
+
+<p>
+It is also important to note that all callbacks registered for <a href="/docs/fActiveRecord">fActiveRecord</a> method calls and hooks should accept these arrays by reference, otherwise any changes to the arrays will be lost.
+</p>
+
+<h4 id="values">$values</h4>
+
+<p>
+The <code>$values</code> array is an associative array of the current values for a record. Each column in the database is a key in the array and points to the current value for that column. Below is an example of what the <code>$values</code> array would look like for a simple <code>User</code> record with a <a href="/docs/fCryptography#PasswordHashing">hashed password</a>:
+</p>
+<pre><code>Array
+(
+    [user_id] =&gt; 1
+    [first_name] =&gt; Will
+    [last_name] =&gt; Bond
+    [email] =&gt; will@flourishlib.com
+    [password] =&gt; fCryptography::password_hash#Gu19bpZN94#ac74c4ad9ed7103e051e583af86599b95237e9af
+)</code></pre>
+
+<p>
+ The best practice for assigning new values to the <code>$values</code> array is to use the static method <a href="/api/fActiveRecord?protected=true#assign"><code>assign()</code></a> since it will automatically move the old value into the <code>$old_values</code> array.
+</p>
+
+<h4 id="old_values">$old_values</h4>
+
+<p>
+The <code>$old_values</code> array is an associative array of every previous value contained by each of the columns in the record since it was last loaded from the database. The original value will be at key <code>0</code>, and further revisions will be appended to the array.
+</p>
+
+<p>
+The keys in the array are the database column names, however a column will only be present as a key if a value in the record has changed. The value associated with each key is an array of all of the old values. Below is an example of the <code>$old_values</code> array for a <code>User</code> object that has had the first name change twice and the email changed once.
+</p>
+<pre><code>Array
+(
+    [first_name] =&gt; Array
+        (
+            [0] =&gt; William
+            [1] =&gt; will
+        )
+  
+    [email] =&gt; Array
+        (
+            [0] =&gt; will@flourishlib.com
+        )
+  
+)</code></pre>
+
+<p>
+ Records that are new and have not been stored in the database will have all values set to <code>NULL</code>, thus the <code>$old_values</code> array for a new <code>User</code> record that has had each field set once will look like the following:
+</p>
+<pre><code>Array
+(
+    [user_id] =&gt; Array
+        (
+            [0] =&gt; {null}
+        )
+  
+    [first_name] =&gt; Array
+        (
+            [0] =&gt; {null}
+        )
+  
+    [last_name] =&gt; Array
+        (
+            [0] =&gt; {null}
+        )
+  
+    [email] =&gt; Array
+        (
+            [0] =&gt; {null}
+        )
+  
+    [password] =&gt; Array
+        (
+            [0] =&gt; {null}
+        )
+  
+)</code></pre>
+
+<p>
+ There are a few <a href="/docs/fActiveRecord">fActiveRecord</a> static methods that make working with the <code>$old_values</code> array a little easier. <a href="/api/fActiveRecord?protected=true#changed"><code>changed()</code></a> will return a boolean indicating if the value of a column has actually changed<code>FALSE</code> will be returned if there is an old value and the old and current values match. <a href="/api/http://flourishlib.com/api/fActiveRecord?protected=true#hasOld"><code>hasOld()</code></a> returns a boolean indicating if there is an old value for a column and will return <code>TRUE</code> even if the old and current values are the same. <a href="/api/fActiveRecord?protected=true#retrieveOld"><code>retrieveOld()</code></a> will return either the oldest value for a column, or an array of all old values depending on what parameters are passed.
+</p>
+
+<h4 id="related_records">$related_records</h4>
+
+<p>
+The <code>$related_records</code> associative array contains a cache of all related records that have been pulled out of the database. This array helps prevent lots of duplicate database queries from being executed.
+</p>
+
+<p>
+The structure of the array is as follows:
+</p>
+<pre><code>Array
+(
+    [$related_table] =&gt; Array
+        (
+            [$route] =&gt; Array
+                (
+                    [record_set] =&gt; fRecordSet,
+                    [primary_keys] =&gt; array(),
+                    [associate] =&gt; boolean, 
+                    [count] =&gt; integer
+                )
+        
+        )
+  
+)</code></pre>
+
+<p>
+ The array is only populated as the related records are requested. The <code>$related_table</code> is the database table corresponding to the related record class. The <code>$route</code> is name of the <a href="/docs/OrmConventions#RelationshipRoutes">relationship route</a> between the table for the current class and the <code>$related_table</code>.
+</p>
+
+<p>
+The <code>'record_set'</code> key (which will not be present if the record has only been counted, or if only the primary keys have been accessed) will point to an <a href="/docs/fRecordSet">fRecordSet</a> object. The <code>'primary_keys'</code> key will point to an array of the primary keys for the related records, but will only be present if a <code>link</code> method has been called. The <code>'count'</code> key (which will always be present) will point to an integer containing the number of related records. The <code>'associate'</code> key points to a boolean indicating if the related records should be stored when the parent records <code>store()</code> method is executed.
+</p>
+
+<p>
+In general, the <code>$related_records</code> array should not be manipulated directly, and may cause custom code to be more fragile in the face of future Flourish internal code updates. Instead, try to use the various static methods on the <a href="/docs/fORMRelated">fORMRelated</a> class. For normal end-developer use, almost all of the <a href="/docs/fORMRelated">fORMRelated</a> functionality is exposed through the <a href="/docs/fActiveRecord#RelatedRecordsOperations">fActiveRecord related records operations</a>.
+</p>
+
+<h4 id="cache">$cache</h4>
+
+<p>
+The <code>$cache</code> array is an array implemented for use by end-developers or ORM plugins. The structure is completely up to the discretion of the programmer. This array can be useful for temporarily storing data, such as an unhashed password for the purposes of mailing to user, or for caching an expensive calculation.
+</p>
+
+<h4 id="validation_messages">$validation_messages</h4>
+
+<p>
+The <code>$validation_messages</code> array keys are generated via the following rules. Whenever the array is modified, special care should be taken to add new entries properly. The <a href="/docs/fActiveRecord#validate">fActiveRecord::validate() documentation</a> has examples of each type of entry in the array.
+</p>
+
+<ul>
+<li>Errors involving a single column: the key will be the database column name</li>
+<li>Errors involving multiple columns: the key will be the database column names joined by <code>,</code></li>
+<li>Errors involving related tables: the key will be the related table name</li>
+<li>Errors involving columns in one-to-one related tables: the key will be the related table name ollowed by <code>::</code> followed by the column name (or column names joined by <code>,</code>)</li>
+<li>Errors involving columns in one-to-many related tables: the key will be the related table name followed by <code>[</code> followed by the zero-based record number, followed by <code>]</code>. The value of this key will be an associative array containing two keys, <code>name</code> and <code>errors</code>. The <code>name</code> key will have a user-friendly name for the related record and the <code>errors</code> key will contain an array of error messages for the related record.</li>
+</ul>
+
+<h2 id="DynamicfActiveRecordClasses">Dynamic fActiveRecord Classes</h2>
+
+<p>
+While not a feature that should normally be used in a production environment, the static method <a href="/api/fORM#defineActiveRecordClass"><code>defineActiveRecordClass()</code></a> will automatically create an <a href="/docs/fActiveRecord">fActiveRecord</a> class for a class that properly maps to a database table. By placing this method call in an <code>__autoload</code> function, it is possible to start working with the ORM without having to create a class for each database table.
+</p>
+<pre class="block php"><code>function __autoload($class)
+{
+    $file = '/path/to/class/files/' . $class . '.php';
+    
+    if (file_exists($file)) {
+        include($file);
+        return;
+    }
+
+    try {
+        fORM::defineActiveRecordClass($class);
+    } catch (fProgrammerException $e) {
+        fCore::toss('fProgrammerException', sprintf('The class %s could not be found', $class));
+    }
+}</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fValidation – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fValidation">fValidation</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fValidation">Class Documentation</a></strong></li>
+<li><a href="/api/fValidation">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fValidation.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#SettingFieldsandRules">Setting Fields and Rules</a>
+<ul>
+<li><a href="#SimpleFieldValidation">Simple Field Validation</a></li>
+<li><a href="#RuleValidation">Rule Validation</a>
+<ul>
+<li><a href="#addCallbackRule">addCallbackRule()</a></li>
+<li><a href="#addConditionalRule">addConditionalRule()</a></li>
+<li><a href="#addFileUploadRule">addFileUploadRule()</a></li>
+<li><a href="#addOneOrMoreRule">addOneOrMoreRule()</a></li>
+<li><a href="#addOnlyOneRule">addOnlyOneRule()</a></li>
+<li><a href="#addRegexRule">addRegexRule()</a></li>
+<li><a href="#addValidValuesRule">addValidValuesRule()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#PerformingValidation">Performing Validation</a>
+<ul>
+<li><a href="#ReturningMessages">Returning Messages</a></li>
+<li><a href="#ThrowinganExceptionandReturningMessages">Throwing an Exception and Returning Messages</a></li>
+</ul>
+</li>
+<li><a href="#MessageCustomization">Message Customization</a>
+<ul>
+<li><a href="#overrideFieldName">overrideFieldName()</a></li>
+<li><a href="#addRegexReplacement">addRegexReplacement()</a></li>
+<li><a href="#addStringReplacement">addStringReplacement()</a></li>
+</ul>
+</li>
+<li><a href="#OrderingErrors">Ordering Errors</a></li>
+</ul>
+</div>
+
+<p>
+The fValidation class provides an interface for validating standalone forms, such as a contact form. In these situations there are usually a mix of required fields and fields that require specific formatting. In addition, form contents that are emailing will often need to be checked to prevent <a href="http://en.wikipedia.org/wiki/E-mail_injection">email header injection</a> attacks.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+The fValidation class must be instantiated before options can be set and the validation can be performed.
+</p>
+<pre class="block php"><code>$validator = new fValidation();</code></pre>
+
+<h2 id="SettingFieldsandRules">Setting Fields and Rules</h2>
+
+<p>
+To have the class actually perform any validation it will need to know what fields and rules it is checking. 
+</p>
+
+<h3 id="SimpleFieldValidation">Simple Field Validation</h3>
+
+<p>
+The simplest validation is done by specifying individual fields against data types or input formats.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fValidation#addRequiredFields"><code>addRequiredFields()</code></a></td>
+<td><em>Requires that the field(s) specified have a value.</em></td>
+</tr>
+<tr>
+<td><a href="/api/fValidation#addBooleanFields"><code>addBooleanFields()</code></a></td>
+<td><em>Requires that the field(s) specified can be interpreted as a boolean if a value is entered.</em></td>
+</tr>
+<tr>
+<td><a href="/api/fValidation#addDateFields"><code>addDateFields()</code></a></td>
+<td><em>Requires that the field(s) specified can be interpreted as a date if a value is entered.</em></td>
+</tr>
+<tr>
+<td><a href="/api/fValidation#addFloatFields"><code>addFloatFields()</code></a></td>
+<td><em>Requires that the field(s) specified contain a floating point/decimal number if a value is entered.</em></td>
+</tr>
+<tr>
+<td><a href="/api/fValidation#addIntegerFields"><code>addIntegerFields()</code></a></td>
+<td><em>Requires that the field(s) specified contain an intege if a value is entered.</em></td>
+</tr>
+<tr>
+<td><a href="/api/fValidation#addEmailFields"><code>addEmailFields()</code></a></td>
+<td><em>Requires that the fields specified are formatted like an email address if a value is entered.</em></td>
+</tr>
+<tr>
+<td><a href="/api/fValidation#addEmailHeaderFields"><code>addEmailHeaderFields()</code></a></td>
+<td><em>Checks field(s) for line breaks to prevent email header injection. Should be used whenever embedding user input into email headers.</em></td>
+</tr>
+<tr>
+<td><a href="/api/fValidation#addURLFields"><code>addURLFields()</code></a></td>
+<td><em>Requires that the field(s) specified are formatted like a full URL (<a href="http://example.com">http://example.com</a>) if a value is entered.</em></td>
+</tr>
+</tbody></table>
+
+<p>
+Each of these methods takes any number of parameters with each parameter being a field name. Subsequent calls to the methods will add to the list of fields.
+</p>
+<pre class="block php"><code>// Require that name and email be filled in
+$validator-&gt;addRequiredFields('name', 'email');
+
+// Require that name and email be filled in, and that the email field contains an email address
+$validator-&gt;addRequiredFields('name');
+$vaildator-&gt;addRequiredFields('email');
+$validator-&gt;addEmailFields('email');
+
+// Require that name be filled in, and if birthday is specified that
+// it will be interpreted as a date or time by fTimestamp
+$validator-&gt;addRequiredFields('name');
+$validator-&gt;addDateFields('birthday');</code></pre>
+
+<h3 id="RuleValidation">Rule Validation</h3>
+
+<p>
+More advanced validation rules can be checked by using the following methods.
+</p>
+
+<h4 id="addCallbackRule">addCallbackRule()</h4>
+
+<p>
+<a href="/api/fValidation#addCallbackRule"><code>addCallbackRule()</code></a> accepts a <code>$field</code> to check, a <code>$callback</code> to execute and retrieve a boolean result from, and a <code>$message</code> to use when the result is <code>FALSE</code>.
+</p>
+<pre class="block php"><code>function check_length($value) {
+    return strlen($value) &gt;= 8;
+}
+$validator-&gt;addCallbackRule('password', 'check_length', 'Please enter at least 8 characters');</code></pre>
+
+<h4 id="addConditionalRule">addConditionalRule()</h4>
+
+<p>
+The method <a href="/api/fValidation#addConditionalRule"><code>addConditionalRule()</code></a> allows requiring one or more fields, if another field (or set of fields) has any value, or a value from a pre-defined set. The first parameter <code>$main_fields</code> accepts a single string field, or an array of fields. The second parameter, <code>$conditional_values</code>, accepts <code>NULL</code> or an array of values. The third parameter, <code>$conditional_fields</code>, accepts a single string field, or an array of fields.
+</p>
+
+<p>
+If <code>$conditional_values</code> is <code>NULL</code>, and value present in any of the <code>$main_fields</code> will cause all <code>$conditional_fields</code> to be required. If <code>$conditional_values</code> is an array of values, if any of the <code>$main_fields</code> contains one of those values, all of the <code>$conditional_columns</code> will be required.
+</p>
+<pre class="block php"><code>// If the address, city, state_province, country or postal_code is filled
+// in, require that at least the address and city are filled in
+$validator-&gt;addConditionalRule(
+    array('address', 'city', 'state_province', 'country', 'postal_code'),
+    NULL,
+    array('address', 'city')
+);
+
+// If the country is US or Canada, require the state_province and postal_code
+$validator-&gt;addConditionalRule('country', array('US', 'CA'), array('state_province', 'postal_code'));</code></pre>
+
+<h4 id="addFileUploadRule">addFileUploadRule()</h4>
+
+<p>
+When creating a form that includes file uploads via <a href="/docs/fUpload">fUpload</a>, the <a href="/api/fValidation#addFileUploadRule"><code>addFileUploadRule()</code></a> method will combine the validation performed by <a href="/docs/fUpload">fUpload</a> with the rest of the fValidation fields and rules. The first parameter is the file upload <code>$field</code>, the second parameter is the <a href="/docs/fUpload">fUpload</a> instance, <code>$uploader</code>. All validation options for the file, including if it is required, are set via the <a href="/docs/fUpload">fUpload</a> object.
+</p>
+<pre class="block php"><code>$uploader = new fUpload();
+// Make the file upload optional
+$uploader-&gt;setOptional();
+$uploader-&gt;setMaxSize('1MB');
+$validator-&gt;addFileUploadRule('attachment', $uploader);</code></pre>
+
+<p>
+ If a file upload field being validated is part of an array of file uploads, the array index can be passed as the second parameter to <code>addFileUploadRule()</code>, and the <code>$uploader</code> parameter should be passed as the third parameter.
+</p>
+<pre class="block php"><code>$uploader = new fUpload();
+// Validate just the first attachment
+$validator-&gt;addFileUploadRule('attachment', 0, $uploader);</code></pre>
+
+<h4 id="addOneOrMoreRule">addOneOrMoreRule()</h4>
+
+<p>
+The method <a href="/api/fValidation#addOneOrMoreRule"><code>addOneOrMoreRule()</code></a> accepts two or more <code>$field</code> parameters, and requires that at least one of them has a value.
+</p>
+<pre class="block php"><code>$validator-&gt;addOneOrMoreRule('email', 'phone', 'cell_phone');</code></pre>
+
+<h4 id="addOnlyOneRule">addOnlyOneRule()</h4>
+
+<p>
+The method <a href="/api/fValidation#addOnlyOneRule"><code>addOnlyOneRule()</code></a> accepts two or more <code>$field</code> parameters, and requires that exactly one of them has a value. It is considered an error if none, or more than one have a value.
+</p>
+<pre class="block php"><code>$validator-&gt;addOnlyOneRule('ssn', 'ein');</code></pre>
+
+<h4 id="addRegexRule">addRegexRule()</h4>
+
+<p>
+The <a href="/api/fValidation#addRegexRule"><code>addRegexRule()</code></a> method allows validating non-blank values against a <a href="http://php.net/pcre">Perl-compatible regular expression</a> (PCRE). The first parameter is the <code>$field</code> to validate, followed by the <code>$regex</code> to test and the <code>$message</code> to use if the value does not match the expression.
+</p>
+<pre class="block php"><code>// Require the value is a length in in or cm
+$validator-&gt;addRegexRule('length', '#^\d+\s*(in|cm)$#', 'Please enter a length');</code></pre>
+
+<h4 id="addValidValuesRule">addValidValuesRule()</h4>
+
+<p>
+A value can be tested against a set of valid values by calling the method <a href="/api/fValidation#addValidValuesRule"><code>addValidValuesRule()</code></a>. This method accepts a <code>$field</code> to validate, followed by an array of <code>$valid_values</code>.
+</p>
+<pre class="block php"><code>// Require the value be 'yes', 'no' or 'maybe'
+$validator-&gt;addValidValuesRule('answer', array('yes', 'no', 'maybe'));</code></pre>
+
+<h2 id="PerformingValidation">Performing Validation</h2>
+
+<p>
+Once all of the fields and rules have been set, the <a href="/api/fValidation#validate"><code>validate()</code></a> method will check them all against the current request using <a href="/docs/fRequest">fRequest</a>. If any errors are found an <a href="/docs/fValidationException">fValidationException</a> will be thrown containing an explanation of the errors that occurred.
+</p>
+
+<p>
+The <code>validate()</code> method will always evaluate all fields and rules so users will not have to submit a form multiple times to figure out everything they are doing wrong. Here is a full example:
+</p>
+<pre class="block php"><code>try {
+    $validator = new fValidation();
+    
+    $validator-&gt;addRequiredFields('name');
+    $validator-&gt;addOneOrMoreRule('email', 'phone'); 
+    $validator-&gt;addEmailFields('email');
+    $validator-&gt;addEmailHeaderFields('name', 'email');
+    $validator-&gt;addDateFields('birthday');
+    $validator-&gt;addURLFields('my_blog');
+
+    $validator-&gt;validate();
+
+    // Here would be the action of the contact form, such as sending an email
+
+} catch (fValidationException $e) {
+    fMessaging::create('error', $e-&gt;getMessage());
+}</code></pre>
+
+<p>
+ The exception message that is generated will contain HTML including <code>&lt;p&gt;The following problems were found:&lt;/p&gt;</code> followed by a <code>&lt;ul&gt;</code> containing one <code>&lt;li&gt;</code> for each error detected. Below are some examples.
+</p>
+<pre class="block html"><code>&lt;p&gt;The following problems were found:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;Name: Please enter a value&lt;/li&gt;
+    &lt;li&gt;Email, Phone: Please enter at least one&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+<pre class="block html"><code>&lt;p&gt;The following problems were found:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt;Email: Please enter an email address in the form name@example.com&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+<h3 id="ReturningMessages">Returning Messages</h3>
+
+<p>
+If an exception is not desired, an array of individual error messages can be retrieved by passing <code>TRUE</code> to the first parameter of <a href="/api/fValidation#validate"><code>validate()</code></a>, <code>$return_messages</code>. The returned array will have keys that are the field name for individual fields, or the field names joined by <code>,</code>s for multiple fields. The values will be the error messages, including formatted field names.
+</p>
+<pre class="block php"><code>// Return the messages instead of throwing an exception
+$messages = $validator-&gt;validate(TRUE);</code></pre>
+
+<p>
+ The <code>$messages</code> array will have a structure such as:
+</p>
+<pre class="block php"><code>array(
+    'name'        =&gt; 'Name: Please enter a value',
+    'email,phone' =&gt; 'Email, Phone: Please enter at least one'
+)</code></pre>
+
+<p>
+ If the messages are being used for inline validation, it may be useful to remove the field names from the error messages. The field names can be removed by passing <code>TRUE</code> to the second parameter of <a href="/api/fValidation#validate"><code>validate()</code></a>, <code>$remove_field_names</code>.
+</p>
+<pre class="block php"><code>$messages = $validator-&gt;validate(TRUE, TRUE);</code></pre>
+
+<p>
+ In this case, the <code>$messages</code> array would look like:
+</p>
+<pre class="block php"><code>array(
+    'name'        =&gt; 'Please enter a value',
+    'email,phone' =&gt; 'Please enter at least one'
+)</code></pre>
+
+<h3 id="ThrowinganExceptionandReturningMessages">Throwing an Exception and Returning Messages</h3>
+
+<p>
+Often the most usable way to notify users of an error is to produce a full error message listing all errors on a form, but also to individually highlight the fields with errors. The <code>$return_messages</code> parameter and <a href="/docs/fValidationException">fValidationException</a> can be used together to provide such functionality.
+</p>
+
+<p>
+First, the messages should be returned by passing <code>TRUE</code> to the <code>$return_messages</code> parameter. The static method <a href="/api/fValidationException#removeFieldNames">fValidationException::removeFieldNames()</a> can be used to remove the field names from the error messages for inline field highlighting and then the <a href="/docs/fValidationException">fValidationException</a> constructor can be used to generate a full error message.
+</p>
+<pre class="block php"><code>try {
+    // ...
+    
+    $errors       = $validator-&gt;validate(TRUE);
+    $field_errors = fValidationException::removeFieldNames($errors);
+    if ($errors) {
+        throw new fValidationException(
+            'The following problems were found:',
+            $errors
+        );
+    }
+    
+    // ...
+    
+} catch (fValidationException $e) {
+    // fMessaging allows for creating session-based one-time-use messages
+    fMessaging::create('error', $e-&gt;getMessage();
+    fMessaging::create('field_errors', $field_errors);
+}</code></pre>
+
+<h2 id="MessageCustomization">Message Customization</h2>
+
+<p>
+Three methods exist to customize the messages generated, <a href="/api/fValidation#overrideFieldName"><code>overrideFieldName()</code></a>, <a href="/api/fValidation#addRegexReplacement"><code>addRegexReplacement()</code></a> and <a href="/api/fValidation#addStringReplacement"><code>addStringReplacement()</code></a>. Both regular expression and string replacements are suitable for changing error messages to use slightly different wording. More advanced message modification can be done library wide by using the features of <a href="/docs/fText">fText</a>.
+</p>
+
+<h3 id="overrideFieldName">overrideFieldName()</h3>
+
+<p>
+By default, all field names are converted from <code>field_name</code> to <code>Field Name</code> for all error messages by <a href="/api/fGrammar#humanize">fGrammar::humanize()</a>. This conversion may be incorrect for non-English words or acronyms. <a href="/api/fValidation#overrideFieldName"><code>overrideFieldName()</code></a> accepts a <code>$field</code> and the <code>$name</code> to use for it.
+</p>
+<pre class="block php"><code>$validator-&gt;overrideFieldName('zip_code', 'ZIP Code');</code></pre>
+
+<p>
+ It is also possible to pass an associative array with fields as the keys and names as the values.
+</p>
+<pre class="block php"><code>$validator-&gt;overrideFieldName(array(
+    'zip_code'       =&gt; 'ZIP Code',
+    'state_province' =&gt; 'State/Province'
+));</code></pre>
+
+<p>
+ <code>overrideFieldName()</code> can be called any number of times in either the two parameter, or one parameter signatures. If a field name is overridden more than once, the last override will be the one used.
+</p>
+
+<h3 id="addRegexReplacement">addRegexReplacement()</h3>
+
+<p>
+<a href="/api/fValidation#addRegexReplacement"><code>addRegexReplacement()</code></a> accepts two parameters, the <a href="http://php.net/pcre">Perl-compatible regular expression</a> to <code>$search</code> for and the string to <code>$replace</code> it with. This search and replace action is performed right before messages are reordered.
+</p>
+<pre class="block php"><code>$validator-&gt;addRegexReplacement('#Please enter a value$#', 'Please enter something');</code></pre>
+
+<p>
+ <em>Please note that <code>$replace</code> should be a string with all normal <code>$</code> and <code>\</code> characters escaped with a <code>\</code> since <a href="http://php.net/preg_replace"><code>preg_replace()</code></a> is used under-the-hood.</em> Because <code>preg_replace()</code> is used, it is also possible to use back-references in <code>$replace</code>.  
+</p>
+<pre class="block php"><code>// This will change &quot;Name: Please enter a value&quot; to &quot;Please enter a value for Name&quot;
+$validator-&gt;addRegexReplacement('#^(.*?): (.*)$#', '\2 for \1');</code></pre>
+
+<p>
+ It is also possible to pass an associative array as a single with they keys being <code>$search</code> expressions and the values being <code>$replace</code> strings.
+</p>
+<pre class="block php"><code>$validator-&gt;addRegexReplacement(array(
+    '#Please enter a value$#' =&gt; 'Please enter something',
+    '#^(.*?): (.*)$#'          =&gt; '\2 for \1'
+));</code></pre>
+
+<p>
+ <code>addRegexReplacement()</code> can be called any number of times, and the replacements will be added together. If a search value is passed more than once, the <code>$replace</code> parameter from the last method call will be the one used.
+</p>
+
+<h3 id="addStringReplacement">addStringReplacement()</h3>
+
+<p>
+The <a href="/api/fValidation#addStringReplacement"><code>addStringReplacement()</code></a> method works exactly like <a href="/api/fValidation#addRegexReplacement"><code>addRegexReplacement()</code></a>, except that the first parameter is a string to <code>$search</code> for and the second is plain string to <code>$replace</code> with. <code>$replace</code> does not require any escaping and obviously does not support back-references.
+</p>
+<pre class="block php"><code>$validator-&gt;addStringReplacement('Please enter a value', 'Please enter something');</code></pre>
+
+<p>
+ Also supported is a single parameter containing an associative array with the key being a string to search for and the value being the string to replace it with.
+</p>
+<pre class="block php"><code>$validator-&gt;addStringReplacement(array(
+    'Please enter a value'        =&gt; 'Please enter something',
+    'Please enter a whole number' =&gt; 'Please enter an integer'
+));</code></pre>
+
+<p>
+ <code>addStringReplacement()</code> can be called any number of times to add multiple search/replace pairs. If the same search string is passed more than once, the replace string from the last method call will be used.
+</p>
+
+<h2 id="OrderingErrors">Ordering Errors</h2>
+
+<p>
+The order in which error messages appear in an exception, or the returned messages array, is based upon what order the class checks the various field and rules. Thus, while sometimes the <code>Email</code> field may appear first in the list, other times it may appear last. The <a href="/api/fValidation#setMessageOrder"><code>setMessageOrder()</code></a> method allows for consistent ordering of messages.
+</p>
+
+<p>
+<code>setMessageOrder()</code> accepts any number of parameters, which are strings to search for. Any message that contains the first parameter will be listed first, any message that contains the second parameter will be listed second, and so on. Matches are done in a longest match first to ensure accidental matches dont occur. Errors that do not match any parameter are left at the end.
+</p>
+
+<p>
+With the following exception message:
+</p>
+<pre><code>The following problems were found:
+ - Last Name: Please enter a value
+ - First Name: Please enter a value
+ - Comments: Please enter a value
+ - Company Email: Please enter a value
+ - Personal Email: Please enter an email address in the form name@example.com</code></pre>
+
+<p>
+ And calling <code>setMessageOrder()</code> with the following parameters:
+</p>
+<pre class="block php"><code>$validator-&gt;setMessageOrder('First Name', 'Last Name', 'Email', 'Company Email', 'Comments');</code></pre>
+
+<p>
+ Will result in the message being changed to:
+</p>
+<pre><code>The following problems were found:
+ - First Name: Please enter a value
+ - Last Name: Please enter a value
+ - Personal Email: Please enter an email address in the form name@example.com
+ - Company Email: Please enter a value
+ - Comments: Please enter a value</code></pre>
+
+<p>
+ Notice that <code>Personal Email</code> is listed before <code>Company Email</code> - this is because the fourth parameter <code>'Company Email'</code> was a longer match and the error was placed into position 4, while <code>Personal Email</code> was matched by the shorter parameter 3 and was placed in position 3.
+</p>
+
+<p>
+Messages that match the parameters will always be ordered in the same relative order as the parameters, although they may not have the exact same position. This may occur if there is no error that matches a parameter, or if multiple messages match a parameter.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

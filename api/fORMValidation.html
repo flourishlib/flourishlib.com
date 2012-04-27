@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMValidation – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fORMValidation</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fORMValidation">Class Documentation</a></li>
+		<li><strong><a href="/api/fORMValidation">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMValidation.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#addConditionalRule">addConditionalRule()</a></li>
+	  			<li><a href="#addManyToManyRule">addManyToManyRule()</a></li>
+	  			<li><a href="#addOneOrMoreRule">addOneOrMoreRule()</a></li>
+	  			<li><a href="#addOneToManyRule">addOneToManyRule()</a></li>
+	  			<li><a href="#addOnlyOneRule">addOnlyOneRule()</a></li>
+	  			<li><a href="#addRegexReplacement">addRegexReplacement()</a></li>
+	  			<li><a href="#addRegexRule">addRegexRule()</a></li>
+	  			<li><a href="#addRequiredRule">addRequiredRule()</a></li>
+	  			<li><a href="#addStringReplacement">addStringReplacement()</a></li>
+	  			<li><a href="#addValidValuesRule">addValidValuesRule()</a></li>
+	  			<li class="protected"><a href="#hasValue">hasValue()</a></li>
+	  			<li class="protected"><a href="#inspect">inspect()</a></li>
+	  			<li class="protected"><a href="#removeRegexReplacement">removeRegexReplacement()</a></li>
+	  			<li class="protected"><a href="#removeStringReplacement">removeStringReplacement()</a></li>
+	  			<li class="protected"><a href="#reorderMessages">reorderMessages()</a></li>
+	  			<li class="protected"><a href="#replaceMessages">replaceMessages()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#setColumnCaseInsensitive">setColumnCaseInsensitive()</a></li>
+	  			<li><a href="#setMessageOrder">setMessageOrder()</a></li>
+	  			<li class="protected"><a href="#validate">validate()</a></li>
+	  			<li class="protected"><a href="#validateRelated">validateRelated()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fDate">fDate</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fORMRelated">fORMRelated</a></li>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fTime">fTime</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+		<li><a href="fUTF8">fUTF8</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b31</span></div>
+<p class="short_description">Handles validation for <a href="fActiveRecord">fActiveRecord</a> classes</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b31</th><td>Fixed checkConditionalRule() to require columns that default to an empty string and are currently set to that value <span class="date">6/14/11</span></td></tr><tr><th>1.0.0b30</th><td>Fixed a bug with <a href="#setMessageOrder"><tt>setMessageOrder()</tt></a> not accepting a variable number of parameters like <a href="fValidation#setMessageOrder"><tt>fValidation::setMessageOrder()</tt></a> does <span class="date">3/7/11</span></td></tr><tr><th>1.0.0b29</th><td>Updated <a href="#addManyToManyRule"><tt>addManyToManyRule()</tt></a> and <a href="#addOneToManyRule"><tt>addOneToManyRule()</tt></a> to prefix any namespace from <tt>$class</tt> to <tt>$related_class</tt> if not already present <span class="date">11/24/10</span></td></tr><tr><th>1.0.0b28</th><td>Updated the class to work with the new nested array structure for validation messages <span class="date">10/3/10</span></td></tr><tr><th>1.0.0b27</th><td>Fixed <a href="#hasValue"><tt>hasValue()</tt></a> to properly detect zero-value floats, made <a href="#hasValue"><tt>hasValue()</tt></a> internal public <span class="date">7/26/10</span></td></tr><tr><th>1.0.0b26</th><td>Improved the error message for integers to say <tt>whole number</tt> instead of just <tt>number</tt> <span class="date">5/29/10</span></td></tr><tr><th>1.0.0b25</th><td>Added <a href="#addRegexRule"><tt>addRegexRule()</tt></a>, changed validation messages array to use column name keys <span class="date">5/26/10</span></td></tr><tr><th>1.0.0b24</th><td>Added <a href="#addRequiredRule"><tt>addRequiredRule()</tt></a> for required columns that aren't automatically handled via schema detection <span class="date">4/6/10</span></td></tr><tr><th>1.0.0b23</th><td>Added support for checking integers and floats to ensure they fit within the range imposed by the database schema <span class="date">3/17/10</span></td></tr><tr><th>1.0.0b22</th><td>Made the value checking for one-or-more and only-one rules more robust when detecting the absence of a value <span class="date">12/17/09</span></td></tr><tr><th>1.0.0b21</th><td>Fixed a bug affecting where conditions with columns that are not null but have a default value <span class="date">11/3/09</span></td></tr><tr><th>1.0.0b20</th><td>Updated code for the new <a href="fORMDatabase">fORMDatabase</a> and <a href="fORMSchema">fORMSchema</a> APIs <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b19</th><td>Changed SQL statements to use value placeholders, identifier escaping and schema support <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b18</th><td>Fixed checkOnlyOneRule() and checkOneOrMoreRule() to consider blank strings as NULL <span class="date">8/21/09</span></td></tr><tr><th>1.0.0b17</th><td>Added @internal methods <a href="#removeStringReplacement"><tt>removeStringReplacement()</tt></a> and <a href="#removeRegexReplacement"><tt>removeRegexReplacement()</tt></a> <span class="date">7/29/09</span></td></tr><tr><th>1.0.0b16</th><td>Backwards Compatibility Break - renamed addConditionalValidationRule() to <a href="#addConditionalRule"><tt>addConditionalRule()</tt></a>, addManyToManyValidationRule() to <a href="#addManyToManyRule"><tt>addManyToManyRule()</tt></a>, addOneOrMoreValidationRule() to <a href="#addOneOrMoreRule"><tt>addOneOrMoreRule()</tt></a>, addOneToManyValidationRule() to <a href="#addOneToManyRule"><tt>addOneToManyRule()</tt></a>, addOnlyOneValidationRule() to <a href="#addOnlyOneRule"><tt>addOnlyOneRule()</tt></a>, addValidValuesValidationRule() to <a href="#addValidValuesRule"><tt>addValidValuesRule()</tt></a> <span class="date">7/13/09</span></td></tr><tr><th>1.0.0b15</th><td>Added addValidValuesValidationRule() [wb/jt, 2009-07-13]</td></tr><tr><th>1.0.0b14</th><td>Added <a href="#addStringReplacement"><tt>addStringReplacement()</tt></a> and <a href="#addRegexReplacement"><tt>addRegexReplacement()</tt></a> for simple validation message modification <span class="date">7/1/09</span></td></tr><tr><th>1.0.0b13</th><td>Changed <a href="#reorderMessages"><tt>reorderMessages()</tt></a> to compare string in a case-insensitive manner <span class="date">6/30/09</span></td></tr><tr><th>1.0.0b12</th><td>Updated addConditionalValidationRule() to allow any number of <tt>$main_columns</tt>, and if any of those have a matching value, the condtional columns will be required <span class="date">6/30/09</span></td></tr><tr><th>1.0.0b11</th><td>Fixed a couple of bugs with validating related records <span class="date">6/26/09</span></td></tr><tr><th>1.0.0b10</th><td>Fixed UNIQUE constraint checking so it is only done once per constraint, fixed some UTF-8 case sensitivity issues <span class="date">6/17/09</span></td></tr><tr><th>1.0.0b9</th><td>Updated code for new <a href="fORM">fORM</a> API <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b8</th><td>Updated code to use new <a href="fValidationException#formatField"><tt>fValidationException::formatField()</tt></a> method <span class="date">6/4/09</span></td></tr><tr><th>1.0.0b7</th><td>Updated <a href="#validateRelated"><tt>validateRelated()</tt></a> to use new <a href="fORMRelated#validate"><tt>fORMRelated::validate()</tt></a> method and checkRelatedOneOrMoreRule() to use new <tt>$related_records</tt> structure <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b6</th><td>Changed date/time/timestamp checking from <tt>strtotime()</tt> to <a href="fDate">fDate</a>/<a href="fTime">fTime</a>/<a href="fTimestamp">fTimestamp</a> for better localization support <span class="date">6/1/09</span></td></tr><tr><th>1.0.0b5</th><td>Fixed a bug in checkOnlyOneRule() where no values would not be flagged as an error <span class="date">4/23/09</span></td></tr><tr><th>1.0.0b4</th><td>Fixed a bug in checkUniqueConstraints() related to case-insensitive columns <span class="date">2/15/09</span></td></tr><tr><th>1.0.0b3</th><td>Implemented proper fix for addManyToManyValidationRule() <span class="date">12/12/08</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug with addManyToManyValidationRule() <span class="date">12/8/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">8/4/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="addConditionalRule" class="method static"><span class="resolution">::</span><span class="name">addConditionalRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a conditional rule</p>
+								<p>If a non-empty value is found in one of the <tt>$main_columns</tt>, or if  specified, a value from the <tt>$conditional_values</tt> array, all of the  <tt>$conditional_columns</tt> will also be required to have a value.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addConditionalRule</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string|array</span> <span class="php-var">$main_columns</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$conditional_values</span><span class="php-code">,</span> <span class="php-vartype">string|array</span> <span class="php-var">$conditional_columns</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class this rule applies to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string|array</td>
+				<td class="param_name">$main_columns</td>
+				<td class="param_description">The column(s) to check for a value</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$conditional_values</td>
+				<td class="param_description">If <tt>NULL</tt>, any value in the main column will trigger the conditional column(s), otherwise the value must match this scalar value or be present in the array of values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string|array</td>
+				<td class="param_name">$conditional_columns</td>
+				<td class="param_description">The column(s) that are to be required</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addManyToManyRule" class="method static"><span class="resolution">::</span><span class="name">addManyToManyRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Add a many-to-many rule that requires at least one related record is associated with the current record</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addManyToManyRule</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to add the rule for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The name of the related class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addOneOrMoreRule" class="method static"><span class="resolution">::</span><span class="name">addOneOrMoreRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a one-or-more rule that requires at least one of the columns specified has a value</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addOneOrMoreRule</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$columns</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the columns exists in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$columns</td>
+				<td class="param_description">The columns to check</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addOneToManyRule" class="method static"><span class="resolution">::</span><span class="name">addOneToManyRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Add a one-to-many rule that requires at least one related record is associated with the current record</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addOneToManyRule</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to add the rule for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The name of the related class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to the related class</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addOnlyOneRule" class="method static"><span class="resolution">::</span><span class="name">addOnlyOneRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Add an only-one rule that requires exactly one of the columns must have a value</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addOnlyOneRule</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$columns</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the columns exists in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$columns</td>
+				<td class="param_description">The columns to check</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addRegexReplacement" class="method static"><span class="resolution">::</span><span class="name">addRegexReplacement()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a call to <a class="ext-link" href="http://php.net/preg_replace"><span class="icon"><tt>preg_replace()</tt></span></a> for each message</p>
+								<p>Regex replacement is done after the <tt>post::validate()</tt> hook, and right  before the messages are reordered.</p><p>If a message is an empty string after replacement, it will be  removed from the list of messages.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addRegexReplacement</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$search</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$replace</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the columns exists in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$search</td>
+				<td class="param_description">The PCRE regex to search for - see <a class="ext-link" href="http://php.net/pcre"><span class="icon">http://php.net/pcre</span></a> for details</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$replace</td>
+				<td class="param_description">The string to replace with - all $ and \ are used in back references and must be escaped with a \ when meant literally</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addRegexRule" class="method static"><span class="resolution">::</span><span class="name">addRegexRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a rule to validate a column against a PCRE regular expression - the rule is not run if the value is <tt>NULL</tt></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addRegexRule</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$regex</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$message</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the columns exists in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to match with the regex</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$regex</td>
+				<td class="param_description">The PCRE regex to match against - see <a class="ext-link" href="http://php.net/pcre"><span class="icon">http://php.net/pcre</span></a> for details</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to use if the value does not match the regular expression</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addRequiredRule" class="method static"><span class="resolution">::</span><span class="name">addRequiredRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Requires that a column have a non-<tt>NULL</tt> value</p>
+								<p>Before using this method, try setting the database column to <tt>NOT NULL</tt>  and remove any default value. Such a configuration will trigger the same  functionality as this method, and will enforce the rule on the database  level for any other code that queries it.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addRequiredRule</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$columns</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the column(s) exists in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$columns</td>
+				<td class="param_description">The column or columns to check - each column will require a value</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addStringReplacement" class="method static"><span class="resolution">::</span><span class="name">addStringReplacement()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a call to <a class="ext-link" href="http://php.net/str_replace"><span class="icon"><tt>str_replace()</tt></span></a> for each message</p>
+								<p>String replacement is done after the <tt>post::validate()</tt> hook, and right  before the messages are reordered.</p><p>If a message is an empty string after replacement, it will be  removed from the list of messages.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addStringReplacement</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$search</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$replace</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the columns exists in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$search</td>
+				<td class="param_description">The string to search for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$replace</td>
+				<td class="param_description">The string to replace with</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addValidValuesRule" class="method static"><span class="resolution">::</span><span class="name">addValidValuesRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Restricts a column to having only a value from the list of valid values</p>
+								<p>Please note that <tt>NULL</tt> values are always allowed, even if not listed in  the <tt>$valid_values</tt> array, if the column is not set as <tt>NOT NULL</tt>.</p><p>This functionality can also be accomplished by added a <tt>CHECK</tt> constraint  on the column in the database, or using a MySQL <tt>ENUM</tt> data type.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addValidValuesRule</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$valid_values</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class this rule applies to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to validate</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$valid_values</td>
+				<td class="param_description">The valid values to check - <tt>NULL</tt> values are always allows if the column is not set to <tt>NOT NULL</tt></td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="hasValue" class="protected method static"><span class="resolution">::</span><span class="name">hasValue()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Checks to see if a columns has a value, but based on the schema and if the column allows NULL</p>
+								<p>If the columns allows NULL values, than anything other than NULL  will be returned as TRUE. If the column does not allow NULL and  the value is anything other than the &quot;empty&quot; value for that data type,  then TRUE will be returned.</p><p>The values that are considered &quot;empty&quot; for each data type are as follows.  Please note that there is no &quot;empty&quot; value for dates, times or  timestamps.  </p><ul><li>Blob: ''</li><li>Boolean: FALSE</li><li>Float: 0.0</li><li>Integer: 0</li><li>String: ''</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">hasValue</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype"></span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$columns</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema object for the table</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class the column is part of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">An associative array of all values for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$columns</td>
+				<td class="param_description">The column to check</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"></td>
+				<td class="param_name">$column</td>
+				<td class="param_description"></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					An error message for the rule
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="inspect" class="protected method static"><span class="resolution">::</span><span class="name">inspect()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Adds metadata about features added by this class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">inspect</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$metadata</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class being inspected</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column being inspected</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$metadata</td>
+				<td class="param_description">The array of metadata about a column</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="removeRegexReplacement" class="protected method static"><span class="resolution">::</span><span class="name">removeRegexReplacement()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Removes a regex replacement</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">removeRegexReplacement</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$search</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$replace</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the columns exists in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$search</td>
+				<td class="param_description">The string to search for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$replace</td>
+				<td class="param_description">The string to replace with</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="removeStringReplacement" class="protected method static"><span class="resolution">::</span><span class="name">removeStringReplacement()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Removes a string replacement</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">removeStringReplacement</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$search</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$replace</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the columns exists in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$search</td>
+				<td class="param_description">The string to search for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$replace</td>
+				<td class="param_description">The string to replace with</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reorderMessages" class="protected method static"><span class="resolution">::</span><span class="name">reorderMessages()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Reorders list items in an html string based on their contents</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">reorderMessages</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$messages</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to reorder messages for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$messages</td>
+				<td class="param_description">An array of the messages</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The reordered messages
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="replaceMessages" class="protected method static"><span class="resolution">::</span><span class="name">replaceMessages()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Takes a list of messages and performs string and regex replacements on them</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">replaceMessages</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$messages</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to reorder messages for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$messages</td>
+				<td class="param_description">The array of messages</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The new array of messages
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setColumnCaseInsensitive" class="method static"><span class="resolution">::</span><span class="name">setColumnCaseInsensitive()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a column to be compared in a case-insensitive manner when checking <tt>UNIQUE</tt> and <tt>PRIMARY KEY</tt> constraints</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setColumnCaseInsensitive</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the column is located in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to set as case-insensitive</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setMessageOrder" class="method static"><span class="resolution">::</span><span class="name">setMessageOrder()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows setting the order that the list items in a message will be displayed</p>
+								<p>All string comparisons during the reordering process are done in a  case-insensitive manner.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setMessageOrder</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$matches</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or an instance of the class to set the message order for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$matches</td>
+				<td class="param_description">This should be an ordered array of strings. If a line contains the string it will be displayed in the relative order it occurs in this array.</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="validate" class="protected method static"><span class="resolution">::</span><span class="name">validate()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Validates values for an <a href="fActiveRecord">fActiveRecord</a> object against the database schema and any additional rules that have been added</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">validate</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$old_values</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The instance of the class to validate</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$values</td>
+				<td class="param_description">The values to validate</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$old_values</td>
+				<td class="param_description">The old values for the record</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					An array of messages
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="validateRelated" class="protected method static"><span class="resolution">::</span><span class="name">validateRelated()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Validates related records for an <a href="fActiveRecord">fActiveRecord</a> object</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">validateRelated</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The object to validate</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The values for the object</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">The related records for the object</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					An array of messages
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

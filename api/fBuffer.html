@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fBuffer – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fBuffer</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fBuffer">Class Documentation</a></li>
+		<li><strong><a href="/api/fBuffer">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fBuffer.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#erase">erase()</a></li>
+	  			<li><a href="#get">get()</a></li>
+	  			<li><a href="#isStarted">isStarted()</a></li>
+	  			<li><a href="#replace">replace()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#start">start()</a></li>
+	  			<li><a href="#startCapture">startCapture()</a></li>
+	  			<li><a href="#stop">stop()</a></li>
+	  			<li><a href="#stopCapture">stopCapture()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fTemplating">fTemplating</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b3</span></div>
+<p class="short_description">Provides a single, simplified interface for <a class="ext-link" href="http://php.net/outcontrol"><span class="icon">output buffering</span></a> to prevent nested buffering issues and provide a more logical API</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b3</th><td>Added a check to ensure the zlib extension is installd when doing gzipped buffering <span class="date">5/20/10</span></td></tr><tr><th>1.0.0b2</th><td>Added the <tt>$gzip</tt> parameter to <a href="#start"><tt>start()</tt></a> <span class="date">5/19/10</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">3/16/08</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="erase" class="method static"><span class="resolution">::</span><span class="name">erase()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Erases the output buffer</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">erase</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="get" class="method static"><span class="resolution">::</span><span class="name">get()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the contents of output buffer</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">get</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					The contents of the output buffer
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="isStarted" class="method static"><span class="resolution">::</span><span class="name">isStarted()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Checks if buffering has been started</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isStarted</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					If buffering has been started
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="replace" class="method static"><span class="resolution">::</span><span class="name">replace()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Replaces a value in the output buffer</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">replace</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$find</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$replace</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$find</td>
+				<td class="param_description">The string to find</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$replace</td>
+				<td class="param_description">The string to replace</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration and buffer of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="start" class="method static"><span class="resolution">::</span><span class="name">start()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Starts output buffering</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">start</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$gzip</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$gzip</td>
+				<td class="param_description">If the buffered output should be gzipped using <a class="ext-link" href="http://php.net/ob_gzhandler"><span class="icon"><tt>ob_gzhandler()</tt></span></a></td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="startCapture" class="method static"><span class="resolution">::</span><span class="name">startCapture()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Starts capturing output, should be used with stopCapture() to grab output from code that does not offer an option of returning a value instead of outputting it</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">startCapture</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="stop" class="method static"><span class="resolution">::</span><span class="name">stop()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Stops output buffering, flushing everything to the browser</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">stop</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="stopCapture" class="method static"><span class="resolution">::</span><span class="name">stopCapture()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Stops capturing output, returning what was captured</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">stopCapture</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					The captured output
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

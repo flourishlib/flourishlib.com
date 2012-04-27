@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fGrammar – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fGrammar</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fGrammar">Class Documentation</a></li>
+		<li><strong><a href="/api/fGrammar">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fGrammar.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#addCamelUnderscoreRule">addCamelUnderscoreRule()</a></li>
+	  			<li><a href="#addHumanizeRule">addHumanizeRule()</a></li>
+	  			<li><a href="#addSingularPluralRule">addSingularPluralRule()</a></li>
+	  			<li><a href="#camelize">camelize()</a></li>
+	  			<li class="protected"><a href="#compose">compose()</a></li>
+	  			<li><a href="#humanize">humanize()</a></li>
+	  			<li><a href="#inflectOnQuantity">inflectOnQuantity()</a></li>
+	  			<li><a href="#joinArray">joinArray()</a></li>
+	  			<li><a href="#pluralize">pluralize()</a></li>
+	  			<li><a href="#registerJoinArrayCallback">registerJoinArrayCallback()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#singularize">singularize()</a></li>
+	  			<li><a href="#stem">stem()</a></li>
+	  			<li><a href="#underscorize">underscorize()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fUTF8">fUTF8</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fCRUD">fCRUD</a></li>
+		<li><a href="fDate">fDate</a></li>
+		<li><a href="fImage">fImage</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMColumn">fORMColumn</a></li>
+		<li><a href="fORMDate">fORMDate</a></li>
+		<li><a href="fORMFile">fORMFile</a></li>
+		<li><a href="fORMMoney">fORMMoney</a></li>
+		<li><a href="fORMOrdering">fORMOrdering</a></li>
+		<li><a href="fORMRelated">fORMRelated</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fPagination">fPagination</a></li>
+		<li><a href="fRecordSet">fRecordSet</a></li>
+		<li><a href="fTemplating">fTemplating</a></li>
+		<li><a href="fTime">fTime</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+		<li><a href="fValidation">fValidation</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b15</span></div>
+<p class="short_description">Provides english word inflection, notation conversion, grammar helpers and internationlization support</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b15</th><td>Added length checking to ensure blank strings are not being passed to various methods <span class="date">6/20/11</span></td></tr><tr><th>1.0.0b14</th><td>Fixed a bug in singularization that would affect words containing the substring <tt>mice</tt> or <tt>lice</tt> <span class="date">2/24/11</span></td></tr><tr><th>1.0.0b13</th><td>Fixed the pluralization of video <span class="date">8/10/10</span></td></tr><tr><th>1.0.0b12</th><td>Updated <a href="#singularize"><tt>singularize()</tt></a> and <a href="#pluralize"><tt>pluralize()</tt></a> to be able to handle underscore_CamelCase <span class="date">8/6/10</span></td></tr><tr><th>1.0.0b11</th><td>Fixed custom camelCase to underscore_notation rules <span class="date">6/23/10</span></td></tr><tr><th>1.0.0b10</th><td>Removed <tt>e</tt> flag from preg_replace() calls <span class="date">6/8/10</span></td></tr><tr><th>1.0.0b9</th><td>Fixed a bug with <a href="#camelize"><tt>camelize()</tt></a> and human-friendly strings <span class="date">6/8/10</span></td></tr><tr><th>1.0.0b8</th><td>Added the <a href="#stem"><tt>stem()</tt></a> method <span class="date">5/27/10</span></td></tr><tr><th>1.0.0b7</th><td>Added the <tt>$return_error</tt> parameter to <a href="#pluralize"><tt>pluralize()</tt></a> and <a href="#singularize"><tt>singularize()</tt></a> <span class="date">3/30/10</span></td></tr><tr><th>1.0.0b6</th><td>Added missing <a href="#compose"><tt>compose()</tt></a> method <span class="date">3/3/10</span></td></tr><tr><th>1.0.0b5</th><td>Fixed <a href="#reset"><tt>reset()</tt></a> to properly reset the singularization and pluralization rules <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b4</th><td>Added caching for various methods - provided significant performance boost to ORM <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b3</th><td>Changed replacement values in preg_replace() calls to be properly escaped <span class="date">6/11/09</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug where some words would lose capitalization with <a href="#pluralize"><tt>pluralize()</tt></a> and <a href="#singularize"><tt>singularize()</tt></a> <span class="date">1/25/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">9/25/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="addCamelUnderscoreRule" class="method static"><span class="resolution">::</span><span class="name">addCamelUnderscoreRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a custom <tt>camelCase</tt> to <tt>underscore_notation</tt> and <tt>underscore_notation</tt> to <tt>camelCase</tt> rule</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addCamelUnderscoreRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$camel_case</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$underscore_notation</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$camel_case</td>
+				<td class="param_description">The lower <tt>camelCase</tt> version of the string</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$underscore_notation</td>
+				<td class="param_description">The <tt>underscore_notation</tt> version of the string</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addHumanizeRule" class="method static"><span class="resolution">::</span><span class="name">addHumanizeRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a custom mapping of a non-humanized string to a humanized string for humanize()</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addHumanizeRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$non_humanized_string</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$humanized_string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$non_humanized_string</td>
+				<td class="param_description">The non-humanized string</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$humanized_string</td>
+				<td class="param_description">The humanized string</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addSingularPluralRule" class="method static"><span class="resolution">::</span><span class="name">addSingularPluralRule()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a custom singular to plural and plural to singular rule for pluralize() and singularize()</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addSingularPluralRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$singular</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$plural</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$singular</td>
+				<td class="param_description">The singular version of the noun</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$plural</td>
+				<td class="param_description">The plural version of the noun</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="camelize" class="method static"><span class="resolution">::</span><span class="name">camelize()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts an <tt>underscore_notation</tt>, human-friendly or <tt>camelCase</tt> string to <tt>camelCase</tt></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">camelize</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$upper</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to convert</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$upper</td>
+				<td class="param_description">If the camel case should be <tt>UpperCamelCase</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The converted string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="compose" class="protected method static"><span class="resolution">::</span><span class="name">compose()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Composes text using <a href="fText">fText</a> if loaded</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">compose</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$component</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to compose</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$component <em>[, ... ]</em></td>
+				<td class="param_description">A string or number to insert into the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The composed and possible translated message
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="humanize" class="method static"><span class="resolution">::</span><span class="name">humanize()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Makes an <tt>underscore_notation</tt>, <tt>camelCase</tt>, or human-friendly string into a human-friendly string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">humanize</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to humanize</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The converted string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="inflectOnQuantity" class="method static"><span class="resolution">::</span><span class="name">inflectOnQuantity()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the singular or plural form of the word or based on the quantity specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">inflectOnQuantity</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$quantity</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$singular_form</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$plural_form</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$use_words_for_single_digits</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$quantity</td>
+				<td class="param_description">The quantity (integer) or an array of objects to count</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$singular_form</td>
+				<td class="param_description">The string to be returned for when <tt>$quantity = 1</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$plural_form</td>
+				<td class="param_description">The string to be returned for when <tt>$quantity != 1</tt>, use <tt>%d</tt> to place the quantity in the string</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$use_words_for_single_digits</td>
+				<td class="param_description">If the numbers 0 to 9 should be written out as words</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="joinArray" class="method static"><span class="resolution">::</span><span class="name">joinArray()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the passed terms joined together using rule 2 from Strunk &amp; White's 'The Elements of Style'</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">joinArray</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$strings</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$type</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$strings</td>
+				<td class="param_description">An array of strings to be joined together</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of join to perform, <tt>'and'</tt> or <tt>'or'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The terms joined together
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="pluralize" class="method static"><span class="resolution">::</span><span class="name">pluralize()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the plural version of a singular noun</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">pluralize</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$singular_noun</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$return_error</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$singular_noun</td>
+				<td class="param_description">The singular noun to pluralize</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$return_error</td>
+				<td class="param_description">If this is <tt>TRUE</tt> and the noun can't be pluralized, <tt>FALSE</tt> will be returned instead</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The pluralized noun
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerJoinArrayCallback" class="method static"><span class="resolution">::</span><span class="name">registerJoinArrayCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows replacing the joinArray() function with a user defined function</p>
+								<p>This would be most useful for changing <a href="#joinArray"><tt>joinArray()</tt></a> to work with  languages other than English.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerJoinArrayCallback</span><span class="php-brackets">(</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The function to replace <a href="#joinArray"><tt>joinArray()</tt></a> with - should accept the same parameters and return the same type</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="singularize" class="method static"><span class="resolution">::</span><span class="name">singularize()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the singular version of a plural noun</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">singularize</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$plural_noun</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$return_error</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$plural_noun</td>
+				<td class="param_description">The plural noun to singularize</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$return_error</td>
+				<td class="param_description">If this is <tt>TRUE</tt> and the noun can't be pluralized, <tt>FALSE</tt> will be returned instead</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The singularized noun
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="stem" class="method static"><span class="resolution">::</span><span class="name">stem()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Uses the Porter Stemming algorithm to create the stem of a word, which is useful for searching</p>
+								<p>See <a class="ext-link" href="http://tartarus.org/~martin/PorterStemmer/"><span class="icon">http://tartarus.org/~martin/PorterStemmer/</span></a> for details about the  algorithm.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">stem</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$word</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$word</td>
+				<td class="param_description">The word to get the stem of</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The stem of the word
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="underscorize" class="method static"><span class="resolution">::</span><span class="name">underscorize()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts a <tt>camelCase</tt>, human-friendly or <tt>underscore_notation</tt> string to <tt>underscore_notation</tt></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">underscorize</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$string</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$string</td>
+				<td class="param_description">The string to convert</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The converted string
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

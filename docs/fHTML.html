@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fHTML – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fHTML">fHTML</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fHTML">Class Documentation</a></strong></li>
+<li><a href="/api/fHTML">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fHTML.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#EscapingContentSecurity">Escaping Content (Security)</a>
+<ul>
+<li><a href="#DisallowingHTML">Disallowing HTML</a></li>
+<li><a href="#AllowingHTML">Allowing HTML</a></li>
+</ul>
+</li>
+<li><a href="#Formatting">Formatting</a></li>
+<li><a href="#SelectOptionsandCheckboxes">Select Options and Checkboxes</a></li>
+<li><a href="#SendingtheContentTypeHeader">Sending the Content Type Header</a></li>
+</ul>
+</div>
+
+<p>
+The fHTML class helps to manipulate text so that it can be reliably converted for HTML display.
+</p>
+
+<h2 id="EscapingContentSecurity">Escaping Content (Security)</h2>
+
+<p>
+When developing websites that allow for user-generated content, it can be challenging to ensure that all content entered is displayed as it was intended to be displayed. Certain content may allow HTML, while other may not. The fHTML class provides two static methods for escaping data to be displayed, <a href="/api/fHTML#encode"><code>encode()</code></a> and <a href="/api/fHTML#prepare"><code>prepare()</code></a>. Both methods treat all content as UTF-8.
+</p>
+
+<h3 id="DisallowingHTML">Disallowing HTML</h3>
+
+<p>
+If there is a need to escape content that does not allow HTML, the static method <a href="/api/fHTML#encode"><code>encode()</code></a> should be used. This method will encode special characters, including the &lt; and &gt; characters used for HTML tags. Because of this, all HTML tags will be displayed as plain text, and will not function as HTML.
+</p>
+
+<p>
+<strong>It is very important that all untrusted user input be escaped using this method to prevent cross-site scripting attacks.</strong> See the <a href="/docs/Security">security page</a> for more information.
+</p>
+<pre class="block php"><code>echo fHTML::encode($form_submitted_content);</code></pre>
+
+<p>
+ <code>encode()</code> also properly escapes characters for display inside of HTML <code>input</code>, <code>textarea</code> and <code>select</code> tags.
+</p>
+
+<h3 id="AllowingHTML">Allowing HTML</h3>
+
+<p>
+<code>prepare()</code> will ensure that all special characters in the provided content will be properly displayed, while allowing HTML tags and entities. <strong>This method should only be used for content coming from trusted sources otherwise the code will be vulnerable to cross-site scripting attacks.</strong>
+</p>
+<pre class="block php"><code>echo fHTML::prepare($trusted_content);</code></pre>
+
+<h2 id="Formatting">Formatting</h2>
+
+<p>
+In addition to preparing content for valid display by encoding content, often times content needs to have some basic HTML formatting applied to it. The fHTML class provides two methods, <a href="/api/fHTML#convertNewlines"><code>convertNewlines()</code></a> and <a href="/api/fHTML#makeLinks"><code>makeLinks()</code></a>, to help with common formatting tasks.
+</p>
+
+<p>
+<code>convertNewlines()</code> will look at content as a mixture of plain text and HTML. If neither the <code>&lt;br /&gt;</code> or any block-level HTML tags are found, the content will have all newline characters converted to <code>&lt;br /&gt;</code>. If the converse is true, the content will be returned as is.
+</p>
+
+<p>
+Below is an example of the conversion happening:
+</p>
+<pre class="block php"><code>// First example, no block-level HTML
+$content = &lt;&lt;&lt;TEXT
+Here is content to be formatted.
+
+Newline characters will be converted into HTML break tags.
+TEXT;
+echo fHTML::convertNewlines($content);</code></pre>
+
+<p>
+ The output from above would be:
+</p>
+<pre class="block html"><code>Here is content to be formatted.&lt;br /&gt;
+&lt;br /&gt;
+Newline characters will be converted into HTML break tags.</code></pre>
+
+<p>
+ Here is an example of newlines being left as-is due to block-level HTML:
+</p>
+<pre class="block php"><code>// Second example, block-level HTML present
+$content2 = &lt;&lt;&lt;TEXT
+&lt;p&gt;
+    Here is content to be formatted.
+&lt;/p&gt;
+&lt;p&gt;
+   Newline characters will be left alone since there are block-level HTML tags present.
+&lt;/p&gt;
+TEXT;
+echo fHTML::convertNewlines($content2);</code></pre>
+
+<p>
+ The output from above would be:
+</p>
+<pre class="block html"><code>&lt;p&gt;
+    Here is content to be formatted.
+&lt;/p&gt;
+&lt;p&gt;
+   Newline characters will be left alone since there are block-level HTML tags present.
+&lt;/p&gt;</code></pre>
+
+<p>
+ The <a href="/api/fHTML#makeLinks"><code>makeLinks()</code></a> method will parse through a string and create HTML links out of anything that resembles a URL or email address, as long as it is not already part of an <code>&lt;a&gt;</code> tag.
+</p>
+
+<p>
+Here is an example of it in action:
+</p>
+<pre class="block php"><code>$content  = &quot;Example 1: www.example.com.\n&quot;;
+$content .= &quot;Example 2: https://example.com.\n&quot;;
+$content .= &quot;Example 3: john@example.com.\n&quot;;
+$content .= &quot;Example 4: ftp://john:password@example.com.\n&quot;;
+$content .= &quot;Example 5: www.example.co.uk.\n&quot;;
+$content .= &quot;Example 6: john@example.co.uk.\n&quot;;
+$content .= 'Example 7: &lt;a href=&quot;http://example.com&quot;&gt;http://example.com&lt;/a&gt;.';
+
+echo fHTML::makeLinks($content);</code></pre>
+
+<p>
+ The output would be:
+</p>
+<pre class="block html"><code>Example 1: &lt;a href=&quot;http://www.example.com&quot;&gt;www.example.com&lt;/a&gt;.
+Example 2: &lt;a href=&quot;https://example.com&quot;&gt;https://example.com&lt;/a&gt;.
+Example 3: &lt;a href=&quot;mailto:john@example.com&quot;&gt;john@example.com&lt;/a&gt;.
+Example 4: &lt;a href=&quot;ftp://john:password@example.com&quot;&gt;ftp://john:password@example.com&lt;/a&gt;.
+Example 5: &lt;a href=&quot;http://www.example.co.uk&quot;&gt;www.example.co.uk&lt;/a&gt;.
+Example 6: &lt;a href=&quot;mailto:john@example.co.uk&quot;&gt;john@example.co.uk&lt;/a&gt;.
+Example 7: &lt;a href=&quot;http://example.com&quot;&gt;http://example.com&lt;/a&gt;.</code></pre>
+
+<h2 id="SelectOptionsandCheckboxes">Select Options and Checkboxes</h2>
+
+<p>
+When displaying <code>select</code> and <code>checkbox</code> inputs it is necessary to print specific attributes to specify the current state of the inputs. The fHTML class provides two helper methods to simply this process: <a href="/api/fHTML#printOption"><code>printOption()</code></a> and <a href="/api/fHTML#showChecked"><code>showChecked()</code></a>.
+</p>
+
+<p>
+<a href="/api/fHTML#printOption"><code>printOption()</code></a> will display a <code>select</code> input <code>option</code> tag while marking it with <code>selected=&quot;selected&quot;</code> if the options value equals the currently selected value. The following PHP:
+</p>
+<pre class="block html"><code>&lt;select name=&quot;status&quot;&gt;
+    &lt;?
+    $statuses = array(
+        'active'   =&gt; 'Active',
+        'inactive' =&gt; 'Inactive',
+        'pending'  =&gt; 'Pending'
+    );
+    $current_status = 'active';
+    
+    foreach ($statuses as $value =&gt; $text) {
+        fHTML::printOption($text, $value, $current_status);
+    }
+    ?&gt;
+&lt;/select&gt;</code></pre>
+
+<p>
+ would produce the following HTML:
+</p>
+<pre class="block html"><code>&lt;select name=&quot;status&quot;&gt;
+    &lt;option value=&quot;active&quot; selected=&quot;selected&quot;&gt;Active&lt;/option&gt;
+    &lt;option value=&quot;inactive&quot;&gt;Inactive&lt;/option&gt;
+    &lt;option value=&quot;pending&quot;&gt;Pending&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+
+<p>
+ <a href="/api/fHTML#showChecked"><code>showChecked()</code></a> provides similar functionality for checkboxes, however since checkboxes can include many different attributes, <code>showChecked()</code> only handles printing the <code>checked=&quot;checked&quot;</code> part. Here is an example of using <code>showChecked()</code>:
+</p>
+<pre class="block html"><code>&lt;?php
+$is_authenticated = TRUE;
+$is_super_admin   = FALSE;
+?&gt;
+&lt;p&gt;
+    &lt;label for=&quot;form-is_authenticated&quot;&gt;Is Authenticated&lt;/label&gt;&lt;br /&gt;
+    &lt;input type=&quot;checkbox&quot; id=&quot;form-is_authenticated&quot; name=&quot;is_authenticated&quot; value=&quot;1&quot; &lt;? fHTML::showChecked($is_authenticated, TRUE) ?&gt; /&gt;
+&lt;/p&gt;
+&lt;p&gt;
+    &lt;label for=&quot;form-is_super_admin&quot;&gt;Is Super Admin&lt;/label&gt;&lt;br /&gt;
+    &lt;input type=&quot;checkbox&quot; id=&quot;form-is_super_admin&quot; name=&quot;is_super_admin&quot; value=&quot;1&quot; &lt;? fHTML::showChecked($is_super_admin, TRUE) ?&gt; /&gt;
+&lt;/p&gt;</code></pre>
+
+<p>
+ would produce the following output:
+</p>
+<pre class="block html"><code>&lt;p&gt;
+    &lt;label for=&quot;form-is_authenticated&quot;&gt;Is Authenticated&lt;/label&gt;&lt;br /&gt;
+    &lt;input type=&quot;checkbox&quot; id=&quot;form-is_authenticated&quot; name=&quot;is_authenticated&quot; value=&quot;1&quot; checked=&quot;checked&quot; /&gt;
+&lt;/p&gt;
+&lt;p&gt;
+    &lt;label for=&quot;form-is_super_admin&quot;&gt;Is Super Admin&lt;/label&gt;&lt;br /&gt;
+    &lt;input type=&quot;checkbox&quot; id=&quot;form-is_super_admin&quot; name=&quot;is_super_admin&quot; value=&quot;1&quot; /&gt;
+&lt;/p&gt;</code></pre>
+
+<h2 id="SendingtheContentTypeHeader">Sending the Content Type Header</h2>
+
+<p>
+If you default content is HTML, the method <a href="/api/fHTML#sendHeader"><code>sendHeader()</code></a> should be called ensure that the <code>Content-Type</code> header is set to the correct value of <code>text/html; charset=utf-8</code>. The <code>utf-8</code> character set encoding is specified since all of Flourish is built to work with UTF-8.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

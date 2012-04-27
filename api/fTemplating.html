@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fTemplating – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fTemplating</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fTemplating">Class Documentation</a></li>
+		<li><strong><a href="/api/fTemplating">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fTemplating.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="variables static">
+<h2><a href="#class_vars_static">Static Variables</a></h2>
+<ul>
+  	 		<li><a href="#instances">$instances</a></li>
+	   	   </ul>
+</div>
+<div class="protected variables">
+<h2><a href="#class_vars">Variables</a></h2>
+<ul>
+  	   	 		<li class="protected"><a href="#root">$root</a></li>
+	   </ul>
+</div>
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  			<li><a href="#attach">attach()</a></li>
+	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#retrieve">retrieve()</a></li>
+	  	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__destruct">__destruct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li><a href="#add">add()</a></li>
+	  	  			<li><a href="#buffer">buffer()</a></li>
+	  			<li><a href="#delete">delete()</a></li>
+	  			<li><a href="#destroy">destroy()</a></li>
+	  			<li><a href="#enableMinification">enableMinification()</a></li>
+	  			<li><a href="#enablePHPShortTags">enablePHPShortTags()</a></li>
+	  			<li><a href="#encode">encode()</a></li>
+	  			<li><a href="#filter">filter()</a></li>
+	  			<li><a href="#get">get()</a></li>
+	  			<li class="protected"><a href="#handleMinified">handleMinified()</a></li>
+	  			<li><a href="#inject">inject()</a></li>
+	  			<li class="protected"><a href="#minify">minify()</a></li>
+	  			<li class="protected"><a href="#minifyCode">minifyCode()</a></li>
+	  			<li class="protected"><a href="#minifyLiteral">minifyLiteral()</a></li>
+	  			<li><a href="#place">place()</a></li>
+	  			<li class="protected"><a href="#placeCSS">placeCSS()</a></li>
+	  			<li class="protected"><a href="#placeElement">placeElement()</a></li>
+	  			<li class="protected"><a href="#placeJS">placeJS()</a></li>
+	  			<li class="protected"><a href="#placePHP">placePHP()</a></li>
+	  			<li class="protected"><a href="#placeRSS">placeRSS()</a></li>
+	  			<li><a href="#prepare">prepare()</a></li>
+	  			<li><a href="#remove">remove()</a></li>
+	  	  	  			<li><a href="#set">set()</a></li>
+	  			<li class="protected"><a href="#verifyValue">verifyValue()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fBuffer">fBuffer</a></li>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fDirectory">fDirectory</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fHTML">fHTML</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b23</span></div>
+<p class="short_description">Allows for quick and flexible HTML templating</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b23</th><td>Added a default <tt>$name</tt> for <a href="#retrieve"><tt>retrieve()</tt></a> to mirror <a href="#attach"><tt>attach()</tt></a> <span class="date">8/31/11</span></td></tr><tr><th>1.0.0b22</th><td>Backwards Compatibility Break - removed the static method create(), added the static method <a href="#attach"><tt>attach()</tt></a> to fill its place <span class="date">8/31/11</span></td></tr><tr><th>1.0.0b21</th><td>Fixed a bug in <a href="#enableMinification"><tt>enableMinification()</tt></a> where the minification cache directory was sometimes not properly converted to a web path <span class="date">8/31/11</span></td></tr><tr><th>1.0.0b20</th><td>Fixed a bug in CSS minification that would reduce multiple zeros that are part of a hex color code, fixed minification of <tt>+ ++</tt> and similar constructs in JS <span class="date">8/31/11</span></td></tr><tr><th>1.0.0b19</th><td>Corrected a bug in <a href="#enablePHPShortTags"><tt>enablePHPShortTags()</tt></a> that would prevent proper translation inside of HTML tag attributes <span class="date">1/9/11</span></td></tr><tr><th>1.0.0b18</th><td>Fixed a bug with CSS minification and black hex codes <span class="date">10/10/10</span></td></tr><tr><th>1.0.0b17</th><td>Backwards Compatibility Break - <a href="#delete"><tt>delete()</tt></a> now returns the values of the element or elements that were deleted instead of returning the <a href="fTemplating">fTemplating</a> instance <span class="date">9/19/10</span></td></tr><tr><th>1.0.0b16</th><td>Fixed another bug with minifying JS regex literals <span class="date">9/13/10</span></td></tr><tr><th>1.0.0b15</th><td>Fixed a bug with minifying JS regex literals that occur after a reserved word <span class="date">9/12/10</span></td></tr><tr><th>1.0.0b14</th><td>Added documentation about <tt>[sub-key]</tt> syntax <span class="date">9/12/10</span></td></tr><tr><th>1.0.0b13</th><td>Backwards Compatibility Break - <a href="#add"><tt>add()</tt></a>, <a href="#delete"><tt>delete()</tt></a>, <a href="#get"><tt>get()</tt></a> and <a href="#set"><tt>set()</tt></a> now interpret <tt>[</tt> and <tt>]</tt> as array shorthand and thus they can not be used in element names, renamed <a href="#remove"><tt>remove()</tt></a> to <a href="#filter"><tt>filter()</tt></a> - added <tt>$beginning</tt> parameter to <a href="#add"><tt>add()</tt></a> and added <a href="#remove"><tt>remove()</tt></a> method <span class="date">9/12/10</span></td></tr><tr><th>1.0.0b12</th><td>Added <a href="#enableMinification"><tt>enableMinification()</tt></a>, <a href="#enablePHPShortTags"><tt>enablePHPShortTags()</tt></a>, the ability to be able to place child <a href="fTemplating">fTemplating</a> objects via a new magic element <tt>__main__</tt> and the <tt>$main_element</tt> parameter for <a href="#__construct"><tt>__construct()</tt></a> <span class="date">8/31/10</span></td></tr><tr><th>1.0.0b11</th><td>Fixed a bug with the elements not being initialized to a blank array <span class="date">8/12/10</span></td></tr><tr><th>1.0.0b10</th><td>Updated <a href="#place"><tt>place()</tt></a> to ignore URL query strings when detecting an element type <span class="date">7/26/10</span></td></tr><tr><th>1.0.0b9</th><td>Added the methods <a href="#delete"><tt>delete()</tt></a> and <a href="#remove"><tt>remove()</tt></a> <span class="date">7/15/10</span></td></tr><tr><th>1.0.0b8</th><td>Fixed a bug with placing absolute file paths on Windows <span class="date">7/9/10</span></td></tr><tr><th>1.0.0b7</th><td>Removed <tt>e</tt> flag from preg_replace() calls <span class="date">6/8/10</span></td></tr><tr><th>1.0.0b6</th><td>Changed <a href="#set"><tt>set()</tt></a> and <a href="#add"><tt>add()</tt></a> to return the object for method chaining, changed <a href="#set"><tt>set()</tt></a> and <a href="#get"><tt>get()</tt></a> to accept arrays of elements <span class="date">6/2/10</span></td></tr><tr><th>1.0.0b5</th><td>Added <a href="#encode"><tt>encode()</tt></a> <span class="date">5/20/10</span></td></tr><tr><th>1.0.0b4</th><td>Added create() and <a href="#retrieve"><tt>retrieve()</tt></a> for named <a href="fTemplating">fTemplating</a> instances <span class="date">5/11/10</span></td></tr><tr><th>1.0.0b3</th><td>Fixed an issue with placing relative file path <span class="date">4/23/10</span></td></tr><tr><th>1.0.0b2</th><td>Added the <a href="#inject"><tt>inject()</tt></a> method <span class="date">1/9/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/14/07</span></td></tr></table></div>
+<div class="class_variables static" id="class_vars_static">
+<h2>Static Variables</h2>
+	<!-- start variable static -->
+	<h3 id="instances" class="variable static"><span class="resolution">::</span><span class="name">$instances</span> <span class="visibility"></span></h3>
+	<div class="variable static">    
+					<div class="variable_description">
+							<p>Named <a href="fTemplating">fTemplating</a> instances</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable static -->
+</div>
+<div class="class_variables" id="class_vars">
+<h2>Variables</h2>
+	<!-- start protected variable -->
+	<h3 id="root" class="protected variable"><span class="resolution">-></span><span class="name">root</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The directory to look for files</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">string</p>
+	</div>
+	<!-- end variable -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="attach" class="method static"><span class="resolution">::</span><span class="name">attach()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Attaches a named template that can be accessed from any scope via retrieve()</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">attach</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fTemplating">fTemplating</a></span> <span class="php-var">$templating</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>'default' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fTemplating">fTemplating</a></td>
+				<td class="param_name">$templating</td>
+				<td class="param_description">The <a href="fTemplating">fTemplating</a> object to attach</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The name for this templating instance</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="retrieve" class="method static"><span class="resolution">::</span><span class="name">retrieve()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Retrieves a named template</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fTemplating">fTemplating</a></span> <span class="php-identifier">retrieve</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>'default' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The name of the template to retrieve</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The specified <a href="fTemplating">fTemplating</a> instance
+				</p>
+			</div>
+			<!-- end method static -->
+			</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Initializes this templating engine</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fTemplating">fTemplating</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$root</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$main_element</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$root</td>
+				<td class="param_description">The filesystem path to use when accessing relative files, defaults to <tt>$_SERVER['DOCUMENT_ROOT']</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$main_element</td>
+				<td class="param_description">The value for the <tt>__main__</tt> element - this is used when calling <a href="#place"><tt>place()</tt></a> without an element, or when placing <a href="fTemplating">fTemplating</a> objects as children</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__destruct" class="protected method"><span class="resolution">-></span><span class="name">__destruct()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Finishing placing elements if buffering was used</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__destruct</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="add" class="method"><span class="resolution">-></span><span class="name">add()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a value to an array element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fTemplating">fTemplating</a></span> <span class="php-identifier">add</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$beginning</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to add to - array elements can be modified via <tt>[sub-key]</tt> syntax, and thus <tt>[</tt> and <tt>]</tt> can not be used in element names</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to add</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$beginning</td>
+				<td class="param_description">If the value should be added to the beginning of the element</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The template object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="buffer" class="method"><span class="resolution">-></span><span class="name">buffer()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Enables buffered output, allowing set() and add() to happen after a place() but act as if they were done before</p>
+								<p>Please note that using buffered output will affect the order in which  code is executed since the elements are not actually <a href="#place"><tt>place()</tt></a>'ed until  the destructor is called.</p><p>If the non-template code depends on template code being executed  sequentially before it, you may not want to use output buffering.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">buffer</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="delete" class="method"><span class="resolution">-></span><span class="name">delete()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Deletes an element from the template</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">delete</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$default_value</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype">mixed</span> <span class="php-identifier">delete</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$elements</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to delete - array elements can be modified via <tt>[sub-key]</tt> syntax, and thus <tt>[</tt> and <tt>]</tt> can not be used in element names</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$default_value</td>
+				<td class="param_description">The value to return if the <tt>$element</tt> is not set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$elements</td>
+				<td class="param_description">The elements to delete - an array of element names or an associative array of keys being element names and the values being the default values</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The value of the <tt>$element</tt> that was deleted - an associative array of deleted elements will be returned if an array of <tt>$elements</tt> was specified
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="destroy" class="method"><span class="resolution">-></span><span class="name">destroy()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Erases all output since the invocation of the template - only works if buffering is on</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">destroy</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="enableMinification" class="method"><span class="resolution">-></span><span class="name">enableMinification()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Enables minified output for CSS and JS elements</p>
+								<p>For CSS and JS, compilation means that the file will be minified and  cached. The filename will change whenever the content change, allowing  for far-futures expire headers.</p><p>Please note that this option requires that all CSS and JS paths be  relative to the $_SERVER['DOCUMENT_ROOT'] and start with a <tt>/</tt>. Also  this class will not clean up old cached files out of the cache  directory.</p><p>This functionality will be inherited by all child <a href="fTemplating">fTemplating</a> objects  that do not have their own explicit minification settings.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableMinification</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$mode</span><span class="php-code">,</span> <span class="php-vartype"><a href="fDirectory">fDirectory</a>|string</span> <span class="php-var">$cache_directory</span><span class="php-code">,</span> <span class="php-vartype"><a href="fDirectory">fDirectory</a>|string</span> <span class="php-var">$path_prefix</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$mode</td>
+				<td class="param_description">The compilation mode - <tt>'development'</tt> means that file modification times will be checked on each load, <tt>'production'</tt> means that the cache files will only be regenerated when missing</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fDirectory">fDirectory</a>|string</td>
+				<td class="param_name">$cache_directory</td>
+				<td class="param_description">The directory to cache the compiled files into - this needs to be inside the document root or a path added to <a href="fFilesystem#addWebPathTranslation"><tt>fFilesystem::addWebPathTranslation()</tt></a></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fDirectory">fDirectory</a>|string</td>
+				<td class="param_name">$path_prefix</td>
+				<td class="param_description">The directory to prepend to all CSS and JS paths to load the files from the filesystem - this defaults to <tt>$_SERVER['DOCUMENT_ROOT']</tt></td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="enablePHPShortTags" class="method"><span class="resolution">-></span><span class="name">enablePHPShortTags()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Converts PHP short tags to long tags when short tags are turned off</p>
+								<p>Please note that this only affects PHP files that are <strong>directly</strong>  evaluated with <a href="#place"><tt>place()</tt></a> or <a href="#inject"><tt>inject()</tt></a>. It will not affect PHP files that  have been evaluated via <tt>include</tt> or <tt>require</tt> statements inside of the  directly evaluated PHP files.</p><p>This functionality will be inherited by all child <a href="fTemplating">fTemplating</a> objects  that do not have their own explicit short tag settings.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enablePHPShortTags</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$mode</span><span class="php-code">,</span> <span class="php-vartype"><a href="fDirectory">fDirectory</a>|string</span> <span class="php-var">$cache_directory</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$mode</td>
+				<td class="param_description">The compilation mode - <tt>'development'</tt> means that file modification times will be checked on each load, <tt>'production'</tt> means that the cache files will only be regenerated when missing</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fDirectory">fDirectory</a>|string</td>
+				<td class="param_name">$cache_directory</td>
+				<td class="param_description">The directory to cache the compiled files into - this directory should not be accessible from the web</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="encode" class="method"><span class="resolution">-></span><span class="name">encode()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the value of an element and runs it through <a href="fHTML#encode"><tt>fHTML::encode()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">encode</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$default_value</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to get - array elements can be accessed via <tt>[sub-key]</tt> syntax, and thus <tt>[</tt> and <tt>]</tt> can not be used in element names</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$default_value</td>
+				<td class="param_description">The value to return if the element has not been set</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The value of the element specified run through <a href="fHTML#encode"><tt>fHTML::encode()</tt></a>, or the default value if it has not been set
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="filter" class="method"><span class="resolution">-></span><span class="name">filter()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Removes a value from an array element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fTemplating">fTemplating</a></span> <span class="php-identifier">filter</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to remove from - array elements can be modified via <tt>[sub-key]</tt> syntax, and thus <tt>[</tt> and <tt>]</tt> can not be used in element names</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to remove - compared in a non-strict manner, such that removing <tt>0</tt> will remove a blank string and false also</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The template object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="get" class="method"><span class="resolution">-></span><span class="name">get()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the value of an element</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$default_value</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype">mixed</span> <span class="php-identifier">get</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$elements</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to get - array elements can be accessed via <tt>[sub-key]</tt> syntax, and thus <tt>[</tt> and <tt>]</tt> can not be used in element names</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$default_value</td>
+				<td class="param_description">The value to return if the element has not been set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$elements</td>
+				<td class="param_description">An array of elements to get, or an associative array where a string key is the element to get and the value is the default value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The value of the element(s) specified, or the default value(s) if it has not been set
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="handleMinified" class="protected method"><span class="resolution">-></span><span class="name">handleMinified()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Combines an array of CSS or JS files and places them as a single file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">handleMinified</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$type</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$values</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of compilation, 'css' or 'js'</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element name</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$values</td>
+				<td class="param_description">An array of file paths</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="inject" class="method"><span class="resolution">-></span><span class="name">inject()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Includes the file specified - this is identical to place() except a filename is specified instead of an element</p>
+								<p>Please see the <a href="#place"><tt>place()</tt></a> method for more details about functionality.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">inject</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file_path</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$file_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file_path</td>
+				<td class="param_description">The file to place</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file_type</td>
+				<td class="param_description">Will force the file to be placed as this type of file instead of auto-detecting the file type. Valid types include: <tt>'css'</tt>, <tt>'js'</tt>, <tt>'php'</tt> and <tt>'rss'</tt>.</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="minify" class="protected method"><span class="resolution">-></span><span class="name">minify()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Minifies JS or CSS</p>
+								<p>For JS, this function is based on the JSMin algorithm (not the code) from  <a class="ext-link" href="http://www.crockford.com/javascript/jsmin"><span class="icon">http://www.crockford.com/javascript/jsmin</span></a> with the addition of  preserving /*! comment blocks for things like licenses. Some other  versions of JSMin change the contents of special comment blocks, but  this version does not.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">minify</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$code</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$type</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$code</td>
+				<td class="param_description">The code to minify</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of code, 'css' or 'js'</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The minified code
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="minifyCode" class="protected method"><span class="resolution">-></span><span class="name">minifyCode()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Takes a block of CSS or JS and reduces the number of characters</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">minifyCode</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">&amp;$part</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">&amp;$buffer</span><span class="php-code">,</span> <span class="php-vartype"></span> <span class="php-var">&amp;$stack</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$type</span><span class="php-code">=</span>'js'<span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$stack</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">&amp;$part</td>
+				<td class="param_description">The part of code to minify</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">&amp;$buffer</td>
+				<td class="param_description">A buffer containing the last code or literal encountered</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$stack</td>
+				<td class="param_description">A stack used to keep track of the nesting level of CSS</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of code, <tt>'css'</tt> or <tt>'js'</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"></td>
+				<td class="param_name">&amp;$stack</td>
+				<td class="param_description"></td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="minifyLiteral" class="protected method"><span class="resolution">-></span><span class="name">minifyLiteral()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Takes a literal and either discards or keeps it</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">minifyLiteral</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">&amp;$part</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">&amp;$buffer</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$type</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">&amp;$part</td>
+				<td class="param_description">The literal to process</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">&amp;$buffer</td>
+				<td class="param_description">The last literal or code processed</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The language the literal is in, <tt>'css'</tt> or <tt>'js'</tt></td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="place" class="method"><span class="resolution">-></span><span class="name">place()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Includes the element specified - element must be set through set() first</p>
+								<p>If the element is a file path ending in <tt>.css</tt>, <tt>.js</tt>, <tt>.rss</tt> or <tt>.xml</tt>  an appropriate HTML tag will be printed (files ending in <tt>.xml</tt> will be  treated as an RSS feed). If the element is a file path ending in <tt>.inc</tt>,  <tt>.php</tt> or <tt>.php5</tt> it will be included.</p><p>Paths that start with <tt>./</tt> will be loaded relative to the current script.  Paths that start with a file or directory name will be loaded relative  to the <tt>$root</tt> passed in the constructor. Paths that start with <tt>/</tt> will  be loaded from the root of the filesystem.</p><p>You can pass the <tt>media</tt> attribute of a CSS file or the <tt>title</tt> attribute  of an RSS feed by adding an associative array with the following formats:</p><pre class="block "><code>array(
+    'path'  => (string) {css file path},
+    'media' => (string) {media type}
+);
+array(
+    'path'  => (string) {rss file path},
+    'title' => (string) {feed title}
+);</code></pre>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">place</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">=</span>'__main__'<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$file_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to place</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file_type</td>
+				<td class="param_description">Will force the element to be placed as this type of file instead of auto-detecting the file type. Valid types include: <tt>'css'</tt>, <tt>'js'</tt>, <tt>'php'</tt> and <tt>'rss'</tt>.</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="placeCSS" class="protected method"><span class="resolution">-></span><span class="name">placeCSS()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Prints a CSS <tt>link</tt> HTML tag to the output</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">placeCSS</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$info</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$info</td>
+				<td class="param_description">The path or array containing the <tt>'path'</tt> to the CSS file. Array can also contain a key <tt>'media'</tt>.</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="placeElement" class="protected method"><span class="resolution">-></span><span class="name">placeElement()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Performs the action of actually placing an element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">placeElement</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$file_type</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element that is being placed</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file_type</td>
+				<td class="param_description">The file type to treat all values as</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="placeJS" class="protected method"><span class="resolution">-></span><span class="name">placeJS()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Prints a java<tt>script</tt> HTML tag to the output</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">placeJS</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$info</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$info</td>
+				<td class="param_description">The path or array containing the <tt>'path'</tt> to the javascript file</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="placePHP" class="protected method"><span class="resolution">-></span><span class="name">placePHP()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Includes a PHP file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">placePHP</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$path</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element being placed</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$path</td>
+				<td class="param_description">The path to the PHP file</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="placeRSS" class="protected method"><span class="resolution">-></span><span class="name">placeRSS()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Prints an RSS <tt>link</tt> HTML tag to the output</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">placeRSS</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$info</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$info</td>
+				<td class="param_description">The path or array containing the <tt>'path'</tt> to the RSS xml file. May also contain a <tt>'title'</tt> key for the title of the RSS feed.</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="prepare" class="method"><span class="resolution">-></span><span class="name">prepare()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the value of an element and runs it through <a href="fHTML#prepare"><tt>fHTML::prepare()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">prepare</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$default_value</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to get - array elements can be access via <tt>[sub-key]</tt> syntax, and thus <tt>[</tt> and <tt>]</tt> can not be used in element names</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$default_value</td>
+				<td class="param_description">The value to return if the element has not been set</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The value of the element specified run through <a href="fHTML#prepare"><tt>fHTML::prepare()</tt></a>, or the default value if it has not been set
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="remove" class="method"><span class="resolution">-></span><span class="name">remove()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Removes and returns the value from the end of an array element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">remove</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$beginning</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to remove from to - array elements can be modified via <tt>[sub-key]</tt> syntax, and thus <tt>[</tt> and <tt>]</tt> can not be used in element names</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$beginning</td>
+				<td class="param_description">If the value should be removed from the beginning of the element</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The value that was removed
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="set" class="method"><span class="resolution">-></span><span class="name">set()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the value for an element</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fTemplating">fTemplating</a></span> <span class="php-identifier">set</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fTemplating">fTemplating</a></span> <span class="php-identifier">set</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$elements</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to set - the magic element <tt>__main__</tt> is used for placing the current <a href="fTemplating">fTemplating</a> object as a child of another <a href="fTemplating">fTemplating</a> object - array elements can be modified via <tt>[sub-key]</tt> syntax, and thus <tt>[</tt> and <tt>]</tt> can not be used in element names</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value for the element</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$elements</td>
+				<td class="param_description">An associative array with the key being the <tt>$element</tt> to set and the value being the <tt>$value</tt> for that element</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The template object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="verifyValue" class="protected method"><span class="resolution">-></span><span class="name">verifyValue()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Ensures the value is valid</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">verifyValue</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$file_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element that is being placed</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">A value to be placed</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file_type</td>
+				<td class="param_description">The file type that this element will be displayed as - skips checking file extension</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The file type of the value being placed
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

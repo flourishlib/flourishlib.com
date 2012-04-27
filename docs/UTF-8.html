@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>UTF-8 – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="UTF-8inPHP">UTF-8 in PHP</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#WhatisUTF-8">What is UTF-8?</a></li>
+<li><a href="#PHPandUTF-8">PHP and UTF-8</a></li>
+<li><a href="#FlourishsUTF-8Support">Flourishs UTF-8 Support</a>
+<ul>
+<li><a href="#DatabaseEncoding">Database Encoding</a>
+<ul>
+<li><a href="#PostgreSQL">PostgreSQL</a></li>
+<li><a href="#MySQL">MySQL</a></li>
+<li><a href="#MSSQL">MSSQL</a></li>
+<li><a href="#SQLite">SQLite</a></li>
+<li><a href="#Oracle">Oracle</a></li>
+<li><a href="#DB2">DB2</a></li>
+</ul>
+</li>
+<li><a href="#HTMLEncoding">HTML Encoding</a></li>
+<li><a href="#RequestData">Request Data</a></li>
+<li><a href="#StringManipulation">String Manipulation</a></li>
+</ul>
+</li>
+<li><a href="#ImportingData">Importing Data</a></li>
+</ul>
+</div>
+
+<p>
+After some experience with PHP, developers will often start to notice issues related to character encoding including &quot;weird&quot; characters and multiple characters where there should only be one. Handling character encoding on the web usually means support the <a href="http://en.wikipedia.org/wiki/UTF-8">UTF-8</a> character encoding to allow for more than the standard ASCII characters present on US keyboard layouts. This page will try to give a brief overview of the issues and solutions to using UTF-8 with PHP.
+</p>
+
+<h2 id="WhatisUTF-8">What is UTF-8?</h2>
+
+<p>
+UTF-8 is a <a href="http://en.wikipedia.org/wiki/Character_encoding">character encoding</a>, or a way to represent characters in a digital manner. It is an encoding of the of the <a href="http://en.wikipedia.org/wiki/Unicode">Unicode</a> standard which is closely related to the <a href="http://en.wikipedia.org/wiki/Universal_Character_Set">Universal
+Character Set</a> (UCS). There are many different character encodings in the Unicode standard, however UTF-8 has a few properties that make it one of the best and most popular choices for work on the web.
+</p>
+
+<p>
+Unicode contains around 100,000 characters, allowing it to represent a majority of the written languages in the world. Other common characters sets in languages with Latin characters include <a href="http://en.wikipedia.org/wiki/ISO_8859-1">ISO-8859-1</a> and <a href="http://en.wikipedia.org/wiki/Windows-1252">Windows-1252</a>. Each of these character encoding suffers from issues that they only support 256 different characters, with some common characters not being present (such as curly quotes and the Euro symbol in ISO-8859-1).
+</p>
+
+<p>
+Since UTF-8 is an encoding that represents the Unicode standard, character availability is not an issue. However, to be able to represent so many different characters, UTF-8 uses multiple bytes of space for all non-ASCII characters. One of the nice properties of UTF-8 is that it is backwards compatible with ASCII and the first 128 characters in ISO-8859-1 and Windows-1252. In addition, UTF-8 is constructed in such a way that it is  possible to tell where character boundaries are even if a parser is started in the middle of a character. Related to that, it is simple for a UTF-8 string to be verified as correctly encoded.
+</p>
+
+<h2 id="PHPandUTF-8">PHP and UTF-8</h2>
+
+<p>
+Unfortunately, PHP does not include native support for UTF-8. All of the built- in string functions are designed to work with single-byte encodings only. The <a href="http://php.net/mbstring">mbstring</a> extension exists to provide string functions that are compatible with UTF-8, however it only covers a fraction of the standard string functions, and is not installed by default.
+</p>
+
+<p>
+In addition to manipulating strings, the character encoding also affects the HTML that is returned to browsers and text in databases. The HTML standard defines ISO-8859-1 as the default character set to use for HTML when not specified, which will cause &quot;weird&quot; characters when UTF-8 content is returned. In a similar fashion, both MySQL and PostgreSQL default to using ISO-8859-1 as the character encoding unless specified.
+</p>
+
+<p>
+MSSQL is much more complicated to work with since the whole server uses a single character encoding. In order to store unicode information, the column data types must be specified as one of the national character types, <code>NVARCHAR</code>, <code>NCHAR</code> or <code>NTEXT</code>. These national columns store data in USC-2 encoding, which contains null bytes for the characters in the ASCII range. Unfortunately none of the PHP extensions support binary data to be returned in string columns, so the national columns require extra work to cast them as binary data and then translated the data once in PHP.
+</p>
+
+<h2 id="FlourishsUTF-8Support">Flourishs UTF-8 Support</h2>
+
+<p>
+Even though PHP has poor UTF-8 support by default, there are ways to work around it. Since using UTF-8 is the most universal way to handle characters from other languages, Flourish includes code that automatically works the shortcomings of PHP and provides UTF-8 support in all situations. While Flourish can solve many of the PHP issues with UTF-8, it is also important to understand how UTF-8 affects the other aspects of building a web site.
+</p>
+
+<h3 id="DatabaseEncoding">Database Encoding</h3>
+
+<p>
+If a database is being used to store text information, it should be created using UTF-8 as the character encoding. This allows the widest range of characters to be properly stored, sorted and manipulated by the database.
+</p>
+
+<h4 id="PostgreSQL">PostgreSQL</h4>
+
+<p>
+For PostgreSQL, the database encoding must be specified when the database is created. If it is not, the database will have to be dumped and re-imported into a new database.
+</p>
+<pre class="block sql"><code>CREATE DATABASE database_name ENCODING = 'UTF-8';</code></pre>
+
+<p>
+ The <a href="/docs/fDatabase">fDatabase</a> class will also automatically switch the connection encoding of any PostgreSQL database to UTF-8 even if it is not set up with UTF-8 encoding. This ensures that all data coming from PostgreSQL is always UTF-8, however there can be issues with trying to store UTF-8 characters in a database that does not support all of the same characters. Commonly this will be manifested by characters being stored as <code>?</code>s.
+</p>
+
+<h4 id="MySQL">MySQL</h4>
+
+<p>
+MySQL allows the character encoding for content to be defined when the database is created, or when a table is created.
+</p>
+<pre class="block sql"><code>-- Setting the default encoding for a database
+CREATE DATABASE example CHARACTER SET 'utf8';
+
+-- Setting the encoding on a table
+CREATE TABLE examples (
+    name VARCHAR(255) PRIMARY KEY
+) CHARACTER SET utf8;</code></pre>
+
+<p>
+ However, <a href="/docs/fDatabase">fDatabase</a> will also automatically switch the connection encoding for any MySQL database to UTF-8. This means that all data coming back to PHP will be encoded as UTF-8 regardless of the table encoding. There can, however, be issues if text containing UTF-8 data is stored in a table that can not handle as many characters as UTF-8. Commonly this will be manifested by characters being stored as <code>?</code>s.
+</p>
+
+<h4 id="MSSQL">MSSQL</h4>
+
+<p>
+MSSQL does not support UTF-8 natively like the other database engines, and requires that all databases on a server use the same character encoding. Luckily it also provides the national (or unicode) character data types <code>NVARCHAR</code>, <code>NCHAR</code> and <code>NTEXT</code> that allow storing unicode text.
+</p>
+<pre class="block sql"><code>CREATE TABLE examples (
+    name NVARCHAR(255) PRIMARY KEY,
+    description NTEXT NOT NULL
+);</code></pre>
+
+<p>
+ <em>If national columns are not used and the data you insert into the database can </em>not be represented by the default database encoding, the characters will be <em>stored as <code>?</code>s.</em>
+</p>
+
+<p>
+<em> There can be difficulties in dealing with such data types in PHP, however the <a href="/api/fDatabase#translatedQuery">fDatabase::translatedQuery()</a> method has been developed in such a way that all data from national columns will be returned as UTF-8.</em>
+</p>
+
+<p>
+<em><pre class="block php"><code>// This will ensure all data coming out of MSSQL is properly converted to UTF-8
+$result = $db-&gt;translatedQuery(&quot;SELECT * FROM examples WHERE name = %s&quot;, $name);</code></pre>
+
+<p>
+ When inserting strings containing UTF-8 into a MSSQL database, the method <a href="/api/fDatabase#escape">fDatabase::escape()</a> should be used since it will detect extended characters and escape them properly.
+</p>
+<pre class="block php"><code>// This will ensure all data going into MSSQL is properly stored in NCHAR, NVARCHAR, NTEXT columns
+$result = $db-&gt;translatedQuery(
+    &quot;INSERT INTO examples (name, description) VALUES (%s, %s)&quot;,
+    $name
+    $description
+);</code></pre>
+
+<p>
+ If you are using a linux or BSD server, you are probably access SQL Server through FreeTDS. The following configuration options should be set in your <code>freetds.conf</code> to ensure that everything works properly. 
+</p>
+</em>The encoding (<code>CP1252</code>) may need to be changed if the Windows machine the server is running on uses a primary language other than English.
+</p>
+
+<p>
+<em><pre><code># This is the version of the protocol to use for SQL Server 2000
+# and newer. Versions less than this may cause weird database bugs.
+tds version = 8.0
+
+# By default FreeTDS uses ISO-8859-1 which will turn some characters
+# into ?s. CP1252 (or Windows-1252) is usually the character encoding
+# used by SQL Server for English installs
+client charset = CP1252</code></pre>
+
+<p>
+ Depending on what linux distribution or flavor of BSD you are using, the <code>freetds.conf</code> may be in a few different directories, including:
+</p>
+
+<ul>
+<li><code>/etc/</code></li>
+<li><code>/etc/freetds/</code></li>
+<li><code>/usr/local/etc/</code></li>
+<li><code>/usr/local/etc/freetds/</code></li>
+</ul>
+ It is also possible your operating system may not install a default <code>freetds.conf</code>, but it may provide a <code>freetds.conf.dist</code> or something similar.</em>
+</p>
+
+<p>
+<em>
+<h4 id="SQLite">SQLite</h4>
+ SQLite uses UTF-8 for all text storage by default, so no special configuration is needed.</em>
+</p>
+
+<p>
+<em>
+<h4 id="Oracle">Oracle</h4>
+ Like with the other databases, Oracle has both a database encoding and a client encoding, however, unlike the other databases, the client encoding can not be set at connection time.</em>
+</p>
+
+<p>
+<em> In order to full support UTF-8, the Oracle database should be installed with the <code>AL32UTF8</code> encoding for version 9i+ and <code>UTF8</code> for version 8. </em>If you are installing <a href="http://www.oracle.com/technology/products/database/xe/index.html">Oracle 10g XE</a>, be sure to get the <code>universal</code> version that support multi-byte encodings.
+</p>
+
+<p>
+<em> On the client side, the character encoding is controlled by the <code>NLS_LANG</code> environmental variable. For US-English installs, this should probably be set to <code>AMERICAN_AMERICA.AL32UTF8</code>. In addition to the <code>NLS_LANG</code> environmental variable, the Oracle PHP drivers will also need the <code>ORACLE_HOME</code> environmental variable set. <a href="http://download.oracle.com/docs/cd/B25329_01/doc/admin.102/b25107">/connecting.htm#sthref81 Examples for Linux</a>.</em>
+</p>
+
+<p>
+<em>
+<h4 id="DB2">DB2</h4>
+ DB2 can be instructed to store UTF-8 as the database default, or on individual tables. UTF-8 is used whenever unicode is specified. To specified unicode as the default for a database, add the <code>USING CODESET</code> option to the <code>CREATE DATABASE</code> statement:</em>
+</p>
+
+<p>
+<em><pre class="block sql"><code>CREATE DATABASE example USING CODESET UTF-8 TERRITORY US;</code></pre>
+
+<p>
+ The <code>TERRITORY</code> should be set to an appropriate locale for your data.
+</p>
+ It is also possible to set the <code>CCSID UNICODE</code> on individual tables with <code>CREATE TABLE</code>:</em>
+</p>
+
+<p>
+<em><pre class="block sql"><code>CREATE TABLE example (
+    -- ....
+) CCSID UNICODE;</code></pre>
+
+<p>
+ In addition to setting up your server for UTF-8 database, it is required to set the client to use UTF-8 also. Unfortunately this can not be controlled via SQL over the database connection like other database, but must be set as an environmental variable. In a method appropriate for your OS, set the <code>DB2CODEPAGE</code> environmental variable to <code>1208</code>, which represents UTF-8.
+</p>
+ For linux with a sh/bash shell, this can be accomplished via:</em>
+</p>
+
+<p>
+<em><pre><code>export DB2CODEPAGE=1208</code></pre>
+
+<p>
+ For Windows, this can be set in the Environmental Variables panel under 
+</p>
+</em>My Computer &gt; Properties &gt; Advanced &gt; Environmental Variables<em>.</em>
+</p>
+
+<p>
+<em>
+<h3 id="HTMLEncoding">HTML Encoding</h3>
+ When delivering HTML to browsers, it is important to include the proper character encoding information so that the browser can properly display the characters. The method <a href="/api/fHTML#sendHeader">fHTML::sendHeader()</a> sets the proper <code>Content-type</code> header for UTF-8 HTML. This method should be called for every page that returns HTML, and should be called before any output is created. Consequently, it will often be called in an init or bootstrapping script:</em>
+</p>
+
+<p>
+<em><pre class="block php"><code>fHTML::sendHeader();</code></pre>
+
+<p>
+ It is also good practice to include an HTML <code>meta</code> tag specifying the character set for when HTML is displayed from the filesystem instead of a web server.
+</p>
+<pre class="block html"><code>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot; lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+        </code></pre>
+
+<h3 id="RequestData">Request Data</h3>
+ As long as the HTML encoding is set to UTF-8, all browsers should obey this setting and submit request data encoded as UTF-8. When retrieving information from <code>GET</code> and <code>POST</code> requests, the class <a href="/docs/fRequest">fRequest</a> ensures that all values coming in are valid UTF-8 strings, and cleans out those that are not.</em>
+</p>
+
+<p>
+<em><pre class="block php"><code>// This value will be proper
+$name = fRequest::get('name');</code></pre>
+
+<h3 id="StringManipulation">String Manipulation</h3>
+ The class <a href="/docs/fUTF8">fUTF8</a> is a static class that provides all of the same functionality as the normal PHP string functions, but in a way that is compatible with the multi- byte nature of UTF-8. The <a href="/docs/fUTF8">class documentation</a> includes a list of all of the PHP string functions and their equivalent methods in <a href="/docs/fUTF8">fUTF8</a>.</em>
+</p>
+
+<p>
+<em>
+<h2 id="ImportingData">Importing Data</h2>
+ While Flourish is built to ensure that all data coming in through normal web interactions is clean and valid UTF-8, it is necessary to manually convert data coming from an old database or text files. The <a href="http://php.net/iconv">iconv</a> PHP extension provides functionality to convert text stored in another encoding to UTF-8 using a simple function call.</em>
+</p>
+
+<p>
+<em> When importing data from an old database, as long as the <a href="/docs/fDatabase">fDatabase</a> class is used to connect to the old DB, all data should be automatically converted from the old encoding to UTF-8 on-the-fly. This is accomplished by the fact that <a href="/docs/fDatabase">fDatabase</a> sets the connection encoding to UTF-8 whenever connecting to a database. This, does not, however mean that <a href="/docs/fDatabase">fDatabase</a> will work seamlessly with a non UTF-8 database. Most of the default character sets for databases only support a subset of the UTF-8 characters, making conversion to UTF-8 fine, but conversion back nearly impossible.</em>
+</p>
+
+<p>
+<em> 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html></em>
+</p>

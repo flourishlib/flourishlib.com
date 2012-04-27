@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fActiveRecord – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fActiveRecord">fActiveRecord</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fActiveRecord">Class Documentation</a></strong></li>
+<li><a href="/api/fActiveRecord">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fActiveRecord.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Setup">Setup</a>
+<ul>
+<li><a href="#CustomClasstoTableMapping">Custom Class to Table Mapping</a></li>
+<li><a href="#ModelingTablesinOtherSchemas">Modeling Tables in Other Schemas</a></li>
+<li><a href="#UsingMultipleDatabases">Using Multiple Databases</a></li>
+</ul>
+</li>
+<li><a href="#CreatingandLoadingRecords">Creating and Loading Records</a></li>
+<li><a href="#ColumnOperations">Column Operations</a>
+<ul>
+<li><a href="#DateTimeandTimestampColumns">Date, Time and Timestamp Columns</a></li>
+<li><a href="#FloatDecimalColumns">Float/Decimal Columns</a></li>
+<li><a href="#StringColumns">String Columns</a></li>
+<li><a href="#AllColumns">All Columns</a></li>
+</ul>
+</li>
+<li><a href="#ColumnValuesandObjects">Column Values and Objects</a></li>
+<li><a href="#RecordOperations">Record Operations</a>
+<ul>
+<li><a href="#store">store()</a></li>
+<li><a href="#validate">validate()</a>
+<ul>
+<li><a href="#WhatisValidated">What is Validated</a></li>
+<li><a href="#Usage">Usage</a></li>
+</ul>
+</li>
+<li><a href="#delete">delete()</a></li>
+<li><a href="#load">load()</a></li>
+<li><a href="#populate">populate()</a>
+<ul>
+<li><a href="#BlankStrings">Blank Strings</a></li>
+<li><a href="#Checkboxes">Checkboxes</a></li>
+</ul>
+</li>
+<li><a href="#replicateclone">replicate() / clone</a></li>
+<li><a href="#exists">exists()</a>
+<ul>
+<li><a href="#Warning">Warning</a></li>
+</ul>
+</li>
+<li><a href="#reflect">reflect()</a></li>
+</ul>
+</li>
+<li><a href="#RelatedRecordsOperations">Related Records Operations</a>
+<ul>
+<li><a href="#-to-oneRelationships">*-to-one Relationships</a>
+<ul>
+<li><a href="#One-to-oneRelationships">One-to-one Relationships</a></li>
+</ul>
+</li>
+<li><a href="#-to-manyRelationships">*-to-many Relationships</a>
+<ul>
+<li><a href="#BuildingListingCountingandHas">Building, Listing, Counting and Has</a></li>
+<li><a href="#Associating">Associating</a></li>
+<li><a href="#Populating">Populating</a></li>
+</ul>
+</li>
+<li><a href="#RelationshipRoutes">Relationship Routes</a></li>
+</ul>
+</li>
+<li><a href="#Configuration">Configuration</a></li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><strong>fActiveRecord</strong></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fActiveRecord class is an abstract class that follows the <a href="http://en.wikipedia.org/wiki/Active_record_pattern">active record pattern</a>. It provides an object-oriented interface for creating, retrieving, storing and deleting a single row (or record) in a database. All interaction with the database is done automatically without the need to write any SQL.
+</p>
+
+<p>
+In addition to providing an interface to the columns in a single table, data from other database tables related via <code>FOREIGN KEY</code> constraints can be easily and efficiently retrieved. To query for and return multiple fActiveRecord objects, please see the class <a href="/docs/fRecordSet">fRecordSet</a>.
+</p>
+
+<p>
+The following discussion is built on top of the content of <a href="/docs/OrmConventions">ORM Conventions</a>. Topics include database schema structure, various notation standards and information about MySQL and SQLite databases.
+</p>
+
+<h2 id="Setup">Setup</h2>
+
+<p>
+In order to use the fActiveRecord class, a database table must exist to be modeled. Below is an example users tableplease note that the table has been designed to demonstrate the features of the class, not as an example of a well-designed schema.
+</p>
+<pre class="block sql"><code>CREATE TABLE users (
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    middle_initial VARCHAR(5) NOT NULL DEFAULT '',
+    last_name VARCHAR(100) NOT NULL,
+    date_created TIMESTAMP NOT NULL,
+    email_validated BOOLEAN NOT NULL DEFAULT FALSE,
+    membership_fee DECIMAL(10,2) NOT NULL,
+    profile TEXT NOT NULL DEFAULT '',
+    status VARCHAR(20) NOT NULL CHECK(status IN ('Active', 'Inactive'))    
+);</code></pre>
+
+<p>
+ Once a table has been created, a PHP class will need to be made. The name of the class should be in <code>UpperCamelCase</code> notation and should be a singular form of the table name. Thus for the <code>users</code> table a class <code>User</code> would be created that extends fActiveRecord.
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+    }
+}</code></pre>
+
+<p>
+ A blank extension of the <a href="/api/fActiveRecord#configure"><code>configure()</code></a> method has been included since that is where all class functionality configuration is placed. This method is called exactly once per script execution and is the preferred location to call code to extend or set up the class, but not the individual object.
+</p>
+
+<p>
+In addition to the fActiveRecord class and database table, a method to connect to the database needs to be set up. To do this, an instance of the <a href="/docs/fDatabase">fDatabase</a> class needs to be passed to <a href="/api/fORMDatabase#attach">fORMDatabase::attach()</a>  this is commonly done in the sites initilization script.
+</p>
+<pre class="block php"><code>// Set up a SQLite database for use by fActiveRecord and fRecordSet
+fORMDatabase::attach(
+    new fDatabase('sqlite', '/path/to/database')
+);</code></pre>
+
+<p>
+ The <a href="/docs/fDatabase">fDatabase</a> instance attached to <a href="/docs/fORMDatabase">fORMDatabase</a> will also be used by <a href="/docs/fRecordSet">fRecordSet</a>.
+</p>
+
+<h3 id="CustomClasstoTableMapping">Custom Class to Table Mapping</h3>
+
+<p>
+It is possible to change the class to table association for modeling an existing incompatible database. The static method <a href="/api/fORM#mapClassToTable">fORM::mapClassToTable()</a> will accept the <code>$class</code> and the <code>$table</code> to map to the class to. 
+</p>
+
+<p>
+<em>This method should be called in the site-wide configuration and should <strong>not</strong> be called in the <a href="/api/fActiveRecord#configure"><code>configure()</code></a> method.</em>
+</p>
+<pre class="block php"><code>// Class to table mapping should occur before any classes are used
+// such as when the database is attached via fORMDatabase::attach()
+fORMDatabase::attach($db);
+fORM::mapClassToTable('User', 'user');</code></pre>
+
+<h3 id="ModelingTablesinOtherSchemas">Modeling Tables in Other Schemas</h3>
+
+<p>
+When a class models a table in a non-default schema (<code>public</code> for PostgreSQL, <code>dbo</code> for MSSQL and the username for Oracle and DB2), the static method <a href="/api/fORM#mapClassToTable">fORM::mapClassToTable()</a> should be called with first parameter the <code>$class</code> to map, and the second parameter, <code>$table</code>, should be in the format <code>schema.table</code>.
+</p>
+
+<p>
+<em>This method should be called in the site-wide configuration and should <strong>not</strong> be called in the <a href="/api/fActiveRecord#configure"><code>configure()</code></a> method.</em>
+</p>
+<pre class="block php"><code>// This maps the User class to the users table in the authorization schema
+fORM::mapClassToTable('User', 'authorization.users');</code></pre>
+
+<h3 id="UsingMultipleDatabases">Using Multiple Databases</h3>
+
+<p>
+When multiple databases are configured via <a href="/docs/fORMDatabase">fORMDatabase</a>, classes can model tables on the non-<code>default</code> database by calling the method <a href="/api/fORM#mapClassToDatabase">fORM::mapClassToDatabase()</a>. The first parameter is the <code>$class</code> to map, and the second is the <code>$name</code> of the database set in <a href="/api/fORMDatabase#attach">fORMDatabase::attach()</a>. 
+</p>
+<pre class="block php"><code>// Attach a second database as &quot;commerce_db&quot; and have the User class model the users table in it
+fORMDatabase::attach($db, 'commerce_db');
+fORM::mapClassToDatabase('User', 'commerce_db');</code></pre>
+
+<p>
+ <em>Like <a href="/api/fORM#mapClassToTable">fORM::mapClassToTable()</a>, this method should be called in the site-wide configuration and should <strong>not</strong> be call in the <a href="/api/fActiveRecord#configure"><code>configure()</code></a> method. This method is not required for classes modeling tables in the default database  if no <code>$name</code> was provided to <a href="/api/fORMDatabase#attach">fORMDatabase::attach()</a>, then the database is the default.</em>
+</p>
+
+<h2 id="CreatingandLoadingRecords">Creating and Loading Records</h2>
+
+<p>
+A new record can be created by simply creating an object without any parameters.
+</p>
+<pre class="block php"><code>$new_user_1 = new User();
+$new_user_2 = new User();</code></pre>
+
+<p>
+ Existing records can be loaded from the database by passing the primary key value to the constructor. If a primary key has multiple columns, use an associative array with the keys being the columns.
+</p>
+<pre class="block php"><code>// Loading a record with a single column primary key
+$user = new User(2);
+
+// Loading a record with a multiple column primary key
+$permission = new Permission(array('user_id' =&gt; 2, 'resource_id' =&gt; 3));</code></pre>
+
+<p>
+ It is also possible to load a record based on the values from columns in a <code>UNIQUE</code> constraint. When loading via a <code>UNIQUE</code> constraint, an associative array must be used, even if there is only a single column in the constraint.
+</p>
+<pre class="block php"><code>// This loads a user by their unique email address
+$user = new User(array('email' =&gt; 'will@flourishlib.com'));</code></pre>
+
+<p>
+ Please note that an fActiveRecord object is a <a href="/docs/ReferenceObjects">reference object</a>. All objects of the same class will share the same data and any operations will affect all instances. Thus if the <code>User</code> object for user <code>3</code> has the first name changed, all other objects representing user <code>3</code> will also have the first name changed.
+</p>
+
+<h2 id="ColumnOperations">Column Operations</h2>
+
+<p>
+For every column in a record there are at least five different operations that can be performed. ORM plugins can change these default behaviors or add even more.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Action</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td>Retrieves the columns value</td>
+</tr>
+<tr>
+<td><code>set</code></td>
+<td>Sets a new value for the column - empty string <code>''</code> are converted to <code>NULL</code></td>
+</tr>
+<tr>
+<td><code>encode</code></td>
+<td>Encodes all special HTML characters  should be used when content is not trusted or for displaying in HTML tag attributes</td>
+</tr>
+<tr>
+<td><code>prepare</code></td>
+<td>Encodes all special HTML characters, but leaves HTML tags and entities unencoded  should only be used for trusted content</td>
+</tr>
+<tr>
+<td><code>inspect</code></td>
+<td>Returns information about the column, including information such as the data type and valid values</td>
+</tr>
+</tbody></table>
+
+<p>
+These five operations are combined with the column name into a <code>camelCase</code> method name. Below are some examples:
+</p>
+<pre class="block php"><code>$first_name = $user-&gt;getFirstName();
+
+$user-&gt;setFirstName($first_name);
+
+echo $user-&gt;encodeFirstName();
+
+echo $user-&gt;prepareFirstName();
+
+$max_length = $user-&gt;inspectFirstName('max_length');</code></pre>
+
+<p>
+ As mentioned on the <a href="/docs/OrmConventions">ORM Conventions</a> page, all columns in the database should be created using <code>underscore_notation</code>. This assumes that numbers are separated from words by an underscore, such as <code>address_2</code>. If a number is not separated by an underscore, or you are having other notation conversion issues, you man need to <a href="/docs/fGrammar#FixingNotationConversionIssues">customize the notation conversion</a> using <a href="/docs/fGrammar">fGrammar</a>.
+</p>
+
+<h3 id="DateTimeandTimestampColumns">Date, Time and Timestamp Columns</h3>
+
+<p>
+When dealing with date, time or timestamp columns, the <code>prepare</code> and <code>encode</code> methods require a single parameter, <code>$date_formatting_string</code>. The formatting string can be any valid <a href="http://php.net/date.function"><code>date()</code></a> formatting string, or a format name that was created with <a href="/api/fTimestamp#defineFormat">fTimestamp::defineFormat()</a>.
+</p>
+<pre class="block php"><code>echo $user-&gt;prepareDateCreated('n/j/y');
+echo $user-&gt;encodeDateCreated('my_date_format');</code></pre>
+
+<h3 id="FloatDecimalColumns">Float/Decimal Columns</h3>
+
+<p>
+Floating point columns <em>without</em> an explicit precision require a single parameter, <code>$decimal_places</code>, when calling the <code>prepare</code> and <code>encode</code> methods. Floating point columns <em>with</em> an explicit precision can optionally pass an integer for <code>$decimal_places</code>.
+</p>
+<pre class="block php"><code>echo $user-&gt;prepareMembershipFee(2);</code></pre>
+
+<h3 id="StringColumns">String Columns</h3>
+
+<p>
+Columns that are string columns (<code>VARCHAR</code>, <code>CHAR</code> and <code>TEXT</code>) can optionally pass <code>TRUE</code> to their <code>prepare</code> and <code>encode</code> methods to cause all email addresses and website addresses to be converted to HTML links and to cause content without block-level HTML to have newline characters converted to <code>&lt;br /&gt;</code> tags.
+</p>
+<pre class="block php"><code>echo $user-&gt;prepareEmail(TRUE);
+echo $user-&gt;prepareProfile(TRUE);</code></pre>
+
+<h3 id="AllColumns">All Columns</h3>
+
+<p>
+Every column has an <code>inspect</code> method that will return an associative array of data about the column. It is also possible to retrieve a single value by passing the optional parameter, <code>$element</code>.
+</p>
+<pre class="block php"><code>$column_info = $user-&gt;inspectFirstName();
+$max_length  = $user-&gt;inspectFirstName('max_length');</code></pre>
+
+<h2 id="ColumnValuesandObjects">Column Values and Objects</h2>
+
+<p>
+The fActiveRecord class supports storing both scalar values (strings, integers, booleans, etc) and objects in columns. The only special consideration with storing objects in columns is that they should have a <code>__toString()</code> method so that they can be converted to a scalar to be saved in the database.
+</p>
+
+<p>
+All of the Flourish <a href="/docs/ValueObjects">value objects</a> include such a <code>__toString()</code> method, making them work perfectly with fActiveRecord. In fact, fActiveRecord even loads <code>date</code>, <code>time</code> and <code>timestamp</code> columns out of the database into <a href="/docs/fDate">fDate</a>, <a href="/docs/fTime">fTime</a> and <a href="/docs/fTimestamp">fTimestamp</a> objects respectively. Nothing needs to be called or configured to enable this functionality. Thus, when getting <code>date</code>, <code>time</code> or <code>timestamp</code> values from a record, be sure to treat them as <a href="/docs/fDate">fDate</a>, <a href="/docs/fTime">fTime</a> and <a href="/docs/fTimestamp">fTimestamp</a> objects.
+</p>
+<pre class="block php"><code>// Chaining the fDate::format() method off of the get method
+echo $user-&gt;getDateCreated()-&gt;format('n/j/y');
+
+// Objects can be stored in a column as long as they have a __toString() method
+$user-&gt;setLastLoginTimestamp(new fTimestamp());</code></pre>
+
+<h2 id="RecordOperations">Record Operations</h2>
+
+<p>
+The following methods allow manipulation of an active record object:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fActiveRecord#store"><code>store()</code></a></td>
+<td>Performs <a href="/api/fActiveRecord#validate"><code>validate()</code></a> and then executes an <code>INSERT</code> or <code>UDPATE</code> query</td>
+</tr>
+<tr>
+<td><a href="/api/fActiveRecord#validate"><code>validate()</code></a></td>
+<td>Ensures a record can be successfully saved to the database without actually doing it</td>
+</tr>
+<tr>
+<td><a href="/api/fActiveRecord#delete"><code>delete()</code></a></td>
+<td>Deletes a record from the database</td>
+</tr>
+<tr>
+<td><a href="/api/fActiveRecord#load"><code>load()</code></a></td>
+<td>Reloads a records values from the database</td>
+</tr>
+<tr>
+<td><a href="/api/fActiveRecord#populate"><code>populate()</code></a></td>
+<td>Values from the HTTP request will automatically be set to the various columns of the record</td>
+</tr>
+<tr>
+<td><a href="/api/fActiveRecord#replicate"><code>replicate()</code></a> / <code>clone</code></td>
+<td>Creates a copy of the record, cloning all contained objects and removing any auto incrementing primary key, can also replicate related records</td>
+</tr>
+<tr>
+<td><a href="/api/fActiveRecord#exists"><code>exists()</code></a></td>
+<td>Indicates if a record has already been stored in the database</td>
+</tr>
+<tr>
+<td><a href="/api/fActiveRecord#reflect"><code>reflect()</code></a></td>
+<td>Returns a string containing the method signature for every method of the record</td>
+</tr>
+</tbody></table>
+
+<h3 id="store">store()</h3>
+
+<p>
+The <a href="/api/fActiveRecord#store"><code>store()</code></a> method will ensure that the record can be properly saved in the database and will store it there. If any errors are found, an <a href="/docs/fValidationException">fValidationException</a> will be thrown with a message that is suitable for display to end users. The validation is performed by <code>store()</code> calling <a href="/api/fActiveRecord#validate"><code>validate()</code></a>.
+</p>
+
+<p>
+<code>store()</code> will also automatically begin a database and filesystem transaction if they are not already in progress. This allows database and filesystem actions to be performed in extending code and child objects without the need to keep track of changes manually and revert them.
+</p>
+<pre class="block php"><code>try {
+    $user = new User();
+    $user-&gt;setFirstName('Will');
+    $user-&gt;setLastName('Bond');
+    $user-&gt;store();
+
+} catch (fExpectedException $e) {
+    echo $e-&gt;printMessage();
+}</code></pre>
+
+<p>
+ There is a single optional parameter, <code>$force_cascade</code>, that affects how related records in one-to-many and one-to-one relationships are stored. <em>See the <a href="#RelatedRecordsOperations">Related Records Operations</a> section for more details about how related records can be accessed and manipulated.</em>
+</p>
+
+<p>
+If related records (which we will call child records) have been set via an <code>associate</code> or <code>populate</code> method, and one or more of the original child records is no longer associated, and that child records has child records (grandchildren of the original) with an <code>ON DELETE RESTRICT</code> or <code>ON DELETE NO ACTION</code> clause in the <code>FOREIGN KEY</code> constraint, that child and the associated grandchildren records will all be deleted anyway. Normally an exception would be thrown indicating the child to be deleted had a grandchild record referencing it.
+</p>
+
+<p>
+By default this parameter is set to <code>FALSE</code> to obey the restrictions in the database schema.
+</p>
+<pre class="block php"><code>$user-&gt;populateFakeRelatedRecords();
+$user-&gt;store(TRUE);</code></pre>
+
+<p>
+ This forced cascade effect is accomplished by first finding the related records and explicitly deleting them before the originally associated record.
+</p>
+
+<h3 id="validate">validate()</h3>
+
+<p>
+Validation of a record is performed based on the database schema and any additional validation rules set via the <a href="/docs/fORMValidation">fORMValidation</a> class, ORM plugins and <a href="/docs/fORM">fORM</a> hooks.
+</p>
+
+<h4 id="WhatisValidated">What is Validated</h4>
+
+<p>
+The following rules are used to determine if a record is valid to store in the database:
+</p>
+
+<ol>
+<li>All data must be compatible with the data type of the column it is being stored in</li>
+<li>If a column has a <code>NOT NULL</code> constraint and does not have a <code>DEFAULT</code> value, a value other than an empty string must be set</li>
+<li>If a value has a <code>FOREIGN KEY</code> constraint, the value must reference a valid value</li>
+<li>If a column has a <code>UNIQUE</code> or <code>PRIMARY KEY</code> contraint, the value must be <code>NULL</code> or unique</li>
+<li>If a column has a <code>CHECK</code> constraint with an <code>IN (...)</code> expression, the value must be in the list - for MySQL this holds true for <code>ENUM</code> columns</li>
+<li>If a column is a <code>VARCHAR</code> or <code>CHAR</code> column, the value string length must be less than or equal to the size of the column</li>
+</ol>
+
+<p>
+If any of these validation checks do not work out, an <a href="/docs/fValidationException">fValidationException</a> will be thrown contains an error message suitable for end users.
+</p>
+
+<p>
+There are many additional validation rules that can be added to a record via <a href="/docs/fORMValidation">fORMValidation</a>. If the desired functionality is not available via <a href="/docs/fORMValidation">fORMValidation</a>, an ORM hook can be used. Please see the <a href="/docs/fORM#AddingFunctionalitytofActiveRecord">Adding Functionality to fActiveRecord</a> and <a href="/docs/fORM#CustomValidationUsingaHook">Custom Validation Using a Hook</a> section of the <a href="/docs/fORM">fORM</a> page for details and example code.
+</p>
+
+<p>
+Many of the various ORM plugins that come with Flourish (<a href="/docs/fORMColumn">fORMColumn</a>, <a href="/docs/fORMDate">fORMDate</a>, <a href="/docs/fORMFile">fORMFile</a>, <a href="/docs/fORMMoney">fORMMoney</a> and <a href="/docs/fORMOrdering">fORMOrdering</a>) add additional validation rules.
+</p>
+
+<h4 id="Usage">Usage</h4>
+
+<p>
+Since this method is automatically called when executing <a href="/api/fActiveRecord#store"><code>store()</code></a>, it will typically only be called in situations where storing is not possible, such as multi-page forms.
+</p>
+<pre class="block php"><code>try {
+    // ...
+    $user-&gt;validate();
+
+} catch (fValidationException $e) {
+    echo $e-&gt;printMessage();
+}</code></pre>
+
+<p>
+ It is also possible to return an array of errors by passing <code>TRUE</code> to the first parameter of <a href="/api/fActiveRecord#validate"><code>validate()</code></a>, <code>$return_messages</code>. This prevents an exception from being thrown.
+</p>
+<pre class="block php"><code>$errors = $user-&gt;validate(TRUE);</code></pre>
+
+<p>
+ The returned array will have keys in the following format with the value being the error message.
+</p>
+
+<ul>
+<li>Errors involving a single column: the key will be the database column name</li>
+<li>Errors involving multiple columns: the key will be the database column names joined by <code>,</code></li>
+<li>Errors involving related tables: the key will be the related table name</li>
+<li>Errors involving columns in one-to-one related tables: the key will be the related table name ollowed by <code>::</code> followed by the column name (or column names joined by <code>,</code>)</li>
+<li>Errors involving columns in one-to-many related tables: the key will be the related table name followed by <code>[</code> followed by the zero-based record number, followed by <code>]</code>. The value of this key will be an associative array containing two keys, name and errors. The name key will have a user-friendly name for the related record and the errors key will contain an array of error messages for the related record.</li>
+</ul>
+
+<p>
+Below is an example of a returned array:
+</p>
+<pre class="block php"><code>array(
+    // Regular columns in the users table
+    'first_name'        =&gt; 'First Name: Please enter a value',
+    'last_name'         =&gt; 'Last Name: Please enter a value',
+    // A message involving multiple columns, from fORMValidate::addOneOrMoreRule()
+    'email,phone'       =&gt; 'Email, Phone: Please enter at least one',
+    // A message from fORMValidate::addManyToManyRule()
+    'groups'            =&gt; 'Groups: Please select at least one',
+    // A message from the bio column in the one-to-one related user_details table
+    'user_details::bio' =&gt; 'User Details Bio: Please enter a value',
+    // Messages from one-to-many related favorites table
+    'favorites[0]'      =&gt; array(
+        'name'   =&gt; 'Favorite #1',
+        'errors' =&gt; array(
+            'name' =&gt; 'Name: Please enter a value'
+        )
+    ),
+    'favorites[2]'      =&gt; array(
+        'name'   =&gt; 'Favorite #3',
+        'errors' =&gt; array(
+            'name' =&gt; 'Name: Please enter a value'
+        )
+    )
+);</code></pre>
+
+<p>
+ <em>If you are interested in changing the <code>name</code> of a one-to-many child record, please see the <a href="/docs/fORMRelated">fORMRelated</a> section <a href="/docs/fORMRelated#OverridingChildRecordValidationNames">Overriding Child Record Validation Names</a>.</em>
+</p>
+
+<p>
+When passing <code>TRUE</code> to <code>$return_messages</code>, it is also possible to pass <code>TRUE</code> to the second parameter, <code>$remove_column_names</code>. This will remove the names of the columns from the error messages themselves, leaving the array with the regular keys, but anonymous messages useful for inclusion next to inputs.
+</p>
+<pre class="block php"><code>$errors = $user-&gt;validate(TRUE, TRUE);</code></pre>
+
+<p>
+ The returned array would look like:
+</p>
+<pre class="block php"><code>array(
+    // Regular columns in the users table
+    'first_name'        =&gt; 'Please enter a value',
+    'last_name'         =&gt; 'Please enter a value',
+    // A message involving multiple columns, from fORMValidate::addOneOrMoreRule()
+    'email,phone'       =&gt; 'Please enter at least one',
+    // A message from fORMValidate::addManyToManyRule()
+    'groups'            =&gt; 'Please select at least one',
+    // A message from the bio column in the one-to-one related user_details table
+    'user_details::bio' =&gt; 'Please enter a value',
+    // Messages from one-to-many related favorites table
+    'favorites[0]'      =&gt; array(
+        'name'   =&gt; 'Favorite #1',
+        'errors' =&gt; array(
+            'name' =&gt; 'Please enter a value'
+        )
+    ),
+    'favorites[2]'      =&gt; array(
+        'name'   =&gt; 'Favorite #3',
+        'errors' =&gt; array(
+            'name' =&gt; 'Please enter a value'
+        )
+    )
+);</code></pre>
+
+<h3 id="delete">delete()</h3>
+
+<p>
+The <a href="/api/fActiveRecord#delete"><code>delete()</code></a> method will remove the record from the database. Obviously, any cascading <code>FOREIGN KEY</code> constraints could cause other records to be deleted as well. This method will throw an <a href="/docs/fValidationException">fValidationException</a> if the record is referenced by another record via a <code>FOREIGN KEY</code> constraint with an <code>ON DELETE RESTRICT</code> or <code>ON DELETE NO ACTION</code> clause.
+</p>
+<pre class="block php"><code>try {
+    $user-&gt;delete();
+} catch (fValidationException $e) {
+    echo $e-&gt;printMessage();
+}</code></pre>
+
+<p>
+ There is an optional parameter, <code>$force_cascade</code>, that when set to <code>TRUE</code> will delete all records that reference the record being deleted, even if they have an <code>ON DELETE RESTRICT</code> or <code>ON DELETE NO ACTION</code> clause in the <code>FOREIGN KEY</code> constraint. By default this is set to <code>FALSE</code> to obey the restrictions in the database schema.
+</p>
+<pre class="block php"><code>$user-&gt;delete(TRUE);</code></pre>
+
+<p>
+ This is accomplished by first finding the related records and explicitly deleting them before the original record.
+</p>
+
+<h3 id="load">load()</h3>
+
+<p>
+The <a href="/api/fActiveRecord#load"><code>load()</code></a> method causes the values for the record to be reloaded from the database, overwriting any values that have been changed since the object was first loaded.
+</p>
+<pre class="block php"><code>$user = new User(3);
+$user-&gt;setFirstName('Joe');
+
+// Reset the first name
+$user-&gt;load();</code></pre>
+
+<h3 id="populate">populate()</h3>
+
+<p>
+The <a href="/api/fActiveRecord#populate"><code>populate()</code></a> method sets the values for a record from the fields and value contained in an HTTP request. For values to be pulled from the request, the HTML field names should be exactly the same as the database column names. Values from the form that are a blank strings are automatically converted to <code>NULL</code>.
+</p>
+
+<p>
+The following HTML form when combined with the <code>populate()</code> method would cause the <code>first_name</code>, <code>last_name</code> and <code>email</code> column values to be set:
+</p>
+<pre class="block html"><code>&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;
+    &lt;fieldset&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;first_name&quot;&gt;First Name&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;first_name&quot; name=&quot;first_name&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;last_name&quot;&gt;Last Name&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;last_name&quot; name=&quot;last_name&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;email&quot; name=&quot;email&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;Save&quot; /&gt;
+        &lt;/p&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+<pre class="block php"><code>try {
+    $user = new User();
+
+    // This will set first_name, last_name and email
+    $user-&gt;populate();
+    $user-&gt;store();
+
+} catch (fExpectedException $e) {
+    echo $e-&gt;printMessage();
+}</code></pre>
+
+<h4 id="BlankStrings">Blank Strings</h4>
+
+<p>
+By default, <a href="/api/fActiveRecord#populate"><code>populate()</code></a> calls the individual <code>set</code> methods for each column in a record. This ensures that overridden methods are correctly called. The <code>set</code> methods in fActiveRecord will by default convert an empty string value <code>''</code> to <code>NULL</code>. This treats empty HTML form input as if the user entered nothing.
+</p>
+
+<p>
+Blank strings can be stored in a database columninstead of <code>NULL</code> by setting the column to <code>NOT NULL</code> and <code>DEFAULT ''</code>. When fActiveRecord finds a <code>NOT NULL</code> column with a <code>NULL</code> value and a non-<code>NULL</code> default, the default is substituted in place of the <code>NULL</code>.
+</p>
+
+<h4 id="Checkboxes">Checkboxes</h4>
+
+<p>
+When using checkboxes in forms to be populated, it is best to preceed the checkbox input with a hidden input using the same name but a <code>FALSE</code> value. This way, if the checkbox is unchecked, PHP gets the value from the hidden input, changing the column to a <code>FALSE</code> value. When the checkbox is checked, PHP gets the value from the checkbox input, changing the column to a <code>TRUE</code> value.
+</p>
+<pre class="block html"><code>&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;
+    &lt;fieldset&gt;
+        &lt;p&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;enroll_me&quot; value=&quot;0&quot; /&gt;
+            &lt;label for=&quot;enroll_me&quot;&gt;Enroll Me&lt;/label&gt;
+            &lt;input type=&quot;checkbox&quot; id=&quot;enroll_me&quot; name=&quot;enroll_me&quot; value=&quot;1&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;Save&quot; /&gt;
+        &lt;/p&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+
+<p>
+ Please note that there <strong><em>IS</em></strong> a difference between setting the hidden input to a blank string value and a <code>FALSE</code> value such as <code>0</code>. As mentioned in the previous section, empty strings are converted to <code>NULL</code>, whereas a value such as <code>0</code> or <code>false</code> would not be.
+</p>
+
+<p>
+Certain <a href="/docs/fORMValidation">fORMValidation</a> methods check to see if a column has a non-null value. If an empty string is used for the hidden input, the validation method would see that no value has been selected. If a non-null false value is used, the validation method would see that a non-null value has been selected. Depending on the requirements of the application, this distinction may be very important.
+</p>
+
+<h3 id="replicateclone">replicate() / clone</h3>
+
+<p>
+The <a href="/api/fActiveRecord#replicate"><code>replicate()</code></a> method, passed no parameters is equivalent to a record being cloned. When an fActiveRecord object is cloned, all values and cache entries are copied (or cloned if the value is an object), all related records and old values are purged, any auto incrementing primary keys are erased and the record is changed to look as though it does not yet exist in the database.
+</p>
+<pre class="block php"><code>$user = new User(1);
+
+// Both $user2 and $user3 will have no $user_id and will return FALSE from -&gt;exists()
+$user2 = clone $user;
+$user3 = $user-&gt;replicate();</code></pre>
+
+<p>
+ It is also possible to replicate related records along with a record by passing plural class names into <a href="/api/fActiveRecord#replicate"><code>replicate()</code></a>. There may be any number of class names and the classes must be for related records that are in a many-to-many or one-to-many relationship with the record. Below is an example of replicating a user and including all of their group memberships and favorites (see <a href="#RelatedRecordsOperations">Related Records Operations</a> for the database schema).
+</p>
+<pre class="block php"><code>$user     = new User(1);
+$new_user = $user-&gt;replicate('Groups', 'Favorites');</code></pre>
+
+<p>
+ If a record is has more than one relationship route to the related record class, the route should be specified between curly braces (<code>{</code> and <code>}</code>), like below:
+</p>
+<pre class="block php"><code>$user     = new User(1);
+$new_user = $user-&gt;replicate('Resources{read_permissions}');</code></pre>
+
+<h3 id="exists">exists()</h3>
+
+<p>
+The <a href="/api/fActiveRecord#exists"><code>exists()</code></a> method simply returns a boolean indicating if the record was loaded from the database.
+</p>
+<pre class="block php"><code>if (!$user-&gt;exists()) {
+    $user-&gt;sendWelcomeEmail();
+}</code></pre>
+
+<p>
+ This function is mostly useful when dealing with an object in a different scope than that which it was created. For instance, checking a record that has been passed into a function or an <a href="/docs/fORM#AddingFunctionalitytofActiveRecord">fActiveRecord hook callback</a>.
+</p>
+
+<h4 id="Warning">Warning</h4>
+
+<p>
+Please note that this only checks to see if the object was constructed by passing a primary or unique key into the constructor. It can <strong>not</strong> be used with <code>set</code> methods to check and see if a record exists in the database.
+</p>
+
+<p>
+<strong>The following code will NOT check to see if a user with the id 3 exists in the database.</strong> This call to exists will always return <code>FALSE</code> since the object was constructed without any parameters.
+</p>
+<pre class="block php"><code>$user = new User();
+$user-&gt;setUserId(3);
+if ($user-&gt;exists()) {
+    // 
+}</code></pre>
+
+<p>
+ The proper way to check if a record exists in the database is to try and create an instance, catching an fNotFoundException:
+</p>
+<pre class="block php"><code>try {
+    $user = new User(3);
+} catch (fNotFoundException $e) {
+    // 
+}</code></pre>
+
+<p>
+ From a technical perspective, for the first example to work, fActiveRecord object would have to have a mutable identity, meaning the object would change what row it represented over its lifetime. This would likely cause many other unintended side effect in common code.
+</p>
+
+<h3 id="reflect">reflect()</h3>
+
+<p>
+Since fActiveRecord classes have dynamic functionality based on the structure of a database table, sometimes it can be useful to check and see what exactly is available for a specific class. The <a href="/api/fActiveRecord#reflect"><code>reflect()</code></a> method returns a preformatted text block containing the method signature for every method, concrete and dynamic, in the class.
+</p>
+<pre class="block php"><code>echo '&lt;pre&gt;' . $user-&gt;reflect() . '&lt;/pre&gt;';</code></pre>
+
+<p>
+ would output something like
+</p>
+<pre><code>public function getFirstName();
+
+public function setFirstName($first_name);
+
+public function prepareFirstName();
+
+public function encodeFirstName();
+
+public function inspectFirstName($element=NULL);</code></pre>
+
+<p>
+ It is also possible to pass a <code>TRUE</code> parameter to <code>reflect()</code> to also return the PHPDoc doc block for a method.
+</p>
+<pre class="block php"><code>
+// Request the PHPDoc doc block too
+echo $user-&gt;reflect(TRUE);</code></pre>
+
+<h2 id="RelatedRecordsOperations">Related Records Operations</h2>
+
+<p>
+One of the useful features of fActiveRecord is that it automatically finds all related tables in a database schema by looking at <code>FOREIGN KEY</code> constraints. Absolutely no configuration is needed in the class.
+</p>
+
+<p>
+The following tables definitions will be used for the examples below and are purposefully simple to help focus on the features, not the SQL.
+</p>
+<pre class="block sql"><code>CREATE TABLE groups (
+    name VARCHAR(100) PRIMARY KEY
+);
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE user_details (
+    user_id INTEGER PRIMARY KEY REFERENCES users(user_id) ON DELETE CASCADE,
+    photo VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE users_groups (
+    group VARCHAR(100) NOT NULL REFERENCES groups(name) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    PRIMARY KEY (group, user_id)
+);
+
+CREATE TABLE favorites (
+    favorite_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    url VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE resources (
+    resource_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    owner INTEGER NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT
+);
+
+CREATE TABLE read_permissions (
+    resource_id INTEGER NOT NULL REFERENCES resources(resource_id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    PRIMARY KEY (resource_id, user_id)
+);</code></pre>
+
+<p>
+ For the sake of the examples below, assume that the following classes have been defined to extend fActiveRecord:
+</p>
+<pre><code>Favorite
+Group
+Resource
+User
+UserDetail</code></pre>
+
+<p>
+ Where there are multiple relationships between two table, such as from <code>users</code> to <code>resources</code>, fActiveRecord contains optional parameters for all related record methods that allows the proper <a href="/docs/OrmConventions#RelationshipRoutes">relationship route</a> to be specified. For details, please see the <a href="#RelationshipRoutes">Relationship Routes</a> section.
+</p>
+
+<p>
+The detection of related tables allows for the following functionality to be provided:
+</p>
+
+<h3 id="-to-oneRelationships">*-to-one Relationships</h3>
+
+<p>
+When a column in a table contains a <code>FOREIGN KEY</code> constraint to another table, the two tables are in either a many-to-one or one-to-one relationship. The relationship would only be one-to-one if there was a <code>UNIQUE</code> constraint on the column with the <code>FOREIGN KEY</code>.
+</p>
+
+<p>
+For instance, the <code>resources</code> table references the <code>users</code> table via the <code>owner</code> column. Because this <code>FOREIGN KEY</code> exists, it is possible to call a <code>create</code> action to instantiate the proper <code>User</code> object. 
+</p>
+<pre class="block php"><code>$resource = new Resource(1);
+$user = $resource-&gt;createUser();</code></pre>
+
+<h4 id="One-to-oneRelationships">One-to-one Relationships</h4>
+
+<p>
+Since the <code>user_details</code> table references the <code>user_id</code> as a <code>PRIMARY KEY</code>, there can only be a single <code>user_details</code> record for each entry in <code>users</code>. This makes it a one-to-one relationship. For one-to-one relationships, it is also possible to call the <a href="#Populating"><code>populate</code></a> and <a href="#BuildingListingCountingandHas"><code>has</code></a> actions just like *-to-many relationships. When working with one-to-one relationships, the related record name is singular rather than plural.
+</p>
+<pre class="block php"><code>$user = new User(1);
+$user-&gt;populateUserDetail();</code></pre>
+<pre class="block php"><code>if ($user-&gt;hasUserDetail()) {
+    // 
+}</code></pre>
+
+<h3 id="-to-manyRelationships">*-to-many Relationships</h3>
+
+<p>
+When a column is referenced by a <code>FOREIGN KEY</code> constraint in another table, the two tables involved will end up being in either a one-to-many or many-to-many relationship. Many-to-many relationships happen when a <a href="/docs/OrmConventions#JoiningTables">joining table</a> is used and the <code>FOREIGN KEY</code> constraints live in the joining table.
+</p>
+
+<p>
+For the examples below the one-to-many relationship between the <code>users</code> table and the <code>favorites</code> table will be used along with the many-to-many relationship between the <code>users</code> and <code>groups</code> tables.
+</p>
+
+<h4 id="BuildingListingCountingandHas">Building, Listing, Counting and Has</h4>
+
+<p>
+Each user on the system can have multiple favorites simply by creating new favorites and having each one reference the same user. The <code>build</code> action will create an <a href="/docs/fRecordSet">fRecordSet</a> of all records in such a relationship:
+</p>
+<pre class="block php"><code>$favorites = $user-&gt;buildFavorites();</code></pre>
+
+<p>
+ The <code>$favorites</code> record set may be empty, or it may contain quite a number of records.
+</p>
+
+<p>
+In situations where the related records dont need to be created, but a primary key will suffice, it is also possible to <code>list</code> related records. This will return an array of related primary keys.
+</p>
+<pre class="block php"><code>$favorite_ids = $user-&gt;listFavorites();</code></pre>
+
+<p>
+ The <code>count</code> action can be called for any related record and it will return the number of related records.
+</p>
+<pre class="block php"><code>$number_of_favorites = $user-&gt;countFavorites();</code></pre>
+
+<p>
+ If a number of records is not required, but just that related records exist, the <code>has</code> action can be used.
+</p>
+<pre class="block php"><code>if ($user-&gt;hasFavorites()) {
+    // 
+}</code></pre>
+
+<p>
+ Both one-to-many and many-to-many relationships support the <code>build</code>, <code>count</code>, <code>list</code> and <code>has</code> actions.
+</p>
+
+<h4 id="Associating">Associating</h4>
+
+<p>
+In many-to-many relationships, both types of records can exist without directly referencing each other. Thus often it is necessary to take one set of records and associate it with a specific record. The <code>associate</code> action will do this, such as below where a user is being associated with every group.
+</p>
+<pre class="block php"><code>$groups = fRecordSet::build('Group');
+$user-&gt;associateGroups($groups);
+$user-&gt;store();</code></pre>
+
+<p>
+ <code>associate</code> methods will accept an <a href="/docs/fRecordSet">fRecordSet</a>, an array of fActiveRecord objects or an array of primary keys. <em>It is also possible to call <code>associate</code> methods to associate records in a one-to-many relationship, however the <code>link</code> action discussed next only works with many-to-many relationships.</em>
+</p>
+
+<p>
+It is also possible to parse associations from the fields in an HTTP request. In that situation the HTML form fields must be named in the format <code>{plural_underscore_related_class}::{foreign_column}[]</code>. The <code>link</code> action will grab values from the HTTP request and use them for associating records in a many-to-many relationship.
+</p>
+<pre class="block html"><code>&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;
+    &lt;fieldset&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;first_name&quot;&gt;First Name&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;first_name&quot; name=&quot;first_name&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;last_name&quot;&gt;Last Name&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;last_name&quot; name=&quot;last_name&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;email&quot; name=&quot;email&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;group_a&quot;&gt;Group A&lt;/label&gt;
+            &lt;input type=&quot;checkbox&quot; id=&quot;group_a&quot; name=&quot;groups::name[]&quot; value=&quot;Group A&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;group_b&quot;&gt;Group B&lt;/label&gt;
+            &lt;input type=&quot;checkbox&quot; id=&quot;group_b&quot; name=&quot;groups::name[]&quot; value=&quot;Group B&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;group_c&quot;&gt;Group C&lt;/label&gt;
+            &lt;input type=&quot;checkbox&quot; id=&quot;group_c&quot; name=&quot;groups::name[]&quot; value=&quot;Group C&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;Save&quot; /&gt;
+        &lt;/p&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+<pre class="block php"><code>$user-&gt;linkGroups();
+$user-&gt;store();</code></pre>
+
+<p>
+ Please note that <a href="/api/fActiveRecord#store"><code>store()</code></a> must be called to actually save the new relationships between the two tables.
+</p>
+
+<h4 id="Populating">Populating</h4>
+
+<p>
+For records that have &quot;child&quot; object in one-to-many relationships, the <code>populate</code> action will call the <a href="/api/fActiveRecord#populate"><code>populate()</code></a> method for each of a list of related records. In addition, when <a href="/api/fActiveRecord#store"><code>store()</code></a> is called on the master record, all of the child records will be saved too.
+</p>
+
+<p>
+Below is an example of the kind of HTML form that is needed for creating and populating child objects. Normally the HTML for the child object would be added and removed from the page on the fly using javascript, otherwise the <a href="/api/fActiveRecord#validate"><code>validate()</code></a> method from a child object could stop the records from being saved when a child objects values are not complete. The initial printing of the HTML form elements is normally handled server side by iterating trough the <a href="/docs/fRecordSet">fRecordSet</a> of related records.
+</p>
+
+<p>
+Each set of inputs for child object should always contain the <code>PRIMARY KEY</code> column and the column with the <code>FOREIGN KEY</code> constraint that references this table. Any other columns should only be included if new data is desired.
+</p>
+
+<p>
+Each input for a related record needs to be prefixed with the plural <code>underscore_notation</code> version of the class name plus <code>::</code>. In addition, each input should use array syntax at the end with a key shared for all inputs of the same record. The key can be any number or string, but must be the same for each input of the record. The example below uses <code>0</code>, <code>1</code> and <code>2</code> as a simple example.
+</p>
+<pre class="block html"><code>&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;
+    &lt;fieldset&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;first_name&quot;&gt;First Name&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;first_name&quot; name=&quot;first_name&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;last_name&quot;&gt;Last Name&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;last_name&quot; name=&quot;last_name&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt;
+            &lt;input type=&quot;text&quot; id=&quot;email&quot; name=&quot;email&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;fav_1&quot;&gt;Favorite #1&lt;/label&gt;
+            &lt;input type=&quot;name&quot; id=&quot;fav_1&quot; name=&quot;favorites::url[0]&quot; value=&quot;&quot; /&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;favorites::user_id[0]&quot; value=&quot;2&quot; /&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;favorites::favorite_id[0]&quot; value=&quot;&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;fav_2&quot;&gt;Favorite #2&lt;/label&gt;
+            &lt;input type=&quot;checkbox&quot; id=&quot;fav_2&quot; name=&quot;favorites::url[1]&quot; value=&quot;&quot; /&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;favorites::user_id[1]&quot; value=&quot;2&quot; /&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;favorites::favorite_id[1]&quot; value=&quot;&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;fav_3&quot;&gt;Favorite #3&lt;/label&gt;
+            &lt;input type=&quot;checkbox&quot; id=&quot;fav_3&quot; name=&quot;favorites::url[2]&quot; value=&quot;C&quot; /&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;favorites::user_id[2]&quot; value=&quot;2&quot; /&gt;
+            &lt;input type=&quot;hidden&quot; name=&quot;favorites::favorite_id[2]&quot; value=&quot;&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;Save&quot; /&gt;
+        &lt;/p&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+
+<p>
+ The following PHP would actually create 3 <code>Favorite</code> objects and would set them to be saved when <a href="/api/fActiveRecord#store"><code>store()</code></a> is called on the <code>User</code> object.
+</p>
+<pre class="block php"><code>try {
+    $user-&gt;populate();
+    $user-&gt;populateFavorites();
+    $user-&gt;store();
+
+} catch (fExpectedException $e) {
+    echo $e-&gt;printMessage();
+}</code></pre>
+
+<h3 id="RelationshipRoutes">Relationship Routes</h3>
+
+<p>
+When there are multiple one-to-many, many-to-many or *-to-one relationships for two tables, the proper route must be specified when calling the various related record methods. The appropriate route name can be determined by viewing the <a href="/docs/OrmConventions#RelationshipRoutes">Relationship Routes</a> section of the <a href="/docs/OrmConventions">ORM Conventions</a> page.
+</p>
+
+<p>
+Routes can be specified in any of the following methods even if only one route exists, however that route will be automatically detected if not specified.
+</p>
+
+<p>
+The <code>build</code>, <code>count</code>, <code>create</code>, <code>link</code>, <code>list</code> and <code>populate</code> action methods all optionally accept the route as the first parameter.
+</p>
+<pre class="block php"><code>$record-&gt;createRelatedRecord('route');
+
+$record-&gt;buildRelatedRecords('route');
+
+$record-&gt;countRelatedRecords('route');
+
+$record-&gt;linkRelatedRecords('route');
+
+$record-&gt;listRelatedRecords('route');
+
+$record-&gt;populateRelatedRecords('route');</code></pre>
+
+<p>
+ <code>associate</code> action methods optionally accept the route as the second parameter.
+</p>
+<pre class="block php"><code>$record-&gt;associateRelatedRecords($related_records, 'route');</code></pre>
+
+<p>
+ When working with relationship routes in HTML forms, the relationship route name should be enclosed in <code>{}</code> directly after the foreign table name. This applies to forms being used with both the <code>link</code> and <code>populate</code> actions. Below is an example of a form for selecting the resources related to a user:
+</p>
+<pre class="block html"><code>&lt;p&gt;
+    &lt;input type=&quot;checkbox&quot; id=&quot;resource_1&quot; name=&quot;resources{read_permissions}::resource_id[]&quot; value=&quot;1&quot; /&gt;
+    &lt;label for=&quot;resource_1&quot;&gt;Resource 1&lt;/label&gt;
+&lt;/p&gt;
+&lt;p&gt;
+    &lt;input type=&quot;checkbox&quot; id=&quot;resource_2&quot; name=&quot;resources{read_permissions}::resource_id[]&quot; value=&quot;2&quot; /&gt;
+    &lt;label for=&quot;resource_2&quot;&gt;Resource 2&lt;/label&gt;
+&lt;/p&gt;</code></pre>
+
+<h2 id="Configuration">Configuration</h2>
+
+<p>
+As mentioned in the <a href="#Setup">Setup section</a>, the instance method <a href="/api/fActiveRecord#configure"><code>configure()</code></a> is called once per script execution for each classes that extends fActiveRecord. This method is designed to be the preferred place to execute any configuration code for an active record class.
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        // Configure the extra feature and overrides using the supporting ORM classes
+    }
+}</code></pre>
+
+<p>
+ The following classes provide methods that extends and change the way that fActiveRecord classes work. Each classs documentation page will include the necessary details on how to configure each bit of functionality and how it affects the standard use of active record classes.
+</p>
+<table><tbody>
+<tr>
+<td><strong><a href="/docs/fORM">fORM</a></strong></td>
+<td>Provides functionality to override database table to class mapping, change the names used for records and column and extends fActiveRecord and <a href="/docs/fRecordSet">fRecordSet</a> through registering callbacks for various hooks</td>
+</tr>
+<tr>
+<td><strong><a href="/docs/fORMColumn">fORMColumn</a></strong></td>
+<td>Allows changing the validation of columns to require email addresses or links, can configure columns to always create <a href="/docs/fNumber">fNumber</a> objects when loaded or have a column filled with a random string the first time a record is saved</td>
+</tr>
+<tr>
+<td><strong><a href="/docs/fORMDate">fORMDate</a></strong></td>
+<td>Can set columns to automatically save the date a record was created or last updated and can tie a timestamp column to another column to allow for saving timezones</td>
+</tr>
+<tr>
+<td><strong><a href="/docs/fORMFile">fORMFile</a></strong></td>
+<td>Provides functionality to automatically handle file or image uploads, including options to automatically duplicate and manipulate images</td>
+</tr>
+<tr>
+<td><strong><a href="/docs/fORMJSON">fORMJSON</a></strong></td>
+<td>Extends both fActiveRecord and <a href="/docs/fRecordSet">fRecordSet</a> to have <code>toJSON()</code> methods</td>
+</tr>
+<tr>
+<td><strong><a href="/docs/fORMMoney">fORMMoney</a></strong></td>
+<td>Can set columns to be loaded out of the database as <a href="/docs/fMoney">fMoney</a> objects and can tie <a href="/docs/fMoney">fMoney</a> columns to a second column to store currencies</td>
+</tr>
+<tr>
+<td><strong><a href="/docs/fORMOrdering">fORMOrdering</a></strong></td>
+<td>Allows configuring a column (either individually or in a group of columns) as the arbitrary ordering column for a class</td>
+</tr>
+<tr>
+<td><strong><a href="/docs/fORMRelated">fORMRelated</a></strong></td>
+<td>Provides functionality to set the order in which related records are returned or modify what they are called (in context)</td>
+</tr>
+<tr>
+<td><strong><a href="/docs/fORMValidation">fORMValidation</a></strong></td>
+<td>Allows setting additional validation rules (including conditional, one-or-more, many-to-many, etc), set the order for validation messages and configure <code>UNIQUE</code> constraints as case-insensitive</td>
+</tr>
+</tbody></table>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

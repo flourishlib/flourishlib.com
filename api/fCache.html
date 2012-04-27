@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fCache – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fCache</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fCache">Class Documentation</a></li>
+		<li><strong><a href="/api/fCache">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fCache.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected variables">
+<h2><a href="#class_vars">Variables</a></h2>
+<ul>
+  	 		<li class="protected"><a href="#config">$config</a></li>
+	   	 		<li class="protected"><a href="#data_store">$data_store</a></li>
+	   	 		<li class="protected"><a href="#type">$type</a></li>
+	   </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__destruct">__destruct()</a></li>
+	  			<li><a href="#add">add()</a></li>
+	  			<li><a href="#clean">clean()</a></li>
+	  			<li><a href="#clear">clear()</a></li>
+	  			<li><a href="#delete">delete()</a></li>
+	  			<li><a href="#get">get()</a></li>
+	  			<li><a href="#save">save()</a></li>
+	  			<li class="protected"><a href="#serialize">serialize()</a></li>
+	  			<li><a href="#set">set()</a></li>
+	  			<li class="protected"><a href="#unserialize">unserialize()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b6</span></div>
+<p class="short_description">A simple interface to cache data using different backends</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b6</th><td>Fixed a bug with <a href="#add"><tt>add()</tt></a> setting a value when it shouldn't if no ttl was given for the file backend <span class="date">1/12/12</span></td></tr><tr><th>1.0.0b5</th><td>Added missing documentation for using Redis as a backend <span class="date">8/25/11</span></td></tr><tr><th>1.0.0b4</th><td>Added the <tt>database</tt>, <tt>directory</tt> and <tt>redis</tt> types, added support for the memcached extention and support for custom serialization callbacks <span class="date">6/21/11</span></td></tr><tr><th>1.0.0b3</th><td>Added <tt>0</tt> to the memcache delete method call since otherwise the method triggers notices on some installs <span class="date">5/10/11</span></td></tr><tr><th>1.0.0b2</th><td>Fixed API calls to the memcache extension to pass the TTL as the correct parameter <span class="date">2/1/11</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">4/28/09</span></td></tr></table></div>
+<div class="class_variables" id="class_vars">
+<h2>Variables</h2>
+	<!-- start protected variable -->
+	<h3 id="config" class="protected variable"><span class="resolution">-></span><span class="name">config</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The cache configuration, used for database, directory and file caches</p>
+						<p>The array structure for database caches is:  <pre class="block "><code>array(
+    'table'        => (string) {the database table to use},
+    'key_column'   => (string) {the varchar column to store the key in, should be able to handle at least 250 characters},
+    'value_column' => (string) {the text/varchar column to store the value in},
+    'ttl_column'   => (string) {the integer column to store the expiration time in}
+)</code></pre><p>The array structure for directory caches:  <pre class="block "><code>array(
+    'path' => (string) {the directory path with trailing slash}
+)</code></pre><p>The array structure for file caches:  <pre class="block "><code>array(
+    'path'  => (string) {the file path},
+    'state' => (string) {clean or dirty, used to appropriately save}
+)</code></pre>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="data_store" class="protected variable"><span class="resolution">-></span><span class="name">data_store</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The data store to use</p>
+						<p>Either the:</p><ul><li>array structure for file cache</li><li>Memcache or Memcached object for memcache</li><li><a href="fDatabase">fDatabase</a> object for database</li><li>Redis object for redis</li></ul><p>Not used for apc, directory or xcache</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">mixed</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="type" class="protected variable"><span class="resolution">-></span><span class="name">type</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The type of cache</p>
+						<p>The valid values are:</p><ul><li><tt>'apc'</tt></li><li><tt>'database'</tt></li><li><tt>'directory'</tt></li><li><tt>'file'</tt></li><li><tt>'memcache'</tt></li><li><tt>'redis'</tt></li><li><tt>'xcache'</tt></li></ul>
+			</div>
+		<h4>Type</h4>
+		<p class="type">string</p>
+	</div>
+	<!-- end variable -->
+</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Set the type and master key for the cache</p>
+								<p>A <tt>file</tt> cache uses a single file to store values in an associative  array and is probably not suitable for a large number of keys.</p><p>Using an <tt>apc</tt> or <tt>xcache</tt> cache will have far better performance  than a file or directory, however please remember that keys are shared  server-wide.</p><p><tt>$config</tt> is an associative array of configuration options for the various  backends. Some backend require additional configuration, while others  provide provide optional settings.</p><p>The following <tt>$config</tt> options must be set for the <tt>database</tt> backend: </p><ul><li><tt>table</tt>: The database table to use for caching</li><li><tt>key_column</tt>: The column to store the cache key in - must support at least 250 character strings</li><li><tt>value_column</tt>: The column to store the serialized value in - this should probably be a <tt>TEXT</tt> column to support large values, or <tt>BLOB</tt> if binary serialization is used</li><li><tt>value_data_type</tt>: If a <tt>BLOB</tt> column is being used for the <tt>value_column</tt>, this should be set to 'blob', otherwise <tt>string</tt></li><li><tt>ttl_column</tt>: The column to store the expiration timestamp of the cached entry - this should be an integer</li></ul><p>The following <tt>$config</tt> for the following items can be set for all backends:  </p><ul><li><tt>serializer</tt>: A callback to serialize data with, defaults to the PHP function <tt>serialize()</tt></li><li><tt>unserializer</tt>: A callback to unserialize data with, defaults to the PHP function <tt>unserialize()</tt></li></ul><p>Common serialization callbacks include:  </p><ul><li><tt>json_encode</tt>/<tt>json_decode</tt></li><li><tt>igbinary_serialize</tt>/<tt>igbinary_unserialize</tt></li></ul><p>Please note that using JSON for serialization will exclude all non-public  properties of objects from being serialized.</p><p>A custom <tt>serialize</tt> and <tt>unserialze</tt> option is <tt>string</tt>, which will cast  all values to a string when storing, instead of serializing them. If a  <tt>__toString()</tt> method is provided for objects, it will be called.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fCache">fCache</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$type</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$data_store</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$config</span><span class="php-code">=</span>array() <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of caching to use: <tt>'apc'</tt>, <tt>'database'</tt>, <tt>'directory'</tt>, <tt>'file'</tt>, <tt>'memcache'</tt>, <tt>'redis'</tt>, <tt>'xcache'</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$data_store</td>
+				<td class="param_description">The path for a <tt>file</tt> or <tt>directory</tt> cache, an <tt>Memcache</tt> or <tt>Memcached</tt> object for a <tt>memcache</tt> cache, an <a href="fDatabase">fDatabase</a> object for a <tt>database</tt> cache or a <tt>Redis</tt> object for a <tt>redis</tt> cache - not used for <tt>apc</tt> or <tt>xcache</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$config</td>
+				<td class="param_description">Configuration options - see method description for details</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__destruct" class="protected method"><span class="resolution">-></span><span class="name">__destruct()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Cleans up after the cache object</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__destruct</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="add" class="method"><span class="resolution">-></span><span class="name">add()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Tries to set a value to the cache, but stops if a value already exists</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">add</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$ttl</span><span class="php-code">=</span>0 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to store as, this should not exceed 250 characters</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to store, this will be serialized</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$ttl</td>
+				<td class="param_description">The number of seconds to keep the cache valid for, 0 for no limit</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the key/value pair were added successfully
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="clean" class="method"><span class="resolution">-></span><span class="name">clean()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Removes all cache entries that have expired</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">clean</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="clear" class="method"><span class="resolution">-></span><span class="name">clear()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Clears the WHOLE cache of every key, use with caution!</p>
+								<p>xcache may require a login or password depending on your ini settings.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">clear</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the cache was successfully cleared
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="delete" class="method"><span class="resolution">-></span><span class="name">delete()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Deletes a value from the cache</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">delete</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to delete</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the delete succeeded
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="get" class="method"><span class="resolution">-></span><span class="name">get()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns a value from the cache</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$default</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to return the value for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$default</td>
+				<td class="param_description">The value to return if the key did not exist</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The cached value or the default value if no cached value was found
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="save" class="method"><span class="resolution">-></span><span class="name">save()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Only valid for <tt>file</tt> caches, saves the file to disk</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">save</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="serialize" class="protected method"><span class="resolution">-></span><span class="name">serialize()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Serializes a value before storing it in the cache</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">serialize</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to serialize</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The serialized value
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="set" class="method"><span class="resolution">-></span><span class="name">set()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets a value to the cache, overriding any previous value</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">set</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$ttl</span><span class="php-code">=</span>0 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to store as, this should not exceed 250 characters</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to store, this will be serialized</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$ttl</td>
+				<td class="param_description">The number of seconds to keep the cache valid for, 0 for no limit</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the value was successfully saved
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="unserialize" class="protected method"><span class="resolution">-></span><span class="name">unserialize()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Unserializes a value before returning it</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">unserialize</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The serialized value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The PHP value
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

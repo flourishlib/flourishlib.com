@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MotivationsForFlourish – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="MotivationsforFlourish">Motivations for Flourish</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#ResearchResults">Research Results</a>
+<ul>
+<li><a href="#PEAR">PEAR</a></li>
+<li><a href="#Propel">Propel</a></li>
+<li><a href="#Doctrine">Doctrine</a></li>
+<li><a href="#CodeIgniter">Code Igniter</a></li>
+<li><a href="#Kohana">Kohana</a></li>
+<li><a href="#Seagull">Seagull</a></li>
+<li><a href="#Symfony">Symfony</a></li>
+<li><a href="#CakePHP">CakePHP</a></li>
+<li><a href="#SolarPHP">SolarPHP</a></li>
+<li><a href="#ZendFramework">Zend Framework</a></li>
+</ul>
+</li>
+<li><a href="#OtherPHPFrameworksLibraries">Other PHP Frameworks/Libraries</a></li>
+</ul>
+</div>
+
+<p>
+Before work on Flourish began, a good deal of time was spent trying to find a PHP framework or library that accomplished the following:
+</p>
+
+<ul>
+<li>Does not require use of <a href="http://www.martinfowler.com/eaaCatalog/modelViewController.html">MVC</a>, especially the <a href="http://www.martinfowler.com/eaaCatalog/frontController.html">Front Controller</a> variation</li>
+<li>Has good documentation that allows finding what you want with minimal effort</li>
+<li>Handles OS/server portability well, requiring a minimum of non-standard PHP extensions</li>
+<li>Encourages security best-practices and provides tools and examples to secure applications</li>
+<li>Provides an easy to use and consistent API so that end-user code doesn't have to handle as many edge cases</li>
+<li>Does not require manual definition of <a href="/docs/ObjectRelationalMapping">ORM</a> model schemas or relationships</li>
+<li>Is not released in long monolithic release cycles</li>
+<li>Doesnt require using the developers favorite <a href="http://en.wikipedia.org/wiki/Revision_control">revision control</a> software (<a href="http://en.wikipedia.org/wiki/Subversion_(software)">SVN</a>, <a href="http://en.wikipedia.org/wiki/Concurrent_Versions_System">CVS</a>, <a href="http://en.wikipedia.org/wiki/Git_(software)">GIT</a>, <a href="http://en.wikipedia.org/wiki/Bazaar_(software)">Bazaar</a>, etc) to get the latest code</li>
+<li>Allows removing extraneous code or downloading only what you want</li>
+<li>Provides a simplified and consistent interface to common PHP usage patterns</li>
+<li>Does not simply try to emulate another framework from another language</li>
+<li>Is released under a minimally invasive open source license, to allow for inclusion in closed source code</li>
+</ul>
+
+<h2 id="ResearchResults">Research Results</h2>
+
+<p>
+Some of the frameworks and libraries that were investigated include:
+</p>
+
+<h3 id="PEAR">PEAR</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://pear.php.net">http://pear.php.net</a></li>
+<li><strong>License:</strong> various</li>
+<li><strong>Overview:</strong> A large collection of disjoint classes from many different maintainers, many have poor documentation and a confusing APIs</li>
+</ul>
+
+<h3 id="Propel">Propel</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://propel.phpdb.org">http://propel.phpdb.org</a></li>
+<li><strong>License:</strong> <a href="http://propel.phpdb.org/trac/wiki/Users/Introduction/License">LGPL</a></li>
+<li><strong>Overview:</strong> Apaches Torque Java ORM ported to PHP, XML schema definition</li>
+</ul>
+
+<h3 id="Doctrine">Doctrine</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://phpdoctrine.org">http://phpdoctrine.org</a></li>
+<li><strong>License:</strong> <a href="http://trac.phpdoctrine.org/browser/trunk/LICENSE">LGPL</a></li>
+<li><strong>Overview:</strong> A very large and complicated ORM with its own abstraction of SQL</li>
+</ul>
+
+<h3 id="CodeIgniter">Code Igniter</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://codeigniter.com">http://codeigniter.com</a></li>
+<li><strong>License:</strong> <a href="http://codeigniter.com/user_guide/license.html">BSD-ish</a></li>
+<li><strong>Overview:</strong> An MVC framework for PHP4/5</li>
+</ul>
+
+<h3 id="Kohana">Kohana</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://kohanaphp.com">http://kohanaphp.com</a></li>
+<li><strong>License:</strong> <a href="http://kohanaphp.com/license.html">BSD</a></li>
+<li><strong>Overview:</strong> Originally a fork of Code Igniter, now rebuilt in PHP5. Still strict MVC, decent documentation.</li>
+</ul>
+
+<h3 id="Seagull">Seagull</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://seagullproject.org">http://seagullproject.org</a></li>
+<li><strong>License:</strong> <a href="http://trac.seagullproject.org/browser/trunk/COPYING.txt">BSD</a></li>
+<li><strong>Overview:</strong> A long-lived and somewhat confusing MVC framework with PHP4/5 support</li>
+</ul>
+
+<h3 id="Symfony">Symfony</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://www.symfony-project.org">http://www.symfony-project.org</a></li>
+<li><strong>License:</strong> <a href="http://www.symfony-project.org/content/license">MIT</a></li>
+<li><strong>Overview:</strong> An &quot;Enterprise&quot; PHP5 MVC frameworkone of the slowest available</li>
+</ul>
+
+<h3 id="CakePHP">CakePHP</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://cakephp.org">http://cakephp.org</a></li>
+<li><strong>License:</strong> <a href="https://trac.cakephp.org/browser/trunk/cake/1.1.x.x/cake/LICENSE.txt">MIT</a></li>
+<li><strong>Overview:</strong> PHP4/5 MVC framework with lots of communityone of the slowest available</li>
+</ul>
+
+<h3 id="SolarPHP">SolarPHP</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://solarphp.com">http://solarphp.com</a></li>
+<li><strong>License:</strong> <a href="http://opensource.org/licenses/bsd-license.php">BSD</a></li>
+<li><strong>Overview:</strong> A huge library/framework with a long release cycle, still in alpha</li>
+</ul>
+
+<h3 id="ZendFramework">Zend Framework</h3>
+
+<ul>
+<li><strong>Homepage:</strong> <a href="http://framework.zend.com">http://framework.zend.com</a></li>
+<li><strong>License:</strong> <a href="http://framework.zend.com/license">BSD</a></li>
+<li><strong>Overview:</strong> The definition of &quot;Enterprise&quot; with over 1500 source files</li>
+</ul>
+
+<h2 id="OtherPHPFrameworksLibraries">Other PHP Frameworks/Libraries</h2>
+
+<p>
+The following are some other (mostly smaller) frameworks and libraries that were not fully reviewed.
+</p>
+
+<ul>
+<li><a href="http://www.atomikframework.com/">http://www.atomikframework.com/</a></li>
+<li><a href="http://www.yiiframework.com/">http://www.yiiframework.com/</a></li>
+<li><a href="http://www.qadram.com/vcl4php/">http://www.qadram.com/vcl4php/</a></li>
+<li><a href="http://adventure-php-framework.org/Page/001-Home">http://adventure-php-framework.org/Page/001-Home</a></li>
+<li><a href="http://phocoa.com/">http://phocoa.com/</a></li>
+<li><a href="http://cognifty.com/">http://cognifty.com/</a></li>
+<li><a href="http://www.qcodo.com/">http://www.qcodo.com/</a></li>
+<li><a href="http://okapi.liip.ch/">http://okapi.liip.ch/</a></li>
+<li><a href="http://www.akelos.org/">http://www.akelos.org/</a></li>
+<li><a href="http://code.google.com/p/phaux/">http://code.google.com/p/phaux/</a></li>
+<li><a href="http://orchid.phpxperts.net/">http://orchid.phpxperts.net/</a></li>
+<li><a href="http://www.pradosoft.com/">http://www.pradosoft.com/</a></li>
+<li><a href="http://ez.no/ezcomponents">http://ez.no/ezcomponents</a></li>
+<li><a href="http://www.fusebox.org/">http://www.fusebox.org/</a></li>
+<li><a href="http://www.phpontrax.com/">http://www.phpontrax.com/</a></li>
+<li><a href="http://qphp.net/">http://qphp.net/</a></li>
+<li><a href="http://www.zoopframework.com/">http://www.zoopframework.com/</a></li>
+<li><a href="http://www.stubbles.net/">http://www.stubbles.net/</a></li>
+<li><a href="http://www.stratosframework.com/">http://www.stratosframework.com/</a></li>
+</ul>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

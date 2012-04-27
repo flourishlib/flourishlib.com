@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORM – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fORM</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fORM">Class Documentation</a></li>
+		<li><strong><a href="/api/fORM">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORM.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li class="protected"><a href="#callHookCallbacks">callHookCallbacks()</a></li>
+	  			<li class="protected"><a href="#callInspectCallbacks">callInspectCallbacks()</a></li>
+	  			<li class="protected"><a href="#callReflectCallbacks">callReflectCallbacks()</a></li>
+	  			<li class="protected"><a href="#checkHookCallback">checkHookCallback()</a></li>
+	  			<li><a href="#classize">classize()</a></li>
+	  			<li><a href="#defineActiveRecordClass">defineActiveRecordClass()</a></li>
+	  			<li><a href="#enableSchemaCaching">enableSchemaCaching()</a></li>
+	  			<li class="protected"><a href="#getActiveRecordMethod">getActiveRecordMethod()</a></li>
+	  			<li class="protected"><a href="#getClass">getClass()</a></li>
+	  			<li class="protected"><a href="#getColumnName">getColumnName()</a></li>
+	  			<li class="protected"><a href="#getDatabaseName">getDatabaseName()</a></li>
+	  			<li class="protected"><a href="#getRecordName">getRecordName()</a></li>
+	  			<li class="protected"><a href="#getRecordSetMethod">getRecordSetMethod()</a></li>
+	  			<li class="protected"><a href="#getRelatedClass">getRelatedClass()</a></li>
+	  			<li class="protected"><a href="#isClassMappedToTable">isClassMappedToTable()</a></li>
+	  			<li><a href="#mapClassToDatabase">mapClassToDatabase()</a></li>
+	  			<li><a href="#mapClassToTable">mapClassToTable()</a></li>
+	  			<li class="protected"><a href="#objectify">objectify()</a></li>
+	  			<li><a href="#overrideColumnName">overrideColumnName()</a></li>
+	  			<li><a href="#overrideRecordName">overrideRecordName()</a></li>
+	  			<li class="protected"><a href="#parseMethod">parseMethod()</a></li>
+	  			<li><a href="#registerActiveRecordMethod">registerActiveRecordMethod()</a></li>
+	  			<li><a href="#registerHookCallback">registerHookCallback()</a></li>
+	  			<li><a href="#registerInspectCallback">registerInspectCallback()</a></li>
+	  			<li><a href="#registerObjectifyCallback">registerObjectifyCallback()</a></li>
+	  			<li><a href="#registerRecordSetMethod">registerRecordSetMethod()</a></li>
+	  			<li><a href="#registerReflectCallback">registerReflectCallback()</a></li>
+	  			<li><a href="#registerReplicateCallback">registerReplicateCallback()</a></li>
+	  			<li><a href="#registerScalarizeCallback">registerScalarizeCallback()</a></li>
+	  			<li class="protected"><a href="#replicate">replicate()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li class="protected"><a href="#scalarize">scalarize()</a></li>
+	  			<li><a href="#tablize">tablize()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fDate">fDate</a></li>
+		<li><a href="fException">fException</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fTime">fTime</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fORMColumn">fORMColumn</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fORMDate">fORMDate</a></li>
+		<li><a href="fORMFile">fORMFile</a></li>
+		<li><a href="fORMJSON">fORMJSON</a></li>
+		<li><a href="fORMMoney">fORMMoney</a></li>
+		<li><a href="fORMOrdering">fORMOrdering</a></li>
+		<li><a href="fORMRelated">fORMRelated</a></li>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fPagination">fPagination</a></li>
+		<li><a href="fRecordSet">fRecordSet</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b28</span></div>
+<p class="short_description">Dynamically handles many centralized object-relational mapping tasks</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b28</th><td>Updated <a href="#getColumnName"><tt>getColumnName()</tt></a> and <a href="#getRecordName"><tt>getRecordName()</tt></a> to use <a href="fText">fText</a> if loaded <span class="date">2/2/11</span></td></tr><tr><th>1.0.0b27</th><td>Added links to the detailed documentation for the parameters passed to hooks <span class="date">11/27/10</span></td></tr><tr><th>1.0.0b26</th><td>Added <a href="#getRelatedClass"><tt>getRelatedClass()</tt></a> for handling related classes in PHP 5.3 namespaces <span class="date">11/17/10</span></td></tr><tr><th>1.0.0b25</th><td>Added support for PHP 5.3 namespaced <a href="fActiveRecord">fActiveRecord</a> classes <span class="date">11/11/10</span></td></tr><tr><th>1.0.0b24</th><td>Backwards Compatibility Break - Callbacks registered via <a href="#registerRecordSetMethod"><tt>registerRecordSetMethod()</tt></a> should now accept the <tt>$method_name</tt> in the position where the <tt>$pointer</tt> parameter used to be passed <span class="date">9/28/10</span></td></tr><tr><th>1.0.0b23</th><td>Added the <tt>'pre::replicate()'</tt>, <tt>'post::replicate()'</tt> and <tt>'cloned::replicate()'</tt> hooks <span class="date">9/7/10</span></td></tr><tr><th>1.0.0b22</th><td>Internal Backwards Compatibility Break - changed <a href="#parseMethod"><tt>parseMethod()</tt></a> to not underscorize the subject of the method <span class="date">8/6/10</span></td></tr><tr><th>1.0.0b21</th><td>Fixed some documentation to reflect the API changes from v1.0.0b9 <span class="date">7/14/10</span></td></tr><tr><th>1.0.0b20</th><td>Added the ability to register a wildcard active record method for all classes <span class="date">4/22/10</span></td></tr><tr><th>1.0.0b19</th><td>Added the method <a href="#isClassMappedToTable"><tt>isClassMappedToTable()</tt></a> <span class="date">3/30/10</span></td></tr><tr><th>1.0.0b18</th><td>Added the <tt>post::loadFromIdentityMap()</tt> hook <span class="date">3/14/10</span></td></tr><tr><th>1.0.0b17</th><td>Changed <a href="#enableSchemaCaching"><tt>enableSchemaCaching()</tt></a> to rely on <a href="fDatabase">fDatabase</a>clearCache() instead of explicitly calling <a href="fSQLTranslation#clearCache"><tt>fSQLTranslation::clearCache()</tt></a> <span class="date">3/9/10</span></td></tr><tr><th>1.0.0b16</th><td>Backwards Compatibility Break - renamed addCustomClassToTableMapping() to <a href="#mapClassToTable"><tt>mapClassToTable()</tt></a>. Added <a href="#getDatabaseName"><tt>getDatabaseName()</tt></a> and <a href="#mapClassToDatabase"><tt>mapClassToDatabase()</tt></a>. Updated code for new <a href="fORMDatabase">fORMDatabase</a> and <a href="fORMSchema">fORMSchema</a> APIs <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b15</th><td>Added support for <a href="fActiveRecord">fActiveRecord</a> to <a href="#getRecordName"><tt>getRecordName()</tt></a> <span class="date">10/6/09</span></td></tr><tr><th>1.0.0b14</th><td>Updated documentation for <a href="#registerActiveRecordMethod"><tt>registerActiveRecordMethod()</tt></a> to include info about prefix method matches <span class="date">8/7/09</span></td></tr><tr><th>1.0.0b13</th><td>Updated documentation for <a href="#registerRecordSetMethod"><tt>registerRecordSetMethod()</tt></a> <span class="date">7/14/09</span></td></tr><tr><th>1.0.0b12</th><td>Updated <a href="#callReflectCallbacks"><tt>callReflectCallbacks()</tt></a> to accept a class name instead of an object <span class="date">7/13/09</span></td></tr><tr><th>1.0.0b11</th><td>Added <a href="#registerInspectCallback"><tt>registerInspectCallback()</tt></a> and <a href="#callInspectCallbacks"><tt>callInspectCallbacks()</tt></a> <span class="date">7/13/09</span></td></tr><tr><th>1.0.0b10</th><td>Fixed a bug with <a href="#objectify"><tt>objectify()</tt></a> caching during NULL date/time/timestamp values and breaking further objectification <span class="date">6/18/09</span></td></tr><tr><th>1.0.0b9</th><td>Added caching for performance and changed some method APIs to only allow class names instead of instances <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b8</th><td>Updated documentation to reflect removal of <tt>$associate</tt> parameter for callbacks passed to <a href="#registerRecordSetMethod"><tt>registerRecordSetMethod()</tt></a> <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b7</th><td>Added <a href="#enableSchemaCaching"><tt>enableSchemaCaching()</tt></a> to replace fORMSchema::enableSmartCaching() <span class="date">5/4/09</span></td></tr><tr><th>1.0.0b6</th><td>Added the ability to pass a class instance to addCustomClassTableMapping() <span class="date">2/23/09</span></td></tr><tr><th>1.0.0b5</th><td>Backwards compatibility break - renamed addCustomTableClassMapping() to addCustomClassTableMapping() and swapped the parameters <span class="date">1/26/09</span></td></tr><tr><th>1.0.0b4</th><td>Fixed a bug with retrieving <a href="fActiveRecord">fActiveRecord</a> methods registered for all classes <span class="date">1/14/09</span></td></tr><tr><th>1.0.0b3</th><td>Fixed a static method callback constant <span class="date">12/17/08</span></td></tr><tr><th>1.0.0b2</th><td>Added <a href="#replicate"><tt>replicate()</tt></a> and <a href="#registerReplicateCallback"><tt>registerReplicateCallback()</tt></a> for <a href="fActiveRecord#replicate"><tt>fActiveRecord::replicate()</tt></a> <span class="date">12/12/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">8/4/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="callHookCallbacks" class="protected method static"><span class="resolution">::</span><span class="name">callHookCallbacks()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Calls the hook callbacks for the class and hook specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">callHookCallbacks</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$hook</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">&amp;$parameter</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The instance of the class to call the hook for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$hook</td>
+				<td class="param_description">The hook to call</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values of the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values of the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Records related to the current record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array of the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">&amp;$parameter</td>
+				<td class="param_description">The parameter to send the callback</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="callInspectCallbacks" class="protected method static"><span class="resolution">::</span><span class="name">callInspectCallbacks()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Calls all inspect callbacks for the class and column specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">callInspectCallbacks</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$metadata</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to inspect the column of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to inspect</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$metadata</td>
+				<td class="param_description">The associative array of data about the column</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="callReflectCallbacks" class="protected method static"><span class="resolution">::</span><span class="name">callReflectCallbacks()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Calls all reflect callbacks for the class passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">callReflectCallbacks</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$signatures</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$include_doc_comments</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to call the callbacks for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$signatures</td>
+				<td class="param_description">The associative array of <tt>{method_name} =&gt; {signature}</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$include_doc_comments</td>
+				<td class="param_description">If the doc comments should be included in the signature</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="checkHookCallback" class="protected method static"><span class="resolution">::</span><span class="name">checkHookCallback()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Checks to see if any (or a specific) callback has been registered for a specific hook</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">checkHookCallback</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$hook</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$callback</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The name of the class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$hook</td>
+				<td class="param_description">The hook to check</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The specific callback to check for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the specified callback exists
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="classize" class="method static"><span class="resolution">::</span><span class="name">classize()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Takes a table and turns it into a class name - uses custom mapping if set</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">classize</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$table</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table name</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The class name
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="defineActiveRecordClass" class="method static"><span class="resolution">::</span><span class="name">defineActiveRecordClass()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Will dynamically create an <a href="fActiveRecord">fActiveRecord</a>-based class for a database table</p>
+								<p>Normally this would be called from an <tt>__autoload()</tt> function.</p><p>This method will only create classes for tables in the default ORM  database.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">defineActiveRecordClass</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The name of the class to create</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="enableSchemaCaching" class="method static"><span class="resolution">::</span><span class="name">enableSchemaCaching()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Enables caching on the <a href="fDatabase">fDatabase</a>, <a href="fSQLTranslation">fSQLTranslation</a> and <a href="fSchema">fSchema</a> objects used for the ORM</p>
+								<p>This method will cache database schema information to the three objects  that use it during normal ORM operation: <a href="fDatabase">fDatabase</a>, <a href="fSQLTranslation">fSQLTranslation</a> and  <a href="fSchema">fSchema</a>. To allow for schema changes without having to manually clear  the cache, all cached information will be cleared if any  <a href="fUnexpectedException">fUnexpectedException</a> objects are thrown.</p><p>This method should be called right after <a href="fORMDatabase#attach"><tt>fORMDatabase::attach()</tt></a>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableSchemaCaching</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fCache">fCache</a></span> <span class="php-var">$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$database_name</span><span class="php-code">=</span>'default'<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$key_token</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fCache">fCache</a></td>
+				<td class="param_name">$cache</td>
+				<td class="param_description">The object to cache schema information to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$database_name</td>
+				<td class="param_description">The database to enable caching for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key_token</td>
+				<td class="param_description">This is a token that is used in cache keys to prevent conflicts for server-wide caches - when non-NULL the document root is used</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getActiveRecordMethod" class="protected method static"><span class="resolution">::</span><span class="name">getActiveRecordMethod()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns a matching callback for the class and method specified</p>
+								<p>The callback returned will be determined by the following logic:</p><p>1. If an exact callback has been defined for the method, it will be returned   2. If a callback in the form <tt>{prefix}*</tt> has been defined that matches the method, it will be returned   3. <tt>NULL</tt> will be returned</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string|null</span> <span class="php-identifier">getActiveRecordMethod</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The name of the class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to get the callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The callback for the method or <tt>NULL</tt> if none exists - see method description for details
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getClass" class="protected method static"><span class="resolution">::</span><span class="name">getClass()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Takes a class name or class and returns the class name</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getClass</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The object to get the name of, or possibly a string already containing the class</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The class name
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getColumnName" class="protected method static"><span class="resolution">::</span><span class="name">getColumnName()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the column name</p>
+								<p>The default column name is the result of calling <a href="fGrammar#humanize"><tt>fGrammar::humanize()</tt></a>  on the column.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getColumnName</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name the column is part of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The database column</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The column name for the column specified
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getDatabaseName" class="protected method static"><span class="resolution">::</span><span class="name">getDatabaseName()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the name for the database used by the class specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getDatabaseName</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name to get the database name for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The name of the database to use
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getRecordName" class="protected method static"><span class="resolution">::</span><span class="name">getRecordName()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the record name for a class</p>
+								<p>The default record name is the result of calling <a href="fGrammar#humanize"><tt>fGrammar::humanize()</tt></a>  on the class.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getRecordName</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name to get the record name of</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The record name for the class specified
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getRecordSetMethod" class="protected method static"><span class="resolution">::</span><span class="name">getRecordSetMethod()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns a matching callback for the method specified</p>
+								<p>The callback returned will be determined by the following logic:</p><p>1. If an exact callback has been defined for the method, it will be returned   2. If a callback in the form <tt>{action}*</tt> has been defined that matches the method, it will be returned   3. <tt>NULL</tt> will be returned</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string|null</span> <span class="php-identifier">getRecordSetMethod</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to get the callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The callback for the method or <tt>NULL</tt> if none exists - see method description for details
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getRelatedClass" class="protected method static"><span class="resolution">::</span><span class="name">getRelatedClass()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Takes a class name and related class name and ensures the related class has the appropriate namespace prefix</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getRelatedClass</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The primary class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class</td>
+				<td class="param_description">The related class name</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The related class name, with the appropriate namespace prefix
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="isClassMappedToTable" class="protected method static"><span class="resolution">::</span><span class="name">isClassMappedToTable()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Checks if a class has been mapped to a table</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isClassMappedToTable</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The name of the class</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the class has been mapped to a table
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="mapClassToDatabase" class="method static"><span class="resolution">::</span><span class="name">mapClassToDatabase()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a class to use a database other than the &quot;default&quot;</p>
+								<p>Multiple database objects can be attached for the ORM by passing a  unique <tt>$name</tt> to the attach() method.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">mapClassToDatabase</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$database_name</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The name of the class, or an instance of it</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$database_name</td>
+				<td class="param_description">The name given to the database when passed to attach()</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="mapClassToTable" class="method static"><span class="resolution">::</span><span class="name">mapClassToTable()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows non-standard class to table mapping</p>
+								<p>By default, all database tables are assumed to be plural nouns in  <tt>underscore_notation</tt> and all class names are assumed to be singular  nouns in <tt>UpperCamelCase</tt>. This method allows arbitrary class to  table mapping.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">mapClassToTable</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The name of the class, or an instance of it</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The name of the database table</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="objectify" class="protected method static"><span class="resolution">::</span><span class="name">objectify()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Takes a scalar value and turns it into an object if applicable</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">objectify</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name of the class the column is part of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The database column</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to possibly objectify</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The scalar or object version of the value, depending on the column type and column options
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="overrideColumnName" class="method static"><span class="resolution">::</span><span class="name">overrideColumnName()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows overriding of default column names</p>
+								<p>By default a column name is the result of <a href="fGrammar#humanize"><tt>fGrammar::humanize()</tt></a> called  on the column.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">overrideColumnName</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column_name</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the column is located in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The database column</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column_name</td>
+				<td class="param_description">The name for the column</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="overrideRecordName" class="method static"><span class="resolution">::</span><span class="name">overrideRecordName()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows overriding of default record names</p>
+								<p>By default a record name is the result of <a href="fGrammar#humanize"><tt>fGrammar::humanize()</tt></a> called  on the class.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">overrideRecordName</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$record_name</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to override the name of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$record_name</td>
+				<td class="param_description">The human version of the record</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="parseMethod" class="protected method static"><span class="resolution">::</span><span class="name">parseMethod()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Parses a <tt>camelCase</tt> method name for an action and subject in the form <tt>actionSubject()</tt></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">parseMethod</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method name to parse</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					An array of <tt>0 =&gt; {action}, 1 =&gt; {subject}</tt>
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerActiveRecordMethod" class="method static"><span class="resolution">::</span><span class="name">registerActiveRecordMethod()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a callback for an <a href="fActiveRecord">fActiveRecord</a> method that falls through to <a href="fActiveRecord#__call"><tt>fActiveRecord::__call()</tt></a> or hits a predefined method hook</p>
+								<p>The callback should accept the following parameters:  </p><ul><li><strong><tt>$object</tt></strong>:           The <a href="fActiveRecord">fActiveRecord</a> instance</li><li><strong><tt>&amp;$values</tt></strong>:          The values array for the record</li><li><strong><tt>&amp;$old_values</tt></strong>:      The old values array for the record</li><li><strong><tt>&amp;$related_records</tt></strong>: The related records array for the record</li><li><strong><tt>&amp;$cache</tt></strong>:           The cache array for the record</li><li><strong><tt>$method_name</tt></strong>:      The method that was called</li><li><strong><tt>&amp;$parameters</tt></strong>:      The parameters passed to the method</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerActiveRecordMethod</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to register for, <tt>'*'</tt> will register for all classes</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to hook for - this can be a complete method name or <tt>{prefix}*</tt> where <tt>*</tt> will match any column name</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to execute - see method description for parameter list</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerHookCallback" class="method static"><span class="resolution">::</span><span class="name">registerHookCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a callback for one of the various <a href="fActiveRecord">fActiveRecord</a> hooks - multiple callbacks can be registered for each hook</p>
+								<p>The method signature should include the follow parameters:  </p><ul><li><strong><tt>$object</tt></strong>:           The <a href="fActiveRecord">fActiveRecord</a> instance</li><li><strong><tt>&amp;$values</tt></strong>:          The values array for the record - see the <a href="http://flourishlib.com/docs/fORM#values">$values</a> documentation for details</li><li><strong><tt>&amp;$old_values</tt></strong>:      The old values array for the record - see the <a href="http://flourishlib.com/docs/fORM#old_values">$old_values</a> documentation for details</li><li><strong><tt>&amp;$related_records</tt></strong>: The related records array for the record - see the <a href="http://flourishlib.com/docs/fORM#related_records">$related_records</a> documentation for details</li><li><strong><tt>&amp;$cache</tt></strong>:           The cache array for the record - see the <a href="http://flourishlib.com/docs/fORM#cache">$cache</a> documentation for details</li></ul><p>The <tt>'pre::validate()'</tt> and <tt>'post::validate()'</tt> hooks have an extra  parameter:  </p><ul><li><strong><tt>&amp;$validation_messages</tt></strong>: An ordered array of validation errors that will be returned or tossed as an <a href="fValidationException">fValidationException</a> - see the <a href="http://flourishlib.com/docs/fORM#validation_messages">$validation_messages</a> documentation for details</li></ul><p>The <tt>'pre::replicate()'</tt>, <tt>'post::replicate()'</tt> and  <tt>'cloned::replicate()'</tt> hooks have an extra parameter:  </p><ul><li><strong><tt>$replication_level</tt></strong>: An integer representing the level of recursion - the object being replicated will be <tt>0</tt>, children will be <tt>1</tt>, grandchildren <tt>2</tt> and so on.</li></ul><p>Below is a list of all valid hooks:  </p><ul><li><tt>'post::__construct()'</tt></li><li><tt>'pre::delete()'</tt></li><li><tt>'post-begin::delete()'</tt></li><li><tt>'pre-commit::delete()'</tt></li><li><tt>'post-commit::delete()'</tt></li><li><tt>'post-rollback::delete()'</tt></li><li><tt>'post::delete()'</tt></li><li><tt>'post::loadFromIdentityMap()'</tt></li><li><tt>'post::loadFromResult()'</tt></li><li><tt>'pre::populate()'</tt></li><li><tt>'post::populate()'</tt></li><li><tt>'pre::replicate()'</tt></li><li><tt>'post::replicate()'</tt></li><li><tt>'cloned::replicate()'</tt></li><li><tt>'pre::store()'</tt></li><li><tt>'post-begin::store()'</tt></li><li><tt>'post-validate::store()'</tt></li><li><tt>'pre-commit::store()'</tt></li><li><tt>'post-commit::store()'</tt></li><li><tt>'post-rollback::store()'</tt></li><li><tt>'post::store()'</tt></li><li><tt>'pre::validate()'</tt></li><li><tt>'post::validate()'</tt></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerHookCallback</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$hook</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to hook, <tt>'*'</tt> will hook all classes</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$hook</td>
+				<td class="param_description">The hook to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to register - see the method description for details about the method signature</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerInspectCallback" class="method static"><span class="resolution">::</span><span class="name">registerInspectCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a callback to modify the results of <a href="fActiveRecord#inspect"><tt>fActiveRecord::inspect()</tt></a> methods</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerInspectCallback</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to register. Callback should accept a single parameter by reference, an associative array of the various metadata about a column.</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerObjectifyCallback" class="method static"><span class="resolution">::</span><span class="name">registerObjectifyCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a callback for when objectify() is called on a specific column</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerObjectifyCallback</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to register. Callback should accept a single parameter, the value to objectify and should return the objectified value.</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerRecordSetMethod" class="method static"><span class="resolution">::</span><span class="name">registerRecordSetMethod()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a callback for an <a href="fRecordSet">fRecordSet</a> method that fall through to <a href="fRecordSet#__call"><tt>fRecordSet::__call()</tt></a></p>
+								<p>The callback should accept the following parameters:  </p><ul><li><strong><tt>$object</tt></strong>:      The actual record set</li><li><strong><tt>$class</tt></strong>:       The class of each record</li><li><strong><tt>&amp;$records</tt></strong>:    The ordered array of <a href="fActiveRecord">fActiveRecord</a> objects</li><li><strong><tt>$method_name</tt></strong>: The method name that was called</li><li><strong><tt>$parameters</tt></strong>:  Any parameters passed to the method</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerRecordSetMethod</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to hook for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to execute - see method description for parameter list</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerReflectCallback" class="method static"><span class="resolution">::</span><span class="name">registerReflectCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a callback to modify the results of <a href="fActiveRecord#reflect"><tt>fActiveRecord::reflect()</tt></a></p>
+								<p>Callbacks registered here can override default method signatures and add  method signatures, however any methods that are defined in the actual class  will override these signatures.</p><p>The callback should accept three parameters:  </p><ul><li><strong><tt>$class</tt></strong>: the class name</li><li><strong><tt>&amp;$signatures</tt></strong>: an associative array of <tt>{method_name} =&gt; {signature}</tt></li><li><strong><tt>$include_doc_comments</tt></strong>: a boolean indicating if the signature should include the doc comment for the method, or just the signature</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerReflectCallback</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to register for, <tt>'*'</tt> will register for all classes</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to register. Callback should accept a three parameters - see method description for details.</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerReplicateCallback" class="method static"><span class="resolution">::</span><span class="name">registerReplicateCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a callback for when a value is replicated for a specific column</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerReplicateCallback</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to register. Callback should accept a single parameter, the value to replicate and should return the replicated value.</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerScalarizeCallback" class="method static"><span class="resolution">::</span><span class="name">registerScalarizeCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a callback for when scalarize() is called on a specific column</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerScalarizeCallback</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to register. Callback should accept a single parameter, the value to scalarize and should return the scalarized value.</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="replicate" class="protected method static"><span class="resolution">::</span><span class="name">replicate()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Takes and value and returns a copy is scalar or a clone if an object</p>
+								<p>The <a href="#registerReplicateCallback"><tt>registerReplicateCallback()</tt></a> allows for custom replication code</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">replicate</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class the column is part of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The database column</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to copy/clone</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The copied/cloned value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="scalarize" class="protected method static"><span class="resolution">::</span><span class="name">scalarize()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>If the value passed is an object, calls <tt>__toString()</tt> on it</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">scalarize</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class the column is part of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The database column</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to get the scalar value of</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The scalar value of the value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="tablize" class="method static"><span class="resolution">::</span><span class="name">tablize()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Takes a class name (or class) and turns it into a table name - Uses custom mapping if set</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">tablize</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The table name
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

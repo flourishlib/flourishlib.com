@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Versioning – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="Versioning">Versioning</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#ClassVersioning">Class Versioning</a></li>
+<li><a href="#LibraryVersioning">Library Versioning</a></li>
+</ul>
+</div>
+
+<p>
+Versioning happens on two different levels with Flourish. On the lowest level, each class that is part of Flourish is versioned using a three-part number. On the library level, Flourish is versioned using the current revision number of the SVN repository.
+</p>
+
+<h2 id="ClassVersioning">Class Versioning</h2>
+
+<p>
+All classes are versioned using a three-part number in the following format:
+</p>
+<pre><code>{major_version}.{minor_version}.{edit_version}</code></pre>
+
+<p>
+ Below are some examples of valid version numbers:
+</p>
+<pre><code>1.0.0
+1.0.25
+1.5.1
+1.0.0b</code></pre>
+
+<p>
+ The last version, <code>1.0.0b</code> signifies that the class is currently in beta. This type of version will only exist before version <code>1.0.0</code>, and will not be present once Flourish <a href="/docs/Roadmap">hits stable</a>.
+</p>
+
+<p>
+The version number have the following significance:
+</p>
+
+<ul>
+<li><strong>Major version:</strong> this will only change when a major rearchitecting of a class happens, or when backwards compatibility breaks occur</li>
+<li><strong>Minor version:</strong> an increase to the minor version indicates that a new feature was added or an existing feature was enhanced</li>
+<li><strong>Edit version:</strong> this is the most common change to the version and indicates a bug was fixed or changes were made that did not affect functionality in any way</li>
+</ul>
+
+<h2 id="LibraryVersioning">Library Versioning</h2>
+
+<p>
+Flourish, as a library of related classes, is versioned simply by the current revision of the master SVN repository.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

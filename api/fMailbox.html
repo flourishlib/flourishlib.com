@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fMailbox – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fMailbox</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fMailbox">Class Documentation</a></li>
+		<li><strong><a href="/api/fMailbox">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fMailbox.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  			<li><a href="#addSMIMEPair">addSMIMEPair()</a></li>
+	  	  	  	  	  	  			<li><a href="#parseMessage">parseMessage()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li><a href="#__destruct">__destruct()</a></li>
+	  	  			<li><a href="#close">close()</a></li>
+	  			<li><a href="#deleteMessages">deleteMessages()</a></li>
+	  			<li><a href="#enableDebugging">enableDebugging()</a></li>
+	  			<li><a href="#fetchMessage">fetchMessage()</a></li>
+	  			<li><a href="#listMessages">listMessages()</a></li>
+	  	  	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fConnectivityException">fConnectivityException</a></li>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fEmail">fEmail</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fFile">fFile</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b14</span></div>
+<p class="short_description">Retrieves and deletes messages from a email account via IMAP or POP3</p>
+<div class="description"><p>All headers, text and html content returned by this class are encoded in  UTF-8. Please see <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b14</th><td>Added a workaround for iconv having issues in MAMP 1.9.4+ <span class="date">7/26/11</span></td></tr><tr><th>1.0.0b13</th><td>Fixed handling of headers in relation to encoded-words being embedded inside of quoted strings <span class="date">7/26/11</span></td></tr><tr><th>1.0.0b12</th><td>Enhanced the error checking in write() <span class="date">6/3/11</span></td></tr><tr><th>1.0.0b11</th><td>Added code to work around PHP bug #42682 (<a class="ext-link" href="http://bugs.php.net/bug.php?id=42682)"><span class="icon">http://bugs.php.net/bug.php?id=42682)</span></a> where <tt>stream_select()</tt> doesn't work on 64bit machines from PHP 5.2.0 to 5.2.5, improved connectivity error handling and timeouts while reading data <span class="date">1/10/11</span></td></tr><tr><th>1.0.0b10</th><td>Fixed <a href="#parseMessage"><tt>parseMessage()</tt></a> to properly handle a header format edge case and properly set the <tt>text</tt> and <tt>html</tt> keys even when the email has an explicit <tt>Content-disposition: inline</tt> header <span class="date">11/25/10</span></td></tr><tr><th>1.0.0b9</th><td>Fixed a bug in <a href="#parseMessage"><tt>parseMessage()</tt></a> that could cause HTML alternate content to be included in the <tt>inline</tt> content array instead of the <tt>html</tt> element <span class="date">9/20/10</span></td></tr><tr><th>1.0.0b8</th><td>Fixed <a href="#parseMessage"><tt>parseMessage()</tt></a> to be able to handle non-text/non-html multipart parts that do not have a <tt>Content-disposition</tt> header <span class="date">9/18/10</span></td></tr><tr><th>1.0.0b7</th><td>Fixed a typo in read() <span class="date">9/7/10</span></td></tr><tr><th>1.0.0b6</th><td>Fixed a typo from 1.0.0b4 <span class="date">7/21/10</span></td></tr><tr><th>1.0.0b5</th><td>Fixes for increased compatibility with various IMAP and POP3 servers, hacked around a bug in PHP 5.3 on Windows <span class="date">6/22/10</span></td></tr><tr><th>1.0.0b4</th><td>Added code to handle emails without an explicit <tt>Content-type</tt> header <span class="date">6/4/10</span></td></tr><tr><th>1.0.0b3</th><td>Added missing static method callback constants <span class="date">5/11/10</span></td></tr><tr><th>1.0.0b2</th><td>Added the missing <a href="#enableDebugging"><tt>enableDebugging()</tt></a> <span class="date">5/5/10</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">5/5/10</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="addSMIMEPair" class="method static"><span class="resolution">::</span><span class="name">addSMIMEPair()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds an S/MIME certificate, or certificate + private key pair for verification and decryption of S/MIME messages</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addSMIMEPair</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$email_address</span><span class="php-code">,</span> <span class="php-vartype"><a href="fFile">fFile</a>|string</span> <span class="php-var">$certificate_file</span><span class="php-code">,</span> <span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-var">$private_key_file</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$private_key_password</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$email_address</td>
+				<td class="param_description">The email address the certificate or private key is for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fFile">fFile</a>|string</td>
+				<td class="param_name">$certificate_file</td>
+				<td class="param_description">The file the S/MIME certificate is stored in - required for verification and decryption</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fFile">fFile</a></td>
+				<td class="param_name">$private_key_file</td>
+				<td class="param_description">The file the S/MIME private key is stored in - required for decryption only</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$private_key_password</td>
+				<td class="param_description">The password for the private key</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="parseMessage" class="method static"><span class="resolution">::</span><span class="name">parseMessage()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Parses a MIME message into an associative array of information</p>
+								<p>The output includes the following keys:  </p><ul><li><tt>'received'</tt>: The date the message was received by the server</li><li><tt>'headers'</tt>: An associative array of mail headers, the keys are the header names, in lowercase</li></ul><p>And one or more of the following:  </p><ul><li><tt>'text'</tt>: The plaintext body</li><li><tt>'html'</tt>: The HTML body</li><li><tt>'attachment'</tt>: An array of attachments, each containing:
+   <ul><li><tt>'filename'</tt>: The name of the file</li><li><tt>'mimetype'</tt>: The mimetype of the file</li><li><tt>'data'</tt>: The raw contents of the file</li></ul></li><li><tt>'inline'</tt>: An array of inline files, each containing:
+   <ul><li><tt>'filename'</tt>: The name of the file</li><li><tt>'mimetype'</tt>: The mimetype of the file</li><li><tt>'data'</tt>: The raw contents of the file</li></ul></li><li><tt>'related'</tt>: An associative array of related files, such as embedded images, with the key <tt>'cid:{content-id}'</tt> and an array value containing:
+   <ul><li><tt>'mimetype'</tt>: The mimetype of the file</li><li><tt>'data'</tt>: The raw contents of the file</li></ul></li><li><tt>'verified'</tt>: If the message contents were verified via an S/MIME certificate - if not verified the smime.p7s will be listed as an attachment</li><li><tt>'decrypted'</tt>: If the message contents were decrypted via an S/MIME private key - if not decrypted the smime.p7m will be listed as an attachment</li></ul><p>All values in <tt>headers</tt>, <tt>text</tt> and <tt>body</tt> will have been decoded to  UTF-8. Files in the <tt>attachment</tt>, <tt>inline</tt> and <tt>related</tt> array will all  retain their original encodings.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">parseMessage</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$convert_newlines</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The full source of the email message</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$convert_newlines</td>
+				<td class="param_description">If <tt>\r\n</tt> should be converted to <tt>\n</tt> in the <tt>text</tt> and <tt>html</tt> parts the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The parsed email message - see method description for details
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+	</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Configures the connection to the server</p>
+								<p>Please note that the GMail POP3 server does not act like other POP3  servers and the GMail IMAP server should be used instead. GMail POP3 only  allows retrieving a message once - during future connections the email  in question will no longer be available.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fMailbox">fMailbox</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$type</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$host</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$username</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$password</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$port</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$secure</span><span class="php-code">=</span>FALSE<span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$timeout</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of mailbox, <tt>'pop3'</tt> or <tt>'imap'</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$host</td>
+				<td class="param_description">The server hostname or IP address</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$username</td>
+				<td class="param_description">The user to log in as</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$password</td>
+				<td class="param_description">The user's password</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$port</td>
+				<td class="param_description">The port to connect via - only required if non-standard</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$secure</td>
+				<td class="param_description">If SSL should be used for the connection - this requires the <tt>openssl</tt> extension</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$timeout</td>
+				<td class="param_description">The timeout to use when connecting</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="__destruct" class="method"><span class="resolution">-></span><span class="name">__destruct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Disconnects from the server</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__destruct</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="close" class="method"><span class="resolution">-></span><span class="name">close()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Closes the connection to the server</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">close</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="deleteMessages" class="method"><span class="resolution">-></span><span class="name">deleteMessages()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Deletes one or more messages from the server</p>
+								<p>Passing more than one UID at a time is more efficient for IMAP mailboxes,  whereas POP3 mailboxes will see no difference in performance.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">deleteMessages</span><span class="php-brackets">(</span> <span class="php-vartype">integer|array</span> <span class="php-var">$uid</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer|array</td>
+				<td class="param_name">$uid</td>
+				<td class="param_description">The UID(s) of the message(s) to delete</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="enableDebugging" class="method"><span class="resolution">-></span><span class="name">enableDebugging()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets if debug messages should be shown</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableDebugging</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$flag</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$flag</td>
+				<td class="param_description">If debugging messages should be shown</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="fetchMessage" class="method"><span class="resolution">-></span><span class="name">fetchMessage()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Retrieves a single message from the server</p>
+								<p>The output includes the following keys:  </p><ul><li><tt>'uid'</tt>: The UID of the message</li><li><tt>'received'</tt>: The date the message was received by the server</li><li><tt>'headers'</tt>: An associative array of mail headers, the keys are the header names, in lowercase</li></ul><p>And one or more of the following:  </p><ul><li><tt>'text'</tt>: The plaintext body</li><li><tt>'html'</tt>: The HTML body</li><li><tt>'attachment'</tt>: An array of attachments, each containing:
+   <ul><li><tt>'filename'</tt>: The name of the file</li><li><tt>'mimetype'</tt>: The mimetype of the file</li><li><tt>'data'</tt>: The raw contents of the file</li></ul></li><li><tt>'inline'</tt>: An array of inline files, each containing:
+   <ul><li><tt>'filename'</tt>: The name of the file</li><li><tt>'mimetype'</tt>: The mimetype of the file</li><li><tt>'data'</tt>: The raw contents of the file</li></ul></li><li><tt>'related'</tt>: An associative array of related files, such as embedded images, with the key <tt>'cid:{content-id}'</tt> and an array value containing:
+   <ul><li><tt>'mimetype'</tt>: The mimetype of the file</li><li><tt>'data'</tt>: The raw contents of the file</li></ul></li><li><tt>'verified'</tt>: If the message contents were verified via an S/MIME certificate - if not verified the smime.p7s will be listed as an attachment</li><li><tt>'decrypted'</tt>: If the message contents were decrypted via an S/MIME private key - if not decrypted the smime.p7m will be listed as an attachment</li></ul><p>All values in <tt>headers</tt>, <tt>text</tt> and <tt>body</tt> will have been decoded to  UTF-8. Files in the <tt>attachment</tt>, <tt>inline</tt> and <tt>related</tt> array will all  retain their original encodings.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">fetchMessage</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$uid</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$convert_newlines</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$uid</td>
+				<td class="param_description">The UID of the message to retrieve</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$convert_newlines</td>
+				<td class="param_description">If <tt>\r\n</tt> should be converted to <tt>\n</tt> in the <tt>text</tt> and <tt>html</tt> parts the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The parsed email message - see method description for details
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="listMessages" class="method"><span class="resolution">-></span><span class="name">listMessages()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets a list of messages from the server</p>
+								<p>The structure of the returned array is:</p><pre class="block "><code>array(
+    (integer) {uid} => array(
+        'uid'         => (integer) {a unique identifier for this message on this server},
+        'received'    => (string) {date message was received},
+        'size'        => (integer) {size of message in bytes},
+        'date'        => (string) {date message was sent},
+        'from'        => (string) {the from header value},
+        'subject'     => (string) {the message subject},
+        'message_id'  => (string) {optional - the message-id header value, should be globally unique},
+        'to'          => (string) {optional - the to header value},
+        'in_reply_to' => (string) {optional - the in-reply-to header value}
+    ), ...
+)</code></pre><p>All values will have been decoded to UTF-8.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">listMessages</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$limit</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$page</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$limit</td>
+				<td class="param_description">The number of messages to retrieve</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$page</td>
+				<td class="param_description">The page of messages to retrieve</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 A list of messages on the server - see method description for details
+				</p>
+		</div>
+		<!-- end method -->	
+					</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

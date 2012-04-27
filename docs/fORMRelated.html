@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMRelated – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fORMRelated">fORMRelated</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fORMRelated">Class Documentation</a></strong></li>
+<li><a href="/api/fORMRelated">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMRelated.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#OrderingRelatedRecords">Ordering Related Records</a></li>
+<li><a href="#OverridingRelatedRecordNames">Overriding Related Record Names</a></li>
+<li><a href="#OverridingChildRecordValidationNames">Overriding Child Record Validation Names</a></li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><strong>fORMRelated</strong></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fORMRelated class is a built-in part of the ORM that provides related-record functionality for <a href="/docs/fActiveRecord">fActiveRecord</a> classes.
+</p>
+
+<h2 id="OrderingRelatedRecords">Ordering Related Records</h2>
+
+<p>
+When calling a <code>build</code> method on an <a href="/docs/fActiveRecord">fActiveRecord</a> object, by default no <code>ORDER BY</code> clause is used to order the record set. The static method <a href="/api/fORMRelated#setOrderBys"><code>setOrderBys()</code></a> allows setting an <a href="/api/fRecordSet#build">fRecordSet::build()</a> style order bys array for any records created through a <code>build</code> method. The method requires four parameters, the <code>$class</code> being configured, the <code>$related_class</code> to apply the order bys to, the <code>$order_bys</code> array and the <code>$route</code> to the related class. The <code>$route</code> parameter can be omitted if there is only one route.
+</p>
+
+<p>
+The following example will cause related groups to be returned order alphabetically.
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMRelated::setOrderBys(
+            $this,
+            'Group',
+            array('groups.name' =&gt; 'asc')
+        );
+    }
+}
+
+// The groups record set created here will be ordered by name
+$user = new User(1);
+$groups = $user-&gt;buildGroups();</code></pre>
+
+<h2 id="OverridingRelatedRecordNames">Overriding Related Record Names</h2>
+
+<p>
+Record names are used in messaging related to records, as the <a href="/docs/fORM">fORM</a> documentation discusses. Sometimes, however, a record will need to have a different name when presented in reference to another record. The static method <a href="/api/fORMRelated#overrideRelatedRecordName"><code>overrideRelatedRecordName()</code></a> allows defining a custom name to use in the context of being a related record.
+</p>
+<pre class="block sql"><code>CREATE TABLE groups (
+    name VARCHAR(255) PRIMARY KEY
+);
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE members (
+    group VARCHAR(255) NOT NULL REFERENCES groups(name) ON DELETE CASCADE ON UPDATE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    PRIMARY KEY(group, user_id)
+);
+
+CREATE TABLE administrators(
+    group VARCHAR(255) NOT NULL REFERENCES groups(name) ON DELETE CASCADE ON UPDATE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    PRIMARY KEY(group, user_id)
+);</code></pre>
+
+<p>
+ The schema presented above related <code>users</code> to <code>groups</code> in two ways, as <code>members</code> of the group, or as <code>administrators</code>. If a validation rule was set up to require at least one user as a member and one user as an administrator, it wouldnt make sense if the error messages for both just referenced users.
+</p>
+
+<p>
+<code>overrideRelatedRecordName()</code> accepts four parameters, the <code>$class</code> being configured, the <code>$related_class</code> to set the name for, the <code>$record_name</code> to set and optionally the <code>$route</code> to the related class. The <code>$route</code> is only required if there is more than one.
+</p>
+<pre class="block php"><code>class Group extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMRelated::overrideRelatedRecordName($this, 'User', 'Member', 'members');
+        fORMRelated::overrideRelatedRecordName($this, 'User', 'Administrator', 'administrators');
+    }
+}</code></pre>
+
+<h2 id="OverridingChildRecordValidationNames">Overriding Child Record Validation Names</h2>
+
+<p>
+For <code>one-to-many</code> relationships, it is possible to override the name given to the child record when being referenced in the validation message (or array). By default, the name of the record will be in the form <code>Child Record #1</code>. The method <a href="/api/fORMRelated#registerValidationNameMethod"><code>registerValidationNameMethod()</code></a> allows setting a method to be called on a record to retrieve its name.
+</p>
+
+<p>
+<a href="/api/fORMRelated#registerValidationNameMethod"><code>registerValidationNameMethod()</code></a> requires three parameters, the <code>$class</code>, the <code>$related_class</code> and the <code>$method</code> to call on the related record. An optional fourth parameter, <code>$route</code>, may be specified in there is more than one relationship route between <code>$class</code> and <code>$related_class</code>.
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMRelated::registerValidationNameMethod('User', 'UserPreference', 'makeValidationName');
+    }
+}
+class UserPreference extends fActiveRecord
+{
+    public function makeValidationName()
+    {
+        return $this-&gt;getName() . ' Preference';
+    }
+}</code></pre>
+
+<p>
+ The registered method may accept an optional parameter, which will contain a one-based index of its position in the set of child records.
+</p>
+<pre class="block php"><code>class UserPreference extends fActiveRecord
+{
+    public function makeValidationName(number)
+    {
+        return 'Preference #' . $number;
+    }
+}</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

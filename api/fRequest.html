@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fRequest – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fRequest</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fRequest">Class Documentation</a></li>
+		<li><strong><a href="/api/fRequest">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fRequest.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#check">check()</a></li>
+	  			<li><a href="#encode">encode()</a></li>
+	  			<li class="protected"><a href="#filter">filter()</a></li>
+	  			<li><a href="#generateCSRFToken">generateCSRFToken()</a></li>
+	  			<li><a href="#get">get()</a></li>
+	  			<li><a href="#getAcceptLanguages">getAcceptLanguages()</a></li>
+	  			<li><a href="#getAcceptTypes">getAcceptTypes()</a></li>
+	  			<li><a href="#getBestAcceptLanguage">getBestAcceptLanguage()</a></li>
+	  			<li><a href="#getBestAcceptType">getBestAcceptType()</a></li>
+	  			<li><a href="#getValid">getValid()</a></li>
+	  			<li><a href="#isAjax">isAjax()</a></li>
+	  			<li><a href="#isDelete">isDelete()</a></li>
+	  			<li><a href="#isGet">isGet()</a></li>
+	  			<li><a href="#isPost">isPost()</a></li>
+	  			<li><a href="#isPut">isPut()</a></li>
+	  			<li><a href="#overrideAction">overrideAction()</a></li>
+	  			<li><a href="#prepare">prepare()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#set">set()</a></li>
+	  			<li class="protected"><a href="#unfilter">unfilter()</a></li>
+	  			<li><a href="#validateCSRFToken">validateCSRFToken()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCryptography">fCryptography</a></li>
+		<li><a href="fDate">fDate</a></li>
+		<li><a href="fHTML">fHTML</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fSession">fSession</a></li>
+		<li><a href="fTime">fTime</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+		<li><a href="fURL">fURL</a></li>
+		<li><a href="fUTF8">fUTF8</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fCRUD">fCRUD</a></li>
+		<li><a href="fORMFile">fORMFile</a></li>
+		<li><a href="fORMRelated">fORMRelated</a></li>
+		<li><a href="fValidation">fValidation</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b19</span></div>
+<p class="short_description">Provides request-related methods</p>
+<div class="description"><p>This class is implemented to use the UTF-8 character encoding. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p><p>Please also note that using this class in a PUT or DELETE request will  cause the php://input stream to be consumed, and thus no longer available.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b19</th><td>Added the <tt>$use_default_for_blank</tt> parameter to <a href="#get"><tt>get()</tt></a> <span class="date">6/3/11</span></td></tr><tr><th>1.0.0b18</th><td>Backwards Compatibility Break - <a href="#getBestAcceptType"><tt>getBestAcceptType()</tt></a> and <a href="#getBestAcceptLanguage"><tt>getBestAcceptLanguage()</tt></a> now return either <tt>NULL</tt>, <tt>FALSE</tt> or a string instead of <tt>NULL</tt> or a string, both methods are more robust in handling edge cases <span class="date">2/6/11</span></td></tr><tr><th>1.0.0b17</th><td>Fixed support for 3+ dimensional input arrays, added a fixed for the PHP DoS float bug #53632, added support for type-casted arrays in <a href="#get"><tt>get()</tt></a> <span class="date">1/9/11</span></td></tr><tr><th>1.0.0b16</th><td>Backwards Compatibility Break - changed <a href="#get"><tt>get()</tt></a> to remove binary characters when casting to a <tt>string</tt>, changed <tt>int</tt> and <tt>integer</tt> to cast to a real integer when possible, added new types of <tt>binary</tt> and <tt>integer!</tt> <span class="date">11/30/10</span></td></tr><tr><th>1.0.0b15</th><td>Added documentation about <tt>[sub-key]</tt> syntax, added <tt>[sub-key]</tt> support to <a href="#check"><tt>check()</tt></a> <span class="date">9/12/10</span></td></tr><tr><th>1.0.0b14</th><td>Rewrote <a href="#set"><tt>set()</tt></a> to not require recursion for array syntax <span class="date">9/12/10</span></td></tr><tr><th>1.0.0b13</th><td>Fixed <a href="#set"><tt>set()</tt></a> to work with <tt>PUT</tt> requests <span class="date">6/30/10</span></td></tr><tr><th>1.0.0b12</th><td>Fixed a bug with <a href="#getBestAcceptLanguage"><tt>getBestAcceptLanguage()</tt></a> returning the second-best language <span class="date">5/27/10</span></td></tr><tr><th>1.0.0b11</th><td>Added <a href="#isAjax"><tt>isAjax()</tt></a> <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b10</th><td>Fixed <a href="#get"><tt>get()</tt></a> to not truncate integers to the 32bit integer limit <span class="date">3/5/10</span></td></tr><tr><th>1.0.0b9</th><td>Updated class to use new <a href="fSession">fSession</a> API <span class="date">10/23/09</span></td></tr><tr><th>1.0.0b8</th><td>Casting to an integer or string in <a href="#get"><tt>get()</tt></a> now properly casts when the <tt>$key</tt> isn't present in the request, added support for date, time, timestamp and <tt>?</tt> casts <span class="date">8/25/09</span></td></tr><tr><th>1.0.0b7</th><td>Fixed a bug with <a href="#filter"><tt>filter()</tt></a> not properly creating new <tt>$_FILES</tt> entries <span class="date">7/2/09</span></td></tr><tr><th>1.0.0b6</th><td><a href="#filter"><tt>filter()</tt></a> now works with empty prefixes and filtering the <tt>$_FILES</tt> superglobal has been fixed <span class="date">7/2/09</span></td></tr><tr><th>1.0.0b5</th><td>Changed <a href="#filter"><tt>filter()</tt></a> so that it can be called multiple times for multi-level filtering <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b4</th><td>Added the HTML escaping functions <a href="#encode"><tt>encode()</tt></a> and <a href="#prepare"><tt>prepare()</tt></a> <span class="date">5/27/09</span></td></tr><tr><th>1.0.0b3</th><td>Updated class to use new <a href="fSession">fSession</a> API <span class="date">5/8/09</span></td></tr><tr><th>1.0.0b2</th><td>Added <a href="#generateCSRFToken"><tt>generateCSRFToken()</tt></a> from <a href="fCRUD">fCRUD</a>generateRequestToken() and <a href="#validateCSRFToken"><tt>validateCSRFToken()</tt></a> from fCRUD::validateRequestToken() <span class="date">5/8/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/14/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="check" class="method static"><span class="resolution">::</span><span class="name">check()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Indicated if the parameter specified is set in the <tt>$_GET</tt> or <tt>$_POST</tt> superglobals or in the post data of a <tt>PUT</tt> or <tt>DELETE</tt> request</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">check</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to check - array elements can be checked via <tt>[sub-key]</tt> syntax</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the parameter is set
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="encode" class="method static"><span class="resolution">::</span><span class="name">encode()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets a value from get() and passes it through <a href="fHTML#encode"><tt>fHTML::encode()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">encode</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$cast_to</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$default_value</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to get the value of - array elements can be accessed via <tt>[sub-key]</tt> syntax</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$cast_to</td>
+				<td class="param_description">Cast the value to this data type</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$default_value</td>
+				<td class="param_description">If the parameter is not set in the <tt>DELETE</tt>/<tt>PUT</tt> post data, <tt>$_POST</tt> or <tt>$_GET</tt>, use this value instead</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The encoded value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="filter" class="protected method static"><span class="resolution">::</span><span class="name">filter()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Parses through <tt>$_FILES</tt>, <tt>$_GET</tt>, <tt>$_POST</tt> and the <tt>PUT</tt>/<tt>DELETE</tt> post data and filters out everything that doesn't match the prefix and key, also removes the prefix from the field name</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">filter</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$prefix</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$key</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$prefix</td>
+				<td class="param_description">The prefix to filter by</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">If the field is an array, get the value corresponding to this key</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="generateCSRFToken" class="method static"><span class="resolution">::</span><span class="name">generateCSRFToken()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns a request token that should be placed in each HTML form to prevent <a class="ext-link" href="http://en.wikipedia.org/wiki/Cross-site_request_forgery"><span class="icon">cross-site request forgery</span></a></p>
+								<p>This method will return a random 15 character string that should be  placed in a hidden <tt>input</tt> element on every HTML form. When the form  contents are being processed, the token should be retrieved and passed  into <a href="#validateCSRFToken"><tt>validateCSRFToken()</tt></a>.</p><p>The value returned by this method is stored in the session and then  checked by the validate method, which helps prevent cross site request  forgeries and (naive) automated form submissions.</p><p>Tokens generated by this method are single use, so a user must request  the page that generates the token at least once per submission.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">generateCSRFToken</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$url</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$url</td>
+				<td class="param_description">The URL to generate a token for, default to the current page</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The token to be submitted with the form
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="get" class="method static"><span class="resolution">::</span><span class="name">get()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets a value from the <tt>DELETE</tt>/<tt>PUT</tt> post data, <tt>$_POST</tt> or <tt>$_GET</tt> superglobals (in that order)</p>
+								<p>A value that exactly equals <tt>''</tt> and is not cast to a specific type will  become <tt>NULL</tt>.</p><p>Valid <tt>$cast_to</tt> types include:</p><ul><li><tt>'string'</tt></li><li><tt>'binary'</tt></li><li><tt>'int'</tt></li><li><tt>'integer'</tt></li><li><tt>'bool'</tt></li><li><tt>'boolean'</tt></li><li><tt>'array'</tt></li><li><tt>'date'</tt></li><li><tt>'time'</tt></li><li><tt>'timestamp'</tt></li></ul><p>It is possible to append a <tt>?</tt> to a data type to return <tt>NULL</tt>  whenever the <tt>$key</tt> was not specified in the request, or if the value  was a blank string.</p><p>The <tt>array</tt> and unspecified <tt>$cast_to</tt> types allow for multi-dimensional  arrays of string data. It is possible to cast an input value as a  single-dimensional array of a specific type by appending <tt>[]</tt> to the  <tt>$cast_to</tt>.</p><p>All <tt>string</tt>, <tt>array</tt> or unspecified <tt>$cast_to</tt> will result in the value(s)  being interpreted as UTF-8 string and appropriately cleaned of invalid  byte sequences. Also, all low-byte, non-printable characters will be  stripped from the value. This includes all bytes less than the value of  32 (Space) other than Tab (<tt>\t</tt>), Newline (<tt>\n</tt>) and Cariage Return  (<tt>\r</tt>).</p><p>To preserve low-byte, non-printable characters, or get the raw value  without cleaning invalid UTF-8 byte sequences, plase use the value of  <tt>binary</tt> for the <tt>$cast_to</tt> parameter.</p><p>Any integers that are beyond the range of 32bit storage will be returned  as a string. The returned value can be forced to always be a real  integer, which may cause truncation of the value, by passing <tt>integer!</tt>  as the <tt>$cast_to</tt>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$cast_to</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$default_value</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$use_default_for_blank</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to get the value of - array elements can be accessed via <tt>[sub-key]</tt> syntax</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$cast_to</td>
+				<td class="param_description">Cast the value to this data type - see method description for details</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$default_value</td>
+				<td class="param_description">If the parameter is not set in the <tt>DELETE</tt>/<tt>PUT</tt> post data, <tt>$_POST</tt> or <tt>$_GET</tt>, use this value instead. This value will get cast if a <tt>$cast_to</tt> is specified.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$use_default_for_blank</td>
+				<td class="param_description">If the request value is a blank string and <tt>$default_value</tt> is specified, this flag will cause the <tt>$default_value</tt> to be returned</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getAcceptLanguages" class="method static"><span class="resolution">::</span><span class="name">getAcceptLanguages()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the HTTP <tt>Accept-Language</tt>s sorted by their <tt>q</tt> values (from high to low)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getAcceptLanguages</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					An associative array of <tt>{language} =&gt; {q value}</tt> sorted (in a stable-fashion) from highest to lowest <tt>q</tt> - if no header was sent, an empty array will be returned
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getAcceptTypes" class="method static"><span class="resolution">::</span><span class="name">getAcceptTypes()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the HTTP <tt>Accept</tt> types sorted by their <tt>q</tt> values (from high to low)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getAcceptTypes</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					An associative array of <tt>{type} =&gt; {q value}</tt> sorted (in a stable-fashion) from highest to lowest <tt>q</tt> - if no header was sent, an empty array will be returned
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getBestAcceptLanguage" class="method static"><span class="resolution">::</span><span class="name">getBestAcceptLanguage()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the best HTTP <tt>Accept-Language</tt> (based on <tt>q</tt> value) - can be filtered to only allow certain languages</p>
+								<p>Special conditions affecting the return value:</p><ul><li>If no <tt>$filter</tt> is provided and the client does not send the <tt>Accept-Language</tt> header, <tt>NULL</tt> will be returned</li><li>If no <tt>$filter</tt> is provided and the client specifies <tt>*</tt> with the highest <tt>q</tt>, <tt>NULL</tt> will be returned</li><li>If <tt>$filter</tt> contains one or more values, but the <tt>Accept-Language</tt> header does not match any, <tt>FALSE</tt> will be returned</li><li>If <tt>$filter</tt> contains one or more values, but the client does not send the <tt>Accept-Language</tt> header, the first entry from <tt>$filter</tt> will be returned</li><li>If <tt>$filter</tt> contains two or more values, and two of the values have the same <tt>q</tt> value, the one listed first in <tt>$filter</tt> will be returned</li></ul>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string|NULL|FALSE</span> <span class="php-identifier">getBestAcceptLanguage</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$filter</span><span class="php-code">=</span>array() <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype">string|NULL|FALSE</span> <span class="php-identifier">getBestAcceptLanguage</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$language</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$filter</td>
+				<td class="param_description">An array of languages that are valid to return - these should be in the form <tt>{language}-{territory}</tt>, e.g. <tt>en-us</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$language <em>[, ... ]</em></td>
+				<td class="param_description">A language that is valid to return</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The best language listed in the <tt>Accept-Language</tt> header - see method description for edge cases
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getBestAcceptType" class="method static"><span class="resolution">::</span><span class="name">getBestAcceptType()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the best HTTP <tt>Accept</tt> type (based on <tt>q</tt> value) - can be filtered to only allow certain types</p>
+								<p>Special conditions affecting the return value:</p><ul><li>If no <tt>$filter</tt> is provided and the client does not send the <tt>Accept</tt> header, <tt>NULL</tt> will be returned</li><li>If no <tt>$filter</tt> is provided and the client specifies <tt>*/*</tt> with the highest <tt>q</tt>, <tt>NULL</tt> will be returned</li><li>If <tt>$filter</tt> contains one or more values, but the <tt>Accept</tt> header does not match any, <tt>FALSE</tt> will be returned</li><li>If <tt>$filter</tt> contains one or more values, but the client does not send the <tt>Accept</tt> header, the first entry from <tt>$filter</tt> will be returned</li><li>If <tt>$filter</tt> contains two or more values, and two of the values have the same <tt>q</tt> value, the one listed first in <tt>$filter</tt> will be returned</li></ul>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string|NULL|FALSE</span> <span class="php-identifier">getBestAcceptType</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$filter</span><span class="php-code">=</span>array() <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype">string|NULL|FALSE</span> <span class="php-identifier">getBestAcceptType</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$type</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$filter</td>
+				<td class="param_description">An array of types that are valid to return</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type <em>[, ... ]</em></td>
+				<td class="param_description">A type that is valid to return</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The best type listed in the <tt>Accept</tt> header - see method description for edge cases
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getValid" class="method static"><span class="resolution">::</span><span class="name">getValid()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets a value from the <tt>DELETE</tt>/<tt>PUT</tt> post data, <tt>$_POST</tt> or <tt>$_GET</tt> superglobals (in that order), restricting to a specific set of values</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">getValid</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$valid_values</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to get the value of - array elements can be accessed via <tt>[sub-key]</tt> syntax</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$valid_values</td>
+				<td class="param_description">The array of values that are permissible, if one is not selected, picks first</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="isAjax" class="method static"><span class="resolution">::</span><span class="name">isAjax()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Indicates if the URL was accessed via an XMLHttpRequest</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isAjax</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					If the URL was accessed via an XMLHttpRequest
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="isDelete" class="method static"><span class="resolution">::</span><span class="name">isDelete()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Indicates if the URL was accessed via the <tt>DELETE</tt> HTTP method</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isDelete</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					If the URL was accessed via the <tt>DELETE</tt> HTTP method
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="isGet" class="method static"><span class="resolution">::</span><span class="name">isGet()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Indicates if the URL was accessed via the <tt>GET</tt> HTTP method</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isGet</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					If the URL was accessed via the <tt>GET</tt> HTTP method
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="isPost" class="method static"><span class="resolution">::</span><span class="name">isPost()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Indicates if the URL was accessed via the <tt>POST</tt> HTTP method</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isPost</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					If the URL was accessed via the <tt>POST</tt> HTTP method
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="isPut" class="method static"><span class="resolution">::</span><span class="name">isPut()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Indicates if the URL was accessed via the <tt>PUT</tt> HTTP method</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isPut</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					If the URL was accessed via the <tt>PUT</tt> HTTP method
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="overrideAction" class="method static"><span class="resolution">::</span><span class="name">overrideAction()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Overrides the value of <tt>'action'</tt> in the <tt>DELETE</tt>/<tt>PUT</tt> post data, <tt>$_POST</tt> or <tt>$_GET</tt> superglobals based on the <tt>'action::{action_name}'</tt> value</p>
+								<p>This method is primarily intended to be used for hanlding multiple  submit buttons.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">overrideAction</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$redirect</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$redirect</td>
+				<td class="param_description">The url to redirect to if the action is overriden. <tt>%action%</tt> will be replaced with the overridden action.</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="prepare" class="method static"><span class="resolution">::</span><span class="name">prepare()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets a value from get() and passes it through <a href="fHTML#prepare"><tt>fHTML::prepare()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">prepare</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$cast_to</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$default_value</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to get the value of - array elements can be accessed via <tt>[sub-key]</tt> syntax</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$cast_to</td>
+				<td class="param_description">Cast the value to this data type</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$default_value</td>
+				<td class="param_description">If the parameter is not set in the <tt>DELETE</tt>/<tt>PUT</tt> post data, <tt>$_POST</tt> or <tt>$_GET</tt>, use this value instead</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The prepared value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration and data of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="set" class="method static"><span class="resolution">::</span><span class="name">set()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a value into the appropriate <tt>$_GET</tt> or <tt>$_POST</tt> superglobal, or the local <tt>PUT</tt>/<tt>DELETE</tt> post data based on what HTTP method was used for the request</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">set</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to set the value to - array elements can be modified via <tt>[sub-key]</tt> syntax</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to set</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="unfilter" class="protected method static"><span class="resolution">::</span><span class="name">unfilter()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns <tt>$_GET</tt>, <tt>$_POST</tt> and <tt>$_FILES</tt> and the <tt>PUT</tt>/<tt>DELTE</tt> post data to the state they were at before filter() was called</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">unfilter</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+						<!-- start method static -->
+			<h3 id="validateCSRFToken" class="method static"><span class="resolution">::</span><span class="name">validateCSRFToken()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Validates a request token generated by generateCSRFToken()</p>
+								<p>This method takes a request token and ensures it is valid, otherwise  it will throw an <a href="fValidationException">fValidationException</a>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">validateCSRFToken</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$token</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$url</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$token</td>
+				<td class="param_description">The request token to validate</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$url</td>
+				<td class="param_description">The URL to validate the token for, default to the current page</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the CSRF token specified is invalid</dd></dl>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fAuthorizationException – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fAuthorizationException</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fAuthorizationException">Class Documentation</a></li>
+		<li><strong><a href="/api/fAuthorizationException">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fAuthorizationException.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fExpectedException">fExpectedException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fDatabase">fDatabase</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b</span></div>
+<p class="short_description">An exception caused by an authorization error</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b</th><td>The initial implementation <span class="date">5/9/11</span></td></tr></table></div>
+<div class="genealogy">	
+	<h2>Genealogy</h2>
+		<div class="class_tree">
+		<h3>Class Tree</h3>
+		<pre class="class_tree">Exception
+   |
+   --<a href="fException">fException</a>
+      |
+      --<a href="fExpectedException">fExpectedException</a>
+         |
+         --fAuthorizationException</pre>
+	</div>
+		<div class="inherited_variables">
+	<h3>Inherited Variables</h3>
+		<dl>
+		<dt class="protected">$code</dt>
+	<dd class="protected"> </dd>
+		<dt class="protected">$file</dt>
+	<dd class="protected"> </dd>
+		<dt class="protected">$line</dt>
+	<dd class="protected"> </dd>
+		<dt class="protected">$message</dt>
+	<dd class="protected"> </dd>
+		<dt class="private">$previous</dt>
+	<dd class="private"> </dd>
+		<dt class="private">$string</dt>
+	<dd class="private"> </dd>
+		<dt class="private">$trace</dt>
+	<dd class="private"> </dd>
+		</dl>
+		</div>
+		<div class="inherited_methods">
+	<h3>Inherited Methods</h3>
+		<dl>
+	  	  <dt class="public"><a href="fException#__construct"><tt>fException::__construct()</tt></a></dt>
+	  <dd class="public">Sets the message for the exception, allowing for string interpolation and internationalization</dd>
+	  	  <dt class="public"><a href="fException#__get"><tt>fException::__get()</tt></a></dt>
+	  <dd class="public">All requests that hit this method should be requests for callbacks</dd>
+	  	  <dt class="protected"><a href="fException#compose"><tt>fException::compose()</tt></a></dt>
+	  <dd class="protected">Composes text using <a href="fText">fText</a> if loaded</dd>
+	  	  <dt class="protected"><a href="fException#dump"><tt>fException::dump()</tt></a></dt>
+	  <dd class="protected">Creates a string representation of any variable using predefined strings for booleans, <tt>NULL</tt> and empty strings</dd>
+	  	  <dt class="public"><a href="fException#formatTrace"><tt>fException::formatTrace()</tt></a></dt>
+	  <dd class="public">Gets the backtrace to currently called exception</dd>
+	  	  <dt class="protected"><a href="fException#getCSSClass"><tt>fException::getCSSClass()</tt></a></dt>
+	  <dd class="protected">Returns the CSS class name for printing information about the exception</dd>
+	  	  <dt class="protected"><a href="fException#prepare"><tt>fException::prepare()</tt></a></dt>
+	  <dd class="protected">Prepares content for output into HTML</dd>
+	  	  <dt class="public"><a href="fException#printMessage"><tt>fException::printMessage()</tt></a></dt>
+	  <dd class="public">Prints the message inside of a div with the class being 'exception %THIS_EXCEPTION_CLASS_NAME%'</dd>
+	  	  <dt class="public"><a href="fException#printTrace"><tt>fException::printTrace()</tt></a></dt>
+	  <dd class="public">Prints the backtrace to currently called exception inside of a pre tag with the class being 'exception %THIS_EXCEPTION_CLASS_NAME% trace'</dd>
+	  	  <dt class="public"><a href="fException#registerCallback"><tt>fException::registerCallback()</tt></a></dt>
+	  <dd class="public">Adds a callback for when certain types of exceptions are created</dd>
+	  	  <dt class="public"><a href="fException#reorderMessage"><tt>fException::reorderMessage()</tt></a></dt>
+	  <dd class="public">Reorders list items in the message based on simple string matching</dd>
+	  	  <dt class="public"><a href="fException#setMessage"><tt>fException::setMessage()</tt></a></dt>
+	  <dd class="public">Allows the message to be overwriten</dd>
+	  	  <dt class="public"><a href="fException#splitMessage"><tt>fException::splitMessage()</tt></a></dt>
+	  <dd class="public">Splits an exception with an HTML list into multiple strings each containing part of the original message</dd>
+	  	</dl>
+		<dl>
+	  	  <dt class="public">constructor __construct ( [$message = ], [$code = ], [$previous = ] )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">__clone (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">__toString (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getCode (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getFile (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getLine (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getMessage (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getPrevious (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getTrace (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getTraceAsString (  )</dt>
+	  <dd class="public"></dd>
+	  	</dl>
+		</div>
+	</div>			</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

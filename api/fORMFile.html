@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMFile – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fORMFile</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fORMFile">Class Documentation</a></li>
+		<li><strong><a href="/api/fORMFile">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMFile.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected consts">
+<h2><a href="#class_consts">Constants</a></h2>
+<ul>
+    <li class="protected"><a href="#TEMP_DIRECTORY">TEMP_DIRECTORY</a></li>
+  </ul>
+</div>
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#addFImageMethodCall">addFImageMethodCall()</a></li>
+	  			<li><a href="#addFUploadMethodCall">addFUploadMethodCall()</a></li>
+	  			<li class="protected"><a href="#begin">begin()</a></li>
+	  			<li class="protected"><a href="#commit">commit()</a></li>
+	  			<li><a href="#configureColumnInheritance">configureColumnInheritance()</a></li>
+	  			<li><a href="#configureFileUploadColumn">configureFileUploadColumn()</a></li>
+	  			<li><a href="#configureImageUploadColumn">configureImageUploadColumn()</a></li>
+	  			<li class="protected"><a href="#delete">delete()</a></li>
+	  			<li class="protected"><a href="#deleteOld">deleteOld()</a></li>
+	  			<li class="protected"><a href="#encode">encode()</a></li>
+	  			<li class="protected"><a href="#inspect">inspect()</a></li>
+	  			<li class="protected"><a href="#moveFromTemp">moveFromTemp()</a></li>
+	  			<li class="protected"><a href="#objectify">objectify()</a></li>
+	  			<li class="protected"><a href="#populate">populate()</a></li>
+	  			<li class="protected"><a href="#prepare">prepare()</a></li>
+	  			<li class="protected"><a href="#process">process()</a></li>
+	  			<li class="protected"><a href="#processImage">processImage()</a></li>
+	  			<li class="protected"><a href="#reflect">reflect()</a></li>
+	  			<li class="protected"><a href="#replicate">replicate()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li class="protected"><a href="#rollback">rollback()</a></li>
+	  			<li class="protected"><a href="#set">set()</a></li>
+	  			<li class="protected"><a href="#upload">upload()</a></li>
+	  			<li class="protected"><a href="#validate">validate()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fDirectory">fDirectory</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fExpectedException">fExpectedException</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fHTML">fHTML</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fRequest">fRequest</a></li>
+		<li><a href="fUpload">fUpload</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b30</span></div>
+<p class="short_description">Provides file manipulation functionality for <a href="fActiveRecord">fActiveRecord</a> classes</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b30</th><td>Updated code for the new <a href="fUpload">fUpload</a> API <span class="date">8/24/11</span></td></tr><tr><th>1.0.0b29</th><td>Fixed a bug when uploading a new file to a column with an existing file that was not found on the filesystem <span class="date">5/10/11</span></td></tr><tr><th>1.0.0b28</th><td>Backwards Compatibility Break - <a href="#configureImageUploadColumn"><tt>configureImageUploadColumn()</tt></a> no longer accepts the optional <tt>$image_type</tt> as the fourth parameter, instead <a href="#addFImageMethodCall"><tt>addFImageMethodCall()</tt></a> must be called with <tt>saveChanges</tt> as the <tt>$method</tt> and the image type as the first parameter <span class="date">11/30/10</span></td></tr><tr><th>1.0.0b27</th><td>Fixed column inheritance to properly handle non-images and inheriting into image upload columns <span class="date">9/18/10</span></td></tr><tr><th>1.0.0b26</th><td>Enhanced <a href="#configureColumnInheritance"><tt>configureColumnInheritance()</tt></a> to ensure both columns specified have been set up as file upload columns <span class="date">8/18/10</span></td></tr><tr><th>1.0.0b25</th><td>Updated code to work with the new <a href="fORM">fORM</a> API <span class="date">8/6/10</span></td></tr><tr><th>1.0.0b24</th><td>Changed validation messages array to use column name keys <span class="date">5/26/10</span></td></tr><tr><th>1.0.0b23</th><td>Fixed a bug with <a href="#upload"><tt>upload()</tt></a> that could cause a method called on a non-object error in relation to the upload directory not being defined <span class="date">5/10/10</span></td></tr><tr><th>1.0.0b22</th><td>Updated the TEMP_DIRECTORY constant to not include the trailing slash, code now uses DIRECTORY_SEPARATOR to fix issues on Windows <span class="date">4/28/10</span></td></tr><tr><th>1.0.0b21</th><td>Fixed <a href="#set"><tt>set()</tt></a> to perform column inheritance, just like <a href="#upload"><tt>upload()</tt></a> does <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b20</th><td>Fixed the <tt>set</tt> and <tt>process</tt> methods to return the record instance, changed <tt>upload</tt> methods to return the <a href="fFile">fFile</a> object, updated <a href="#reflect"><tt>reflect()</tt></a> with new return values <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b19</th><td>Fixed a few missed instances of old <a href="fFile">fFile</a> method names <span class="date">12/16/09</span></td></tr><tr><th>1.0.0b18</th><td>Updated code for the new <a href="fFile">fFile</a> API <span class="date">12/16/09</span></td></tr><tr><th>1.0.0b17</th><td>Updated code for the new <a href="fORMDatabase">fORMDatabase</a> and <a href="fORMSchema">fORMSchema</a> APIs <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b16</th><td><a href="fImage">fImage</a> method calls for file upload columns will no longer cause notices due to a missing image type <span class="date">9/9/09</span></td></tr><tr><th>1.0.0b15</th><td><a href="#addFImageMethodCall"><tt>addFImageMethodCall()</tt></a> no longer requires column be an image upload column, inheritance to an image column now only happens for <a href="fImage">fImage</a> objects <span class="date">7/29/09</span></td></tr><tr><th>1.0.0b14</th><td>Updated to use new <a href="fORM#registerInspectCallback"><tt>fORM::registerInspectCallback()</tt></a> method <span class="date">7/13/09</span></td></tr><tr><th>1.0.0b13</th><td>Updated code for new <a href="fORM">fORM</a> API <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b12</th><td>Changed replacement values in preg_replace() calls to be properly escaped <span class="date">6/11/09</span></td></tr><tr><th>1.0.0b11</th><td>Updated code to use new <a href="fValidationException#formatField"><tt>fValidationException::formatField()</tt></a> method <span class="date">6/4/09</span></td></tr><tr><th>1.0.0b10</th><td>Fixed a bug where an inherited file upload column would not be properly re-set with an <tt>existing-</tt> input <span class="date">5/26/09</span></td></tr><tr><th>1.0.0b9</th><td><a href="#upload"><tt>upload()</tt></a> and <a href="#set"><tt>set()</tt></a> now set the <tt>$values</tt> entry to <tt>NULL</tt> for filenames that are empty <span class="date">3/2/09</span></td></tr><tr><th>1.0.0b8</th><td>Changed <a href="#set"><tt>set()</tt></a> to accept objects and reject directories <span class="date">1/21/09</span></td></tr><tr><th>1.0.0b7</th><td>Changed the class to use the new <a href="fFilesystem#createObject"><tt>fFilesystem::createObject()</tt></a> method <span class="date">1/21/09</span></td></tr><tr><th>1.0.0b6</th><td>Old files are now checked against the current file to prevent removal of an in-use file <span class="date">12/23/08</span></td></tr><tr><th>1.0.0b5</th><td>Fixed <a href="#replicate"><tt>replicate()</tt></a> to ensure the temp directory exists and <a href="#set"><tt>set()</tt></a> to use the temp directory <span class="date">12/23/08</span></td></tr><tr><th>1.0.0b4</th><td><a href="#objectify"><tt>objectify()</tt></a> no longer throws an exception when a file can't be found <span class="date">12/18/08</span></td></tr><tr><th>1.0.0b3</th><td>Added <a href="#replicate"><tt>replicate()</tt></a> so that replicated files get pu in the temp directory <span class="date">12/12/08</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug with objectifying file columns <span class="date">11/24/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">5/28/08</span></td></tr></table></div>
+<div class="class_consts" id="class_consts">
+<h2>Constants</h2>
+  <!-- start protected constant -->
+<h3 id="TEMP_DIRECTORY" class="protected constant"><span class="resolution">::</span><span class="name">TEMP_DIRECTORY</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>The temporary directory to use for various tasks</p>
+		</div>
+</div>
+<!-- end constant -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="addFImageMethodCall" class="method static"><span class="resolution">::</span><span class="name">addFImageMethodCall()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds an <a href="fImage">fImage</a> method call to the image manipulation for a column if an image file is uploaded</p>
+								<p>Any call to <a href="fImage#saveChanges"><tt>fImage::saveChanges()</tt></a> will be called last. If no explicit  method call to <a href="fImage#saveChanges"><tt>fImage::saveChanges()</tt></a> is made, it will be called  implicitly with default parameters.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addFImageMethodCall</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span><span class="php-code">=</span>array() <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to call the method for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The <a href="fImage">fImage</a> method to call</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters to pass to the method</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="addFUploadMethodCall" class="method static"><span class="resolution">::</span><span class="name">addFUploadMethodCall()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds an <a href="fUpload">fUpload</a> method call to the <a href="fUpload">fUpload</a> initialization for a column</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addFUploadMethodCall</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span><span class="php-code">=</span>array() <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to call the method for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The <a href="fUpload">fUpload</a> method to call</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters to pass to the method</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="begin" class="protected method static"><span class="resolution">::</span><span class="name">begin()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Begins a transaction, or increases the level</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">begin</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="commit" class="protected method static"><span class="resolution">::</span><span class="name">commit()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Commits a transaction, or decreases the level</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">commit</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="configureColumnInheritance" class="method static"><span class="resolution">::</span><span class="name">configureColumnInheritance()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Takes one file or image upload columns and sets it to inherit any uploaded/set files from another column</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">configureColumnInheritance</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$inherit_from_column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column that will inherit the uploaded file</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$inherit_from_column</td>
+				<td class="param_description">The column to inherit the uploaded file from</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="configureFileUploadColumn" class="method static"><span class="resolution">::</span><span class="name">configureFileUploadColumn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a column to be a file upload column</p>
+								<p>Configuring a column to be a file upload column means that whenever  <a href="fActiveRecord#populate"><tt>fActiveRecord::populate()</tt></a> is called for an <a href="fActiveRecord">fActiveRecord</a> object, any  appropriately named file uploads (via <tt>$_FILES</tt>) will be moved into  the directory for this column.</p><p>Setting the column to a file path will cause the specified file to  be copied into the directory for this column.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">configureFileUploadColumn</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype"><a href="fDirectory">fDirectory</a>|string</span> <span class="php-var">$directory</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to set as a file upload column</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fDirectory">fDirectory</a>|string</td>
+				<td class="param_name">$directory</td>
+				<td class="param_description">The directory to upload/move to</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="configureImageUploadColumn" class="method static"><span class="resolution">::</span><span class="name">configureImageUploadColumn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a column to be an image upload column</p>
+								<p>This method works exactly the same as <a href="#configureFileUploadColumn"><tt>configureFileUploadColumn()</tt></a>  except that only image files are accepted.</p><p>To alter an image, including the file type, use <a href="#addFImageMethodCall"><tt>addFImageMethodCall()</tt></a>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">configureImageUploadColumn</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype"><a href="fDirectory">fDirectory</a>|string</span> <span class="php-var">$directory</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name or instance of the class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to set as a file upload column</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fDirectory">fDirectory</a>|string</td>
+				<td class="param_name">$directory</td>
+				<td class="param_description">The directory to upload to</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="delete" class="protected method static"><span class="resolution">::</span><span class="name">delete()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Deletes the files for this record</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">delete</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="deleteOld" class="protected method static"><span class="resolution">::</span><span class="name">deleteOld()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Deletes old files for this record that have been replaced by new ones</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">deleteOld</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="encode" class="protected method static"><span class="resolution">::</span><span class="name">encode()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Encodes a file for output into an HTML <tt>input</tt> tag</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">encode</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="inspect" class="protected method static"><span class="resolution">::</span><span class="name">inspect()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Adds metadata about features added by this class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">inspect</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$metadata</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class being inspected</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column being inspected</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$metadata</td>
+				<td class="param_description">The array of metadata about a column</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="moveFromTemp" class="protected method static"><span class="resolution">::</span><span class="name">moveFromTemp()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Moves uploaded files from the temporary directory to the permanent directory</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">moveFromTemp</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="objectify" class="protected method static"><span class="resolution">::</span><span class="name">objectify()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Turns a filename into an <a href="fFile">fFile</a> or <a href="fImage">fImage</a> object</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">objectify</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class this value is for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column the value is in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The <a href="fFile">fFile</a>, <a href="fImage">fImage</a> or raw value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="populate" class="protected method static"><span class="resolution">::</span><span class="name">populate()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Performs the upload action for file uploads during <a href="fActiveRecord#populate"><tt>fActiveRecord::populate()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">populate</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="prepare" class="protected method static"><span class="resolution">::</span><span class="name">prepare()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Prepares a file for output into HTML by returning filename or the web server path to the file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">prepare</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="process" class="protected method static"><span class="resolution">::</span><span class="name">process()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Handles re-processing an existing image file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">process</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The record object, to allow for method chaining
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="processImage" class="protected method static"><span class="resolution">::</span><span class="name">processImage()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Performs image manipulation on an uploaded/set image</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">processImage</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-var">$image</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The name of the class we are manipulating the image for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column the image is assigned to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fFile">fFile</a></td>
+				<td class="param_name">$image</td>
+				<td class="param_description">The image object to manipulate</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reflect" class="protected method static"><span class="resolution">::</span><span class="name">reflect()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Adjusts the <a href="fActiveRecord#reflect"><tt>fActiveRecord::reflect()</tt></a> signatures of columns that have been configured in this class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reflect</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$signatures</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$include_doc_comments</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to reflect</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$signatures</td>
+				<td class="param_description">The associative array of <tt>{method name} =&gt; {signature}</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$include_doc_comments</td>
+				<td class="param_description">If doc comments should be included with the signature</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="replicate" class="protected method static"><span class="resolution">::</span><span class="name">replicate()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Creates a copy of an uploaded file in the temp directory for the newly cloned record</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">replicate</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class this value is for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column the value is in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The cloned <a href="fFile">fFile</a> object
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="rollback" class="protected method static"><span class="resolution">::</span><span class="name">rollback()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Rolls back a transaction, or decreases the level</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">rollback</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="set" class="protected method static"><span class="resolution">::</span><span class="name">set()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Copies a file from the filesystem to the file upload directory and sets it as the file for the specified column</p>
+								<p>This method will perform the <a href="fImage">fImage</a> calls defined for the column.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">set</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The record object, to allow for method chaining
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="upload" class="protected method static"><span class="resolution">::</span><span class="name">upload()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Uploads a file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">upload</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The uploaded file
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="validate" class="protected method static"><span class="resolution">::</span><span class="name">validate()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Validates uploaded files to ensure they match all of the criteria defined</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">validate</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$related_records</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$cache</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$validation_messages</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The <a href="fActiveRecord">fActiveRecord</a> instance</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$related_records</td>
+				<td class="param_description">Any records related to this record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$cache</td>
+				<td class="param_description">The cache array for the record</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$validation_messages</td>
+				<td class="param_description">The existing validation messages</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fSchema – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fSchema">fSchema</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fSchema">Class Documentation</a></strong></li>
+<li><a href="/api/fSchema">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fSchema.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#ExampleDatabase">Example Database</a></li>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#TableListing">Table Listing</a></li>
+<li><a href="#ColumnInformation">Column Information</a></li>
+<li><a href="#KeyInformation">Key Information</a></li>
+<li><a href="#Relationships">Relationships</a></li>
+<li><a href="#Overriding">Overriding</a>
+<ul>
+<li><a href="#ExampleDatabase">Example Database</a></li>
+<li><a href="#PHPtoOverride">PHP to Override</a></li>
+</ul>
+</li>
+<li><a href="#Caching">Caching</a></li>
+</ul>
+
+<h2 id="DatabaseClasses">Database Classes </h2>
+
+<ul>
+<li><a href="/docs/fDatabase">fDatabase</a></li>
+<li><a href="/docs/fNoRowsException">fNoRowsException</a></li>
+<li><a href="/docs/fResult">fResult</a></li>
+<li><a href="/docs/fSQLException">fSQLException</a></li>
+<li><a href="/docs/fSQLTranslation">fSQLTranslation</a></li>
+<li><a href="/docs/fSQLSchemaTranslation">fSQLSchemaTranslation</a></li>
+<li><strong>fSchema</strong></li>
+<li><a href="/docs/fStatement">fStatement</a></li>
+<li><a href="/docs/fUnbufferedResult">fUnbufferedResult</a></li>
+</ul>
+</div>
+
+<p>
+The fSchema class provides information about the structure of a database, from table and column info to keys and relationships. The database schema is converted to a standard format that can then be used by other code wishing to interact with the database.
+</p>
+
+<h2 id="ExampleDatabase">Example Database</h2>
+
+<p>
+The commands throughout this page are used to display information about database structure. Here are the <code>CREATE TABLE</code> statements for the example database:
+</p>
+<pre class="block sql"><code>CREATE TABLE groups (
+    group_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE users (
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(200) NOT NULL UNIQUE,
+    posts INTEGER NOT NULL DEFAULT 0,
+    birthday DATE,
+    status VARCHAR(20) NOT NULL DEFAULT 'Inactive' CHECK(status IN ('Active', 'Inactive')),
+    group_id INTEGER REFERENCES groups(group_id) ON DELETE CASCADE ON UPDATE CASCADE
+);</code></pre>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+The fSchema class simply requires and instance of the <a href="/docs/fDatabase">fDatabase</a> class in order to be instantiated:
+</p>
+<pre class="block php"><code>$db     = new fDatabase('sqlite', $_SERVER['DOCUMENT_ROOT'] . '/example.db');
+$schema = new fSchema($db);</code></pre>
+
+<h2 id="TableListing">Table Listing</h2>
+
+<p>
+One of the most basic tasks to perform with the fSchema class is to return a list of all tables in the database by using <a href="/api/fSchema#getTables"><code>getTables()</code></a>:
+</p>
+<pre class="block php"><code>$tables = $schema-&gt;getTables();
+fCore::expose($tables);</code></pre>
+
+<p>
+ The output of the above PHP would be:
+</p>
+<pre class="block html"><code>&lt;pre class=&quot;exposed&quot;&gt;Array
+(
+    [0] =&amp;gt; groups
+    [1] =&amp;gt; users
+)&lt;/pre&gt;</code></pre>
+
+<h2 id="ColumnInformation">Column Information</h2>
+
+<p>
+Column information can be returned for any table in the database using the <a href="/api/fSchema#getColumnInfo"><code>getColumnInfo()</code></a> method. The returned associative array contains the following information about each column: <code>type</code>, <code>not_null</code>, <code>default</code>, <code>valid_values</code>, <code>max_length</code>, <code>min_value</code>, <code>max_value</code>, <code>decimal_places</code> and <code>auto_increment</code>. For details about the returned array and the data type mapping that occurs, please view the <a href="/api/fSchema#getColumnInfo">documentation for <code>getColumnInfo()</code></a>.
+</p>
+
+<p>
+Here is an example:
+</p>
+<pre class="block php"><code>$column_info = $schema-&gt;getColumnInfo('users');
+fCore::expose($column_info);</code></pre>
+
+<p>
+ The HTML output would be:
+</p>
+<pre class="block html"><code>&lt;pre class=&quot;exposed&quot;&gt;Array
+(
+    [user_id] =&amp;gt; Array
+        (
+            [type] =&amp;gt; integer
+            [not_null] =&amp;gt; {true}
+            [auto_increment] =&amp;gt; {true}
+            [default] =&amp;gt; {null}
+            [valid_values] =&amp;gt; {null}
+            [min_value] =&amp;gt; -2147483648
+            [max_value] =&amp;gt; 2147483647
+            [max_length] =&amp;gt; {null}
+            [decimal_places] =&amp;gt; {null}
+            [comment] =&amp;gt; {empty_string}
+        )
+  
+    [name] =&amp;gt; Array
+        (
+            [type] =&amp;gt; varchar
+            [max_length] =&amp;gt; 200
+            [not_null] =&amp;gt; {true}
+            [default] =&amp;gt; {null}
+            [valid_values] =&amp;gt; {null}
+            [min_value] =&amp;gt; {null}
+            [max_value] =&amp;gt; 2147483647
+            [decimal_places] =&amp;gt; {null}
+            [auto_increment] =&amp;gt; {false}
+            [comment] =&amp;gt; {empty_string}
+        )
+  
+    [posts] =&amp;gt; Array
+        (
+            [type] =&amp;gt; integer
+            [not_null] =&amp;gt; {true}
+            [default] =&amp;gt; 0
+            [valid_values] =&amp;gt; {null}
+            [max_length] =&amp;gt; {null}
+            [min_value] =&amp;gt; -2147483648
+            [max_value] =&amp;gt; 2147483647
+            [decimal_places] =&amp;gt; {null}
+            [auto_increment] =&amp;gt; {false}
+            [comment] =&amp;gt; {empty_string}
+        )
+  
+    [birthday] =&amp;gt; Array
+        (
+            [type] =&amp;gt; date
+            [not_null] =&amp;gt; {false}
+            [default] =&amp;gt; {null}
+            [valid_values] =&amp;gt; {null}
+            [max_length] =&amp;gt; {null}
+            [min_value] =&amp;gt; {null}
+            [max_value] =&amp;gt; {null}
+            [decimal_places] =&amp;gt; {null}
+            [auto_increment] =&amp;gt; {false}
+            [comment] =&amp;gt; {empty_string}
+        )
+  
+    [status] =&amp;gt; Array
+        (
+            [type] =&amp;gt; varchar
+            [max_length] =&amp;gt; 20
+            [not_null] =&amp;gt; {true}
+            [default] =&amp;gt; Inactive
+
+            [valid_values] =&amp;gt; Array
+                (
+                    [0] =&amp;gt; Active
+                    [1] =&amp;gt; Inactive
+                )
+            
+            [min_value] =&amp;gt; {null}
+            [max_value] =&amp;gt; {null}
+            [decimal_places] =&amp;gt; {null}
+            [auto_increment] =&amp;gt; {false}
+            [comment] =&amp;gt; {empty_string}
+        )
+  
+    [group_id] =&amp;gt; Array
+        (
+            [type] =&amp;gt; integer
+            [not_null] =&amp;gt; {false}
+            [default] =&amp;gt; {null}
+            [valid_values] =&amp;gt; {null}
+            [min_value] =&amp;gt; -2147483648
+            [max_value] =&amp;gt; 2147483647
+            [max_length] =&amp;gt; {null}
+            [auto_increment] =&amp;gt; {false}
+            [comment] =&amp;gt; {empty_string}
+        )
+  
+)&lt;/pre&gt;</code></pre>
+
+<h2 id="KeyInformation">Key Information</h2>
+
+<p>
+In addition to determining basic information about table and columns in a database, fSchema can also detect all of the primary, foreign and unique keys in a database using the <a href="/api/fSchema#getKeys"><code>getKeys()</code></a> method.
+</p>
+
+<p>
+Here is the PHP to get the key information:
+</p>
+<pre class="block php"><code>$keys = $schema-&gt;getKeys('users');
+fCore::expose($keys);</code></pre>
+
+<p>
+ And here is the HTML that would be output:
+</p>
+<pre class="block html"><code>&lt;pre class=&quot;exposed&quot;&gt;Array
+(
+    [primary] =&amp;gt; Array
+        (
+            [0] =&amp;gt; user_id
+        )
+  
+    [foreign] =&amp;gt; Array
+        (
+            [0] =&amp;gt; Array
+                (
+                    [column] =&amp;gt; group_id
+                    [foreign_table] =&amp;gt; groups
+                    [foreign_column] =&amp;gt; group_id
+                    [on_delete] =&amp;gt; cascade
+                    [on_update] =&amp;gt; cascade
+                )
+        
+        )
+  
+    [unique] =&amp;gt; Array
+        (
+            [0] =&amp;gt; Array
+                (
+                    [0] =&amp;gt; name
+                )
+        
+        )
+  
+)&lt;/pre&gt;</code></pre>
+
+<h2 id="Relationships">Relationships</h2>
+
+<p>
+Key information for the database is useful, but another very useful bit of information is how the different tables in the database are related. <a href="/api/fSchema#getRelationships"><code>getRelationships()</code></a> method uses the key information to determine the <code>one-to-one</code>, <code>one-to-many</code>, <code>many-to-one</code> and <code>many-to-many</code> relationships present:
+</p>
+<pre class="block php"><code>$users_relationships = $schema-&gt;getRelationships('users');
+fCore::expose($users_relationships);
+
+$groups_relationships = $schema-&gt;getRelationships('groups');
+fCore::expose($groups_relationships);</code></pre>
+
+<p>
+ The output for the <code>users</code> relationships would be:
+</p>
+<pre class="block html"><code>&lt;pre class=&quot;exposed&quot;&gt;Array
+(
+    [one-to-one] =&amp;gt; Array
+        (
+        )
+  
+    [many-to-one] =&amp;gt; Array
+        (
+            [0] =&amp;gt; Array
+                (
+                    [column] =&amp;gt; group_id
+                    [related_table] =&amp;gt; groups
+                    [related_column] =&amp;gt; group_id
+                )
+        
+        )
+  
+    [one-to-many] =&amp;gt; Array
+        (
+        )
+  
+    [many-to-many] =&amp;gt; Array
+        (
+        )
+  
+)&lt;/pre&gt;</code></pre>
+
+<p>
+ While the output for the <code>groups</code> relationships would be:
+</p>
+<pre class="block html"><code>&lt;pre class=&quot;exposed&quot;&gt;Array
+(
+    [one-to-one] =&amp;gt; Array
+        (
+        )
+  
+    [many-to-one] =&amp;gt; Array
+        (
+        )
+  
+    [one-to-many] =&amp;gt; Array
+        (
+            [0] =&amp;gt; Array
+                (
+                    [column] =&amp;gt; group_id
+                    [related_table] =&amp;gt; users
+                    [related_column] =&amp;gt; group_id
+                    [on_delete] =&amp;gt; cascade
+                    [on_update] =&amp;gt; cascade
+                )
+        
+        )
+  
+    [many-to-many] =&amp;gt; Array
+        (
+        )
+  
+)&lt;/pre&gt;</code></pre>
+
+<h2 id="Overriding">Overriding</h2>
+
+<p>
+The fSchema class is used extensively by the object relational mapping code built into Flourish. Occasionally Flourish will support certain features based on database structure that are impossible to accomplish in a certain type of database.
+</p>
+
+<p>
+To allow the object relational mapping code to still perform the necessary tasks, even if the database engine doesnt support a feature, the <a href="/api/fSchema#setColumnInfoOverride"><code>setColumnInfoOverride()</code></a> and <a href="/api/fSchema#setKeysOverride"><code>setKeysOverride()</code></a> methods allow schema information to be overridden.
+</p>
+
+<p>
+<em>Please note that faking foreign-key relationships for MyISAM tables in MySQL may cause your data to get into an inconsistent state. This is because MyISAM tables do not support transactions, which Flourish uses for the purpose of atomic changes to the database across multiple tables at a time.</em>
+</p>
+
+<h3 id="ExampleDatabase">Example Database</h3>
+
+<p>
+Below are some example tables to show how foreign keys can be faked to help provide relational data integrity. These examples are presented using MySQL.
+</p>
+<pre class="block sql"><code>CREATE TABLE users (
+	user_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	first_name VARCHAR(100) NOT NULL,
+	last_name VARCHAR(100) NOT NULL,
+	email_address VARCHAR(200) NOT NULL UNIQUE,
+	hashed_password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE groups (
+	group_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(255) NOT NULL UNIQUE,
+	group_leader INTEGER,
+	group_founder INTEGER
+);
+
+CREATE TABLE users_groups (
+	user_id INTEGER NOT NULL,
+	group_id INTEGER NOT NULL,
+	PRIMARY KEY(user_id, group_id)
+);</code></pre>
+
+<h3 id="PHPtoOverride">PHP to Override</h3>
+
+<p>
+The following PHP will create relationships between groups and users. There will not be any normal situations where you would want to override the primary or unique keys on a table. <em>If you are using the ORM, this code should be executed before any <a href="/docs/fActiveRecord">fActiveRecord</a> objects are used, such as in the bootstrap page, or something called from it.</em>
+</p>
+
+<p>
+The exact array structure to use with <a href="/api/fSchema#setKeysOverride"><code>setKeysOverride()</code></a> can be found in the <a href="/api/fSchema#getKeys"><code>getKeys()</code></a> method documentation.
+</p>
+<pre class="block php"><code>$schema = new fSchema($database);
+
+// If we are using the ORM well want to attach this instance
+fORMSchema::attach($schema);
+
+// Set up the foreign keys from groups to users
+$schema-&gt;setKeysOverride(
+	array(
+		array(
+			'column'         =&gt; 'group_founder',
+			'foreign_table'  =&gt; 'users',
+			'foreign_column' =&gt; 'user_id',
+			'on_delete'      =&gt; 'cascade',
+			'on_update'      =&gt; 'cascade'
+		),
+		array(
+			'column'         =&gt; 'group_leader',
+			'foreign_table'  =&gt; 'users',
+			'foreign_column' =&gt; 'user_id',
+			'on_delete'      =&gt; 'cascade',
+			'on_update'      =&gt; 'cascade'
+		)
+	),
+	'groups',
+	'foreign'
+);
+
+// Set up the keys for users_groups to create a join table
+// for a many-to-many relationship between users and groups
+$schema-&gt;setKeysOverride(
+	array(
+		array(
+			'column'         =&gt; 'user_id',
+			'foreign_table'  =&gt; 'users',
+			'foreign_column' =&gt; 'user_id',
+			'on_delete'      =&gt; 'cascade',
+			'on_update'      =&gt; 'cascade'
+		),
+		array(
+			'column'         =&gt; 'group_id',
+			'foreign_table'  =&gt; 'groups',
+			'foreign_column' =&gt; 'group_id',
+			'on_delete'      =&gt; 'cascade',
+			'on_update'      =&gt; 'cascade'
+		)
+	),
+	'users_groups',
+	'foreign'
+);</code></pre>
+
+<h2 id="Caching">Caching</h2>
+
+<p>
+Since the fSchema class executes a number of database calls to determine the structure of the database, it may be desirable to cache the information to reduce database load and script execution time. The method <a href="/api/fSchema#enableCaching"><code>enableCaching()</code></a> accepts an instance of the <a href="/docs/fCache">fCache</a> object and will use it to save all of the schema information.
+</p>
+<pre class="block php"><code>$schema-&gt;enableCaching(new fCache('file', '/path/to/cache/file'));</code></pre>
+
+<p>
+ The method <a href="/api/fSchema#clearCache"><code>clearCache()</code></a> will clear out the cached information, which would be useful when the database schema changes.
+</p>
+
+<p>
+When using the <a href="/docs/ObjectRelationalMapping">Flourish ORM</a>, the <a href="/docs/fORM">fORM</a> class provides some <a href="/docs/fORM#SchemaCaching">useful caching functionality</a> that will automatically clear the cache when database errors occur.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

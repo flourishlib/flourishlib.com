@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMJSON – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fORMJSON">fORMJSON</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fORMJSON">Class Documentation</a></strong></li>
+<li><a href="/api/fORMJSON">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMJSON.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Enabling">Enabling</a></li>
+<li><a href="#Usage">Usage</a></li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><strong>fORMJSON</strong></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fORMJSON class is an ORM plugin to provide JSON encoding functionality to <a href="/docs/fActiveRecord">fActiveRecord</a> and <a href="/docs/fRecordSet">fRecordSet</a> objects.
+</p>
+
+<h2 id="Enabling">Enabling</h2>
+
+<p>
+To add the JSON encoding functionality for whole records and record sets, simply call the static method <a href="/api/fORMJSON#extend"><code>extend()</code></a>.
+</p>
+<pre class="block php"><code>fORMJSON::extend();</code></pre>
+
+<h2 id="Usage">Usage</h2>
+
+<p>
+The fORMJSON class adds a <code>toJSON()</code> method to both <a href="/docs/fActiveRecord">fActiveRecord</a> and <a href="/docs/fRecordSet">fRecordSet</a>. Calling <code>toJSON()</code> on a record will create a single JSON object with each column being the property name and the value being the value. Calling <code>toJSON()</code> on a record set will create an array of the record JSON objects.
+</p>
+<pre class="block php"><code>$user = new User(3);
+echo $user-&gt;toJSON();
+
+$users = fRecordSet::build('User');
+echo $users-&gt;toJSON();</code></pre>
+
+<p>
+ When outputting JSON to a browser, it is best practice to include the appropriate <code>Content-Type</code> header by calling <a href="/api/fJSON#sendHeader">fJSON::sendHeader()</a>.
+</p>
+<pre class="block php"><code>fJSON::sendHeader();
+$user = new User(3);
+echo $user-&gt;toJSON();</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

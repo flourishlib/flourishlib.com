@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fActiveRecord – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fActiveRecord</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fActiveRecord">Class Documentation</a></li>
+		<li><strong><a href="/api/fActiveRecord">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fActiveRecord.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected variables static">
+<h2><a href="#class_vars_static">Static Variables</a></h2>
+<ul>
+  	   	 		<li class="protected"><a href="#callback_cache">$callback_cache</a></li>
+	   	 		<li class="protected"><a href="#configured">$configured</a></li>
+	   	 		<li class="protected"><a href="#identity_map">$identity_map</a></li>
+	   	 		<li class="protected"><a href="#method_name_cache">$method_name_cache</a></li>
+	   	   	   	 		<li class="protected"><a href="#replicate_level">$replicate_level</a></li>
+	   	 		<li class="protected"><a href="#replicate_map">$replicate_map</a></li>
+	   	 		<li class="protected"><a href="#unescape_map">$unescape_map</a></li>
+	   	   </ul>
+</div>
+<div class="protected variables">
+<h2><a href="#class_vars">Variables</a></h2>
+<ul>
+  	 		<li class="protected"><a href="#cache">$cache</a></li>
+	   	   	   	   	   	 		<li class="protected"><a href="#old_values">$old_values</a></li>
+	   	 		<li class="protected"><a href="#related_records">$related_records</a></li>
+	   	   	   	   	 		<li class="protected"><a href="#values">$values</a></li>
+	   </ul>
+</div>
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  	  			<li class="protected"><a href="#assign">assign()</a></li>
+	  			<li class="protected"><a href="#changed">changed()</a></li>
+	  			<li class="protected"><a href="#checkClass">checkClass()</a></li>
+	  			<li class="protected"><a href="#checkConditions">checkConditions()</a></li>
+	  			<li><a href="#clearIdentityMap">clearIdentityMap()</a></li>
+	  			<li class="protected"><a href="#compose">compose()</a></li>
+	  	  	  	  	  	  	  	  			<li class="protected"><a href="#forceConfigure">forceConfigure()</a></li>
+	  	  			<li class="protected"><a href="#hash">hash()</a></li>
+	  			<li class="protected"><a href="#hasOld">hasOld()</a></li>
+	  	  	  	  	  	  	  	  	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li class="protected"><a href="#retrieveOld">retrieveOld()</a></li>
+	  	  	  	  			<li class="protected"><a href="#validateClass">validateClass()</a></li>
+	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li><a href="#__call">__call()</a></li>
+	  			<li class="protected"><a href="#__clone">__clone()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li class="protected"><a href="#__wakeup">__wakeup()</a></li>
+	  	  	  	  	  	  	  			<li class="protected"><a href="#configure">configure()</a></li>
+	  			<li class="protected"><a href="#constructInsertParams">constructInsertParams()</a></li>
+	  			<li class="protected"><a href="#constructUpdateParams">constructUpdateParams()</a></li>
+	  			<li><a href="#delete">delete()</a></li>
+	  			<li class="protected"><a href="#encode">encode()</a></li>
+	  			<li><a href="#exists">exists()</a></li>
+	  			<li class="protected"><a href="#fetchResultFromUniqueKey">fetchResultFromUniqueKey()</a></li>
+	  	  			<li class="protected"><a href="#get">get()</a></li>
+	  	  	  			<li class="protected"><a href="#inspect">inspect()</a></li>
+	  			<li><a href="#load">load()</a></li>
+	  			<li class="protected"><a href="#loadFromIdentityMap">loadFromIdentityMap()</a></li>
+	  			<li class="protected"><a href="#loadFromResult">loadFromResult()</a></li>
+	  			<li><a href="#populate">populate()</a></li>
+	  			<li class="protected"><a href="#prepare">prepare()</a></li>
+	  			<li><a href="#reflect">reflect()</a></li>
+	  			<li><a href="#replicate">replicate()</a></li>
+	  	  	  			<li class="protected"><a href="#set">set()</a></li>
+	  			<li><a href="#store">store()</a></li>
+	  			<li><a href="#validate">validate()</a></li>
+	  	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fExpectedException">fExpectedException</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fHTML">fHTML</a></li>
+		<li><a href="fNotFoundException">fNotFoundException</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fORMRelated">fORMRelated</a></li>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fRecordSet">fRecordSet</a></li>
+		<li><a href="fRequest">fRequest</a></li>
+		<li><a href="fUTF8">fUTF8</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fORMColumn">fORMColumn</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fORMDate">fORMDate</a></li>
+		<li><a href="fORMFile">fORMFile</a></li>
+		<li><a href="fORMMoney">fORMMoney</a></li>
+		<li><a href="fORMOrdering">fORMOrdering</a></li>
+		<li><a href="fORMRelated">fORMRelated</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fRecordSet">fRecordSet</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">abstract class</span>,
+		<span class="version">v1.0.0b81</span></div>
+<p class="short_description">An <a class="ext-link" href="http://en.wikipedia.org/wiki/Active_record_pattern"><span class="icon">active record pattern</span></a> base class</p>
+<div class="description"><p>This class uses <a href="fORMSchema">fORMSchema</a> to inspect your database and provides an  OO interface to a single database table. The class dynamically handles  method calls for getting, setting and other operations on columns. It also  dynamically handles retrieving and storing related records.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b81</th><td>Fixed a bug with updating a record that contains only an auto-incrementing primary key <span class="date">9/6/11</span></td></tr><tr><th>1.0.0b80</th><td>Added support to checkCondition() for the <tt>^~</tt> and <tt>$~</tt> operators <span class="date">6/20/11</span></td></tr><tr><th>1.0.0b79</th><td>Fixed some bugs in handling relationships between PHP 5.3 namespaced classes <span class="date">5/26/11</span></td></tr><tr><th>1.0.0b78</th><td>Backwards Compatibility Break - <a href="#reflect"><tt>reflect()</tt></a> now returns an associative array instead of a string <span class="date">5/10/11</span></td></tr><tr><th>1.0.0b77</th><td>Fixed <a href="#inspect"><tt>inspect()</tt></a> to not throw an <a href="fProgrammerException">fProgrammerException</a> when a valid element has a <tt>NULL</tt> value <span class="date">5/10/11</span></td></tr><tr><th>1.0.0b76</th><td>Added <a href="#clearIdentityMap"><tt>clearIdentityMap()</tt></a> <span class="date">5/9/11</span></td></tr><tr><th>1.0.0b75</th><td>Fixed a bug where child records of a record with a non-auto-incrementing primary key would not be saved properly for a new record <span class="date">12/6/10</span></td></tr><tr><th>1.0.0b74</th><td>Updated <a href="#populate"><tt>populate()</tt></a> to use the <tt>binary</tt> type for <a href="fRequest#get"><tt>fRequest::get()</tt></a> <span class="date">11/30/10</span></td></tr><tr><th>1.0.0b73</th><td>Backwards Compatibility Break - changed column set methods to treat strings of all whitespace the same as empty string and convert them to <tt>NULL</tt> <span class="date">11/29/10</span></td></tr><tr><th>1.0.0b72</th><td>Added the new <tt>comment</tt> element to the reflection signature for <tt>inspect</tt> methods <span class="date">11/28/10</span></td></tr><tr><th>1.0.0b71</th><td>Updated class to use <a href="fORM#getRelatedClass"><tt>fORM::getRelatedClass()</tt></a> <span class="date">11/24/10</span></td></tr><tr><th>1.0.0b70</th><td>Added support for PHP 5.3 namespaced <a href="fActiveRecord">fActiveRecord</a> classes <span class="date">11/11/10</span></td></tr><tr><th>1.0.0b69</th><td>Backwards Compatibility Break - changed <a href="#validate"><tt>validate()</tt></a> to return a nested array of validation messages when there are validation errors on child records <span class="date">10/3/10</span></td></tr><tr><th>1.0.0b68</th><td>Added hooks to <a href="#replicate"><tt>replicate()</tt></a> <span class="date">9/7/10</span></td></tr><tr><th>1.0.0b67</th><td>Updated code to work with the new <a href="fORM">fORM</a> API <span class="date">8/6/10</span></td></tr><tr><th>1.0.0b66</th><td>Fixed a bug with <a href="#store"><tt>store()</tt></a> and non-primary key auto-incrementing columns <span class="date">7/5/10</span></td></tr><tr><th>1.0.0b65</th><td>Fixed bugs with <a href="#inspect"><tt>inspect()</tt></a> making some <tt>min_value</tt> and <tt>max_value</tt> elements available for non-numeric types, fixed <a href="#reflect"><tt>reflect()</tt></a> to list the <tt>min_value</tt> and <tt>max_value</tt> elements <span class="date">6/8/10</span></td></tr><tr><th>1.0.0b64</th><td>BackwardsCompatibilityBreak - changed <a href="#validate"><tt>validate()</tt></a>'s returned messages array to have field name keys - added the option to <a href="#validate"><tt>validate()</tt></a> to remove field names from messages <span class="date">5/26/10</span></td></tr><tr><th>1.0.0b63</th><td>Changed how is_subclass_of() is used to work around a bug in 5.2.x <span class="date">4/6/10</span></td></tr><tr><th>1.0.0b62</th><td>Fixed a bug that could cause infinite recursion starting in v1.0.0b60 <span class="date">4/2/10</span></td></tr><tr><th>1.0.0b61</th><td>Fixed issues with handling <tt>populate</tt> actions when working with mapped classes <span class="date">3/31/10</span></td></tr><tr><th>1.0.0b60</th><td>Fixed issues with handling <tt>associate</tt> and <tt>has</tt> actions when working with mapped classes, added <a href="#validateClass"><tt>validateClass()</tt></a> <span class="date">3/30/10</span></td></tr><tr><th>1.0.0b59</th><td>Changed an extended UTF-8 arrow character into the correct <tt>-&gt;</tt> <span class="date">3/29/10</span></td></tr><tr><th>1.0.0b58</th><td>Fixed <a href="#reflect"><tt>reflect()</tt></a> to specify the value returned from <tt>set</tt> methods <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b57</th><td>Added the <tt>post::loadFromIdentityMap()</tt> hook and fixed <a href="#__construct"><tt>__construct()</tt></a> to always call the <tt>post::__construct()</tt> hook <span class="date">3/14/10</span></td></tr><tr><th>1.0.0b56</th><td>Fixed <tt>$force_cascade</tt> in <a href="#delete"><tt>delete()</tt></a> to work even when the restricted relationship is once-removed through an unrestricted relationship <span class="date">3/9/10</span></td></tr><tr><th>1.0.0b55</th><td>Fixed <a href="#load"><tt>load()</tt></a> to that related records are cleared, requiring them to be loaded from the database <span class="date">3/4/10</span></td></tr><tr><th>1.0.0b54</th><td>Fixed detection of route name for one-to-one relationships in <a href="#delete"><tt>delete()</tt></a> <span class="date">3/3/10</span></td></tr><tr><th>1.0.0b53</th><td>Fixed a bug where related records with a primary key that contained a foreign key with an on update cascade clause would be deleted when changing the value of the column referenced by the foreign key <span class="date">12/17/09</span></td></tr><tr><th>1.0.0b52</th><td>Backwards Compatibility Break - Added the $force_cascade parameter to <a href="#delete"><tt>delete()</tt></a> and <a href="#store"><tt>store()</tt></a> - enabled calling <a href="#prepare"><tt>prepare()</tt></a> and <a href="#encode"><tt>encode()</tt></a> for non-column get methods, added <tt>::has{RelatedRecords}()</tt> methods <span class="date">12/16/09</span></td></tr><tr><th>1.0.0b51</th><td>Made <a href="#changed"><tt>changed()</tt></a> properly recognize that a blank string and NULL are equivalent due to the way that <a href="#set"><tt>set()</tt></a> casts values <span class="date">11/14/09</span></td></tr><tr><th>1.0.0b50</th><td>Fixed a bug with trying to load by a multi-column primary key where one of the columns was not specified <span class="date">11/13/09</span></td></tr><tr><th>1.0.0b49</th><td>Fixed a bug affecting where conditions with columns that are not null but have a default value <span class="date">11/3/09</span></td></tr><tr><th>1.0.0b48</th><td>Updated code for the new <a href="fORMDatabase">fORMDatabase</a> and <a href="fORMSchema">fORMSchema</a> APIs <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b47</th><td>Changed <tt>::associate{RelatedRecords}()</tt>, <tt>::link{RelatedRecords}()</tt> and <tt>::populate{RelatedRecords}()</tt> to allow for method chaining <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b46</th><td>Changed SQL statements to use value placeholders and identifier escaping <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b45</th><td>Added support for <tt>!~</tt>, <tt>&amp;~</tt>, <tt>&gt;&lt;</tt> and OR comparisons to <a href="#checkConditions"><tt>checkConditions()</tt></a>, made object handling in <a href="#checkConditions"><tt>checkConditions()</tt></a> more robust <span class="date">9/21/09</span></td></tr><tr><th>1.0.0b44</th><td>Updated code for new <a href="fValidationException">fValidationException</a> API <span class="date">9/18/09</span></td></tr><tr><th>1.0.0b43</th><td>Updated code for new <a href="fRecordSet">fRecordSet</a> API <span class="date">9/16/09</span></td></tr><tr><th>1.0.0b42</th><td>Corrected a grammar bug in <a href="#hash"><tt>hash()</tt></a> <span class="date">9/9/09</span></td></tr><tr><th>1.0.0b41</th><td>Fixed a bug in the last version that would cause issues with classes containing a custom class to table mapping <span class="date">9/1/09</span></td></tr><tr><th>1.0.0b40</th><td>Added a check to the configuration part of <a href="#__construct"><tt>__construct()</tt></a> to ensure modelled tables have primary keys <span class="date">8/26/09</span></td></tr><tr><th>1.0.0b39</th><td>Changed <tt>set{ColumnName}()</tt> methods to return the record for method chaining, fixed a bug with loading by multi-column unique constraints, fixed a bug with <a href="#load"><tt>load()</tt></a> <span class="date">8/26/09</span></td></tr><tr><th>1.0.0b38</th><td>Updated <a href="#changed"><tt>changed()</tt></a> to do a strict comparison when at least one value is NULL <span class="date">8/17/09</span></td></tr><tr><th>1.0.0b37</th><td>Changed <a href="#__construct"><tt>__construct()</tt></a> to allow any Iterator object instead of just <a href="fResult">fResult</a> <span class="date">8/12/09</span></td></tr><tr><th>1.0.0b36</th><td>Fixed a bug with setting NULL values from v1.0.0b33 <span class="date">8/10/09</span></td></tr><tr><th>1.0.0b35</th><td>Fixed a bug with unescaping data in <a href="#loadFromResult"><tt>loadFromResult()</tt></a> from v1.0.0b33 <span class="date">8/10/09</span></td></tr><tr><th>1.0.0b34</th><td>Added the ability to compare <a href="fActiveRecord">fActiveRecord</a> objects in <a href="#checkConditions"><tt>checkConditions()</tt></a> <span class="date">8/7/09</span></td></tr><tr><th>1.0.0b33</th><td>Performance enhancements to <a href="#__call"><tt>__call()</tt></a> and <a href="#__construct"><tt>__construct()</tt></a> <span class="date">8/7/09</span></td></tr><tr><th>1.0.0b32</th><td>Changed <a href="#delete"><tt>delete()</tt></a> to remove auto-incrementing primary keys after the post::delete() hook <span class="date">7/29/09</span></td></tr><tr><th>1.0.0b31</th><td>Fixed a bug with loading a record by a multi-column primary key, fixed one-to-one relationship API <span class="date">7/21/09</span></td></tr><tr><th>1.0.0b30</th><td>Updated <a href="#reflect"><tt>reflect()</tt></a> for new <a href="fORM#callReflectCallbacks"><tt>fORM::callReflectCallbacks()</tt></a> API <span class="date">7/13/09</span></td></tr><tr><th>1.0.0b29</th><td>Updated to use new <a href="fORM#callInspectCallbacks"><tt>fORM::callInspectCallbacks()</tt></a> method <span class="date">7/13/09</span></td></tr><tr><th>1.0.0b28</th><td>Fixed a bug where records would break the identity map at the end of <a href="#store"><tt>store()</tt></a> <span class="date">7/9/09</span></td></tr><tr><th>1.0.0b27</th><td>Changed <a href="#hash"><tt>hash()</tt></a> from a protected method to a static public/internal method that requires the class name for non-<a href="fActiveRecord">fActiveRecord</a> values <span class="date">7/9/09</span></td></tr><tr><th>1.0.0b26</th><td>Added <a href="#checkConditions"><tt>checkConditions()</tt></a> from <a href="fRecordSet">fRecordSet</a> <span class="date">7/8/09</span></td></tr><tr><th>1.0.0b25</th><td>Updated <a href="#validate"><tt>validate()</tt></a> to use new <a href="fORMValidation">fORMValidation</a> API, including new message search/replace functionality <span class="date">7/1/09</span></td></tr><tr><th>1.0.0b24</th><td>Changed <a href="#validate"><tt>validate()</tt></a> to remove duplicate validation messages <span class="date">6/30/09</span></td></tr><tr><th>1.0.0b23</th><td>Updated code for new <a href="fORMValidation#validateRelated"><tt>fORMValidation::validateRelated()</tt></a> API <span class="date">6/26/09</span></td></tr><tr><th>1.0.0b22</th><td>Added support for the $formatting parameter to encode methods on char, text and varchar columns <span class="date">6/19/09</span></td></tr><tr><th>1.0.0b21</th><td>Performance tweaks and updates for <a href="fORM">fORM</a> and <a href="fORMRelated">fORMRelated</a> API changes <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b20</th><td>Changed replacement values in preg_replace() calls to be properly escaped <span class="date">6/11/09</span></td></tr><tr><th>1.0.0b19</th><td>Added <tt>list{RelatedRecords}()</tt> methods, updated code for new <a href="fORMRelated">fORMRelated</a> API <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b18</th><td>Changed <a href="#store"><tt>store()</tt></a> to use new <a href="fORMRelated#store"><tt>fORMRelated::store()</tt></a> method <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b17</th><td>Added some missing parameter information to <a href="#reflect"><tt>reflect()</tt></a> <span class="date">6/1/09</span></td></tr><tr><th>1.0.0b16</th><td>Fixed bugs in <a href="#__clone"><tt>__clone()</tt></a> and <a href="#replicate"><tt>replicate()</tt></a> related to recursive relationships <span class="date">5/20/09</span></td></tr><tr><th>1.0.0b15</th><td>Fixed an incorrect variable reference in <a href="#store"><tt>store()</tt></a> <span class="date">5/6/09</span></td></tr><tr><th>1.0.0b14</th><td><a href="#store"><tt>store()</tt></a> no longer tries to get an auto-incrementing ID from the database if a value was set <span class="date">5/2/09</span></td></tr><tr><th>1.0.0b13</th><td><a href="#delete"><tt>delete()</tt></a>, <a href="#load"><tt>load()</tt></a>, <a href="#populate"><tt>populate()</tt></a> and <a href="#store"><tt>store()</tt></a> now return the record to allow for method chaining <span class="date">3/23/09</span></td></tr><tr><th>1.0.0b12</th><td><a href="#set"><tt>set()</tt></a> now removes commas from integers and floats to prevent validation issues <span class="date">3/22/09</span></td></tr><tr><th>1.0.0b11</th><td><a href="#encode"><tt>encode()</tt></a> no longer adds commas to floats <span class="date">3/22/09</span></td></tr><tr><th>1.0.0b10</th><td><a href="#__wakeup"><tt>__wakeup()</tt></a> no longer registers the record as the definitive copy in the identity map <span class="date">3/22/09</span></td></tr><tr><th>1.0.0b9</th><td>Changed <a href="#__construct"><tt>__construct()</tt></a> to populate database default values when a non-existing record is instantiated <span class="date">1/12/09</span></td></tr><tr><th>1.0.0b8</th><td>Fixed <a href="#exists"><tt>exists()</tt></a> to properly detect cases when an existing record has one or more NULL values in the primary key <span class="date">1/11/09</span></td></tr><tr><th>1.0.0b7</th><td>Fixed <a href="#__construct"><tt>__construct()</tt></a> to not trigger the post::__construct() hook when force-configured <span class="date">12/30/08</span></td></tr><tr><th>1.0.0b6</th><td><a href="#__construct"><tt>__construct()</tt></a> now accepts an associative array matching any unique key or primary key, fixed the post::__construct() hook to be called once for each record <span class="date">12/26/08</span></td></tr><tr><th>1.0.0b5</th><td>Fixed <a href="#replicate"><tt>replicate()</tt></a> to use plural record names for related records <span class="date">12/12/08</span></td></tr><tr><th>1.0.0b4</th><td>Added <a href="#replicate"><tt>replicate()</tt></a> to allow cloning along with related records <span class="date">12/12/08</span></td></tr><tr><th>1.0.0b3</th><td>Changed <a href="#__clone"><tt>__clone()</tt></a> to clone objects contains in the values and cache arrays <span class="date">12/11/08</span></td></tr><tr><th>1.0.0b2</th><td>Added the <a href="#__clone"><tt>__clone()</tt></a> method to properly duplicate a record <span class="date">12/4/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">8/4/07</span></td></tr></table></div>
+<div class="class_variables static" id="class_vars_static">
+<h2>Static Variables</h2>
+	<!-- start protected variable static -->
+	<h3 id="callback_cache" class="protected variable static"><span class="resolution">::</span><span class="name">$callback_cache</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable static">    
+					<div class="variable_description">
+							<p>Caches callbacks for methods</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable static -->
+	<!-- start protected variable static -->
+	<h3 id="configured" class="protected variable static"><span class="resolution">::</span><span class="name">$configured</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable static">    
+					<div class="variable_description">
+							<p>An array of flags indicating a class has been configured</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable static -->
+	<!-- start protected variable static -->
+	<h3 id="identity_map" class="protected variable static"><span class="resolution">::</span><span class="name">$identity_map</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable static">    
+					<div class="variable_description">
+							<p>Maps objects via their primary key</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable static -->
+	<!-- start protected variable static -->
+	<h3 id="method_name_cache" class="protected variable static"><span class="resolution">::</span><span class="name">$method_name_cache</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable static">    
+					<div class="variable_description">
+							<p>Caches method name parsings</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable static -->
+	<!-- start protected variable static -->
+	<h3 id="replicate_level" class="protected variable static"><span class="resolution">::</span><span class="name">$replicate_level</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable static">    
+					<div class="variable_description">
+							<p>Keeps track of the recursive call level of replication so we can clear the map</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">integer</p>
+	</div>
+	<!-- end variable static -->
+	<!-- start protected variable static -->
+	<h3 id="replicate_map" class="protected variable static"><span class="resolution">::</span><span class="name">$replicate_map</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable static">    
+					<div class="variable_description">
+							<p>Keeps a list of records that have been replicated</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable static -->
+	<!-- start protected variable static -->
+	<h3 id="unescape_map" class="protected variable static"><span class="resolution">::</span><span class="name">$unescape_map</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable static">    
+					<div class="variable_description">
+							<p>Contains a list of what columns in each class need to be unescaped and what data type they are</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable static -->
+</div>
+<div class="class_variables" id="class_vars">
+<h2>Variables</h2>
+	<!-- start protected variable -->
+	<h3 id="cache" class="protected variable"><span class="resolution">-></span><span class="name">cache</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>A data store for caching data related to a record, the structure of this is completely up to the developer using it</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="old_values" class="protected variable"><span class="resolution">-></span><span class="name">old_values</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The old values for this record</p>
+						<p>Column names are the keys, but a column key will only be present if a  value has changed. The value associated with each key is an array of  old values with the first entry being the oldest value. The static  methods <a href="#assign"><tt>assign()</tt></a>, <a href="#changed"><tt>changed()</tt></a>, <a href="#hasOld"><tt>hasOld()</tt></a> and <a href="#retrieveOld"><tt>retrieveOld()</tt></a> are the  best way to interact with this array.</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="related_records" class="protected variable"><span class="resolution">-></span><span class="name">related_records</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>Records that are related to the current record via some relationship</p>
+						<p>This array is used to cache related records so that a database query  is not required each time related records are accessed. The <a href="fORMRelated">fORMRelated</a>  class handles most of the interaction with this array.</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="values" class="protected variable"><span class="resolution">-></span><span class="name">values</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The values for this record</p>
+						<p>This array always contains every column in the database table as a key  with the value being the current value.</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="assign" class="protected method static"><span class="resolution">::</span><span class="name">assign()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets a value to the <tt>$values</tt> array, preserving the old value in <tt>$old_values</tt></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">assign</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to set</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="changed" class="protected method static"><span class="resolution">::</span><span class="name">changed()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Checks to see if a value has changed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">changed</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$values</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$values</td>
+				<td class="param_description">The current values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to check</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the value for the column specified has changed
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="checkClass" class="protected method static"><span class="resolution">::</span><span class="name">checkClass()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Ensures a class extends <a href="fActiveRecord">fActiveRecord</a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">checkClass</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to check</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the class is an <a href="fActiveRecord">fActiveRecord</a> descendant
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="checkConditions" class="protected method static"><span class="resolution">::</span><span class="name">checkConditions()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Checks to see if a record matches all of the conditions</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">checkConditions</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-var">$record</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$conditions</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a></td>
+				<td class="param_name">$record</td>
+				<td class="param_description">The record to check</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$conditions</td>
+				<td class="param_description">The conditions to check - see <a href="fRecordSet#filter"><tt>fRecordSet::filter()</tt></a> for format details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the record meets all conditions
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="clearIdentityMap" class="method static"><span class="resolution">::</span><span class="name">clearIdentityMap()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Clears the identity map</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">clearIdentityMap</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="compose" class="protected method static"><span class="resolution">::</span><span class="name">compose()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Composes text using <a href="fText">fText</a> if loaded</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">compose</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$component</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to compose</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$component <em>[, ... ]</em></td>
+				<td class="param_description">A string or number to insert into the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The composed and possible translated message
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="forceConfigure" class="protected method static"><span class="resolution">::</span><span class="name">forceConfigure()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Ensures that configure() has been called for the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">forceConfigure</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to configure</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="hash" class="protected method static"><span class="resolution">::</span><span class="name">hash()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Takes a row of data or a primary key and makes a hash from the primary key</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string|NULL</span> <span class="php-identifier">hash</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a>|array|string|int</span> <span class="php-var">$record</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fActiveRecord">fActiveRecord</a>|array|string|int</td>
+				<td class="param_name">$record</td>
+				<td class="param_description">An <a href="fActiveRecord">fActiveRecord</a> object, an array of the records data, an array of primary key data or a scalar primary key value</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class name, if $record isn't an <a href="fActiveRecord">fActiveRecord</a></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					A hash of the record's primary key value or NULL if the record doesn't exist yet
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="hasOld" class="protected method static"><span class="resolution">::</span><span class="name">hasOld()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Checks to see if an old value exists for a column</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">hasOld</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to set</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If an old value for that column exists
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="retrieveOld" class="protected method static"><span class="resolution">::</span><span class="name">retrieveOld()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Retrieves the oldest value for a column or all old values</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">retrieveOld</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$old_values</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$default</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$return_all</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$old_values</td>
+				<td class="param_description">The old values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to get</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$default</td>
+				<td class="param_description">The default value to return if no value exists</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$return_all</td>
+				<td class="param_description">Return the array of all old values for this column instead of just the oldest</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The old value for the column
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="validateClass" class="protected method static"><span class="resolution">::</span><span class="name">validateClass()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Ensures a class extends <a href="fActiveRecord">fActiveRecord</a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">validateClass</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class to verify</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+	</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+						<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Creates a new record or loads one from the database - if a primary key or unique key is provided the record will be loaded</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$key</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The primary key or unique key value(s) - single column primary keys will accept a scalar value, all others must be an associative array of <tt>(string) {column} =&gt; (mixed) {value}</tt></td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNotFoundException">fNotFoundException</a></dt><dd>When the record specified by <tt>$key</tt> can not be found in the database</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="__call" class="method"><span class="resolution">-></span><span class="name">__call()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Handles all method calls for columns, related records and hook callbacks</p>
+								<p>Dynamically handles <tt>get</tt>, <tt>set</tt>, <tt>prepare</tt>, <tt>encode</tt> and <tt>inspect</tt>  methods for each column in this record. Method names are in the form  <tt>verbColumName()</tt>.</p><p>This method also handles <tt>associate</tt>, <tt>build</tt>, <tt>count</tt>, <tt>has</tt>, and <tt>link</tt>  verbs for records in many-to-many relationships; <tt>build</tt>, <tt>count</tt>, <tt>has</tt>  and <tt>populate</tt> verbs for all related records in one-to-many relationships  and <tt>create</tt>, <tt>has</tt> and <tt>populate</tt> verbs for all related records in  one-to-one relationships, and the <tt>create</tt> verb for all related records  in many-to-one relationships.</p><p>Method callbacks registered through <a href="fORM#registerActiveRecordMethod"><tt>fORM::registerActiveRecordMethod()</tt></a>  will be delegated via this method.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">__call</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The name of the method called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The value returned by the method called
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__clone" class="protected method"><span class="resolution">-></span><span class="name">__clone()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Creates a clone of a record</p>
+								<p>If the record has an auto incrementing primary key, the primary key will  be erased in the clone. If the primary key is not auto incrementing,  the primary key will be left as-is in the clone. In either situation the  clone will return <tt>FALSE</tt> from the <a href="#exists"><tt>exists()</tt></a> method until <a href="#store"><tt>store()</tt></a> is  called.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">__clone</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__wakeup" class="protected method"><span class="resolution">-></span><span class="name">__wakeup()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Configure itself when coming out of the session. Records from the session are NOT hooked into the identity map.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__wakeup</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="configure" class="protected method"><span class="resolution">-></span><span class="name">configure()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Allows the programmer to set features for the class</p>
+								<p>This method is only called once per page load for each class.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">configure</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="constructInsertParams" class="protected method"><span class="resolution">-></span><span class="name">constructInsertParams()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Creates the <a href="fDatabase#translatedQuery"><tt>fDatabase::translatedQuery()</tt></a> insert statement params</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">constructInsertParams</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The parameters for an <a href="fDatabase#translatedQuery"><tt>fDatabase::translatedQuery()</tt></a> SQL insert statement
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="constructUpdateParams" class="protected method"><span class="resolution">-></span><span class="name">constructUpdateParams()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Creates the <a href="fDatabase#translatedQuery"><tt>fDatabase::translatedQuery()</tt></a> update statement params</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">constructUpdateParams</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The parameters for an <a href="fDatabase#translatedQuery"><tt>fDatabase::translatedQuery()</tt></a> SQL update statement
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="delete" class="method"><span class="resolution">-></span><span class="name">delete()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Deletes a record from the database, but does not destroy the object</p>
+								<p>This method will start a database transaction if one is not already active.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">delete</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$force_cascade</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$force_cascade</td>
+				<td class="param_description">When TRUE, this will cause all child objects to be deleted, even if the ON DELETE clause is RESTRICT or NO ACTION</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The record object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="encode" class="protected method"><span class="resolution">-></span><span class="name">encode()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Retrieves a value from the record and prepares it for output into an HTML form element.</p>
+								<p>Below are the transformations performed:   </p><ul><li><strong>varchar, char, text</strong>: will run through <a href="fHTML#encode"><tt>fHTML::encode()</tt></a>, if <tt>TRUE</tt> is passed the text will be run through <a href="fHTML">fHTML</a>convertNewLinks() and <a href="fHTML#makeLinks"><tt>fHTML::makeLinks()</tt></a></li><li><strong>float</strong>: takes 1 parameter to specify the number of decimal places</li><li><strong>date, time, timestamp</strong>: <tt>format()</tt> will be called on the <a href="fDate">fDate</a>/<a href="fTime">fTime</a>/<a href="fTimestamp">fTimestamp</a> object with the 1 parameter specified</li><li><strong>objects</strong>: the object will be converted to a string by <tt>__toString()</tt> or a <tt>(string)</tt> cast and then will be run through <a href="fHTML#encode"><tt>fHTML::encode()</tt></a></li><li><strong>all other data types</strong>: the value will be run through <a href="fHTML#encode"><tt>fHTML::encode()</tt></a></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">encode</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$formatting</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The name of the column to retrieve</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$formatting</td>
+				<td class="param_description">The formatting string</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The encoded value for the column specified
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="exists" class="method"><span class="resolution">-></span><span class="name">exists()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Checks to see if the record exists in the database</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">exists</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the record exists in the database
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start protected method -->
+			<h3 id="fetchResultFromUniqueKey" class="protected method"><span class="resolution">-></span><span class="name">fetchResultFromUniqueKey()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Loads a record from the database based on a UNIQUE key</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">fetchResultFromUniqueKey</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$values</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$values</td>
+				<td class="param_description">The UNIQUE key values to try and load with</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNotFoundException">fNotFoundException</a></dt></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="get" class="protected method"><span class="resolution">-></span><span class="name">get()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Retrieves a value from the record</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The name of the column to retrieve</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The value for the column specified
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="inspect" class="protected method"><span class="resolution">-></span><span class="name">inspect()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Retrieves information about a column</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">inspect</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The name of the column to inspect</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The metadata element to retrieve</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The metadata array for the column, or the metadata element specified
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="load" class="method"><span class="resolution">-></span><span class="name">load()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Loads a record from the database</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">load</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The record object, to allow for method chaining
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNotFoundException">fNotFoundException</a></dt><dd>When the record could not be found in the database</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="loadFromIdentityMap" class="protected method"><span class="resolution">-></span><span class="name">loadFromIdentityMap()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Tries to load the object (via references to class vars) from the <a href="fORM">fORM</a> identity map</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">loadFromIdentityMap</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$row</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$hash</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$row</td>
+				<td class="param_description">The data source for the primary key values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$hash</td>
+				<td class="param_description">The unique hash for this record</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the load was successful
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="loadFromResult" class="protected method"><span class="resolution">-></span><span class="name">loadFromResult()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Loads a record from the database directly from a result object</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">loadFromResult</span><span class="php-brackets">(</span> <span class="php-vartype">Iterator</span> <span class="php-var">$result</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$ignore_identity_map</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">Iterator</td>
+				<td class="param_name">$result</td>
+				<td class="param_description">The result object to use for loading the current object</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$ignore_identity_map</td>
+				<td class="param_description">If the identity map should be ignored and the values loaded no matter what</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the record was loaded from the identity map
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="populate" class="method"><span class="resolution">-></span><span class="name">populate()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the values for this record by getting values from the request through the <a href="fRequest">fRequest</a> class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">populate</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The record object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="prepare" class="protected method"><span class="resolution">-></span><span class="name">prepare()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Retrieves a value from the record and prepares it for output into html.</p>
+								<p>Below are the transformations performed:  </p><ul><li><strong>varchar, char, text</strong>: will run through <a href="fHTML#prepare"><tt>fHTML::prepare()</tt></a>, if <tt>TRUE</tt> is passed the text will be run through <a href="fHTML">fHTML</a>convertNewLinks() and <a href="fHTML#makeLinks"><tt>fHTML::makeLinks()</tt></a></li><li><strong>boolean</strong>: will return <tt>'Yes'</tt> or <tt>'No'</tt></li><li><strong>integer</strong>: will add thousands/millions/etc. separators</li><li><strong>float</strong>: will add thousands/millions/etc. separators and takes 1 parameter to specify the number of decimal places</li><li><strong>date, time, timestamp</strong>: <tt>format()</tt> will be called on the <a href="fDate">fDate</a>/<a href="fTime">fTime</a>/<a href="fTimestamp">fTimestamp</a> object with the 1 parameter specified</li><li><strong>objects</strong>: the object will be converted to a string by <tt>__toString()</tt> or a <tt>(string)</tt> cast and then will be run through <a href="fHTML#prepare"><tt>fHTML::prepare()</tt></a></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">prepare</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$formatting</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The name of the column to retrieve</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$formatting</td>
+				<td class="param_description">The formatting parameter, if applicable</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The formatted value for the column specified
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="reflect" class="method"><span class="resolution">-></span><span class="name">reflect()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Generates the method signatures for all methods (including dynamic ones)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">reflect</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$include_doc_comments</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$include_doc_comments</td>
+				<td class="param_description">If the doc block comments for each method should be included</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 An associative array of method name =&gt; method signature
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="replicate" class="method"><span class="resolution">-></span><span class="name">replicate()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Generates a clone of the current record, removing any auto incremented primary key value and allowing for replicating related records</p>
+								<p>This method will accept three different sets of parameters:  </p><ul><li>No parameters: this object will be cloned</li><li>A single <tt>TRUE</tt> value: this object plus all many-to-many associations and all child records (recursively) will be cloned</li><li>Any number of plural related record class names: the many-to-many associations or child records that correspond to the classes specified will be cloned</li></ul><p>The class names specified can be a simple class name if there is only a  single route between the two corresponding database tables. If there is  more than one route between the two tables, the class name should be  substituted with a string in the format <tt>'RelatedClass{route}'</tt>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">replicate</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$related_class</span><span class="php-code">=</span>NULL [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_class <em>[, ... ]</em></td>
+				<td class="param_description">The plural related class to replicate - see method description for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The cloned record
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="set" class="protected method"><span class="resolution">-></span><span class="name">set()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Sets a value to the record</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">set</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to set the value to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to set</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 This record, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="store" class="method"><span class="resolution">-></span><span class="name">store()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Stores a record in the database, whether existing or new</p>
+								<p>This method will start database and filesystem transactions if they have  not already been started.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fActiveRecord">fActiveRecord</a></span> <span class="php-identifier">store</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$force_cascade</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$force_cascade</td>
+				<td class="param_description">When storing related records, this will force deleting child records even if they have their own children in a relationship with an RESTRICT or NO ACTION for the ON DELETE clause</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The record object, to allow for method chaining
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <a href="#validate"><tt>validate()</tt></a> throws an exception</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="validate" class="method"><span class="resolution">-></span><span class="name">validate()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Validates the values of the record against the database and any additional validation rules</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void|array</span> <span class="php-identifier">validate</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$return_messages</span><span class="php-code">=</span>FALSE<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$remove_column_names</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$return_messages</td>
+				<td class="param_description">If an array of validation messages should be returned instead of an exception being thrown</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$remove_column_names</td>
+				<td class="param_description">If column names should be removed from the returned messages, leaving just the message itself</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If $return_messages is TRUE, an array of validation messages will be returned
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the record, or one of the associated records, violates one of the validation rules for the class or can not be properly stored in the database</dd></dl>
+		</div>
+		<!-- end method -->	
+				</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

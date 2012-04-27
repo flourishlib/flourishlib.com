@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fFile – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fFile">fFile</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fFile">Class Documentation</a></strong></li>
+<li><a href="/api/fFile">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fFile.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#GettingInformation">Getting Information</a></li>
+<li><a href="#Manipulation">Manipulation</a></li>
+<li><a href="#Outputting">Outputting</a>
+<ul>
+<li><a href="#PerformanceIssues">Performance Issues</a></li>
+</ul>
+</li>
+<li><a href="#Cloning">Cloning</a></li>
+<li><a href="#Iteration">Iteration</a></li>
+</ul>
+
+<h2 id="FilesystemClasses">Filesystem Classes </h2>
+
+<ul>
+<li><a href="/docs/fFilesystem">fFilesystem</a></li>
+<li><strong>fFile</strong>
+<ul>
+<li><a href="/docs/fImage">fImage</a></li>
+</ul>
+</li>
+<li><a href="/docs/fDirectory">fDirectory</a></li>
+<li><a href="/docs/fUpload">fUpload</a></li>
+</ul>
+</div>
+
+<p>
+The fFile class is a simple object representation of a file on the filesystem. It provides an object-based interface to common file functions and allows actions to be grouped into transactions via the <a href="/docs/fFilesystem">fFilesystem</a> class.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+The fFile constructor normally takes a single argument, the filesystem path to a file.
+</p>
+<pre class="block php"><code>$file1 = new fFile('/var/www/vhosts/examples.com/httpdocs/images/example.gif');
+$file2 = new fFile('./output.txt');
+$file3 = new fFile('../uploads/documents/example.doc');</code></pre>
+
+<p>
+ A second argument can be passed to the constructor allowing for an exception object to be set for the file, however this is primarily for use by the <a href="/docs/fUpload">fUpload</a> class.
+</p>
+
+<p>
+It is also possible to create an fFile object by calling the static <a href="/api/fFile#create"><code>create()</code></a> method. Not only does it create an instance of fFile, but also allows creates a new file on the filesystem. This method requires two parameters, the <code>$file_path</code> and the <code>$contents</code> to write. 
+</p>
+<pre class="block php"><code>$new_file = fFile::create('./output.log', 'This is the string to be stored in the new file.');</code></pre>
+
+<h2 id="GettingInformation">Getting Information</h2>
+
+<p>
+The fFile class includes a few methods to grab some basic information about a file. These include:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fFile#getName"><code>getName()</code></a></td>
+<td>Returns the filename of the file as a string</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#getExtension"><code>getExtension()</code></a></td>
+<td>Returns the extension of the file</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#getParent"><code>getParent()</code></a></td>
+<td>Returns the <a href="/docs/fDirectory">fDirectory</a> object for the directory containing this file</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#getPath"><code>getPath()</code></a></td>
+<td>Returns a string with the full path to the file</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#getSize"><code>getSize()</code></a></td>
+<td>Returns the size in bytes as an integer, or optionally formatted for easy human readability</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#getMimeType"><code>getMimeType()</code></a></td>
+<td>Returns the mime type of the file, see the <a href="/api/fFile#getMimeType">API docs</a> for a list of all supported file types</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#getMTime"><code>getMTime()</code></a></td>
+<td>Returns an <a href="/docs/fTimestamp">fTimestamp</a> object representing the date and time the file was last modified</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#isWritable"><code>isWritable()</code></a></td>
+<td>Indicates if the file can be written to by the current user</td>
+</tr>
+</tbody></table>
+
+<p>
+If you want more specific information about a file, you can pass the output of <code>getPath()</code> into the various <a href="http://php.net/filesystem">PHP filesystem functions</a>. 
+</p>
+
+<h2 id="Manipulation">Manipulation</h2>
+
+<p>
+In most situations, manipulation of a file is going to be a requirement. The following methods provide a straight-forward interface for standard manipulation. Also note that these manipulations can be wrapped in a <a href="/docs/fFilesystem#Transactions">filesystem transactions</a> to allow for rolling back changes in the event of a later error.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fFile#read"><code>read()</code></a></td>
+<td>Returns the contents of the file as a string</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#write"><code>write()</code></a></td>
+<td>Accepts a string to overwrite the file contents with</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#append"><code>append()</code></a></td>
+<td>Appends content to the file</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#rename"><code>rename()</code></a></td>
+<td>Renames the file to a new filename/path - if no directory <code>/</code> is found in the new path, the file is renamed in the current directory</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#move"><code>move()</code></a></td>
+<td>Moves the file to a new directory, keeping the existing filename</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#duplicate"><code>duplicate()</code></a></td>
+<td>Will create a copy of the file, optionally in a different directory. If in a different directory, you can specify if you want an existing file with the same name to be overwritten.</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#delete"><code>delete()</code></a></td>
+<td>Removes the file from the filesystem. Please note that if inside of a filesystem transaction, this event will be deferred until commit is called, but instances of fFile will act as if the file no longer exists.</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#output"><code>output()</code></a></td>
+<td>Will echo the contents of the file to the user, optionally including the appropriate HTTP headers</td>
+</tr>
+</tbody></table>
+
+<h2 id="Outputting">Outputting</h2>
+
+<p>
+When it is necessary to use PHP to control access to files, a file can be sent to a user via the <a href="/api/fFile#output"><code>output()</code></a> method. The first parameters, <code>$headers</code>, is required and controls whether or not mime-type and filesize headers are included with the file contents. If this is set to <code>FALSE</code>, the headers should be manually sent before calling the method.
+</p>
+<pre class="block php"><code>// Output the file with relevant headers
+$file-&gt;output(TRUE);</code></pre>
+
+<p>
+ If included, the second parameter, <code>$filename</code>, will send the file as an attachment to the current page instead of using the filename from the current URL.
+</p>
+<pre class="block php"><code>// If on index.php, this file will be sent to the user as index.php
+$file-&gt;output(TRUE);
+
+// This file will be sent as document.doc
+$file-&gt;output(TRUE, 'document.doc');</code></pre>
+
+<h3 id="PerformanceIssues">Performance Issues</h3>
+
+<p>
+When outputting a file, please be certain to turn off any output buffering, whether it be controller by <a href="http://php.net/ob_start"><code>ob_start()</code></a>, <a href="/docs/fTemplating">fTemplating</a> or <a href="/docs/fBuffer">fBuffer</a>. If output buffering is turned on, the whole contents of the file will be stored in web server memory before being sent to the user. This can obviously cause issues with large files.
+</p>
+
+<p>
+Due to the way that PHP prevents overwriting session values, only one page can access the session at a time. If the session was opened on the page before calling <code>output()</code> and is not explicitly closed via <a href="/api/fSession#close">fSession::close()</a>, the user will not be able to visit any other pages on the site until the download completes. This is obviously more of an issue with large files or slow connections.
+</p>
+
+<h2 id="Cloning">Cloning</h2>
+
+<p>
+When an fFile object is cloned, a duplicate of the file is created on the filesystem in the files current directory. Essentially <code>clone</code> is the same as calling <a href="/api/fFile#duplicate"><code>duplicate()</code></a> with no parameters.
+</p>
+<pre class="block php"><code>$file  = new fFile('/path/to/file.txt');
+// $file2 will be a new file with the path /path/to/file_copy1.txt
+$file2 = clone $file;</code></pre>
+
+<h2 id="Iteration">Iteration</h2>
+
+<p>
+fFile implements the Iterator interface, meaning that ever fFile object can be used in a foreach loop, with each iteration returning a line from the line. Each line <strong>will</strong> include the original line break.
+</p>
+<pre class="block php"><code>$file = new fFile('report.csv');
+foreach ($file as $line) {
+    $fields = str_getcsv($line);
+    // 
+}</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

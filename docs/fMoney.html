@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fMoney – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fMoney">fMoney</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fMoney">Class Documentation</a></strong></li>
+<li><a href="/api/fMoney">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fMoney.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Currencies">Currencies</a>
+<ul>
+<li><a href="#ExchangeRates">Exchange Rates</a></li>
+<li><a href="#DefiningaCurrency">Defining a Currency</a></li>
+<li><a href="#DefaultCurrency">Default Currency</a></li>
+</ul>
+</li>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#Accessors">Accessors</a></li>
+<li><a href="#Comparison">Comparison</a></li>
+<li><a href="#Modification">Modification</a>
+<ul>
+<li><a href="#Addition">Addition</a></li>
+<li><a href="#Subtraction">Subtraction</a></li>
+<li><a href="#Multiplication">Multiplication</a></li>
+<li><a href="#AllocationDivision">Allocation (Division)</a></li>
+</ul>
+</li>
+<li><a href="#Conversion">Conversion</a></li>
+<li><a href="#Formatting">Formatting</a></li>
+<li><a href="#Localization">Localization</a></li>
+</ul>
+
+<h2 id="ValueObjects">Value Objects </h2>
+
+<ul>
+<li><a href="/docs/fDate">fDate</a></li>
+<li><strong>fMoney</strong></li>
+<li><a href="/docs/fNumber">fNumber</a></li>
+<li><a href="/docs/fTime">fTime</a></li>
+<li><a href="/docs/fTimestamp">fTimestamp</a></li>
+</ul>
+</div>
+
+<p>
+The fMoney class is a <a href="/docs/ValueObjects">value object</a> for representing a monetary value. There is support for precise calculation, multiple currencies and formatting.
+</p>
+
+<h2 id="Currencies">Currencies</h2>
+
+<h3 id="ExchangeRates">Exchange Rates</h3>
+
+<p>
+By default the fMoney class comes with a single defined currency USD (United States Dollar). fMoney is built in such a way that multiple currencies can be used and converted between, however there is no built-in functionality to fetch exchange rate information. A few sources of free exchange rate information include:
+</p>
+
+<ul>
+<li><a href="http://foxrate.org">FoxRate.org</a></li>
+<li><a href="http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml">European Central Bank</a></li>
+<li><a href="http://www.federalreserve.gov/releases/H10/update/h10daily.txt">Federal Reserve Bank</a></li>
+<li><a href="http://www.imf.org/external/np/fin/data/rms_rep.aspx?tsvflag=Y">International Monetary Fund</a></li>
+</ul>
+
+<p>
+The rest of the documentation will assume that if multiple currencies are being used that the work has been done to fetch the appropriate exchange rate information in a regular fashion.
+</p>
+
+<h3 id="DefiningaCurrency">Defining a Currency</h3>
+
+<p>
+Whenever a system must use a currency other than USD, the new currency must be defined by calling <a href="/api/fMoney#defineCurrency"><code>defineCurrency()</code></a>. This method takes a total of five parameters that define all of the relevant information about a currency. The parameters are <code>$iso_code</code>, <code>$name</code>, <code>$symbol</code>, <code>$precision</code> and <code>$value</code>.
+</p>
+
+<p>
+Here is an example of defining the currency Pound Sterling:
+</p>
+<pre class="block php"><code>fMoney::defineCurrency(
+    'GBP',            // The three digit ISO code
+    'Pound Sterling', // The name of the currency
+    '',              // The currency symbol
+    '2',              // The precision after the decimal point
+    '1.91865000'      // The current exchange rate with USD
+);</code></pre>
+
+<p>
+ The <code>$value</code> of a currency should be defined relative to USD, that is USD has a value of <code>1.00000000</code>.
+</p>
+
+<p>
+Once a currency has been defined, information about it can be retrieved by using the method <a href="/api/fMoney#getCurrencyInfo"><code>getCurrencyInfo()</code></a>. There is one required parameter, <code>$iso_code</code>, which indicates what currency should be returned. A second optional parameter, <code>$element</code>, allows selecting a single piece of information including:
+</p>
+
+<ul>
+<li><code>'name'</code></li>
+<li><code>'symbol'</code></li>
+<li><code>'precision'</code></li>
+<li><code>'value'</code></li>
+</ul>
+
+<p>
+It is also possible to get a list of all currencies by calling <a href="/api/fMoney#getCurrencies"><code>getCurrencies()</code></a>.
+</p>
+
+<h3 id="DefaultCurrency">Default Currency</h3>
+
+<p>
+While not required, setting a default currency is often useful, especially if only a single currency is supported. By setting the default currency, it is no longer necessary to specify the currency code when creating new fMoney objects.
+</p>
+
+<p>
+The method <a href="/api/fMoney#setDefaultCurrency"><code>setDefaultCurrency()</code></a> accepts a single parameter, the <code>$iso_code</code> for the desired default currency. Below is an example of setting the default to United States Dollar:
+</p>
+<pre class="block php"><code>fMoney::setDefaultCurrency('USD');</code></pre>
+
+<p>
+ The default currency can be retrieved by calling <a href="/api/fMoney#getDefaultCurrency"><code>getDefaultCurrency()</code></a>.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+Create an fMoney object requires either one or two parameters depending on whether or not a <a href="#DefaultCurrency">default currency</a> has been set. If a default <strong>has not</strong> been set, or a currency other than the default is desired, an <code>$amount</code> and a <code>$currency</code> must be specified:
+</p>
+<pre class="block php"><code>$price = new fMoney('12.25', 'USD');</code></pre>
+
+<p>
+ <em>When setting the amount of an fMoney object, a float value should never be used due to the inherit loss of precision when storing floating point values. Instead, always use an integer, or a floating point value in a string.</em>
+</p>
+
+<p>
+If a default currency <strong>has</strong> been set and the default currency is desired, only a single parameter, <code>$amount</code> is required:
+</p>
+<pre class="block php"><code>fMoney::setDefaultCurrency('USD');
+
+$twelve_dollars = new fMoney('12.00');
+$five_dollars   = new fMoney('5.00');</code></pre>
+
+<p>
+ Note that by default the currency symbol and all commas (,) will be removed from any monetary value before parsing it as a number. For details about how to customize this behaviour, please see the <a href="#Localization">localization section</a>.
+</p>
+
+<h2 id="Accessors">Accessors</h2>
+
+<p>
+There are two accessors for the fMoney class, <a href="/api/fMoney#getAmount"><code>getAmount()</code></a> and <a href="/api/fMoney#getCurrency"><code>getCurrency()</code></a> which return the amount of the value and the currency respectively.
+</p>
+<pre class="block php"><code>echo $five_dollars-&gt;getAmount() . &quot;\n&quot;;
+echo $five_dollars-&gt;getCurrency();</code></pre>
+
+<p>
+ will output the following:
+</p>
+<pre><code>5.00
+USD</code></pre>
+
+<h2 id="Comparison">Comparison</h2>
+
+<p>
+Comparison of fMoney objects is accomplished by the method <a href="/api/fMoney#eq"><code>eq()</code></a>, <a href="/api/fMoney#gt"><code>gt()</code></a>, <a href="/api/fMoney#gte"><code>gte()</code></a>, <a href="/api/fMoney#lt"><code>lt()</code></a> and <a href="/api/fMoney#lte"><code>lte()</code></a>. Each method will convert any non USD values to USD before comparison to ensure that comparisons are done correctly. Below is a table of the comparison methods:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Comparison</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fMoney#eq"><code>eq()</code></a></td>
+<td>If the two values are equal</td>
+</tr>
+<tr>
+<td><a href="/api/fMoney#gt"><code>gt()</code></a></td>
+<td>If the object being called is greater than the value or object passed</td>
+</tr>
+<tr>
+<td><a href="/api/fMoney#gte"><code>gte()</code></a></td>
+<td>If the object being called is greater than or equal to the value or object passed</td>
+</tr>
+<tr>
+<td><a href="/api/fMoney#lt"><code>lt()</code></a></td>
+<td>If the object being called is less than the value or object passed</td>
+</tr>
+<tr>
+<td><a href="/api/fMoney#lte"><code>lte()</code></a></td>
+<td>If the object being called is less than or equal to the value being passed</td>
+</tr>
+</tbody></table>
+
+<p>
+It is possible to pass values other than an fMoney object for comparison. These values will be converted to an fMoney object using the default currency if defined. If no default currency is defined, an exception will be thrown.
+</p>
+
+<p>
+Here are a few examples:
+</p>
+<pre class="block php"><code>if (!$twelve_dollars-&gt;eq($five_dollars)) {
+    echo 'Twelve is not equal to five';
+}
+
+// Passing the string '5.00' only works because a default currency has been defined
+if ($five_dollars-&gt;eq('5.00')) {
+    echo 'Yes, five dollars is equal to five dollars';
+}
+
+if ($five_dollars-&gt;lte($twelve_dollars)) {
+   echo 'Five dollars is less than or equal to twelve';
+}</code></pre>
+
+<h2 id="Modification">Modification</h2>
+
+<p>
+fMoney objects can be added, subtracted, multiplied and allocated (non-lossy division). All math operations are performed using an extra digit of precision and then the results are rounded using the <a href="http://en.wikipedia.org/wiki/Rounding#Common_method">common method</a>. All math operations also take into account different currencies, with the result being in the currency of the object being called.
+</p>
+
+<p>
+<em>Please be sure to avoid floating point numbers in PHP when working with monetary values. Their inherent lack of precision make them a poor choice for precise calculations. Instead, use strings containing floating decimal values.</em>
+</p>
+
+<h3 id="Addition">Addition</h3>
+
+<p>
+Addition is accomplished using the method <a href="/api/fMoney#add"><code>add()</code></a>. A single parameter, <code>$addend</code>, is required. The addend may be an fMoney object, or a string or integer if a default currency is defined. 
+</p>
+<pre class="block php"><code>$seventeen_dollars  = $five_dollars-&gt;add($twelve_dollars);
+$six_dollars        = $five_dollars-&gt;add('1.00');</code></pre>
+
+<h3 id="Subtraction">Subtraction</h3>
+
+<p>
+Subtraction is accomplished by the method <a href="/api/fMoney#sub"><code>sub()</code></a>. A single parameter, <code>$subtrahend</code>, is required. The subtrahend may be an fMoney object, or a string or integer if a default currency is defined.
+</p>
+<pre class="block php"><code>$seven_dollars = $twelve_dollars-&gt;sub($five_dollars);
+$four_dollars  = $five_dollars-&gt;sub('1.00');</code></pre>
+
+<h3 id="Multiplication">Multiplication</h3>
+
+<p>
+To multiply a monetary value, simply pass a string, integer, or <a href="/docs/fNumber">fNumber</a> multiplier to <a href="/api/fMoney#mul"><code>mul()</code></a>.
+</p>
+<pre class="block php"><code>$fourty_eight_dollars    = $twelve_dollars-&gt;mul(4);
+$five_dollars_five_cents = $five_dollars-&gt;mul('1.1');
+
+$number = new fNumber('+5.5');
+$twenty_seven_dollars_fifty_cents = $five_dollars-&gt;mul($number);</code></pre>
+
+<h3 id="AllocationDivision">Allocation (Division)</h3>
+
+<p>
+Instead of providing a division method, which can easily lead to missing pennies, the fMoney class provides the method <a href="/api/fMoney#allocate"><code>allocate()</code></a>. This method splits up a monetary value into chunks that total the original value.
+</p>
+
+<p>
+<code>allocate()</code> accepts two or more parameters, each being a string or <a href="/docs/fNumber">fNumber</a> fraction that represents the portion of the total each result should hold. The result is an array of fMoney objects with as many elements as parameters specified.
+</p>
+<pre class="block php"><code>list($four_dollars, $one_dollar) = $five_dollars-&gt;allocate('0.8', '0.2');</code></pre>
+
+<p>
+ The resulting monetary values will always add up to <strong>exactly</strong> the original value. This prevents money from being lost in calculations.
+</p>
+<pre class="block php"><code>// All three thirds will be equal to four dollars
+list($first_third, $second_third, $fourth_third) = $twelve_dollars-&gt;allocate('0.333', '0.333', '0.334');</code></pre>
+
+<h2 id="Conversion">Conversion</h2>
+
+<p>
+If you have defined at least one currency other than USD (such as we did with GBP in the <a href="#Currencies">Currencies section</a>) you can convert monetary values between currencies on the fly. The method <a href="/api/fMoney#convert"><code>convert()</code></a> requires a single parameter, the ISO code of the currency to convert to.
+</p>
+<pre class="block php"><code>$usd_price = new fMoney('5.00');
+$gbp_price = $usd_price-&gt;convert('GBP');
+$usd_price = $gbp_price-&gt;convert('USD');</code></pre>
+
+<h2 id="Formatting">Formatting</h2>
+
+<p>
+Normally when displaying a monetary value it is desired to display the currency symbol and the value in a standard format with separators at the thousands, millions, etc. The method <a href="/api/fMoney#format"><code>format()</code></a> will perform such formatting.
+</p>
+<pre class="block php"><code>echo $five_dollars-&gt;format() . &quot;\n&quot;;
+
+$one_thousand_two_hundred_dollars = new fMoney('1200.00');
+echo $one_thousand_two_hundred_dollars-&gt;format() . &quot;\n&quot;;
+
+$five_pounds = new fMoney('5.00', 'GBP');
+echo $five_pounds-&gt;format();</code></pre>
+
+<p>
+ will output the following:
+</p>
+<pre><code>$5.00
+$1,200.00
+5.00</code></pre>
+
+<p>
+ If the parameter <code>$remove_zero_fraction</code> is set to <code>TRUE</code> and the value has a fraction that is just zeros, the resulting output will not contain a decimal point or a fraction.
+</p>
+<pre class="block php"><code>// This will print: $5
+echo $five_dollars-&gt;format(TRUE);
+
+$two_fifty_three = new fMoney('2.53');
+// This will print: $2.53
+echo $two_fifty_three-&gt;format(TRUE);</code></pre>
+
+<p>
+ The method <a href="/api/fMoney#__toString"><code>__toString()</code></a> will return the value without the currency symbol or the thousands separators.
+</p>
+<pre class="block php"><code>echo $five_dollars-&gt;__toString() . &quot;\n&quot;;
+echo $one_thousand_two_hundred_dollars-&gt;__toString() . &quot;\n&quot;;
+echo $five_pounds-&gt;__toString();</code></pre>
+
+<p>
+ will output the following:
+</p>
+<pre><code>5.00
+1200.00
+5.00</code></pre>
+
+<h2 id="Localization">Localization</h2>
+
+<p>
+When formatting monetary values in different locales, it will often be the case that the thousands separator and decimal point are different than the one in the United States. The methods <a href="/api/fMoney#registerFormatCallback"><code>registerFormatCallback()</code></a> and <a href="/api/fMoney#registerUnformatCallback"><code>registerUnformatCallback()</code></a> allow for both creating a different formatting and also removing such formatting when creating a new fMoney object.
+</p>
+<pre class="block php"><code>// Function to format monetary values for Italian
+function italian_money_format(fNumber $value, $currency, $remove_zero_fraction=FALSE)
+{
+    $info = fMoney::getCurrencyInfo($currency);
+    if ($remove_zero_fraction &amp;&amp; $value-&gt;eq($value-&gt;trunc())) {
+        $info['precision'] = 0;
+    }
+    return $info['symbol'] . number_format($value-&gt;__toString(), $info['precision'], ',', '.');
+}
+
+// Function to change a monetary value to a plain number
+function italian_money_unformat($value, $currency)
+{
+    $symbol = fMoney::getCurrencyInfo($currency, 'symbol');
+    return str_replace(
+        array('.', ',', $symbol),
+        array('', '.', ''),
+        $value
+    );
+}
+
+fMoney::registerFormatCallback('italian_money_format');
+fMoney::registerUnformatCallback('italian_money_unformat');</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

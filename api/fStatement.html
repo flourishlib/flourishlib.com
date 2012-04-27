@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fStatement – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fStatement</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fStatement">Class Documentation</a></li>
+		<li><strong><a href="/api/fStatement">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fStatement.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li class="protected"><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__destruct">__destruct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li class="protected"><a href="#execute">execute()</a></li>
+	  			<li class="protected"><a href="#executeQuery">executeQuery()</a></li>
+	  			<li class="protected"><a href="#executeUnbufferedQuery">executeUnbufferedQuery()</a></li>
+	  			<li><a href="#getSQL">getSQL()</a></li>
+	  			<li><a href="#getUntranslatedSQL">getUntranslatedSQL()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fSQLException">fSQLException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fDatabase">fDatabase</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b7</span></div>
+<p class="short_description">Representation of a prepared statement for use with the <a href="fDatabase">fDatabase</a> class</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b7</th><td>Fixed handling of arrays of values for <a href="#execute"><tt>execute()</tt></a>, <a href="#executeQuery"><tt>executeQuery()</tt></a> and <a href="#executeUnbufferedQuery"><tt>executeUnbufferedQuery()</tt></a>, fixed escaping of values that become <tt>NULL</tt> <span class="date">5/9/11</span></td></tr><tr><th>1.0.0b6</th><td>Added <a href="#getUntranslatedSQL"><tt>getUntranslatedSQL()</tt></a> <span class="date">1/9/11</span></td></tr><tr><th>1.0.0b5</th><td>Fixed an edge case where the mysqli extension would leak memory when fetching a <tt>TEXT</tt> or <tt>BLOB</tt> column <span class="date">8/28/10</span></td></tr><tr><th>1.0.0b4</th><td>Updated class to use <a href="fCore#startErrorCapture"><tt>fCore::startErrorCapture()</tt></a> instead of <tt>error_reporting()</tt> <span class="date">8/9/10</span></td></tr><tr><th>1.0.0b3</th><td>Backwards Compatibility Break - removed ODBC support. Fixed UTF-8 support for the <tt>pdo_dblib</tt> extension. <span class="date">7/31/10</span></td></tr><tr><th>1.0.0b2</th><td>Added IBM DB2 support <span class="date">4/13/10</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">3/2/10</span></td></tr></table></div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start protected method -->
+			<h3 id="__construct" class="protected method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets up a prepared statement</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fStatement">fStatement</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-var">$database</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$query</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$placeholders</span><span class="php-code">,</span> <span class="php-vartype"></span> <span class="php-var">$untranslated_sql</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$untranslated_query</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDatabase">fDatabase</a></td>
+				<td class="param_name">$database</td>
+				<td class="param_description">The database object this result set was created from</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$query</td>
+				<td class="param_description">The SQL statement to prepare</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$placeholders</td>
+				<td class="param_description">The data type placeholders</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$untranslated_query</td>
+				<td class="param_description">The original untranslated SQL, if applicable</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"></td>
+				<td class="param_name">$untranslated_sql</td>
+				<td class="param_description"></td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__destruct" class="protected method"><span class="resolution">-></span><span class="name">__destruct()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Frees up the result object to save memory</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__destruct</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="execute" class="protected method"><span class="resolution">-></span><span class="name">execute()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Executes the statement without returning a result</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">execute</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$params</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">&amp;$extra</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$different</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$params</td>
+				<td class="param_description">The parameters for the statement</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">&amp;$extra</td>
+				<td class="param_description">A variable to place extra information needed by some database extensions</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$different</td>
+				<td class="param_description">If this statement is different than the last statement run on the <a href="fDatabase">fDatabase</a> instance</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The (usually boolean) result of the extension function/method call
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="executeQuery" class="protected method"><span class="resolution">-></span><span class="name">executeQuery()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Executes the statement in buffered mode</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">executeQuery</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fResult">fResult</a></span> <span class="php-var">$result</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$params</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">&amp;$extra</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$different</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fResult">fResult</a></td>
+				<td class="param_name">$result</td>
+				<td class="param_description">The object to place the result into</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$params</td>
+				<td class="param_description">The parameters for the statement</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">&amp;$extra</td>
+				<td class="param_description">A variable to place extra information needed by some database extensions</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$different</td>
+				<td class="param_description">If this statement is different than the last statement run on the <a href="fDatabase">fDatabase</a> instance</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="executeUnbufferedQuery" class="protected method"><span class="resolution">-></span><span class="name">executeUnbufferedQuery()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Executes the statement in unbuffered mode (if possible)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">executeUnbufferedQuery</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fUnbufferedResult">fUnbufferedResult</a></span> <span class="php-var">$result</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$params</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">&amp;$extra</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$different</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fUnbufferedResult">fUnbufferedResult</a></td>
+				<td class="param_name">$result</td>
+				<td class="param_description">The object to place the result into</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$params</td>
+				<td class="param_description">The parameters for the statement</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">&amp;$extra</td>
+				<td class="param_description">A variable to place extra information needed by some database extensions</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$different</td>
+				<td class="param_description">If this statement is different than the last statement run on the <a href="fDatabase">fDatabase</a> instance</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getSQL" class="method"><span class="resolution">-></span><span class="name">getSQL()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the SQL for the prepared statement</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getSQL</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The SQL statement
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getUntranslatedSQL" class="method"><span class="resolution">-></span><span class="name">getUntranslatedSQL()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the untranslated SQL for the prepared statement</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getUntranslatedSQL</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The untranslated SQL statement
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="Documentation">Documentation</h1>
+<div class="sidebar">
+<h2 id="Downloadable">Downloadable</h2>
+
+<p>
+Grab a <strong><a href="/offline_docs">single HTML file</a></strong> containing all class and API docs, plus applicable general topics
+</p>
+</div>
+
+<p>
+For those just beginning with Flourish, <a href="/docs/GettingStarted" class="important">getting started</a> and <a href="/docs/HowDoI" class="important">how do I?</a> provide a gentle introduction. The <a href="#ClassDocumentation">class documentation</a> provides in-depth information about each class, along with links to related functionality, the API and source code.
+</p>
+
+<p>
+The <a href="#GeneralDocumentation">general documentation</a> supplements the class documentation and covers topics that touch on multiple parts of the library, or apply to PHP in general.
+</p>
+
+<h2 id="ClassDocumentation">Class Documentation</h2>
+<div class="class_docs first">
+<h3 id="Database">Database</h3>
+
+<ul>
+<li><a href="/docs/fDatabase">fDatabase</a>                                <a href="/api/fDatabase">API</a>,                <a href="https://github.com/flourishlib/flourish-classes/blob/master/fDatabase.php">Code</a></li>
+<li><a href="/docs/fResult">fResult</a>                                    <a href="/api/fResult">API</a>,                  <a href="https://github.com/flourishlib/flourish-classes/blob/master/fResult.php">Code</a></li>
+<li><a href="/docs/fSQLTranslation">fSQLTranslation</a>                    <a href="/api/fSQLTranslation">API</a>,          <a href="https://github.com/flourishlib/flourish-classes/blob/master/fSQLTranslation.php">Code</a></li>
+<li><a href="/docs/fSQLSchemaTranslation">fSQLSchemaTranslation</a>        <a href="/api/fSQLSchemaTranslation">API</a>,    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fSQLSchemaTranslation.php">Code</a></li>
+<li><a href="/docs/fSchema">fSchema</a>                                    <a href="/api/fSchema">API</a>,                  <a href="https://github.com/flourishlib/flourish-classes/blob/master/fSchema.php">Code</a></li>
+<li><a href="/docs/fStatement">fStatement</a>                              <a href="/api/fStatement">API</a>,               <a href="https://github.com/flourishlib/flourish-classes/blob/master/fStatement.php">Code</a></li>
+<li><a href="/docs/fUnbufferedResult">fUnbufferedResult</a>                <a href="/api/fUnbufferedResult">API</a>,        <a href="https://github.com/flourishlib/flourish-classes/blob/master/fUnbufferedResult.php">Code</a></li>
+</ul>
+
+<h3 id="ORM">ORM</h3>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a>                        <a href="/api/fActiveRecord">API</a>,            <a href="https://github.com/flourishlib/flourish-classes/blob/master/fActiveRecord.php">Code</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a>                              <a href="/api/fRecordSet">API</a>,               <a href="https://github.com/flourishlib/flourish-classes/blob/master/fRecordSet.php">Code</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a>                                          <a href="/api/fORM">API</a>,                     <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORM.php">Code</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a>                              <a href="/api/fORMColumn">API</a>,               <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMColumn.php">Code</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a>                          <a href="/api/fORMDatabase">API</a>,             <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMDatabase.php">Code</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a>                                  <a href="/api/fORMDate">API</a>,                 <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMDate.php">Code</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a>                                  <a href="/api/fORMFile">API</a>,                 <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMFile.php">Code</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a>                                  <a href="/api/fORMJSON">API</a>,                 <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMJSON.php">Code</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a>                                <a href="/api/fORMMoney">API</a>,                <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMMoney.php">Code</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a>                          <a href="/api/fORMOrdering">API</a>,             <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMOrdering.php">Code</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a>                            <a href="/api/fORMRelated">API</a>,              <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMRelated.php">Code</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a>                              <a href="/api/fORMSchema">API</a>,               <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMSchema.php">Code</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a>                      <a href="/api/fORMValidation">API</a>,           <a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMValidation.php">Code</a></li>
+</ul>
+
+<h3 id="Filesystem">Filesystem</h3>
+
+<ul>
+<li><a href="/docs/fFilesystem">fFilesystem</a>                            <a href="/api/fFilesystem">API</a>,              <a href="https://github.com/flourishlib/flourish-classes/blob/master/fFilesystem.php">Code</a></li>
+<li><a href="/docs/fFile">fFile</a>                                        <a href="/api/fFile">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fFile.php">Code</a>
+<ul>
+<li><a href="/docs/fImage">fImage</a>                                     <a href="/api/fImage">API</a>,                   <a href="https://github.com/flourishlib/flourish-classes/blob/master/fImage.php">Code</a></li>
+</ul>
+</li>
+<li><a href="/docs/fDirectory">fDirectory</a>                              <a href="/api/fDirectory">API</a>,               <a href="https://github.com/flourishlib/flourish-classes/blob/master/fDirectory.php">Code</a></li>
+</ul>
+</div>
+<div class="class_docs second">
+<h3 id="Request">Request</h3>
+
+<ul>
+<li><a href="/docs/fCookie">fCookie</a>                                    <a href="/api/fCookie">API</a>,                  <a href="https://github.com/flourishlib/flourish-classes/blob/master/fCookie.php">Code</a></li>
+<li><a href="/docs/fRequest">fRequest</a>                                  <a href="/api/fRequest">API</a>,                 <a href="https://github.com/flourishlib/flourish-classes/blob/master/fRequest.php">Code</a></li>
+<li><a href="/docs/fUpload">fUpload</a>                                    <a href="/api/fUpload">API</a>,                  <a href="https://github.com/flourishlib/flourish-classes/blob/master/fUpload.php">Code</a></li>
+<li><a href="/docs/fURL">fURL</a>                                          <a href="/api/fURL">API</a>,                     <a href="https://github.com/flourishlib/flourish-classes/blob/master/fURL.php">Code</a></li>
+<li><a href="/docs/fValidation">fValidation</a>                            <a href="/api/fValidation">API</a>,              <a href="https://github.com/flourishlib/flourish-classes/blob/master/fValidation.php">Code</a></li>
+</ul>
+
+<h3 id="Session">Session</h3>
+
+<ul>
+<li><a href="/docs/fAuthorization">fAuthorization</a>                      <a href="/api/fAuthorization">API</a>,           <a href="https://github.com/flourishlib/flourish-classes/blob/master/fAuthorization.php">Code</a></li>
+<li><a href="/docs/fMessaging">fMessaging</a>                              <a href="/api/fMessaging">API</a>,               <a href="https://github.com/flourishlib/flourish-classes/blob/master/fMessaging.php">Code</a></li>
+<li><a href="/docs/fSession">fSession</a>                                  <a href="/api/fSession">API</a>,                 <a href="https://github.com/flourishlib/flourish-classes/blob/master/fSession.php">Code</a></li>
+</ul>
+
+<h3 id="Response">Response</h3>
+
+<ul>
+<li><a href="/docs/fBuffer">fBuffer</a>                                    <a href="/api/fBuffer">API</a>,                  <a href="https://github.com/flourishlib/flourish-classes/blob/master/fBuffer.php">Code</a></li>
+<li><a href="/docs/fCRUD">fCRUD</a>                                        <a href="/api/fCRUD">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fCRUD.php">Code</a></li>
+<li><a href="/docs/fHTML">fHTML</a>                                        <a href="/api/fHTML">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fHTML.php">Code</a></li>
+<li><a href="/docs/fJSON">fJSON</a>                                        <a href="/api/fJSON">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fJSON.php">Code</a></li>
+<li><a href="/docs/fTemplating">fTemplating</a>                            <a href="/api/fTemplating">API</a>,              <a href="https://github.com/flourishlib/flourish-classes/blob/master/fTemplating.php">Code</a></li>
+</ul>
+
+<h3 id="Utilities">Utilities</h3>
+
+<ul>
+<li><a href="/docs/fCache">fCache</a>                                      <a href="/api/fCache">API</a>,                   <a href="https://github.com/flourishlib/flourish-classes/blob/master/fCache.php">Code</a></li>
+<li><a href="/docs/fCryptography">fCryptography</a>                        <a href="/api/fCryptography">API</a>,            <a href="https://github.com/flourishlib/flourish-classes/blob/master/fCryptography.php">Code</a></li>
+<li><a href="/docs/fGrammar">fGrammar</a>                                  <a href="/api/fGrammar">API</a>,                 <a href="https://github.com/flourishlib/flourish-classes/blob/master/fGrammar.php">Code</a></li>
+<li><a href="/docs/fText">fText</a>                                        <a href="/api/fText">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fText.php">Code</a></li>
+<li><a href="/docs/fXML">fXML</a>                                          <a href="/api/fXML">API</a>,                     <a href="https://github.com/flourishlib/flourish-classes/blob/master/fXML.php">Code</a></li>
+</ul>
+</div>
+<div class="class_docs third">
+<h3 id="Email">Email</h3>
+
+<ul>
+<li><a href="/docs/fEmail">fEmail</a>                                      <a href="/api/fEmail">API</a>,                   <a href="https://github.com/flourishlib/flourish-classes/blob/master/fEmail.php">Code</a></li>
+<li><a href="/docs/fMailbox">fMailbox</a>                                  <a href="/api/fMailbox">API</a>,                 <a href="https://github.com/flourishlib/flourish-classes/blob/master/fMailbox.php">Code</a></li>
+<li><a href="/docs/fSMTP">fSMTP</a>                                        <a href="/api/fSMTP">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fSMTP.php">Code</a></li>
+</ul>
+
+<h3 id="DateTime">Date/Time</h3>
+
+<ul>
+<li><a href="/docs/fDate">fDate</a>                                        <a href="/api/fDate">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fDate.php">Code</a></li>
+<li><a href="/docs/fTime">fTime</a>                                        <a href="/api/fTime">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fTime.php">Code</a></li>
+<li><a href="/docs/fTimestamp">fTimestamp</a>                              <a href="/api/fTimestamp">API</a>,               <a href="https://github.com/flourishlib/flourish-classes/blob/master/fTimestamp.php">Code</a></li>
+</ul>
+
+<h3 id="NumbersStrings">Numbers/Strings</h3>
+
+<ul>
+<li><a href="/docs/fMoney">fMoney</a>                                      <a href="/api/fMoney">API</a>,                   <a href="https://github.com/flourishlib/flourish-classes/blob/master/fMoney.php">Code</a></li>
+<li><a href="/docs/fNumber">fNumber</a>                                    <a href="/api/fNumber">API</a>,                  <a href="https://github.com/flourishlib/flourish-classes/blob/master/fNumber.php">Code</a></li>
+<li><a href="/docs/fUTF8">fUTF8</a>                                        <a href="/api/fUTF8">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fUTF8.php">Code</a></li>
+</ul>
+
+<h3 id="ErrorsExceptions">Errors/Exceptions</h3>
+
+<ul>
+<li><a href="/docs/fCore">fCore</a>                                        <a href="/api/fCore">API</a>,                    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fCore.php">Code</a></li>
+<li><a href="/docs/fException">fException</a>                              <a href="/api/fException">API</a>,               <a href="https://github.com/flourishlib/flourish-classes/blob/master/fException.php">Code</a>
+<ul>
+<li><a href="/docs/fExpectedException">fExpectedException</a>             <a href="/api/fExpectedException">API</a>,       <a href="https://github.com/flourishlib/flourish-classes/blob/master/fExpectedException.php">Code</a>
+<ul>
+<li><a href="/docs/fAuthorizationException">fAuthorizationException</a>  <a href="/api/fAuthorizationException">API</a>,  <a href="https://github.com/flourishlib/flourish-classes/blob/master/fAuthorizationException.php">Code</a></li>
+<li><a href="/docs/fEmptySetException">fEmptySetException</a>            <a href="/api/fEmptySetException">API</a>,       <a href="https://github.com/flourishlib/flourish-classes/blob/master/fEmptySetException.php">Code</a></li>
+<li><a href="/docs/fNoRemainingException">fNoRemainingException</a>      <a href="/api/fNoRemainingException">API</a>,    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fNoRemainingException.php">Code</a></li>
+<li><a href="/docs/fNoRowsException">fNoRowsException</a>                <a href="/api/fNoRowsException">API</a>,         <a href="https://github.com/flourishlib/flourish-classes/blob/master/fNoRowsException.php">Code</a></li>
+<li><a href="/docs/fNotFoundException">fNotFoundException</a>            <a href="/api/fNotFoundException">API</a>,       <a href="https://github.com/flourishlib/flourish-classes/blob/master/fNotFoundException.php">Code</a></li>
+<li><a href="/docs/fValidationException">fValidationException</a>        <a href="/api/fValidationException">API</a>,     <a href="https://github.com/flourishlib/flourish-classes/blob/master/fValidationException.php">Code</a></li>
+</ul>
+</li>
+<li><a href="/docs/fUnexpectedException">fUnexpectedException</a>         <a href="/api/fUnexpectedException">API</a>,     <a href="https://github.com/flourishlib/flourish-classes/blob/master/fUnexpectedException.php">Code</a>
+<ul>
+<li><a href="/docs/fConnectivityException">fConnectivityException</a>    <a href="/api/fConnectivityException">API</a>,   <a href="https://github.com/flourishlib/flourish-classes/blob/master/fConnectivityException.php">Code</a></li>
+<li><a href="/docs/fEnvironmentException">fEnvironmentException</a>      <a href="/api/fEnvironmentException">API</a>,    <a href="https://github.com/flourishlib/flourish-classes/blob/master/fEnvironmentException.php">Code</a></li>
+<li><a href="/docs/fProgrammerException">fProgrammerException</a>        <a href="/api/fProgrammerException">API</a>,     <a href="https://github.com/flourishlib/flourish-classes/blob/master/fProgrammerException.php">Code</a></li>
+<li><a href="/docs/fSQLException">fSQLException</a>                      <a href="/api/fSQLException">API</a>,            <a href="https://github.com/flourishlib/flourish-classes/blob/master/fSQLException.php">Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2 id="GeneralDocumentation">General Documentation</h2>
+
+<p>
+This documentation supplements the <a href="#ClassDocumentation">class documentation</a> and covers topics that touch on multiple parts of the library, or apply to PHP in general.
+</p>
+
+<ul class="stackable">
+<li><a href="/docs/BackwardsCompatibilityBreak">Backwards Compatibility Breaks</a></li>
+<li><a href="/docs/CodeStandards">Code Standards</a></li>
+<li><a href="/docs/CompilingPHPOnWindows">Compiling PHP on Windows</a></li>
+<li><a href="/docs/ConstructorFunctions">Constructor Functions</a></li>
+<li><a href="/docs/ContributorLicenseAgreements">Contributor License Agreements</a></li>
+<li><a href="/docs/FlourishCallbackSyntax">Flourish Callback Syntax</a></li>
+<li><a href="/docs/FlourishSql">Flourish SQL</a></li>
+<li><a href="/docs/GettingStarted">Getting Started</a></li>
+<li><a href="/docs/HowDoI">How Do I?</a></li>
+<li><a href="/docs/InternalBackwardsCompatibilityBreak">Internal Backwards Compatibility Breaks</a> </li>
+</ul>
+
+<ul class="stackable">
+<li><a href="/docs/InternationalizationLocalization">Internationalization/Localization</a></li>
+<li><a href="/docs/LicenseAgreement">License Agreement</a></li>
+<li><a href="/docs/MessagesList">Messages List</a></li>
+<li><a href="/docs/MethodNaming">Method Naming</a></li>
+<li><a href="/docs/MotivationsForFlourish">Motivations for Flourish</a></li>
+<li><a href="/docs/ObjectRelationalMapping">Object-Relational Mapping</a></li>
+<li><a href="/docs/ObtainingaSecureCertificateKeyPair">Obtaining a Secure Certification Key Pair</a></li>
+<li><a href="/docs/OrmConventions">ORM Conventions</a></li>
+<li><a href="/docs/PerformanceTips">Performance Tips</a></li>
+<li><a href="/docs/PhpVersionDifferences">PHP Version Differences</a></li>
+</ul>
+
+<ul class="stackable">
+<li><a href="/docs/ReferenceObjects">Reference Objects</a></li>
+<li><a href="/docs/Roadmap">Roadmap</a></li>
+<li><a href="/docs/Security">Security</a></li>
+<li><a href="/docs/ServerFund">Server Fund</a></li>
+<li><a href="/docs/ServerRequirements">Server Requirements</a></li>
+<li><a href="/docs/SitesPoweredByFlourish">Sites Powered by Flourish</a></li>
+<li><a href="/docs/UTF-8">UTF-8</a></li>
+<li><a href="/docs/ValueObjects">Value Objects</a></li>
+<li><a href="/docs/Versioning">Versioning</a></li>
+</ul>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

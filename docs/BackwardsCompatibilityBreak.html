@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>BackwardsCompatibilityBreak – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="BackwardsCompatibilityBreaks">Backwards Compatibility Breaks</h1>
+
+<p>
+On this page you will find a list of all breaks in backwards compatibility. Once Flourish becomes stable this will only happen with major version releases. During the alpha phase they are bound to happen on a regular basis, whereas during beta they should be rare.
+</p>
+
+<p>
+<em>If you work with any protected methods or <code>@internal</code> public methods, be sure to check out the <a href="/docs/InternalBackwardsCompatibilityBreak">internal backwards
+compatiblity breaks</a> page.</em>
+</p>
+
+<h2 id="BetaPhase">Beta Phase</h2>
+
+<h3 id="Revision1035"><a href="https://github.com/flourishlib/flourish-classes/commit/32c6129d">Revision 1035</a></h3>
+
+<p>
+<code>fTemplating::create()</code> was removed and a new method <a href="/api/fTemplating#attach">fTemplating::attach()</a> was created to provide similar functionality.
+</p>
+
+<h3 id="Revision1031"><a href="https://github.com/flourishlib/flourish-classes/commit/3903f026">Revision 1031</a></h3>
+
+<p>
+<code>fCore::detectOpcodeCache()</code> was renamed to <a href="/api/fLoader#hasOpcodeCache">fLoader::hasOpcodeCache()</a>
+</p>
+
+<h3 id="Revision1026"><a href="https://github.com/flourishlib/flourish-classes/commit/0d744a20">Revision 1026</a></h3>
+
+<p>
+<a href="/api/fFile#output">fFile::output()</a> now automatically closes any open output buffering and discards the contents.
+</p>
+
+<h3 id="Revision1011"><a href="https://github.com/flourishlib/flourish-classes/commit/d05c8bf0">Revision 1011</a></h3>
+
+<p>
+The email subject of error/exception emails sent by <a href="/docs/fCore">fCore</a> has changed.
+</p>
+
+<h3 id="Revision1010"><a href="https://github.com/flourishlib/flourish-classes/commit/c9e5633f">Revision 1010</a></h3>
+
+<p>
+<a href="/api/fRecordSet#sort">fRecordSet::sort()</a> and <a href="/api/fRecordSet#sortByCallback">fRecordSet::sortByCallback()</a> now return a new record set instead of sorting the record set in place - this helps prevent side effects.
+</p>
+
+<h3 id="Revision990"><a href="https://github.com/flourishlib/flourish-classes/commit/5b17e6e6">Revision 990</a></h3>
+
+<p>
+<a href="/api/fActiveRecord#reflect">fActiveRecord::reflect()</a> now returns an associative array instead of a string.
+</p>
+
+<h3 id="Revision984"><a href="https://github.com/flourishlib/flourish-classes/commit/ee3eda47">Revision 984</a></h3>
+
+<p>
+<a href="/api/fSchema#getTables">fSchema::getTables()</a>, <a href="/api/fSchema#getColumnInfo">fSchema::getColumnInfo()</a>, <a href="/api/fSchema#getDatabases">fSchema::getDatabases()</a>, <a href="/api/fSchema#getKeys">fSchema::getKeys()</a> and <a href="/api/fSchema#getRelationships">fSchema::getRelationships()</a> now return database, schema, table and column names in lowercase. This may change the behavior of, or break ORM classes for SQLite, MySQL, PostgreSQL or MSSQL databases containing mixed-case identifiers, although such mixed-cased identifiers have never been officially supported. Please test ORM functionality when upgrading to this revision.
+</p>
+
+<p>
+Callbacks registered to the <code>extracted</code> hook via <a href="/api/fDatabase#registerHookCallback">fDatabase::registerHookCallback()</a> no longer receive the <code>$strings</code> parameter, instead all strings are added into the <code>$values</code> parameter.
+</p>
+
+<h3 id="Revision973"><a href="https://github.com/flourishlib/flourish-classes/commit/0b410b6d">Revision 973</a></h3>
+
+<p>
+Updated <a href="/api/fCore#expose">fCore::expose()</a> to not wrap the value in an HTML tag when PHP is being run via the CLI.
+</p>
+
+<h3 id="Revision969"><a href="https://github.com/flourishlib/flourish-classes/commit/0dd08754">Revision 969</a></h3>
+
+<p>
+<a href="/api/fRequest#getBestAcceptType">fRequest::getBestAcceptType()</a> and <a href="/api/fRequest#getBestAcceptLanguage">fRequest::getBestAcceptLanguage()</a> now return either <code>NULL</code>, <code>FALSE</code> or a string instead of <code>NULL</code> or a string. See <a href="/docs/fRequest#RetrievingHTTPAcceptValues">documentation</a> for details of return values.
+</p>
+
+<h3 id="Revision945"><a href="https://github.com/flourishlib/flourish-classes/commit/a1ae8dc9">Revision 945</a></h3>
+
+<p>
+The <code>$contents</code> parameter of <a href="/api/fEmail#addAttachment">fEmail::addAttachment()</a> is now first instead of third.
+</p>
+
+<h3 id="Revision944"><a href="https://github.com/flourishlib/flourish-classes/commit/fd0e0eae">Revision 944</a></h3>
+
+<p>
+<a href="/api/fORMFile#configureImageUploadColumn">fORMFile::configureImageUploadColumn()</a> no longer accepts the optional <code>$image_type</code> as the fourth parameter, instead <a href="/api/fORMFile#addFImageMethodCall">fORMFile::addFImageMethodCall()</a> must be called with <code>saveChanges</code> as the <code>$method</code> and the image type as the first parameter.
+</p>
+
+<h3 id="Revision943"><a href="https://github.com/flourishlib/flourish-classes/commit/a388312c">Revision 943</a></h3>
+
+<p>
+<a href="/api/fRequest#get">fRequest::get()</a> now strips out low bytes characters if no <code>$cast_to</code>, or if a <code>string</code> or <code>array</code> <code>$cast_to</code> is specified. Using the new <code>binary</code> <code>$cast_to</code> will leave all bytes intact. 
+</p>
+
+<h3 id="Revision942"><a href="https://github.com/flourishlib/flourish-classes/commit/91441067">Revision 942</a></h3>
+
+<p>
+<a href="/docs/fActiveRecord">fActiveRecord</a> column <code>set</code> methods now treat strings of all whitespace the same as empty strings and convert them to <code>NULL</code>.
+</p>
+
+<h3 id="Revision934"><a href="https://github.com/flourishlib/flourish-classes/commit/aca98e00">Revision 934</a></h3>
+
+<p>
+Changed the parameter order in <a href="/api/fImage#crop">fImage::crop()</a> from <code>$crop_from_x</code>, <code>$crop_from_y</code>, <code>$new_width</code>, <code>$new_height</code> to <code>$new_width</code>, <code>$new_height</code>, <code>$crop_from_x</code>, <code>$crop_from_y</code>.
+</p>
+
+<h3 id="Revision917"><a href="https://github.com/flourishlib/flourish-classes/commit/313acde2">Revision 917</a></h3>
+
+<p>
+Changed the array structure for child record in validation messages. Instead of all main record and child record messages being in a single array with keys in the form of <code>child_table[0]::column</code>, there is now a <code>child_table[0]</code> key that points to an array containing a <code>name</code> key and an <code>errors</code> key. The value for <code>name</code> is the name of the child record, e.g. <code>Child Record #1</code>. The value for <code>errors</code> is an array of validation messages with the keys being the column names and the values being the validation messages. Thus:
+</p>
+<pre><code>array(
+    'first_name' =&gt; 'First Name: Please enter a value',
+    'user_permissions[0]::resource' =&gt; 'Resource: Please enter a value'
+)</code></pre>
+
+<p>
+ would now be represented as:
+</p>
+<pre><code>array(
+    'first_name' =&gt; 'First Name: Please enter a value',
+    'user_permissions[0]' =&gt; array(
+        'name' =&gt; 'User Permission #1',
+        'errors' =&gt; array(
+            'resource' =&gt; 'Resource: Please enter a value'
+        )
+    )
+)</code></pre>
+
+<p>
+ Methods registered to the <code>pre::validate()</code> and <code>post::validate()</code> hooks will need to handle this new array structure. Code that calls <code>-&gt;validate(TRUE)</code> on an <a href="/docs/fActiveRecord">fActiveRecord</a> object will need to handle this new array structure. <a href="/api/fORMValidation#addStringReplacement">fORMValidation::addStringReplacement()</a>, <a href="/api/fORMValidation#addRegexReplacement">fORMValidation::addRegexReplacement()</a> and <a href="/api/fORMValidation#setMessageOrder">fORMValidation::setMessageOrder()</a> will now only affect the specified class specified and will not affect messages from child records.
+</p>
+
+<h3 id="Revision915"><a href="https://github.com/flourishlib/flourish-classes/commit/28548208">Revision 915</a></h3>
+
+<p>
+Restructured individual record access, the iterator interface and callback parameters for <a href="/docs/fRecordSet">fRecordSet</a>.
+</p>
+
+<p>
+Removed the method <code>fRecordSet::fetchRecord()</code> - functionality can be replicated via the new method <a href="/api/fRecordSet#getRecord">fRecordSet::getRecord()</a>.
+</p>
+
+<p>
+Manual iteration via <code>fRecordSet::current()</code>, <code>fRecordSet::key()</code>, <code>fRecordSet::next()</code>, <code>fRecordSet::rewind()</code> and <code>fRecordSet::valid()</code> (the Iterator interface) was removed and should be replaced by retrieving an ArrayIterator from the new method <a href="/api/fRecordSet#getIterator">fRecordSet::getIterator()</a>. Manual iteration can be performed on the ArrayIterator object.
+</p>
+
+<p>
+The <code>$pointer</code> parameter was replaced with <code>$method_name</code> for callbacks registered via <a href="/api/fORM#registerRecordSetMethod">fORM::registerRecordSetMethod()</a>.
+</p>
+
+<h3 id="Revision911"><a href="https://github.com/flourishlib/flourish-classes/commit/94b78744">Revision 911</a></h3>
+
+<p>
+Changed <a href="/api/fTemplating#delete">fTemplating::delete()</a> to return the value(s) of the element(s) deleted instead of the <a href="/docs/fTemplating">fTemplating</a> instance.
+</p>
+
+<h3 id="Revision904"><a href="https://github.com/flourishlib/flourish-classes/commit/e7b5f799">Revision 904</a></h3>
+
+<p>
+<a href="/api/fSession#add">fSession::add()</a>, <a href="/api/fSession#delete">fSession::delete()</a>, <a href="/api/fSession#get">fSession::get()</a>, <a href="/api/fSession#set">fSession::set()</a>, <a href="/api/fTemplating#add">fTemplating::add()</a>, <a href="/api/fTemplating#delete">fTemplating::delete()</a>, <a href="/api/fTemplating#get">fTemplating::get()</a> and <a href="/api/fTemplating#set">fTemplating::set()</a> all now interpret <code>[</code> and <code>]</code> as array syntax and thus these can not be used in key or element names.
+</p>
+
+<p>
+<code>fTemplating::remove()</code> was renamed to <a href="/api/fTemplating#filter">fTemplating::filter()</a>. 
+</p>
+
+<h3 id="Revision885"><a href="https://github.com/flourishlib/flourish-classes/commit/6ce45b67">Revision 885</a></h3>
+
+<p>
+Removed <code>fDatabase::enableSlowQueryWarnings()</code>, added ability to replicate via <a href="/api/fDatabase#registerHookCallback">fDatabase::registerHookCallback()</a>.
+</p>
+
+<h3 id="Revision879"><a href="https://github.com/flourishlib/flourish-classes/commit/1c311706">Revision 879</a></h3>
+
+<p>
+Removed support for the <code>odbc</code> and <code>pdo_odbc</code> extensions from <a href="/docs/fDatabase">fDatabase</a>, <a href="/docs/fResult">fResult</a>, <a href="/docs/fStatement">fStatement</a> and <a href="/docs/fUnbufferedResult">fUnbufferedResult</a>. With this change, Flourish no longer supports any kind of ODBC connections.
+</p>
+
+<h3 id="Revision854"><a href="https://github.com/flourishlib/flourish-classes/commit/58262812">Revision 854</a></h3>
+
+<p>
+<code>fActiveRecord::populate{RelatedRecords}()</code> changed from requiring the database table name as the input prefix to the <code>underscore_notation</code> version of the class name. This will only affect related records where the class was mapped using <a href="/api/fORM#mapClassToTable">fORM::mapClassToTable()</a>.
+</p>
+
+<h3 id="Revision840"><a href="https://github.com/flourishlib/flourish-classes/commit/b604ea2b">Revision 840</a></h3>
+
+<p>
+Renamed <code>fUpload::setMaxFilesize()</code> to <a href="/api/fUpload#setMaxSize">fUpload::setMaxSize()</a> to be consistent with <a href="/api/fFile#getSize">fFile::getSize()</a>.
+</p>
+
+<h3 id="Revision839"><a href="https://github.com/flourishlib/flourish-classes/commit/79457820">Revision 839</a></h3>
+
+<p>
+<a href="/docs/fUpload">fUpload</a> no longer accepts uploaded files that start with a <code>.</code> unless <a href="/api/fUpload#allowDotFiles">fUpload::allowDotFiles()</a> is called.
+</p>
+
+<h3 id="Revision833"><a href="https://github.com/flourishlib/flourish-classes/commit/4891f35e">Revision 833</a></h3>
+
+<p>
+<a href="/api/fActiveRecord#validate">fActiveRecord::validate()</a> now uses column names as array keys if messages are returned, the <code>$validation_messages</code> parameter for the <code>pre::validate()</code> and <code>post::validate()</code> hooks now requires array keys be column names and <a href="/api/fValidation#validate">fValidation::validate()</a> now uses field names as array keys if messages are returned.
+</p>
+
+<p>
+<a href="/api/fUpload#validate">fUpload::validate()</a> no longer returns a <code>$_FILES</code> array.
+</p>
+
+<p>
+<a href="/api/fValidation#addRequiredFields">fValidation::addRequiredFields()</a> no longer accepts one-or-more rules, instead use <a href="/api/fValidation#addOneOrMoreRule">fValidation::addOneOrMoreRule()</a>. <a href="/api/fValidation#addRequiredFields">fValidation::addRequiredFields()</a> no longer accepts conditional rules, instead use <a href="/api/fValidation#addConditionalRule">fValidation::addConditionalRule()</a>.
+</p>
+
+<h3 id="Revision760"><a href="https://github.com/flourishlib/flourish-classes/commit/72da3349">Revision 760</a></h3>
+
+<p>
+<a href="/api/fDirectory#scan">fDirectory::scan()</a> and <a href="/api/fDirectory#scanRecursive">fDirectory::scanRecursive()</a> to strip the current directory's path before matching the <code>$filter</code>
+</p>
+
+<h3 id="Revision736"><a href="https://github.com/flourishlib/flourish-classes/commit/26d79b1e">Revision 736</a></h3>
+
+<p>
+Renamed <code>fFile::getFilename()</code> to <a href="/api/fFile#getName">fFile::getName()</a>, <code>fFile::getFilesize()</code> to <a href="/api/fFile#getSize">fFile::getSize()</a>, <code>fFile::getDirectory()</code> to <a href="/api/fFile#getParent">fFile::getParent()</a> and <code>fDirectory::getFilesize()</code> to <a href="/api/fDirectory#getSize">fDirectory::getSize()</a>
+</p>
+
+<h3 id="Revision735"><a href="https://github.com/flourishlib/flourish-classes/commit/8075c6db">Revision 735</a></h3>
+
+<p>
+Added the <code>$force_cascade</code> parameter to <a href="/api/fActiveRecord#delete">fActiveRecord::delete()</a> and <a href="/api/fActiveRecord#store">fActiveRecord::store()</a>. This change require any classes that override those methods be updated to include at least one parameter.
+</p>
+
+<h3 id="Revision726"><a href="https://github.com/flourishlib/flourish-classes/commit/b55d0d43">Revision 726</a></h3>
+
+<p>
+<code>fORM::addCustomClassTableMapping()</code> was renamed to <a href="/api/fORM#mapClassToTable">fORM::mapClassToTable()</a>
+</p>
+
+<h3 id="Revision721"><a href="https://github.com/flourishlib/flourish-classes/commit/5a19c8ed">Revision 721</a></h3>
+
+<p>
+Removed the <code>$prefix</code> parameter from the methods <a href="/api/fSession#delete">fSession::delete()</a>, <a href="/api/fSession#get">fSession::get()</a> and <a href="/api/fSession#set">fSession::set()</a>
+</p>
+
+<h3 id="Revision720"><a href="https://github.com/flourishlib/flourish-classes/commit/30b77654">Revision 720</a></h3>
+
+<p>
+Removed support for date function translation in <a href="/docs/fDatabase">fDatabase</a>/<a href="/docs/fSQLTranslation">fSQLTranslation</a>
+</p>
+
+<h3 id="Revision700"><a href="https://github.com/flourishlib/flourish-classes/commit/b2915f6a">Revision 700</a></h3>
+
+<p>
+Renamed <code>fRecordSet::buildFromRecords()</code> to <a href="/api/fRecordSet#buildFromArray">fRecordSet::buildFromArray()</a>
+</p>
+
+<h3 id="Revision659"><a href="https://github.com/flourishlib/flourish-classes/commit/fbe71f0b">Revision 659</a></h3>
+
+<p>
+Before this revision <code>one-to-one</code> relationships were not properly detected, so some <code>one-to-many</code> functionality such as <code>fActiveRecord::populate{RelatedRecords}()</code>, <code>fActiveRecord::build{RelatedRecords}()</code> and <code>fActiveRecord::associate{RelatedRecords}()</code> was working on these <code>one-to-one</code> relationships when it should not have.
+</p>
+
+<p>
+<code>one-to-one</code> relationships support <code>fActiveRecord::create{RelatedRecord}()</code>, <code>fActiveRecord::populate{RelatedRecord}()</code> and <code>fActiveRecord::associate{RelatedRecord}()</code> instead.
+</p>
+
+<h3 id="Revision651"><a href="https://github.com/flourishlib/flourish-classes/commit/e7b2d448">Revision 651</a></h3>
+
+<p>
+Renamed <code>fORMValidation::addConditionalValidationRule()</code> to <a href="/api/fORMValidation#addConditionalRule">fORMValidation::addConditionalRule()</a>, <code>fORMValidation::addManyToManyValidationRule()</code> to <a href="/api/fORMValidation#addManyToManyRule">fORMValidation::addManyToManyRule()</a>, <code>fORMValidation::addOneOrMoreValidationRule()</code> to <a href="/api/fORMValidation#addOneOrMoreRule">fORMValidation::addOneOrMoreRule()</a>, <code>fORMValidation::addOneToManyValidationRule()</code> to <a href="/api/fORMValidation#addOneToManyRule">fORMValidation::addOneToManyRule()</a>, <code>fORMValidation::addOnlyOneValidationRule()</code> to <a href="/api/fORMValidation#addOnlyOneRule">fORMValidation::addOnlyOneRule()</a>, <code>fORMValidation::addValidValuesValidationRule()</code> to <a href="/api/fORMValidation#addValidValuesRule">fORMValidation::addValidValuesRule()</a> 
+</p>
+
+<h3 id="Revision591"><a href="https://github.com/flourishlib/flourish-classes/commit/e031537c">Revision 591</a></h3>
+
+<p>
+Removed <code>fRecordSet::flagAssociate()</code> and <code>fRecordSet::isFlaggedForAssociation()</code>, the <code>$associate</code> parameter is no longer passed to callbacks registered via <a href="/api/fORM#registerRecordSetMethod">fORM::registerRecordSetMethod()</a> 
+</p>
+
+<h3 id="Revision567"><a href="https://github.com/flourishlib/flourish-classes/commit/a158d016">Revision 567</a></h3>
+
+<p>
+The first parameter of <a href="/api/fSession#clear">fSession::clear()</a> was removed, <a href="/api/fSession#delete">fSession::delete()</a> should now be used instead 
+</p>
+
+<h3 id="Revision566"><a href="https://github.com/flourishlib/flourish-classes/commit/d6d9c907">Revision 566</a></h3>
+
+<p>
+Moved <code>fCRUD::printOption()</code> to <a href="/api/fHTML#printOption">fHTML::printOption()</a>, <code>fCRUD::showChecked()</code> to <a href="/api/fHTML#showChecked">fHTML::showChecked()</a>, <code>fCRUD::removeListItems()</code> and <code>fCRUD::reorderListItems()</code> to <a href="/api/fException#splitMessage">fException::splitMessage()</a>, <code>fCRUD::generateRequestToken()</code> to <a href="/api/fRequest#generateCSRFToken">fRequest::generateCSRFToken()</a>, and <code>fCRUD::validateRequestToken()</code> to <a href="/api/fRequest#validateCSRFToken">fRequest::validateCSRFToken()</a> 
+</p>
+
+<h3 id="Revision562"><a href="https://github.com/flourishlib/flourish-classes/commit/4491abdd">Revision 562</a></h3>
+
+<p>
+Removed <code>fORMSchema::enableSmartCaching()</code>, <a href="/api/fORM#enableSchemaCaching">fORM::enableSchemaCaching()</a> now provides equivalent functionality. <code>fSchema::setCacheFile()</code> changed to <a href="/api/fSchema#enableCaching">fSchema::enableCaching()</a> and now requires an <a href="/docs/fCache">fCache</a> object. <code>fSchema::flushInfo()</code> was renamed to <a href="/api/fSchema#clearCache">fSchema::clearCache()</a>. 
+</p>
+
+<h3 id="Revision525"><a href="https://github.com/flourishlib/flourish-classes/commit/ff14fd2a">Revision 525</a></h3>
+
+<p>
+Changed the second parameter of <a href="/api/fFile#output">fFile::output()</a> from <code>$ignore_output_buffer</code> to <code>$filename</code>
+</p>
+
+<h3 id="Revision524"><a href="https://github.com/flourishlib/flourish-classes/commit/322743e0">Revision 524</a></h3>
+
+<p>
+Removed <code>fDate::getSecondsDifference()</code>, <code>fTime::getSecondsDifference()</code>, <code>fTimestamp::getSecondsDifference()</code> and <code>fTimestamp::getSeconds()</code>
+</p>
+
+<h3 id="Revision514"><a href="https://github.com/flourishlib/flourish-classes/commit/09f5f00a">Revision 514</a></h3>
+
+<p>
+<code>fCore::getOS()</code> and <code>fCore::getPHPVersion()</code> were removed and replaced with <a href="/api/fCore#checkOS">fCore::checkOS()</a> and <a href="/api/fCore#checkVersion">fCore::checkVersion()</a> 
+</p>
+
+<h3 id="Revision499"><a href="https://github.com/flourishlib/flourish-classes/commit/2691c60a">Revision 499</a></h3>
+
+<p>
+Renamed <code>fORM::addCustomTableClassMapping()</code> to <a href="/api/fORM#addCustomClassTableMapping">fORM::addCustomClassTableMapping()</a> and swapped the parameters
+</p>
+
+<h3 id="Revision498"><a href="https://github.com/flourishlib/flourish-classes/commit/e2e48a71">Revision 498</a></h3>
+
+<p>
+Changed <a href="/api/fCryptography#symmetricKeyEncrypt">fCryptography::symmetricKeyEncrypt()</a> to not encrypt the IV since we are using HMAC on it 
+</p>
+
+<p>
+<hr />
+
+</p>
+
+<h2 id="AlphaPhase">Alpha Phase</h2>
+
+<p>
+<em>Most users will not have code from the Flourish alpha</em>
+</p>
+
+<h3 id="Revision403"><a href="https://github.com/flourishlib/flourish-classes/commit/ec66b713">Revision 403</a></h3>
+
+<p>
+<code>fCore::stringlike()</code> was removed
+</p>
+
+<h3 id="Revision402"><a href="https://github.com/flourishlib/flourish-classes/commit/843e4a01">Revision 402</a></h3>
+
+<p>
+<code>fCore::trigger()</code> was removed
+</p>
+
+<h3 id="Revision399"><a href="https://github.com/flourishlib/flourish-classes/commit/45d33aa6">Revision 399</a></h3>
+
+<p>
+!<a href="/docs/fPrintableException">fPrintableException</a> was renamed to <a href="/docs/fException">fException</a>
+</p>
+
+<h3 id="Revision388"><a href="https://github.com/flourishlib/flourish-classes/commit/b221d83a">Revision 388</a></h3>
+
+<p>
+<code>fCore::toss()</code> was removed and all exceptions are now normally thrown with <code>throw new ExceptionName()</code>. <code>fCore::registerTossCallback()</code> was renamed to <code>fPrintableException::registerCallback()</code>, <code>fGrammar::compose()</code> was renamed to <a href="/api/fText#compose">fText::compose()</a> and <code>fGrammar::registerComposeCallback()</code> was renamed to <a href="/api/fText#registerComposeCallback">fText::registerComposeCallback()</a>. 
+</p>
+
+<h3 id="Revision374"><a href="https://github.com/flourishlib/flourish-classes/commit/6f388cad">Revision 374</a></h3>
+
+<p>
+<a href="/docs/fActiveRecord">fActiveRecord</a> hooks and method calls now have a <code>&amp;$cache</code> parameter after the <code>&amp;$related_records</code> parameter, but before any other parameters. Any method registered to a hook will need to have the method signature updated.
+</p>
+
+<h3 id="Revision364"><a href="https://github.com/flourishlib/flourish-classes/commit/3d22a999">Revision 364</a></h3>
+
+<p>
+Swapped the order of the last two parameters of <a href="/api/fORMRelated#setOrderBys">fORMRelated::setOrderBys()</a> so that <code>$route</code> (which is really just <code>NULL</code> most of the time) was last and optional 
+</p>
+
+<h3 id="Revision361"><a href="https://github.com/flourishlib/flourish-classes/commit/99eb5d09">Revision 361</a></h3>
+
+<p>
+Changed the existing file upload field name from <code>__flourish_existing_column_name</code> to <code>existing-column_name</code> and changed the delete file upload field name from <code>__flourish_delete_column_name</code> to <code>delete-column_name</code> 
+</p>
+
+<h3 id="Revision348"><a href="https://github.com/flourishlib/flourish-classes/commit/920b4098">Revision 348</a></h3>
+
+<p>
+<code>fNoResultsException</code> was renamed to <a href="/docs/fNoRowsException">fNoRowsException</a>, <code>fResult::tossIfNoResults()</code> was renamed to <a href="/api/fRequest#tossIfNoRows">fRequest::tossIfNoRows()</a>, <code>fUnbufferedResult::tossIfNoResults()</code> was renamed to <a href="/api/fUnbufferedResult#tossIfNoRows">fUnbufferedResult::tossIfNoRows()</a>, <code>fResult::getAffectedRows()</code> was renamed to <a href="/api/fResult#countAffectedRows">fResult::countAffectedRows()</a> and <code>fResult::getReturnedRows()</code> was renamed to <a href="/api/fRequest#countReturnedRows">fRequest::countReturnedRows()</a>
+</p>
+
+<h3 id="Revision332"><a href="https://github.com/flourishlib/flourish-classes/commit/c92bb99c">Revision 332</a></h3>
+
+<p>
+<code>fActiveRecord::has()</code> was renamed to <a href="/api/fActiveRecord#hasOld">fActiveRecord::hasOld()</a> and <code>fActiveRecord::retrieve()</code> was renamed to <a href="/api/fActiveRecord#retrieveOld">fActiveRecord::retrieveOld()</a> 
+</p>
+
+<h3 id="Revision331"><a href="https://github.com/flourishlib/flourish-classes/commit/08f818f5">Revision 331</a></h3>
+
+<p>
+<code>replace::</code> hooks are no longer allowed in <a href="/api/fORM#registerHookCallback">fORM::registerHookCallback()</a>, instead use <a href="/api/fORM#registerActiveRecordMethod">fORM::registerActiveRecordMethod()</a>. <code>fRecordSet::registerMethodCallback()</code> has been renamed to <a href="/api/fORM#registerRecordSetMethod">fORM::registerRecordSetMethod()</a>.
+</p>
+
+<h3 id="Revision308"><a href="https://github.com/flourishlib/flourish-classes/commit/57b8a034">Revision 308</a></h3>
+
+<p>
+Renamed <code>fORMDatabase::getInstance()</code> to <a href="/api/fORMDatabase#retrieve">fORMDatabase::retrieve()</a> and renamed <code>fORMSchema::getInstance()</code> to <a href="/api/fORMSchema#retrieve">fORMSchema::retrieve()</a>
+</p>
+
+<h3 id="Revision305"><a href="https://github.com/flourishlib/flourish-classes/commit/45be4b92">Revision 305</a></h3>
+
+<p>
+<code>fUTF8::detect()</code> went from being public to private 
+</p>
+
+<h3 id="Revision304"><a href="https://github.com/flourishlib/flourish-classes/commit/fa6be338">Revision 304</a></h3>
+
+<p>
+<code>fResult::getPointer()</code> was removed, same functionality is available from <a href="/api/fResult#key">fResult::key()</a>
+</p>
+
+<h3 id="Revision303"><a href="https://github.com/flourishlib/flourish-classes/commit/b96e833e">Revision 303</a></h3>
+
+<p>
+<code>fResult::areRemainingRows()</code> was removed, same functionality is available from <a href="/api/fResult#valid">fResult::valid()</a>
+</p>
+
+<h3 id="Revision300"><a href="https://github.com/flourishlib/flourish-classes/commit/2c36cbf1">Revision 300</a></h3>
+
+<p>
+<code>fUpload::upload()</code> was renamed to <a href="/api/fUpload#move">fUpload::move()</a>
+</p>
+
+<h3 id="Revision298"><a href="https://github.com/flourishlib/flourish-classes/commit/cbd894da">Revision 298</a></h3>
+
+<p>
+Changed <a href="/docs/fUpload">fUpload</a> from a static class to an instance class
+</p>
+
+<h3 id="Revision294"><a href="https://github.com/flourishlib/flourish-classes/commit/4c458526">Revision 294</a></h3>
+
+<p>
+Removed <code>fPrintableException::prepareMessage()</code>
+</p>
+
+<h3 id="Revision293"><a href="https://github.com/flourishlib/flourish-classes/commit/e4089f17">Revision 293</a></h3>
+
+<p>
+Removed <code>fTimestamp::combine()</code>
+</p>
+
+<h3 id="Revision289"><a href="https://github.com/flourishlib/flourish-classes/commit/093f2d20">Revision 289</a></h3>
+
+<p>
+Changed the replacement token in <a href="/api/fRequest#overrideAction">fRequest::overrideAction()</a> from <code>%%action%%</code> to <code>%action%</code> 
+</p>
+
+<h3 id="Revision282"><a href="https://github.com/flourishlib/flourish-classes/commit/fc757f03">Revision 282</a></h3>
+
+<p>
+Changed the separator between the table name and column name for related form inputs from . back to :: because PHP converts . to _ - this reverts changes in r264
+</p>
+
+<h3 id="Revision278"><a href="https://github.com/flourishlib/flourish-classes/commit/4001508d">Revision 278</a></h3>
+
+<p>
+<code>fRecordSet::build{RelatedRecords}()</code> was renamed to <code>fRecordSet::prebuild{RelatedRecords}()</code> and <code>fRecordSet::count{RelatedRecords}()</code> was renamed to <code>fRecordSet::precount{RelatedRecords}()</code>
+</p>
+
+<h3 id="Revision277"><a href="https://github.com/flourishlib/flourish-classes/commit/9ad19034">Revision 277</a></h3>
+
+<p>
+Removed <code>fRecordSet::countWithoutLimit()</code> and added the <code>$ignore_limit</code> parameter to <a href="/api/fRecordSet#count">fRecordSet::count()</a>
+</p>
+
+<h3 id="Revision264"><a href="https://github.com/flourishlib/flourish-classes/commit/96b8a2f2">Revision 264</a></h3>
+
+<p>
+Changed the separator between the table name and column name for related form inputs from <code>::</code> to <code>.</code> - <code>users::user_id[]</code> will now be <code>users.user_id[]</code>
+</p>
+
+<h3 id="Revision263"><a href="https://github.com/flourishlib/flourish-classes/commit/e27ca21b">Revision 263</a></h3>
+
+<p>
+Removed <code>fRecordSet::buildFromPrimaryKeys()</code>, changed <a href="/api/fORMRelated#associateRecords">fORMRelated::associateRecords()</a> to only accept an <a href="/docs/fRecordSet">fRecordSet</a> instead of an <a href="/docs/fRecordSet">fRecordSet</a> or an array of primary keys
+</p>
+
+<h3 id="Revision259"><a href="https://github.com/flourishlib/flourish-classes/commit/c7a9f89d">Revision 259</a></h3>
+
+<p>
+Renamed <code>fORM::createActiveRecordClass()</code> to <a href="/api/fORM#defineActiveRecordClass">fORM::defineActiveRecordClass()</a>
+</p>
+
+<h3 id="Revision258"><a href="https://github.com/flourishlib/flourish-classes/commit/5291446a">Revision 258</a></h3>
+
+<p>
+Renamed <code>fFilesystem::createUniqueName()</code> to <a href="/api/fFilesystem#makeUniqueName">fFilesystem::makeUniqueName()</a>
+</p>
+
+<h3 id="Revision257"><a href="https://github.com/flourishlib/flourish-classes/commit/6329fae0">Revision 257</a></h3>
+
+<p>
+Renamed <code>fTimestamp::createFormat()</code> to <a href="/api/fTimestamp#defineFormat">fTimestamp::defineFormat()</a>
+</p>
+
+<h3 id="Revision253"><a href="https://github.com/flourishlib/flourish-classes/commit/c6eee3ef">Revision 253</a></h3>
+
+<p>
+Removed <code>fORMDatabase::escapeByType()</code>, added support for shorthand table.column names to <a href="/api/fORMDatabase#escapeBySchema">fORMDatabase::escapeBySchema()</a> to provide replacement functionality 
+</p>
+
+<h3 id="Revision251"><a href="https://github.com/flourishlib/flourish-classes/commit/1c247eaa">Revision 251</a></h3>
+
+<p>
+The fourth parameter of <a href="/api/fRecordSet#build">fRecordSet::build()</a> is now the page number instead of the offset. The page number is subtracted by one and multiplied by the limit to get the correct offset.
+</p>
+
+<h3 id="Revision250"><a href="https://github.com/flourishlib/flourish-classes/commit/5c3b1530">Revision 250</a></h3>
+
+<p>
+Removed <code>fGrammar::registerHumanizeCallback()</code>
+</p>
+
+<h3 id="Revision249"><a href="https://github.com/flourishlib/flourish-classes/commit/97ec81f2">Revision 249</a></h3>
+
+<p>
+<code>fGrammar::replaceHumanize()</code> was renamed to <a href="/api/fGrammar#registerHumanizeCallback">fGrammar::registerHumanizeCallback()</a>, <code>fGrammar::replaceJoinArray()</code> was renamed to <a href="/api/fGrammar#registerJoinArrayCallback">fGrammar::registerJoinArrayCallback()</a>. <code>fGrammar::addAllCapitalsWord()</code> was removed and <a href="/api/fGrammar#addHumanizeRule">fGrammar::addHumanizeRule()</a> was added with similar functionality.
+</p>
+
+<h3 id="Revision239"><a href="https://github.com/flourishlib/flourish-classes/commit/8399ee64">Revision 239</a></h3>
+
+<p>
+<code>fDate::setDate()</code>, <code>fDate::setISODate()</code>, <code>fTime::setTime()</code>, <code>fTimestamp::setDate()</code>, <code>fTimestamp::setISODate()</code>, <code>fTimestamp::setTime()</code>, <code>fTimestamp::setTimezone()</code>, <code>fTimestamp::getTimezone()</code> were removed. The <a href="/docs/fDate">fDate</a>, <a href="/docs/fTime">fTime</a> and <a href="/docs/fTimestamp">fTimestamp</a> classes all became value objects (immutable) and <a href="/api/fDate#adjust">fDate::adjust()</a>, <a href="/api/fTime#adjust">fTime::adjust()</a> and <a href="/api/fTimestamp#adjust">fTimestamp::adjust()</a> all now return new objects. Each class also gained a method called <code>modify()</code> which returns a new object based on the current object, replacing the various set methods.
+</p>
+
+<h3 id="Revision229"><a href="https://github.com/flourishlib/flourish-classes/commit/7c6a0858">Revision 229</a></h3>
+
+<p>
+Changed <a href="/api/fCRUD#removeListItems">fCRUD::removeListItems()</a> so its parameters were consistent with <a href="/api/fCRUD#reorderListItems">fCRUD::reorderListItems()</a>
+</p>
+
+<h3 id="Revision225"><a href="https://github.com/flourishlib/flourish-classes/commit/4ff669ca">Revision 225</a></h3>
+
+<p>
+<code>fXML::prepare()</code> was renamed to <a href="/api/fXML#encode">fXML::encode()</a>
+</p>
+
+<h3 id="Revision223"><a href="https://github.com/flourishlib/flourish-classes/commit/7c67d80d">Revision 223</a></h3>
+
+<p>
+<code>fRecordSet::flagForAssociation()</code> was renamed to <a href="/api/fRecordSet#flagAssociate">fRecordSet::flagAssociate()</a> 
+</p>
+
+<h3 id="Revision222"><a href="https://github.com/flourishlib/flourish-classes/commit/095c09ac">Revision 222</a></h3>
+
+<p>
+<code>fRecordSet::registerCallback()</code> was renamed to <a href="/api/fRecordSet#registerMethodCallback">fRecordSet::registerMethodCallback()</a>
+</p>
+
+<h3 id="Revision221"><a href="https://github.com/flourishlib/flourish-classes/commit/dc35e6a8">Revision 221</a></h3>
+
+<p>
+<code>fORM::getClassName()</code> was renamed to <a href="/api/fORM#getClass">fORM::getClass()</a> and <code>fRecordSet::getClassName()</code> was renamed to <a href="/api/fRecordSet#getClass">fRecordSet::getClass()</a>
+</p>
+
+<h3 id="Revision218"><a href="https://github.com/flourishlib/flourish-classes/commit/5b39138e">Revision 218</a></h3>
+
+<p>
+<code>fHTML::checkForBlockLevelHTML()</code> was renamed to <a href="/api/fHTML#containsBlockLevelHTML">fHTML::containsBlockLevelHTML()</a> and <code>fHTML::createLinks()</code> was renamed to <a href="/api/fHTML#makeLinks">fHTML::makeLinks()</a>
+</p>
+
+<h3 id="Revision217"><a href="https://github.com/flourishlib/flourish-classes/commit/a4c6fc12">Revision 217</a></h3>
+
+<p>
+<code>fCryptography::generateRandomString()</code> was renamed to <a href="/api/fCryptography#randomString">fCryptography::randomString()</a> 
+</p>
+
+<h3 id="Revision216"><a href="https://github.com/flourishlib/flourish-classes/commit/f58475fb">Revision 216</a></h3>
+
+<p>
+<code>fCRUD::createSortableColumn()</code> was renamed to <a href="/api/fCRUD#printSortableColumn">fCRUD::printSortableColumn()</a> 
+</p>
+
+<h3 id="Revision215"><a href="https://github.com/flourishlib/flourish-classes/commit/5b552d4a">Revision 215</a></h3>
+
+<p>
+Removed fFinancialTransaction and fShippingRates. Both were unlike the rest of Flourish in that they were tied to the APIs of other services and neither was very comprehensive in terms of the number of services supported.
+</p>
+
+<h3 id="Revision206"><a href="https://github.com/flourishlib/flourish-classes/commit/e5c99029">Revision 206</a></h3>
+
+<p>
+Removed <code>fORMDatabase::initialize()</code>, you must now construct an <a href="/docs/fDatabase">fDatabase</a> instance and pass it to <a href="/api/fORMDatabase#attach">fORMDatabase::attach()</a>
+</p>
+
+<h3 id="Revision205"><a href="https://github.com/flourishlib/flourish-classes/commit/0042a0ff">Revision 205</a></h3>
+
+<p>
+<code>fORMDatabase::prepareBySchema()</code> was renamed to <a href="/api/fORMDatabase#escapeBySchema">fORMDatabase::escapeBySchema()</a> and <code>fORMDatabase::prepareByType()</code> was renamed to <a href="/api/fORMDatabase#escapeByType">fORMDatabase::escapeByType()</a> 
+</p>
+
+<h3 id="Revision204"><a href="https://github.com/flourishlib/flourish-classes/commit/1207ef87">Revision 204</a></h3>
+
+<p>
+<a href="/api/fDatabase#escape">fDatabase::escape()</a> replaces <code>fDatabase::escapeBlob()</code>, <code>fDatabase::escapeBoolean()</code>, <code>fDatabase::escapeDate()</code>, <code>fDatabase::escapeFloat()</code>, <code>fDatabase::escapeInteger()</code>, <code>fDatabase::escapeString()</code>, <code>fDatabase::escapeTime()</code> and <code>fDatabase::escapeTimestamp()</code>. <a href="/api/fDatabase#unescape">fDatabase::unescape()</a> replaces <code>fDatabase::unescapeBlob()</code>, <code>fDatabase::unescapeBoolean()</code>, <code>fDatabase::unescapeDate()</code>, <code>fDatabase::unescapeFloat()</code>, <code>fDatabase::unescapeInteger()</code>, <code>fDatabase::unescapeString()</code>, <code>fDatabase::unescapeTime()</code> and <code>fDatabase::unescapeTimestamp()</code>.
+</p>
+
+<h3 id="Revision202"><a href="https://github.com/flourishlib/flourish-classes/commit/521a55e6">Revision 202</a></h3>
+
+<p>
+The second and third parameters of <a href="/api/fMessaging#create">fMessaging::create()</a> were swapped to be consistent with the other <a href="/docs/fMessaging">fMessaging</a> methods
+</p>
+
+<h3 id="Revision201"><a href="https://github.com/flourishlib/flourish-classes/commit/05cd24e5">Revision 201</a></h3>
+
+<p>
+<code>fORMColumn::configureDateCreatedColumn()</code> was moved to <a href="/api/fORMDate#configureDateCreatedColumn">fORMDate::configureDateCreatedColumn()</a> and <code>fORMColumn::configureDateUpdatedColumn()</code> was moved to <a href="/api/fORMDate#configureDateUpdatedColumn">fORMDate::configureDateUpdatedColumn()</a>
+</p>
+
+<h3 id="Revision195"><a href="https://github.com/flourishlib/flourish-classes/commit/37eae733">Revision 195</a></h3>
+
+<p>
+<code>fORMColumn::configureMoneyColumn()</code> was moved to <a href="/api/fORMMoney#configureMoneyColumn">fORMMoney::configureMoneyColumn()</a> 
+</p>
+
+<h3 id="Revision184"><a href="https://github.com/flourishlib/flourish-classes/commit/980845ca">Revision 184</a></h3>
+
+<p>
+<code>fMoney::multiply()</code> renamed to <a href="/api/fMoney#mul">fMoney::mul()</a> and <code>fMoney::subtract()</code> renamed to <a href="/api/fMoney#sub">fMoney::sub()</a> to be consistent with <a href="/docs/fNumber">fNumber</a>
+</p>
+
+<h3 id="Revision174"><a href="https://github.com/flourishlib/flourish-classes/commit/66b4f30e">Revision 174</a></h3>
+
+<p>
+<code>fORMRelated::constructRecord()</code> renamed to <a href="/api/fORMRelated#createRecord">fORMRelated::createRecord()</a>, <code>fORMRelated::constructRecordSet()</code> renamed to <a href="/api/fORMRelated#buildRecords">fORMRelated::buildRecords()</a> 
+</p>
+
+<h3 id="Revision173"><a href="https://github.com/flourishlib/flourish-classes/commit/90ac2353">Revision 173</a></h3>
+
+<p>
+Renamed <code>fRecordSet::create()</code> to <a href="/api/fRecordSet#build">fRecordSet::build()</a>, removed <code>fRecordSet::createEmpty()</code>, renamed <code>fRecordSet::createFromObjects()</code> to <a href="/api/fRecordSet#buildFromRecords">fRecordSet::buildFromRecords()</a> and added a new first parameter, renamed <code>fRecordSet::createFromPrimaryKeys()</code> to <a href="/api/fRecordSet#buildFromPrimaryKeys">fRecordSet::buildFromPrimaryKeys()</a>, renamed <code>fRecordSet::createFromSQL()</code> to <a href="/api/fRecordSet#buildFromSQL">fRecordSet::buildFromSQL()</a>.
+</p>
+
+<h3 id="Revision166"><a href="https://github.com/flourishlib/flourish-classes/commit/b942184f">Revision 166</a></h3>
+
+<p>
+<a href="/docs/fValidation">fValidation</a> no longer has the methods <code>fValidation::setEmailFields()</code>, <code>fValidation::setEmailHeaderFields()</code> or <code>fValidation::setRequiredFields()</code>. The various <code>fValidation::add*()</code> methods should be used instead.
+</p>
+
+<h3 id="Revision144"><a href="https://github.com/flourishlib/flourish-classes/commit/0231c739">Revision 144</a></h3>
+
+<p>
+The method <a href="/api/fImage#getInfo">fImage::getInfo()</a> went from being <code>public</code> to <code>protected</code>.
+</p>
+
+<h3 id="Revision127"><a href="https://github.com/flourishlib/flourish-classes/commit/418540c0">Revision 127</a></h3>
+
+<p>
+<code>fRecordSet::preload{RelatedRecords}()</code> became <code>fRecordSet::build{RelatedRecords}()</code>.
+</p>
+
+<h3 id="Revision125"><a href="https://github.com/flourishlib/flourish-classes/commit/8410513c">Revision 125</a></h3>
+
+<p>
+The <code>$debug</code> parameter was removed from all calls to <a href="/docs/fActiveRecord">fActiveRecord</a> hook callbacks.
+</p>
+
+<h3 id="Revision84"><a href="https://github.com/flourishlib/flourish-classes/commit/1fd0f7c4">Revision 84</a></h3>
+
+<p>
+Removed <code>fRecordSet::preload{RelatedRecords}()</code>.
+</p>
+
+<h3 id="Revision81"><a href="https://github.com/flourishlib/flourish-classes/commit/a96e0974">Revision 81</a></h3>
+
+<p>
+<code>fInflection</code> was renamed to <a href="/docs/fGrammar">fGrammar</a>.
+</p>
+
+<h3 id="Revision76"><a href="https://github.com/flourishlib/flourish-classes/commit/95cf1f34">Revision 76</a></h3>
+
+<p>
+<a href="/api/fMessaging#show">fMessaging::show()</a> now behaves differently than it did before.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

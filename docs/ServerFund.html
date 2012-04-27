@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>ServerFund – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="ServerFund">Server Fund</h1>
+<div style="background-color: #DFEDFF; padding: 0.1em 0.9em; margin-bottom: 1em;">
+<p>
+The entire Server Fund amount was raised in just 8 days! A huge thanks to Justin
+Noel who donated almost the entire amount.
+</p>
+<p>
+If you are interested in supporting Flourish in other ways, please visit the
+<a href="/docs/Support">support page</a>
+</p>
+</div><div>
+<h2 id="CurrentStatus">Current Status</h2>
+<p>
+<strong>Total Hardware Cost:</strong> $626.93<br />
+<strong>Amount Raised:</strong> $627.49<br />
+<big><strong>Remaining:</strong> $0.00</big>
+</p></div>
+
+<p>
+If youve used Flourish and feel like contributing something back to support the development, consider making a donation to the server fund.
+</p>
+
+<p>
+The current focus of the fund is on providing a new motherboard, CPU, ram (and graphics card) to run multiple virtual machines for the purpose of testing Flourish. Since one of the goals of Flourish to to provide a portable and highly-compatible general purpose library, testing on multiple platforms with multiple versions of PHP and databases is essential. Currently the automated post-commit SVN testing of Flourish only happens on the current web-server, a CentOS 4 box running PHP 5.1.6.
+</p>
+
+<h2 id="CurrentSetup">Current Setup</h2>
+
+<p>
+The current hardware being used is rather old, an Athlon XP 2800 processor and 2GB of ram. It runs 2 virtual machines for testing purposes on top of VMWare Server:
+</p>
+
+<ul>
+<li><strong>Windows XP</strong>: PHP 5.2.9, SQL Server 2005 Express, SQL Server 2008 Express</li>
+<li><strong>Ubuntu 9.04</strong>: PHP 5.2.6, PostgreSQL 8.3, MySQL 5.0, Oracle 10g XE</li>
+</ul>
+
+<p>
+The server is also occasionally used for development and testing.
+</p>
+
+<h2 id="DesiredSetup">Desired Setup</h2>
+
+<p>
+Moving forward I would like to add a number of other OSes, PHP versions and databases to the normal testing and create a distributed test runner/reporter. Ideally I'd like to add the following:
+</p>
+
+<ul>
+<li>OSX</li>
+<li>FreeBSD</li>
+<li>CentOS</li>
+<li>Solaris</li>
+<li>Windows Server 2008</li>
+</ul>
+
+<ul>
+<li>PHP 5.3</li>
+<li>PHP 5.1.6 <em>(just on CentOS, since it and RedHat still has the official package stuck at that version)</em></li>
+</ul>
+
+<p>
+At this point the only software that would require purchase would be Windows Server 2008. I'll probably worry about that after the hardware, especially since a Server 2008 Web Edition licenses seems to run about $430, and there shouldn't really be many differences between Server 2008 and XP that affect Flourish.
+</p>
+
+<p>
+Currently it is not possible to run OSX in a virtualized environment due to support and licensing issues, so I will probably need to obtain a physical machine to do this testing. If you have an older iMac or Mac mini and feel like donation that, I would be grateful!
+</p>
+
+<h2 id="ProposedHardware">Proposed Hardware</h2>
+
+<p>
+I've identified the following hardware as a good future-proof setup that should allow for running VMWare Server, or something like Xen, for the virtualization. Specifically the Intel VT-x and VT-d extensions on the CPU allow for more virtualization options.
+</p>
+
+<ul>
+<li><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16819115214">Intel Core
+   i7 860 Lynnfield 2.8GHz LGA 1156 95W Quad-Core Processor</a> - <strong>$289.99</strong></li>
+<li><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16813128405">GIGABYTE
+   GA-P55M-UD2 LGA 1156 Intel P55 Micro ATX Motherboard</a> - <strong>$109.99</strong></li>
+<li>2x <a href="http://www.newegg.com/Product/ProductReview.aspx?Item=N82E16813128405">G.SKILL 4GB (2 x 2GB) 240-Pin DDR3 1600 Ram Kits</a> - <strong>$171.98</strong> ($85.99 each)</li>
+<li><a href="http://www.newegg.com/Product/Product.aspx?Item=N82E16814127396">MSI
+   N9400GT-MD512H GeForce 9400 GT Video Card</a> - <strong>$47.99</strong></li>
+</ul>
+
+<p>
+Shipping: <strong>$6.98</strong><a href="[BR">[BR</a> Grand Total: <strong>$626.93</strong>
+</p>
+
+<h2 id="Donations">Donations</h2>
+
+<p>
+Currently a total of <strong>$627.49</strong> has been donated to Flourish, so the goal has been reached and the hardware ordered. A huge thanks to the following people for their generous support:
+</p>
+
+<ul>
+<li><strong>Justin Noel</strong> <em>who covered almost the entire costThank you! </em> </li>
+<li>Martin Santangelo</li>
+<li>Luke Foreman </li>
+</ul>
+
+<h2 id="NextSteps">Next Steps</h2>
+
+<p>
+The first step in the process is to get hardware running that can support a large number of concurrently running virtual machines so that the automated testing on each SVN commit can always happen and so that ad-hoc development testing can occur too.
+</p>
+
+<p>
+Once the hardware is in place and OSes are set up, work will need to be done to create some scripts that remotely trigger and aggregate the results. At some point in the future when more developers come on board with Flourish, it would be nice to set up the testing environment to be available to all developers.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fExpectedException – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fExpectedException">fExpectedException</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fExpectedException">Class Documentation</a></strong></li>
+<li><a href="/api/fExpectedException">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fExpectedException.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#ChildClasses">Child Classes</a></li>
+</ul>
+
+<h2 id="ExceptionClasses">Exception Classes </h2>
+
+<ul>
+<li><a href="/docs/fException">fException</a>
+<ul>
+<li><strong>fExpectedException</strong>
+<ul>
+<li><a href="/docs/fAuthorizationException">fAuthorizationException</a></li>
+<li><a href="/docs/fEmptySetException">fEmptySetException</a></li>
+<li><a href="/docs/fNoRemainingException">fNoRemainingException</a></li>
+<li><a href="/docs/fNoRowsException">fNoRowsException</a></li>
+<li><a href="/docs/fNotFoundException">fNotFoundException</a></li>
+<li><a href="/docs/fValidationException">fValidationException</a></li>
+</ul>
+</li>
+<li><a href="/docs/fUnexpectedException">fUnexpectedException</a>
+<ul>
+<li><a href="/docs/fConnectivityException">fConnectivityException</a></li>
+<li><a href="/docs/fEnvironmentException">fEnvironmentException</a></li>
+<li><a href="/docs/fProgrammerException">fProgrammerException</a></li>
+<li><a href="/docs/fSQLException">fSQLException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<p>
+fExpectedException is a sub-class of <a href="/docs/fException">fException</a> meant to provide a common parent class for all exceptions that should be expected and handled in the site/application code. There are no special features or functionality for this class.
+</p>
+
+<h2 id="ChildClasses">Child Classes</h2>
+
+<p>
+Below is a list of all child classes that extend fExpectedException. If any of these classes are tossed by a Flourish method, there will be a <em>Throws:</em> entry in the methods API documentation. Note that exceptions that extend <a href="/docs/fUnexpectedException">fUnexpectedException</a> are <em>not</em> documented in the same way.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Class</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/docs/fEmptySetException">fEmptySetException</a></td>
+<td>This type of exception indicates an <a href="/docs/fRecordSet">fRecordSet</a> is empty, and will only be thrown when requested via <code>tossIfEmpty()</code>.</td>
+</tr>
+<tr>
+<td><a href="/docs/fNoRemainingException">fNoRemainingException</a></td>
+<td>This type of exception indicates that a element was requested even though an iterator has iterated over all existing elements.</td>
+</tr>
+<tr>
+<td><a href="/docs/fNoRowsException">fNoRowsException</a></td>
+<td>This type of exception is for use when no rows are returned by a SQL query.</td>
+</tr>
+<tr>
+<td><a href="/docs/fNotFoundException">fNotFoundException</a></td>
+<td>This type of exception indicates that something could not be found and should include the item type in the message.</td>
+</tr>
+<tr>
+<td><a href="/docs/fValidationException">fValidationException</a></td>
+<td>This type of exception indicates there was an error when checking data input. The message will indicate what could not be validated.</td>
+</tr>
+</tbody></table>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

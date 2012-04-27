@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Moving to GitHub – Blog – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="MovingtoGitHub">Moving to GitHub</h1>
+
+<p>
+<a href="/blog">See all blogs</a>
+</p>
+
+<p>
+In the next few weeks there are going to be a number of changes to the Flourish project. As you may have noticed, releases have slowed down quite a bit over the past few months as I've found my free time being split between Flourish and my Sublime Text work. Additionally, I'll soon be moving to a new company.
+</p>
+
+<p>
+Over the past few months I have found that the current infrastructure that Flourish is hosted on is preventing me from allowing others to contribute without giving them full access to my server. Because of this, I've decided it is time to move development and the website hosting over to <a href="https://github.com">GitHub</a>. This will allow me to easily permit access to the source code hosting and developers will be able to contribute code via pull requests. Other benefits include moving the class documentation in version control for easier collaboration.
+</p>
+
+<p>
+This move is going to have a few affects on Flourish and the website:
+</p>
+
+<ul>
+<li>Flourish will change to a <a href="http://semver.org/">semantic versioning</a> system since Git does not have a canonical revision number</li>
+<li>Tickets will be moved to GitHub issues</li>
+<li>The website and blog will be moved to a GitHub site powered by Jekyll</li>
+<li>The <a href="/docs">class and general documentation</a> will also move to the GitHub site (not a GitHub wiki)</li>
+<li>The testing infrastructure will be moved to a system where the test VMs will poll a GitHub repository and run tests on any new revisions, pushing results back into another GitHub repo. Tests will likely be split into a separate repo from the classes.</li>
+<li>The discussion board will hopefully be moved to Zoho Discussions, although I am not sure if I will be able to preserve the current contents.</li>
+</ul>
+
+<p>
+Unfortunately there are a few things that aren't going to be supported moving forward. I would love to be able to continue supporting these, but I can't realistically do so with my other commitments. Sorry!
+</p>
+
+<ul>
+<li>All of the source code hosting other than Git will go away - this includes SVN, Hg, Bazaar and Darcs. <a href="https://github.com/blog/966-improved-subversion-client-support">GitHub
+   supports SVN clients</a> and the <a href="http://hg-git.github.com/">Hg-Git</a> plugin will hopefully be enough support for Mercurial users.</li>
+<li>The Advanced Download page will be going away. Moving forward there will be more work done in manually documenting dependencies between code, but it won't be possible to generate a zip file with just the required classes.</li>
+</ul>
+
+<p>
+There are probably a few other small things I missed, but I think that covers all of the big issues. If you are interested in assisting with the transition, I'd be happy to have some help in moving issues to GitHub, and possibly reviewing docs that have been converted.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

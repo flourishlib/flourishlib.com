@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fCookie – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fCookie">fCookie</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fCookie">Class Documentation</a></strong></li>
+<li><a href="/api/fCookie">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fCookie.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#SettingValues">Setting Values</a></li>
+<li><a href="#GettingValues">Getting Values</a></li>
+<li><a href="#DefaultParameters">Default Parameters</a></li>
+</ul>
+</div>
+
+<p>
+The fCookie class helps to make PHPs cookie API more consistent, while adding the ability to set default parameters and create httponly cookies in older versions of PHP 5.
+</p>
+
+<h2 id="SettingValues">Setting Values</h2>
+
+<p>
+The static method <a href="/api/fCookie#set"><code>set()</code></a> is a wrapper around the function <a href="http://php.net/setcookie"><code>setcookie()</code></a>, with the addition of optional <a href="#DefaultParameters">default parameters</a> and backwards compatibility for creating <a href="https://www.owasp.org/index.php/HTTPOnly">httponly cookies</a> in PHP 5.1 and earlier. In addition, the expires parameter has been extended to allow any valid <a href="http://php.net/strtotime"><code>strtotime()</code></a> string or a timestamp. Below are some examples of using <code>set()</code>:
+</p>
+<pre class="block php"><code>// Set a cookie for the current path
+fCookie::set('my_cookie', 'my_value');
+
+// Set a cookie to expire in 1 week
+fCookie::set('my_cookie', 'my_value', '+1 week');
+
+// Set a cookie for the whole site
+fCookie::set('my_cookie', 'my_value', '+1 week', '/');
+
+// Set a cookie for the whole site that expires when the browser is closed
+fCookie::set('my_cookie', 'my_value', 0, '/');
+
+// Set a cookie for all subdomains of example.com
+fCookie::set('my_cookie', 'my_value', '+1 week', '/', '.example.com');
+
+// Ensure that the cookie is only set over a secure connection (https://)
+fCookie::set('my_cookie', 'my_value', '+1 week', '/', '.example.com', TRUE);
+
+// Set the cookie to only be accessible to HTTP (not javascript)
+fCookie::set('my_cookie', 'my_value', '+1 week', '/', '.example.com', TRUE, TRUE);</code></pre>
+
+<p>
+ Please note that <code>set()</code> follows the same functionality as <code>setcookie()</code> when it comes to deleting cookies and storing boolean values. Any value that is set to a cookie that is equal to <code>FALSE</code> will cause the cookie to be deleted. This means storing boolean values in a cookie is not recommended since a <code>FALSE</code> value will cause the cookie to be erased - instead use <code>'0'</code> and <code>'1'</code>. Also, setting the expiration date to a time in the past will cause the cookie to be deleted. 
+</p>
+
+<h2 id="GettingValues">Getting Values</h2>
+
+<p>
+The static method <a href="/api/fCookie#get"><code>get()</code></a> replaces direct access to the <code>$_COOKIE</code> superglobal and adds the ability to specify default values if no cookie is found:
+</p>
+<pre class="block php"><code>// Get the value 'default_value' if no cookie of that name exists
+$value = fCookie::get('my_cookie', 'default_value');</code></pre>
+
+<p>
+ <code>get()</code> will also remove any slashes added by the ini setting <code>magic_quotes_gpc</code> being enabled.
+</p>
+
+<h2 id="DefaultParameters">Default Parameters</h2>
+
+<p>
+The fCookie class also allows defining default parameters to use for <a href="/api/fCookie#set"><code>set()</code></a>. Since most sites will often use the same <code>$path</code>, <code>$domain</code>, <code>$secure</code> and <code>$httponly</code> parameters for cookies, setting default eliminates unnecessary duplication throughout the code. If a parameter is passed as <code>NULL</code> to <code>set()</code> and a default is defined, the default will be used. Here are the methods to set default parameters:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Parameter</strong></td>
+<td><strong>Method</strong></td>
+</tr>
+<tr>
+<td><code>$expires</code></td>
+<td><a href="/api/fCookie#setDefaultExpires"><code>setDefaultExpires()</code></a></td>
+</tr>
+<tr>
+<td><code>$path</code></td>
+<td><a href="/api/fCookie#setDefaultPath"><code>setDefaultPath()</code></a></td>
+</tr>
+<tr>
+<td><code>$domain</code></td>
+<td><a href="/api/fCookie#setDefaultDomain"><code>setDefaultDomain()</code></a></td>
+</tr>
+<tr>
+<td><code>$secure</code></td>
+<td><a href="/api/fCookie#setDefaultSecure"><code>setDefaultSecure()</code></a></td>
+</tr>
+<tr>
+<td><code>$httponly</code></td>
+<td><a href="/api/fCookie#setDefaultHTTPOnly"><code>setDefaultHTTPOnly()</code></a></td>
+</tr>
+</tbody></table>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

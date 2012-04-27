@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMSchema – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fORMSchema</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fORMSchema">Class Documentation</a></li>
+		<li><strong><a href="/api/fORMSchema">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMSchema.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#attach">attach()</a></li>
+	  			<li class="protected"><a href="#getRoute">getRoute()</a></li>
+	  			<li class="protected"><a href="#getRouteName">getRouteName()</a></li>
+	  			<li class="protected"><a href="#getRouteNameFromRelationship">getRouteNameFromRelationship()</a></li>
+	  			<li class="protected"><a href="#getRoutes">getRoutes()</a></li>
+	  			<li class="protected"><a href="#isOneToOne">isOneToOne()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#retrieve">retrieve()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fSchema">fSchema</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMColumn">fORMColumn</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fORMDate">fORMDate</a></li>
+		<li><a href="fORMFile">fORMFile</a></li>
+		<li><a href="fORMMoney">fORMMoney</a></li>
+		<li><a href="fORMOrdering">fORMOrdering</a></li>
+		<li><a href="fORMRelated">fORMRelated</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fRecordSet">fRecordSet</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b9</span></div>
+<p class="short_description">Provides <a href="fSchema">fSchema</a> class related functions for ORM code</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b9</th><td>Enhanced various exception messages <span class="date">9/19/10</span></td></tr><tr><th>1.0.0b8</th><td>Added 'one-to-one' support to <a href="#getRouteNameFromRelationship"><tt>getRouteNameFromRelationship()</tt></a>, '!many-to-one' to <a href="#getRoute"><tt>getRoute()</tt></a> <span class="date">3/3/10</span></td></tr><tr><th>1.0.0b7</th><td>Added support for multiple databases <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b6</th><td>Internal Backwards Compatibility Break - Added the <tt>$schema</tt> parameter to the beginning of <a href="#getRoute"><tt>getRoute()</tt></a>, <a href="#getRouteName"><tt>getRouteName()</tt></a>, <a href="#getRoutes"><tt>getRoutes()</tt></a> and <a href="#isOneToOne"><tt>isOneToOne()</tt></a> - added '!many-to-one' relationship type handling <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b5</th><td>Fixed some error messaging to not include {empty_string} in some situations <span class="date">7/31/09</span></td></tr><tr><th>1.0.0b4</th><td>Added <a href="#isOneToOne"><tt>isOneToOne()</tt></a> <span class="date">7/21/09</span></td></tr><tr><th>1.0.0b3</th><td>Added routes caching for performance <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b2</th><td>Backwards Compatiblity Break - removed enableSmartCaching(), <a href="fORM#enableSchemaCaching"><tt>fORM::enableSchemaCaching()</tt></a> now provides equivalent functionality <span class="date">5/4/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/14/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="attach" class="method static"><span class="resolution">::</span><span class="name">attach()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows attaching an <a href="fSchema">fSchema</a>-compatible object as the schema singleton for ORM code</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">attach</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>'default' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">An object that is compatible with <a href="fSchema">fSchema</a></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The name of the database this schema is for</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getRoute" class="protected method static"><span class="resolution">::</span><span class="name">getRoute()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns information about the specified route</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">getRoute</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$relationship_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema object to get the route from</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The main table we are searching on behalf of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_table</td>
+				<td class="param_description">The related table we are searching under</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route to get info about</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$relationship_type</td>
+				<td class="param_description">The relationship type: <tt>NULL</tt>, <tt>'*-to-many'</tt>, <tt>'*-to-one'</tt>, <tt>'!many-to-one'</tt>, <tt>'one-to-one'</tt>, <tt>'one-to-meny'</tt>, <tt>'many-to-one'</tt>, <tt>'many-to-many'</tt></td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getRouteName" class="protected method static"><span class="resolution">::</span><span class="name">getRouteName()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the name of the only route from the specified table to one of its related tables</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getRouteName</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$relationship_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema object to get the route name from</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The main table we are searching on behalf of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_table</td>
+				<td class="param_description">The related table we are trying to find the routes for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route that was preselected, will be verified if present</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$relationship_type</td>
+				<td class="param_description">The relationship type: <tt>NULL</tt>, <tt>'*-to-many'</tt>, <tt>'*-to-one'</tt>, <tt>'!many-to-one'</tt>, <tt>'one-to-one'</tt>, <tt>'one-to-many'</tt>, <tt>'many-to-one'</tt>, <tt>'many-to-many'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The only route from the main table to the related table
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getRouteNameFromRelationship" class="protected method static"><span class="resolution">::</span><span class="name">getRouteNameFromRelationship()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the name of the route specified by the relationship</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getRouteNameFromRelationship</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$type</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$relationship</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of relationship: <tt>'*-to-one'</tt>, <tt>'one-to-one'</tt>, <tt>'one-to-many'</tt>, <tt>'many-to-one'</tt>, <tt>'many-to-many'</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$relationship</td>
+				<td class="param_description">The relationship array from <a href="fSchema#getKeys"><tt>fSchema::getKeys()</tt></a></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The name of the route
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getRoutes" class="protected method static"><span class="resolution">::</span><span class="name">getRoutes()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns an array of all routes from a table to one of its related tables</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getRoutes</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$relationship_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema object to get the routes for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The main table we are searching on behalf of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_table</td>
+				<td class="param_description">The related table we are trying to find the routes for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$relationship_type</td>
+				<td class="param_description">The relationship type: <tt>NULL</tt>, <tt>'*-to-many'</tt>, <tt>'*-to-one'</tt>, <tt>'!many-to-one'</tt>, <tt>'one-to-one'</tt>, <tt>'one-to-many'</tt>, <tt>'many-to-one'</tt>, <tt>'many-to-many'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					All of the routes from the main table to the related table
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="isOneToOne" class="protected method static"><span class="resolution">::</span><span class="name">isOneToOne()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Indicates if the relationship specified is a one-to-one relationship</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isOneToOne</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-var">$schema</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$related_table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$route</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSchema">fSchema</a></td>
+				<td class="param_name">$schema</td>
+				<td class="param_description">The schema object the tables are from</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The main table we are searching on behalf of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$related_table</td>
+				<td class="param_description">The related table we are trying to find the routes for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$route</td>
+				<td class="param_description">The route between the two tables</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the table is in a one-to-one relationship with the related table over the route specified
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="retrieve" class="method static"><span class="resolution">::</span><span class="name">retrieve()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Return the instance of the <a href="fSchema">fSchema</a> class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-identifier">retrieve</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$class</span><span class="php-code">=</span>'fActiveRecord' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class the object will be used with</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The schema instance
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

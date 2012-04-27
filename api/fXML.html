@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fXML – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fXML</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fXML">Class Documentation</a></li>
+		<li><strong><a href="/api/fXML">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fXML.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected variables">
+<h2><a href="#class_vars">Variables</a></h2>
+<ul>
+  	 		<li class="protected"><a href="#__custom_prefixes">$__custom_prefixes</a></li>
+	   	 		<li class="protected"><a href="#__dom">$__dom</a></li>
+	   	 		<li class="protected"><a href="#__xml">$__xml</a></li>
+	   	 		<li class="protected"><a href="#__xpath">$__xpath</a></li>
+	   </ul>
+</div>
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  	  	  	  	  	  			<li><a href="#encode">encode()</a></li>
+	  	  	  	  	  	  	  	  	  	  			<li><a href="#sendHeader">sendHeader()</a></li>
+	  	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li class="protected"><a href="#__isset">__isset()</a></li>
+	  			<li class="protected"><a href="#__set">__set()</a></li>
+	  			<li class="protected"><a href="#__sleep">__sleep()</a></li>
+	  			<li><a href="#__toString">__toString()</a></li>
+	  			<li class="protected"><a href="#__unset">__unset()</a></li>
+	  			<li class="protected"><a href="#__wakeup">__wakeup()</a></li>
+	  			<li><a href="#addCustomPrefix">addCustomPrefix()</a></li>
+	  	  			<li><a href="#getName">getName()</a></li>
+	  			<li><a href="#getNamespace">getNamespace()</a></li>
+	  			<li><a href="#getPrefix">getPrefix()</a></li>
+	  			<li><a href="#getText">getText()</a></li>
+	  			<li class="protected"><a href="#offsetExists">offsetExists()</a></li>
+	  			<li class="protected"><a href="#offsetGet">offsetGet()</a></li>
+	  			<li class="protected"><a href="#offsetSet">offsetSet()</a></li>
+	  			<li class="protected"><a href="#offsetUnset">offsetUnset()</a></li>
+	  			<li class="protected"><a href="#query">query()</a></li>
+	  	  			<li><a href="#toXML">toXML()</a></li>
+	  			<li><a href="#xpath">xpath()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fExpectedException">fExpectedException</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+	<span class="implements"> implements ArrayAccess </span>,	<span class="version">v1.0.0b8</span></div>
+<p class="short_description">Provides functionality for XML files</p>
+<div class="description"><p>This class is implemented to use the UTF-8 character encoding. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b8</th><td>Fixed a method signature <span class="date">8/24/11</span></td></tr><tr><th>1.0.0b7</th><td>Added a workaround for iconv having issues in MAMP 1.9.4+ <span class="date">7/26/11</span></td></tr><tr><th>1.0.0b6</th><td>Updated class to use <a href="fCore#startErrorCapture"><tt>fCore::startErrorCapture()</tt></a> instead of <tt>error_reporting()</tt> <span class="date">8/9/10</span></td></tr><tr><th>1.0.0b5</th><td>Added the <tt>$fix_entities_encoding</tt> parameter to <a href="#__construct"><tt>__construct()</tt></a> <span class="date">8/8/10</span></td></tr><tr><th>1.0.0b4</th><td>Updated the class to automatically add a <tt>__</tt> prefix for the default namespace and to use that for attribute and child element access <span class="date">4/6/10</span></td></tr><tr><th>1.0.0b3</th><td>Added the <tt>$http_timeout</tt> parameter to <a href="#__construct"><tt>__construct()</tt></a> <span class="date">9/16/09</span></td></tr><tr><th>1.0.0b2</th><td>Added instance functionality for reading of XML files <span class="date">9/1/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">1/13/08</span></td></tr></table></div>
+<div class="class_variables" id="class_vars">
+<h2>Variables</h2>
+	<!-- start protected variable -->
+	<h3 id="__custom_prefixes" class="protected variable"><span class="resolution">-></span><span class="name">__custom_prefixes</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>Custom prefix =&gt; namespace URI mappings</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="__dom" class="protected variable"><span class="resolution">-></span><span class="name">__dom</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The dom element for this XML</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">DOMElement</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="__xml" class="protected variable"><span class="resolution">-></span><span class="name">__xml</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The XML string for serialization</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">string</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="__xpath" class="protected variable"><span class="resolution">-></span><span class="name">__xpath</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>An XPath object for performing xpath lookups</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">DOMXPath</p>
+	</div>
+	<!-- end variable -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="encode" class="method static"><span class="resolution">::</span><span class="name">encode()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Encodes content for display in a UTF-8 encoded XML document</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">encode</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$content</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$content</td>
+				<td class="param_description">The content to encode</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The encoded content
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="sendHeader" class="method static"><span class="resolution">::</span><span class="name">sendHeader()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the proper <tt>Content-Type</tt> HTTP header for a UTF-8 XML file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">sendHeader</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+						<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Create the XML object from a string, <a href="fFile">fFile</a> or URL</p>
+								<p>The <tt>$default_namespace</tt> will be used for any sort of methods calls,  member access or array access when the element or attribute name does  not include a <tt>:</tt>.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fXML">fXML</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fFile">fFile</a>|string</span> <span class="php-var">$source</span><span class="php-code">,</span> <span class="php-vartype">numeric</span> <span class="php-var">$http_timeout</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$fix_entities_encoding</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fXML">fXML</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fFile">fFile</a>|string</span> <span class="php-var">$source</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$fix_entities_encoding</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fFile">fFile</a>|string</td>
+				<td class="param_name">$source</td>
+				<td class="param_description">The source of the XML, either an <a href="fFile">fFile</a> object, a string of XML, a file path or a URL</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">numeric</td>
+				<td class="param_name">$http_timeout</td>
+				<td class="param_description">The timeout to use in seconds when requesting an XML file from a URL</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$fix_entities_encoding</td>
+				<td class="param_description">This will fix two common XML authoring errors and should only be used when experiencing decoding issues - HTML entities that haven't been encoded as XML, and XML content published in ISO-8859-1 or Windows-1252 encoding without an explicit encoding attribute</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the source XML is invalid or does not exist</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Allows access to the text content of a child tag</p>
+								<p>The child element name (<tt>$name</tt>) may start with a namespace prefix and a  <tt>:</tt> to indicate what namespace it is part of. A blank namespace prefix  (i.e. an element name starting with <tt>:</tt>) is treated as the XML default  namespace.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fXML">fXML</a>|NULL</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$name</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The child element to retrieve</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The child element requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__isset" class="protected method"><span class="resolution">-></span><span class="name">__isset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>The child element name (<tt>$name</tt>) may start with a namespace prefix and a  <tt>:</tt> to indicate what namespace it is part of. A blank namespace prefix  (i.e. an element name starting with <tt>:</tt>) is treated as the XML default  namespace.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">__isset</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$name</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The child element to check - see method description for details about namespaces</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the child element is set
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__set" class="protected method"><span class="resolution">-></span><span class="name">__set()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Prevents users from trying to set elements</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__set</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The element to set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to set</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__sleep" class="protected method"><span class="resolution">-></span><span class="name">__sleep()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>The XML needs to be made into a string before being serialized</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">__sleep</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The members to serialize
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="__toString" class="method"><span class="resolution">-></span><span class="name">__toString()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the string inside the root XML element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">__toString</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The text inside the root element
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__unset" class="protected method"><span class="resolution">-></span><span class="name">__unset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Prevents users from trying to unset elements</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__unset</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$name</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The element to unset</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__wakeup" class="protected method"><span class="resolution">-></span><span class="name">__wakeup()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>The XML needs to be made into a DOMElement when woken up</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__wakeup</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addCustomPrefix" class="method"><span class="resolution">-></span><span class="name">addCustomPrefix()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a custom namespace prefix to full namespace mapping</p>
+								<p>This namespace prefix will be valid for any operation on this object,  including calls to <a href="#xpath"><tt>xpath()</tt></a>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addCustomPrefix</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$ns_prefix</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$namespace</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$ns_prefix</td>
+				<td class="param_description">The custom namespace prefix</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$namespace</td>
+				<td class="param_description">The full namespace it maps to</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getName" class="method"><span class="resolution">-></span><span class="name">getName()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the name of the current element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getName</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The name of the current element
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getNamespace" class="method"><span class="resolution">-></span><span class="name">getNamespace()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the namespace of the current element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getNamespace</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The namespace of the current element
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getPrefix" class="method"><span class="resolution">-></span><span class="name">getPrefix()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the namespace prefix of the current element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getPrefix</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The namespace prefix of the current element
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getText" class="method"><span class="resolution">-></span><span class="name">getText()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the string text of the current element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getText</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The string text of the current element
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="offsetExists" class="protected method"><span class="resolution">-></span><span class="name">offsetExists()</span> <span class="visibility">internal public</span><span class="implements"> implements ArrayAccess</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Provides functionality for isset() and empty() (required by arrayaccess interface)</p>
+								<p>Offsets refers to an attribute name. Attribute may start with a namespace  prefix and a <tt>:</tt> to indicate what namespace the attribute is part of. A  blank namespace prefix (i.e. an offset starting with <tt>:</tt>) is treated as  the XML default namespace.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">offsetExists</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$offset</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$offset</td>
+				<td class="param_description">The offset to check</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the offset exists
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="offsetGet" class="protected method"><span class="resolution">-></span><span class="name">offsetGet()</span> <span class="visibility">internal public</span><span class="implements"> implements ArrayAccess</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Provides functionality for get [index] syntax (required by ArrayAccess interface)</p>
+								<p>Offsets refers to an attribute name. Attribute may start with a namespace  prefix and a <tt>:</tt> to indicate what namespace the attribute is part of. A  blank namespace prefix (i.e. an offset starting with <tt>:</tt>) is treated as  the XML default namespace.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">offsetGet</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$offset</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$offset</td>
+				<td class="param_description">The attribute to retrieve the value for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The value of the offset
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="offsetSet" class="protected method"><span class="resolution">-></span><span class="name">offsetSet()</span> <span class="visibility">internal public</span><span class="implements"> implements ArrayAccess</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Required by ArrayAccess interface</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">offsetSet</span><span class="php-brackets">(</span> <span class="php-vartype">integer|string</span> <span class="php-var">$offset</span><span class="php-code">,</span> <span class="php-vartype"></span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer|string</td>
+				<td class="param_name">$offset</td>
+				<td class="param_description">The offset to set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"></td>
+				<td class="param_name">$value</td>
+				<td class="param_description"></td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="offsetUnset" class="protected method"><span class="resolution">-></span><span class="name">offsetUnset()</span> <span class="visibility">internal public</span><span class="implements"> implements ArrayAccess</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Required by ArrayAccess interface</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">offsetUnset</span><span class="php-brackets">(</span> <span class="php-vartype">integer|string</span> <span class="php-var">$offset</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer|string</td>
+				<td class="param_name">$offset</td>
+				<td class="param_description">The offset to unset</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="query" class="protected method"><span class="resolution">-></span><span class="name">query()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Performs an XPath query on the current element, returning the raw results</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">query</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$path</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$path</td>
+				<td class="param_description">The XPath path to query</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The matching elements
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="toXML" class="method"><span class="resolution">-></span><span class="name">toXML()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns a well-formed XML string from the current element</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">toXML</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The XML
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="xpath" class="method"><span class="resolution">-></span><span class="name">xpath()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Executes an XPath query on the current element, returning an array of matching elements</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array|string|<a href="fXML">fXML</a></span> <span class="php-identifier">xpath</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$path</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$first_only</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$path</td>
+				<td class="param_description">The XPath path to query</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$first_only</td>
+				<td class="param_description">If only the first match should be returned</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 An array of matching elements, or a string or <a href="fXML">fXML</a> object if <tt>$first_only</tt> is <tt>TRUE</tt>
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

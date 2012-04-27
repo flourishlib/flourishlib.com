@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fBuffer – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fBuffer">fBuffer</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fBuffer">Class Documentation</a></strong></li>
+<li><a href="/api/fBuffer">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fBuffer.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#StartingandStopping">Starting and Stopping</a></li>
+<li><a href="#GettingErasingandReplacing">Getting, Erasing and Replacing</a></li>
+<li><a href="#Capturing">Capturing</a></li>
+</ul>
+</div>
+
+<p>
+The fBuffer class is a fairly straight-forward static class designed to make the <a href="http://php.net/outcontrol">output buffer</a> functions in PHP a little more user-friendly. Only a single level of buffering is supported, however it has been supplemented with buffer capture support and replace functionality.
+</p>
+
+<p>
+Output buffering is essential if you wish to change the headers a page sends after some of the output has been sent, and is also utilized by the <a href="/docs/fTemplating">fTemplating</a> class for fully buffered output that allows changing values until right before the buffer is sent to the user.
+</p>
+
+<h2 id="StartingandStopping">Starting and Stopping</h2>
+
+<p>
+Normally when using the output buffer function you call <a href="http://php.net/ob_start"><code>ob_start()</code></a> to start output buffering and one of the <code>ob_end_*()</code> methods to stop buffering. The fBuffer class instead uses the <a href="/api/fBuffer#start"><code>start()</code></a> and <a href="/api/fBuffer#stop"><code>stop()</code></a> methods. Here is an example:
+</p>
+<pre class="block php"><code>fBuffer::start();
+// Execute code that produces output
+// Send a header
+// Execute more code that creates output
+fBuffer::stop();</code></pre>
+
+<p>
+ Gzip compression of the output buffer can be turned (if the <a href="http://php.net/zlib">zlib extension</a> is installed) by passing <code>TRUE</code> to <code>start()</code>.
+</p>
+<pre class="block php"><code>// Start the output buffer with gzip compression
+fBuffer::start(TRUE);</code></pre>
+
+<p>
+ You can check to see if buffering has been started by calling <a href="/api/fBuffer#isStarted"><code>isStarted()</code></a>:
+</p>
+<pre class="block php"><code>if (!fBuffer::isStarted()) {
+    fBuffer::start();
+}</code></pre>
+
+<h2 id="GettingErasingandReplacing">Getting, Erasing and Replacing</h2>
+
+<p>
+To get the current contents of the output buffer, simply call <a href="/api/fBuffer#get"><code>get()</code></a>:
+</p>
+<pre class="block php"><code>$current_buffer = fBuffer::get();</code></pre>
+
+<p>
+ If you wish to get rid of the buffered contents, call <a href="/api/fBuffer#erase"><code>erase()</code></a>:
+</p>
+<pre class="block php"><code>// Get rid of the current buffer contents
+fBuffer::erase();</code></pre>
+
+<p>
+ Also sometimes useful is the ability to replace a given string in the buffer with another. In this situation you can use the <a href="/api/fBuffer#replace"><code>replace()</code></a> method:
+</p>
+<pre class="block php"><code>// Output stuff
+
+// This would replace every instance of 'foo' with 'bar'
+fBuffer::replace('foo', 'bar');</code></pre>
+
+<h2 id="Capturing">Capturing</h2>
+
+<p>
+Some of the built-in PHP functions (and other third party code) will only output content, as opposed to returning it for further processing. The fBuffer class provides two methods, <a href="/api/fBuffer#startCapture"><code>startCapture()</code></a> and <a href="/api/fBuffer#stopCapture"><code>stopCapture()</code></a>, that make it easy to intercept such output.
+</p>
+<pre class="block php"><code>// Begin capturing, everything passed to print or echo after here will be captured
+fBuffer::startCapture();
+
+// Execute code to output content
+// ...
+
+// Grab the captured output
+$captured_content = fBuffer::stopCapture();</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

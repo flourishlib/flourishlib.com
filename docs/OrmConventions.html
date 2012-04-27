@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>OrmConventions – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="ORMConventions">ORM Conventions</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#PrimaryKeys">Primary Keys</a></li>
+<li><a href="#DatabaseTableColumnNotation">Database Table &amp; Column Notation</a></li>
+<li><a href="#MethodNotation">Method Notation</a></li>
+<li><a href="#HTMLFormNotation">HTML Form Notation</a></li>
+<li><a href="#TableNames">Table Names</a></li>
+<li><a href="#JoiningTables">Joining Tables</a></li>
+<li><a href="#RelationshipRoutes">Relationship Routes</a></li>
+<li><a href="#SchemasOracleDB2Users">Schemas (Oracle/DB2 Users)</a></li>
+<li><a href="#MultipleDatabases">Multiple Databases</a></li>
+<li><a href="#MySQLStorageEngine">MySQL Storage Engine</a></li>
+<li><a href="#SQLiteForeignKeyConstraints">SQLite Foreign Key Constraints</a></li>
+</ul>
+</div>
+
+<p>
+The Flourish ORM uses a few different conventions to prevent needless configuration and to reduce typing. Most of the conventions have to do with the database schema and various notations.
+</p>
+
+<h2 id="PrimaryKeys">Primary Keys</h2>
+
+<p>
+The whole ORM is built in such a way that all tables you are using with it should have primary keys. Without primary keys, things may start acting weird or breaking. If you don't have primary keys for your tables, consider adding them, they're generally considered a best practice.
+</p>
+
+<h2 id="DatabaseTableColumnNotation">Database Table &amp; Column Notation</h2>
+
+<p>
+The Flourish ORM assumes that all database table and column names are written in <code>underscore_notation</code>. Below is an example of a correctly implemented database table:
+</p>
+<pre class="block sql"><code>CREATE TABLE users (
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+);</code></pre>
+
+<p>
+ <strong>This database table would not be properly detected:</strong>
+</p>
+<pre class="block sql"><code>CREATE TABLE Users (
+    FirstName VARCHAR(255) NOT NULL,
+    LastName VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    Password VARCHAR(100) NOT NULL
+);</code></pre>
+
+<p>
+ With correct <code>underscore_notation</code>, numbers should be separated from words by an underscore, such as <code>address_2</code>. If a number is not separated by an underscore, or you are having other notation conversion issues, you man need to <a href="/docs/fGrammar#FixingNotationConversionIssues">customize the notation
+conversion</a> using <a href="/docs/fGrammar">fGrammar</a>.
+</p>
+
+<h2 id="MethodNotation">Method Notation</h2>
+
+<p>
+Methods for <a href="/docs/fActiveRecord">fActiveRecord</a> objects use <code>lowerCamelCase</code>, like the rest of the methods in Flourish. When dealing with database columns, every method will be in the form <code>verbColumnName()</code>. Below are some example of working with the <code>users</code> table defined in <a href="#SchemaNotation">Schema Notation</a>:
+</p>
+<pre class="block php"><code>$user-&gt;getFirstName();
+$user-&gt;setLastName($last_name);</code></pre>
+
+<h2 id="HTMLFormNotation">HTML Form Notation</h2>
+
+<p>
+HTML forms use <code>underscore_notation</code> just as the database schema should. The method <a href="/api/fActiveRecord#populate">fActiveRecord::populate()</a> will looks for input names in <code>underscore_notation</code> when populating an object. Below is an example of a valid HTML form that will work with the <code>users</code> table defined in <a href="#SchemaNotation">Schema Notation</a>:
+</p>
+<pre class="block html"><code>&lt;form action=&quot;&quot; method=&quot;post&quot; charset=&quot;utf-8&quot;&gt;
+    &lt;p&gt;
+        &lt;label for=&quot;users-first_name&quot;&gt;First Name:&lt;/label&gt;
+        &lt;input id=&quot;users-first_name&quot; type=&quot;text&quot; name=&quot;first_name&quot; /&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;label for=&quot;users-last_name&quot;&gt;Last Name:&lt;/label&gt;
+        &lt;input id=&quot;users-last_name&quot; type=&quot;text&quot; name=&quot;last_name&quot; /&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;label for=&quot;users-email&quot;&gt;Email:&lt;/label&gt;
+        &lt;input id=&quot;users-email&quot; type=&quot;text&quot; name=&quot;email&quot; /&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;label for=&quot;users-password&quot;&gt;Password:&lt;/label&gt;
+        &lt;input id=&quot;users-password&quot; type=&quot;password&quot; name=&quot;password&quot; /&gt;
+    &lt;/p&gt;
+&lt;/form&gt;</code></pre>
+
+<h2 id="TableNames">Table Names</h2>
+
+<p>
+Database table names should always be <em>plural</em> nouns. A proper database table name would be <code>users</code>, not <code>user</code>.
+</p>
+
+<p>
+For existing databases, it is possible to configure a class to model a non- plural table name, or a name that is different than the class. The static method <a href="/api/fORM#mapClassToTable">fORM::mapClassToTable()</a> accepts a <code>$class</code> and <code>$table</code> and will override the default mapping. The <a href="/docs/fActiveRecord">fActiveRecord</a> page includes an <a href="/docs/fActiveRecord#CustomClasstoTableMapping">example of custom mapping</a>.
+</p>
+
+<h2 id="JoiningTables">Joining Tables</h2>
+
+<p>
+When two tables are related in a many-to-many relationship the proper way to model the relationship is to use a table consisting of the primary keys from each of the two tables. Flourish uses the term <strong>joining table</strong> to refer to these.
+</p>
+
+<p>
+Currently Flourish only works with single column <code>FOREIGN KEY</code> constraints, thus these simple tables consist of exactly two columns, each of which have a <code>FOREIGN KEY</code> constraint. The <code>PRIMARY KEY</code> of the joining table a multi-column key containing both <code>FOREIGN KEY</code> columns.
+</p>
+
+<h2 id="RelationshipRoutes">Relationship Routes</h2>
+
+<p>
+When two database tables are in more than one relationship via <code>FOREIGN KEY</code> constraints, the Flourish ORM uses the term <strong>route</strong> to refer to the different ways in which the two tables are related. If two tables only have a single relationship, routes will never need to be specified. Otherwise routes will, and the following rules are used to determine the route name.
+</p>
+
+<ul>
+<li>Many-to-many relationships use the joining table name for the route name</li>
+<li>One-to-many relationships use the column in the related table that has the <code>FOREIGN KEY</code> constraint</li>
+<li>One-to-one and many-to-one relationships use the column that has the <code>FOREIGN KEY</code> constraint</li>
+</ul>
+
+<h2 id="SchemasOracleDB2Users">Schemas (Oracle/DB2 Users)</h2>
+
+<p>
+PostgreSQL, MSSQL, Oracle and DB2 all have the concept of schemas, although in Oracle and DB2 a schema is simply a specific user's set of database objects. Schemas are used for grouping tables, views, functions and other database objects.
+</p>
+
+<p>
+With the Flourish ORM (and in raw SQL) a table in the non-default schema (<code>public</code> for PostgreSQL, <code>dbo</code> for MSSQL and the username for Oracle) is represented by <code>schema.table</code>. Anywhere that a table name can be used in the ORM, a <code>schema.table</code> string can also be used. This includes methods such as <a href="/api/fORM#mapClassToTable">fORM::mapClassToTable()</a>, for mapping a class to a table with a different name or in a different schema, and <a href="/api/fRecordSet#build">fRecordSet::build()</a>, when specifying a related table in the <code>$where_conditions</code>.
+</p>
+
+<h2 id="MultipleDatabases">Multiple Databases</h2>
+
+<p>
+The Flourish ORM supports using multiple databases, both for vertical partition and master-slave setups. Please see the <a href="/docs/fORMDatabase">fORMDatabase
+documentation</a> for more information.
+</p>
+
+<h2 id="MySQLStorageEngine">MySQL Storage Engine</h2>
+
+<p>
+The Flourish ORM is built on top of the principles of relational database systems including <a href="http://en.wikipedia.org/wiki/Database_transaction">transactions</a> and <a href="http://en.wikipedia.org/wiki/Foreign_key">foreign key</a> constraints. MySQL is built in such a way that <a href="http://dev.mysql.com/doc/refman/5.0/en/storage-engines.html">multiple storage
+engines</a> are supported to do the work of actually storing data. Choosing the right storage engine for MySQL is essential for getting the Flourish ORM to work to the best of its abilities.
+</p>
+
+<p>
+Unfortunately not all of the MySQL storage engines support the necessary features such as transactions and foreign key constraints. In fact the default storage engine, MyISAM, does not support either of these features as of MySQL
+</p>
+
+<ol>
+<li>0. The InnoDB storage engine, which is shipped with MySQL by default, does</li>
+</ol>
+
+<p>
+however support the necessary features. Because of these feature limitations, developers should be sure to specify the InnoDB storage engine when creating tables to be used with the Flourish ORM.
+</p>
+
+<p>
+Below is an example of creating an InnoDB database table in MySQL, note specifically the <code>ENGINE</code> parameter after the closing <code>)</code> of the table definition.
+</p>
+<pre class="block sql"><code>CREATE TABLE users (
+    customer_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+) ENGINE=InnoDB;</code></pre>
+
+<p>
+ If the InnoDB engine is not used for tables, foreign key constraints will not be created and Flourish will be unable to automatically detect the relationships between tables. In addition, any operations on multiple records will not be atomic since transactions are not supported. Thus the first record could be successfully changed, but if the second one fails, the first will not be rolled back.
+</p>
+
+<h2 id="SQLiteForeignKeyConstraints">SQLite Foreign Key Constraints</h2>
+
+<p>
+SQLite databases supports the syntax for foreign key constraints, however does not enforce them as of version 3.6.4. In order to enforce the foreign key constraints, triggers must be used instead.
+</p>
+
+<p>
+A slightly old, but still relevant, <a href="http://www.sqlite.org/cvstrac/wiki?p=ForeignKeyTriggers">wiki page on the SQLite
+site</a> explains how triggers can be used to enforce foreign keys. There are a couple of tools mentioned that can automatically generate the appropriate triggers.
+</p>
+
+<p>
+In addition, the <a href="/api/fDatabase#translatedQuery">fDatabase::translatedQuery()</a> method will automatically create appropriate triggers for <code>CREATE TABLE</code> statements executed through an instance of the <a href="/docs/fDatabase">fDatabase</a> class. If a <code>CREATE TABLE</code> statement is executed that includes a <code>FOREIGN KEY</code> constraint, the clauses will be automatically parsed for the relevant restrictions and the triggers will be created. Both <code>ON UPDATE</code> and <code>ON DELETE</code> clauses plus the actions <code>RESTRICT</code>, <code>NO ACTION</code>, <code>CASCADE</code> and <code>SET NULL</code> are supported:
+</p>
+<pre class="block php"><code>// The following will create a users table that actually
+// enforces the group_id foreign key constraint
+$db-&gt;translatedQuery(&quot;
+CREATE TABLE users (
+    customer_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    group_id INTEGER REFERENCES groups(group_id) ON DELETE RESTRICT
+)
+&quot;);</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

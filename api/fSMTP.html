@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fSMTP – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fSMTP</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fSMTP">Class Documentation</a></li>
+		<li><strong><a href="/api/fSMTP">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fSMTP.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li><a href="#__destruct">__destruct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li><a href="#authenticate">authenticate()</a></li>
+	  			<li><a href="#close">close()</a></li>
+	  			<li><a href="#enableDebugging">enableDebugging()</a></li>
+	  			<li class="protected"><a href="#send">send()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fConnectivityException">fConnectivityException</a></li>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fCryptography">fCryptography</a></li>
+		<li><a href="fEmail">fEmail</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fUnexpectedException">fUnexpectedException</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b11</span></div>
+<p class="short_description">Creates a connection to an SMTP server to be used by <a href="fEmail">fEmail</a></p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b11</th><td>Enhanced the error checking for write() <span class="date">6/3/11</span></td></tr><tr><th>1.0.0b10</th><td>Added code to work around PHP bug #42682 (<a class="ext-link" href="http://bugs.php.net/bug.php?id=42682)"><span class="icon">http://bugs.php.net/bug.php?id=42682)</span></a> where <tt>stream_select()</tt> doesn't work on 64bit machines from PHP 5.2.0 to 5.2.5, improved timeouts while reading data <span class="date">1/10/11</span></td></tr><tr><th>1.0.0b9</th><td>Fixed a bug where lines starting with <tt>.</tt> and containing other content would have the <tt>.</tt> stripped <span class="date">9/11/10</span></td></tr><tr><th>1.0.0b8</th><td>Updated the class to use <a href="fEmail#getFQDN"><tt>fEmail::getFQDN()</tt></a> <span class="date">9/7/10</span></td></tr><tr><th>1.0.0b7</th><td>Updated class to use new <a href="fCore#startErrorCapture"><tt>fCore::startErrorCapture()</tt></a> functionality <span class="date">8/9/10</span></td></tr><tr><th>1.0.0b6</th><td>Updated the class to use new <a href="fCore">fCore</a> functionality <span class="date">7/5/10</span></td></tr><tr><th>1.0.0b5</th><td>Hacked around a bug in PHP 5.3 on Windows <span class="date">6/22/10</span></td></tr><tr><th>1.0.0b4</th><td>Updated the class to not connect and authenticate until a message is sent, moved message id generation in <a href="fEmail">fEmail</a> <span class="date">5/5/10</span></td></tr><tr><th>1.0.0b3</th><td>Fixed a bug with connecting to servers that send an initial response of <tt>220-</tt> and instead of <tt>220 </tt> <span class="date">4/26/10</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug where <tt>STARTTLS</tt> would not be triggered if it was last in the SMTP server's list of supported extensions <span class="date">4/20/10</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">4/20/10</span></td></tr></table></div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Configures the SMTP connection</p>
+								<p>The SMTP connection is only made once authentication is attempted or  an email is sent.</p><p>Please note that this class will upgrade the connection to TLS via the  SMTP <tt>STARTTLS</tt> command if possible, even if a secure connection was not  requested. This helps to keep authentication information secure.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fSMTP">fSMTP</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$host</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$port</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$secure</span><span class="php-code">=</span>FALSE<span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$timeout</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$host</td>
+				<td class="param_description">The hostname or IP address to connect to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$port</td>
+				<td class="param_description">The port number to use</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$secure</td>
+				<td class="param_description">If the connection should be secure - if <tt>STARTTLS</tt> is available, the connection will be upgraded even if this is <tt>FALSE</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$timeout</td>
+				<td class="param_description">The timeout for the connection - defaults to the <tt>default_socket_timeout</tt> ini setting</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="__destruct" class="method"><span class="resolution">-></span><span class="name">__destruct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Closes the connection to the SMTP server</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__destruct</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="authenticate" class="method"><span class="resolution">-></span><span class="name">authenticate()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Authenticates with the SMTP server</p>
+								<p>This method supports the digest-md5, cram-md5, login and plain  SMTP authentication methods. This method will try to use the more secure  digest-md5 and cram-md5 methods first since they do not send information  in the clear.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">authenticate</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$username</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$password</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$username</td>
+				<td class="param_description">The username</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$password</td>
+				<td class="param_description">The password</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the <tt>$username</tt> and <tt>$password</tt> are not accepted</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="close" class="method"><span class="resolution">-></span><span class="name">close()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Closes the connection to the SMTP server</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">close</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="enableDebugging" class="method"><span class="resolution">-></span><span class="name">enableDebugging()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets if debug messages should be shown</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableDebugging</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$flag</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$flag</td>
+				<td class="param_description">If debugging messages should be shown</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+						<!-- start protected method -->
+			<h3 id="send" class="protected method"><span class="resolution">-></span><span class="name">send()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sends a message via the SMTP server</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">send</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$from</span> [<span class="php-code">, ... </span>]<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$headers</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$body</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$from</td>
+				<td class="param_description">The email address being sent from - this will be used as the <tt>Return-Path</tt> header</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$to</td>
+				<td class="param_description">All of the To, Cc and Bcc email addresses to send the message to - this does not affect the message headers in any way</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$headers</td>
+				<td class="param_description">The message headers - the Bcc header will be removed if present</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$body</td>
+				<td class="param_description">The mail body</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the message is too large for the server</dd></dl>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

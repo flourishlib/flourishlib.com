@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fRecordSet – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fRecordSet">fRecordSet</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fRecordSet">Class Documentation</a></strong></li>
+<li><a href="/api/fRecordSet">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fRecordSet.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Creation">Creation</a>
+<ul>
+<li><a href="#FromConditions">From Conditions</a>
+<ul>
+<li><a href="#ColumnSpecifications">Column Specifications</a></li>
+<li><a href="#Operators">Operators</a></li>
+<li><a href="#ORConditions">OR Conditions</a></li>
+<li><a href="#AggregateFunctions">Aggregate Functions</a></li>
+<li><a href="#ComparingColumns">Comparing Columns</a></li>
+<li><a href="#Ordering">Ordering</a></li>
+</ul>
+</li>
+<li><a href="#FromRecords">From Records</a>
+<ul>
+<li><a href="#Pagination">Pagination</a></li>
+<li><a href="#DifferentRecordClasses">Different Record Classes</a></li>
+</ul>
+</li>
+<li><a href="#FromSQL">From SQL</a>
+<ul>
+<li><a href="#LimitClausesPagination">Limit Clauses/Pagination</a></li>
+<li><a href="#EscapingValuesintoSQL">Escaping Values into SQL</a></li>
+</ul>
+</li>
+<li><a href="#FromCallandMap">From Call and Map</a></li>
+<li><a href="#FromRelatedRecords">From Related Records</a></li>
+</ul>
+</li>
+<li><a href="#RecordAccess">Record Access</a>
+<ul>
+<li><a href="#Iteration">Iteration</a></li>
+<li><a href="#IndividualRecords">Individual Records</a></li>
+<li><a href="#AllRecords">All Records</a></li>
+</ul>
+</li>
+<li><a href="#MetadataAccess">Metadata Access</a>
+<ul>
+<li><a href="#Size">Size</a></li>
+<li><a href="#Limit">Limit</a></li>
+<li><a href="#PagePages">Page/Pages</a></li>
+<li><a href="#PrimaryKeys">Primary Keys</a></li>
+<li><a href="#ClassNames">Class Names</a></li>
+</ul>
+</li>
+<li><a href="#Manipulation">Manipulation</a>
+<ul>
+<li><a href="#MapReduceFilterandCall">Map, Reduce, Filter and Call</a>
+<ul>
+<li><a href="#Map">Map</a></li>
+<li><a href="#Reduce">Reduce</a></li>
+<li><a href="#Filter">Filter</a></li>
+<li><a href="#Call">Call</a></li>
+</ul>
+</li>
+<li><a href="#PreloadingRelatedRecords">Preloading Related Records</a></li>
+<li><a href="#SliceMergeDiffIntersectUniqueandContainsOperations">Slice, Merge, Diff, Intersect, Unique and Contains Operations</a>
+<ul>
+<li><a href="#slice">slice()</a></li>
+<li><a href="#merge">merge()</a></li>
+<li><a href="#diff">diff()</a></li>
+<li><a href="#intersect">intersect()</a></li>
+<li><a href="#unique">unique()</a></li>
+</ul>
+</li>
+<li><a href="#ChunkandSplitOperations">Chunk and Split Operations</a>
+<ul>
+<li><a href="#chunk">chunk()</a></li>
+<li><a href="#split">split()</a></li>
+</ul>
+</li>
+<li><a href="#CheckingforaRecord">Checking for a Record</a></li>
+<li><a href="#Sorting">Sorting</a></li>
+</ul>
+</li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><strong>fRecordSet</strong></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fRecordSet class provides functionality to load sets of <a href="/docs/fActiveRecord">fActiveRecord</a> objects from the database and manipulate them.
+</p>
+
+<p>
+Since the class contains quite a number of features and handles finding data even with complex database schemas, having an example database schema to reference is important. The following database tables will be used as the basis for the examples on this page:
+</p>
+<pre class="block sql"><code>CREATE TABLE groups (
+    name VARCHAR(100) PRIMARY KEY
+);
+ 
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(2) NOT NULL,
+    zip_code VARCHAR(10) NOT NULL,
+    date_created TIMESTAMP NOT NULL,
+    last_login TIMESTAMP NOT NULL,
+    status VARCHAR(20) NOT NULL CHECK(status IN ('Active', 'Inactive'))
+);
+ 
+CREATE TABLE users_groups (
+    group VARCHAR(100) NOT NULL REFERENCES groups(name) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    PRIMARY KEY (group, user_id)
+);
+ 
+CREATE TABLE favorites (
+    favorite_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    url VARCHAR(255) NOT NULL
+);
+ 
+CREATE TABLE resources (
+    resource_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    owner INTEGER NOT NULL REFERENCES users(user_id) ON DELETE RESTRICT
+);
+ 
+CREATE TABLE read_permissions (
+    resource_id INTEGER NOT NULL REFERENCES resources(resource_id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    PRIMARY KEY (resource_id, user_id)
+);
+</code></pre>
+
+<h2 id="Creation">Creation</h2>
+
+<p>
+Record sets can be created from simple condition arrays, SQL statements, or <a href="/docs/fActiveRecord#BuildingandCounting">from an fActiveRecord class</a>. Under the majority of circumstances, the shorthand condition array method provides for an efficient and expressive method to build a record set.
+</p>
+
+<h3 id="FromConditions">From Conditions</h3>
+
+<p>
+The static method <a href="/api/fRecordSet#build"><code>build()</code></a> accepts between one and five parameters to build a record set. The only required parameter is the first, <code>$class</code>, which specified the type of record to build. Passing on this parameter will cause <em>all</em> records of that type to be created in the set.
+</p>
+<pre class="block php"><code>$users = fRecordSet::build('User');</code></pre>
+
+<p>
+ The second parameter is the array of <code>$where_conditions</code>. This parameter accepts an array that contains columns and operaters as the key and the value(s) to match as the value. A simple example of matching all users with a status of <code>Active</code> is shown below:
+</p>
+<pre class="block php"><code>$active_users = fRecordSet::build(
+    'User',
+    array('status=' =&gt; 'Active')
+);</code></pre>
+
+<p>
+ Each <code>key =&gt; value</code> pair in the conditions array represents a single expression that will be joined by <code>AND</code> logic to create there <code>WHERE</code> clause. It is also possible, with slightly different syntax, to create simple <code>OR</code> conditions and use aggregate functions in the <code>HAVING</code> clause.
+</p>
+
+<h4 id="ColumnSpecifications">Column Specifications</h4>
+
+<p>
+The column name can be any column in the record being created, or can be columns in related records. The following example would select users in a group with the name <code>Administrators</code>:
+</p>
+<pre class="block php"><code>$administrators = fRecordSet::build(
+    'User',
+    array('groups.name=' =&gt; 'Administrators')
+);</code></pre>
+
+<p>
+ It is also possible to specify columns in a table that is twice-removed from the record being created. The following example would create the groups that contain users who have a favorite including <code>http://example.com</code>:
+</p>
+<pre class="block php"><code>$groups = fRecordSet::build(
+    'Group',
+    array('users=&gt;favorites.url=' =&gt; 'http://example.com')
+);</code></pre>
+
+<p>
+ When there is more than one relationship between two tables, the relationship route can be specified by putting it in <code>{}</code> after the table name. For example, the following SQL would select all users who are the owner of a resource called <code>money</code>:
+</p>
+<pre class="block php"><code>$owners = fRecordSet::build(
+    'User',
+    array('resources{owner}.name=' =&gt; 'money')
+);</code></pre>
+
+<h4 id="Operators">Operators</h4>
+
+<p>
+All of the examples in the column specification section above use a simple equation operator, <code>=</code>. The following is a list of all supported operators:
+</p>
+
+<ul>
+<li><code>=</code> - equal</li>
+<li><code>!</code> - not equal</li>
+<li><code>&lt;</code> - less than</li>
+<li><code>&lt;=</code> - less than or equal to</li>
+<li><code>&gt;</code> - greater than</li>
+<li><code>&gt;=</code> - greater than or equal to</li>
+<li><code>~</code> - <code>LIKE '%value%'</code> match</li>
+<li><code>!~</code> - <code>NOT LIKE '%value%'</code> match</li>
+<li><code>^~</code> - <code>LIKE 'value%'</code> match</li>
+<li><code>$~' - </code>LIKE '%value'<code> match
+
+All seven operators work with any single value, and will properly handle the SQL variations needed—such as </code>=<code> becoming </code>IS<code> for </code>NULL<code> values. Below are some examples:
+
+{{{
+#!php
+// All users with any name but John
+$users = fRecordSet::build('User', array('first_name!' =&gt; 'John'));
+
+// Any user created before 2008
+$users = fRecordSet::build('User', array('date_created&lt;' =&gt; '2008-01-01'));
+
+// Any resource that include blue in the name
+$resources = fRecordSet::build('Resource', array('name~' =&gt; 'blue'));
+</code></li>
+</ul>
+
+<p>
+The <code>=</code>, <code>!</code>, <code>~</code> and <code>!~</code> operators also support comparison with an array of values. The following example will find all users with the first name <code>James</code> or <code>John</code>:
+</p>
+<pre class="block php"><code>$users = fRecordSet::build(
+    'User',
+    array('first_name=' =&gt; array('James', 'John'))
+);</code></pre>
+
+<p>
+ This example will return all users with a name like <code>Joe</code> or <code>Fred</code>:
+</p>
+<pre class="block php"><code>$users = fRecordSet::build(
+    'User',
+    array('first_name~' =&gt; array('Joe', 'Fred'))
+);</code></pre>
+
+<p>
+ It is also possible to do <code>~</code> matching over multiple columns. If a single string value is set for such a condition, it will be parsed for individual words and quoted phrases. In addition, stop words (such as &quot;the&quot; and &quot;a&quot;) will be removed from the parsed words and punctuation will be stripped from the beginning and end of each word parsed.
+</p>
+
+<p>
+The following example would find any users that contained <code>john</code>, <code>smith</code> and <code>west peabody</code> in any combination of the <code>first_name</code>, <code>last_name</code>, <code>address</code> and <code>city</code> columns:
+</p>
+<pre class="block php"><code>$users = fRecordSet::build(
+    'User',
+    array('first_name|last_name|address|city~' =&gt; 'john &quot;west peabody&quot; smith.')
+);</code></pre>
+
+<p>
+ If another method of parsing search terms is required, it is also possible to specify the value of the conditions as an array of string to match. In this case no further parsing will be done.
+</p>
+
+<p>
+There are two other operators available that work with multiple values, the <code>&amp;~</code> (AND LIKE) and <code>&gt;&lt;</code> (intersection) operators.
+</p>
+
+<p>
+<code>&amp;~</code> accepts two or more <code>LIKE</code> patterns and requires that each values match <em>every</em> pattern. The example below would require that the persons email include both <code>example.com</code> and <code>john</code>:
+</p>
+<pre class="block php"><code>$users = fRecordSet::build(
+    'User',
+    array('email&amp;~' =&gt; array('example.com', 'john'))
+);</code></pre>
+
+<p>
+ The intersection operator works with ranges of values, so it is really only applicable to date/time and numeric fields. It requires two columns in the database table and two values to compare with. If the range of values in the two database columns in any way intersects the range between the two values specified, a match will be made.
+</p>
+
+<p>
+For example, if there is an events table in the database that has a start and end date, it is possible to find any single or multi-day events that will occur during the next week with the following code:
+</p>
+<pre class="block php"><code>$events = fRecordSet::build(
+    'Event',
+    array('start_date|end_date&gt;&lt;' =&gt; array(new fDate(), new fDate('+7 days')))
+);</code></pre>
+
+<h4 id="ORConditions">OR Conditions</h4>
+
+<p>
+While adding <code>key =&gt; value</code> pairs to the conditions array always joins the conditions using <code>AND</code> logic, it is possible to create simple <code>OR</code> conditions too. If the array key is two or more column specifications with operators, separated by <code>|</code>, and the value is an array of values equal in size to the number of column specifications, an <code>OR</code> condition will be created.
+</p>
+
+<p>
+The following example will return all users with the first name <code>John</code> or that were created after January 1st, 2008:
+</p>
+<pre class="block php"><code>$users = fRecordSet::build(
+    'User',
+    array('first_name=|date_created&gt;' =&gt; array('John', '2008-01-01'))
+);</code></pre>
+
+<p>
+ These <code>OR</code> conditions dont have any technical restrictions, however may become unwieldy to maintain if they are too complex. 
+</p>
+
+<h4 id="AggregateFunctions">Aggregate Functions</h4>
+
+<p>
+Aggregate functions are supported in place of single columns for all operators in the conditions array. Currently the aggregate functions <code>AVG()</code>, <code>COUNT()</code>, <code>MAX()</code>, <code>MIN()</code> and <code>SUM()</code> are supported. The following example will return all users who are part of two or more groups:
+</p>
+<pre class="block php"><code>$users = fRecordSet::build(
+    'User',
+    array('count(groups.name)&gt;=' =&gt; 2)
+);</code></pre>
+
+<p>
+ Conditions using aggregate functions will be automatically placed into the <code>HAVING</code> clause of the query that is executed.
+</p>
+
+<h4 id="ComparingColumns">Comparing Columns</h4>
+
+<p>
+In addition to being able to compare columns to values, it is also possible to compare two columns with each other. These comparisons use a slight modified version of the standard operators, where a <code>:</code> is appended.
+</p>
+
+<ul>
+<li><code>=:</code> - compare equality of two columns</li>
+<li><code>!:</code> - compare inequality of two columns</li>
+<li><code>&lt;:</code> - if the first column is less than the second</li>
+<li><code>&lt;=:</code> - if the first column is less than or equal to the second</li>
+<li><code>&gt;:</code> - if the first column is greater than the second</li>
+<li><code>&gt;=:</code> - if the first column is greater than or equal to the second</li>
+</ul>
+<pre class="block php"><code>// Find users who have only ever logged in when they created their account
+$users = fRecordSet::build(
+    'User',
+    array('date_created=:' =&gt; 'last_login')
+);</code></pre>
+
+<p>
+ It is also possible to use the column comparison operators with aggregate functions.
+</p>
+
+<h4 id="Ordering">Ordering</h4>
+
+<p>
+When building a record set from conditions, it is also possible to pass an array of <code>$order_bys</code> to specify the order in which the records are returned. The <code>$order_bys</code> parameter is an associative array of the column name, or expression, to order by as the key, and the direction to sort as the value.
+</p>
+
+<p>
+The following example sort the users by their status, in an ascending manner:
+</p>
+<pre class="block php"><code>$users = fRecordSet::build(
+    'User',
+    array('status=' =&gt; 'Active'),
+    array('status' =&gt; 'asc')
+);</code></pre>
+
+<p>
+ In addition to being able to sort by columns, it is also possible to sort by expressions, such as <code>CASE</code> statements, and by aggregate functions, such as <code>COUNT()</code>, on related tables. The following example sorts by the number of groups the user is part of in a descending manner:
+</p>
+<pre class="block php"><code>$users = fRecordSet::build(
+    'User',
+    array('status=' =&gt; 'Active'),
+    array('count(groups.name)' =&gt; 'desc')
+);</code></pre>
+
+<h3 id="FromRecords">From Records</h3>
+
+<p>
+In certain situations it may be necessary to create a record set from record objects that have already been loaded from the database. The method <a href="/api/fRecordSet#buildFromArray"><code>buildFromArray()</code></a> requires two parameters, the <code>$class</code> of record to create the set for and an array of <code>$records</code> to put in the set.
+</p>
+<pre class="block php"><code>$users = fRecordSet::buildFromArray('User', array($user1, $user2, $user3));</code></pre>
+
+<h4 id="Pagination">Pagination</h4>
+
+<p>
+It is possible to pass information for use with pagination as the <code>$total_records</code>, <code>$limit</code> and <code>$page</code> parameters. These values power the methods <a href="/api/fRecordSet#getLimit"><code>getLimit()</code></a>, <a href="/api/fRecordSet#getPage"><code>getPage()</code></a> and <a href="/api/fRecordSet#getPages"><code>getPages()</code></a>. <em>The actual pagination of the records should either be done before the array is passed, or via the <a href="/api/fRecordSet#slice"><code>slice()</code></a> method.</em>
+</p>
+<pre class="block php"><code>$users = fRecordSet::buildFromArray(
+    'User',
+    array($user1, $user2, $user3),
+    8, // $total_records
+    3, // $limit
+    1  // $page
+);</code></pre>
+
+<h4 id="DifferentRecordClasses">Different Record Classes</h4>
+
+<p>
+With <code>buildFromArray()</code> it <strong>is</strong> possible to create a record set from two or more different types of records. To create such a set, the <code>$class</code> parameter should be changed to an array containing each class name and the <code>$records</code> array should contain the different objects.
+</p>
+
+<p>
+Please note that creating a record set from more than one kind of record will disable certain manipulation methods, such as retrieving primary keys and preloading related data. The <a href="#Manipulation">section on manipulation</a> contains details about what methods and features are unavailable in such a circumstance.
+</p>
+<pre class="block php"><code>$calendar_objects = fRecordSet::buildFromArray(
+    array('Event', 'Meeting'),
+    array($event1, $meeting1, $event2, $event3)
+);</code></pre>
+
+<h3 id="FromSQL">From SQL</h3>
+
+<p>
+There are a number of limitations when using a conditions array to create a record set. Specific types of <code>JOIN</code> operations, <code>GROUP BY</code> clauses and <code>OR</code> conditions are impossible, or can not be tailored to the situation. In such instances, the <a href="/api/fRecordSet#buildFromSQL"><code>buildFromSQL()</code></a> method allows a raw <a href="/docs/FlourishSql">Flourish SQL</a> statement to be passed as the source for the records.
+</p>
+
+<p>
+The first parameter is the <code>$class</code> of records to create and the second is the <code>$sql</code> to retrieve the records' data.
+</p>
+<pre class="block php"><code>$users = fRecordSet::buildFromSQL(
+    'User',
+    &quot;SELECT users.* FROM users WHERE (first_name = 'John' AND last_name = 'Smith') OR date_created &lt; '2008-01-01'&quot;
+);</code></pre>
+
+<p>
+ The SQL statement passed to <code>buildFromSQL()</code> should select every column for the table for the record type specified. It will often also be desired to ensure that statements using <code>JOIN</code>s along many-to-many relationships have an appropriate <code>GROUP BY</code> clause to ensure that duplicate records are not returned.
+</p>
+
+<h4 id="LimitClausesPagination">Limit Clauses/Pagination</h4>
+
+<p>
+If a <code>LIMIT</code> clause is used in the SQL passed to <code>buildFromSQL()</code>, it is recommended to pass a third parameter, <code>$non_limited_count_sql</code>, containing a SQL query that will return the number of rows that would be returned if no <code>LIMIT</code> clause was present. This additional SQL statement powers the functionality of <code>-&gt;count(TRUE)</code>, which counts the number of records that would be returned with no <code>LIMIT</code> clause.
+</p>
+
+<p>
+In addition to the <code>$non_limited_count_sql</code>, the <code>$limit</code> and <code>$page</code> parameters should be passed to power the <a href="/api/fRecordSet#getLimit"><code>getLimit()</code></a>, <a href="/api/fRecordSet#getPage"><code>getPage()</code></a> and <a href="/api/fRecordSet#getPages"><code>getPages()</code></a> methods.
+</p>
+<pre class="block php"><code>$users = fRecordSet::buildFromSQL(
+    'User',
+    &quot;SELECT * FROM users LIMIT 5&quot;,
+    &quot;SELECT count(*) FROM users&quot;,
+    5, // $limit
+    1  // $page
+);</code></pre>
+
+<h4 id="EscapingValuesintoSQL">Escaping Values into SQL</h4>
+
+<p>
+When using <a href="/api/fRecordSet#buildFromSQL"><code>buildFromSQL()</code></a>, you will usually need to include one or more dynamic values. Instead of passing a SQL string to <code>$sql</code> or <code>$non_limited_count_sql</code>, an array may be passed that contains a SQL string plus any values to escape into it.
+</p>
+<pre class="block php"><code>$users = fRecordSet::buildFromSQL(
+    'User',
+    array(&quot;SELECT * FROM users WHERE date_created &gt; %d LIMIT %i&quot;, $start_date, 5),
+    array(&quot;SELECT count(*) FROM users WHERE date_created &gt; %d&quot;, $start_date),
+    5, // $limit
+    1  // $page
+);</code></pre>
+
+<h3 id="FromCallandMap">From Call and Map</h3>
+
+<p>
+Results from both <a href="#Call">call</a> and <a href="#Map">map</a> operations can be turned into record sets by the <a href="/api/fRecordSet#buildFromCall"><code>buildFromCall()</code></a> and <a href="/api/fRecordSet#buildFromMap"><code>buildFromMap()</code></a> methods. These methods take the exact same parameters as <a href="/api/fRecordSet#call"><code>call()</code></a> and <a href="/api/fRecordSet#map"><code>map()</code></a>, but take a resulting array of <a href="/docs/fActiveRecord">fActiveRecord</a> objects and turn them into an fRecordSet.
+</p>
+<pre class="block php"><code>// This creates a record set of the owners for a set of
+// resources by calling createUser() on each resource
+$owners = $resources-&gt;buildFromCall('createUser');
+
+// This uses a function to create a record
+function make_record($class, $primary_key)
+{
+    return new $class($primary_key);
+}
+$owners = $resources-&gt;buildFromMap('make_record', 'User', '{record}::getOwner');</code></pre>
+
+<h3 id="FromRelatedRecords">From Related Records</h3>
+
+<p>
+When two classes are related to each other through another table, building a record set from related records is often the easiest way to get what you are looking for. While is is possible to use <a href="/api/fRecordSet#buildFromCall"><code>buildFromCall()</code></a> with a <code>createRelatedRecord()</code> method from the <a href="/docs/fActiveRecord">fActiveRecord</a> class, there is a built-in dynamic <code>build</code> method that does all of this for you.
+</p>
+<pre class="block php"><code>// Creating owners manually
+$owners = $resources-&gt;buildFromCall('createUser');
+
+// Creating them from the dynamic build method
+$owners = $resources-&gt;buildUsers();</code></pre>
+
+<p>
+ The dynamic <code>build</code> methods also take advantage of the <a href="#PreloadingRelatedRecords">preloading</a> functionality to improve database performance.
+</p>
+
+<h2 id="RecordAccess">Record Access</h2>
+
+<p>
+There are a number of different ways that records can be retrieved from a record set.
+</p>
+
+<h3 id="Iteration">Iteration</h3>
+
+<p>
+One of the most basic operations for a record set is iteration. Just like an array, an fRecordSet can be used with a <code>foreach</code> loop to access each record sequentially.
+</p>
+<pre class="block php"><code>foreach ($records as $record) {
+    // Do something with the record
+}</code></pre>
+
+<h3 id="IndividualRecords">Individual Records</h3>
+
+<p>
+The method <a href="/api/fRecordSet#getRecord"><code>getRecord()</code></a> will return the record at the index specified. This is good for retrieving a single record out of the set, but will throw an <a href="/docs/fNoRemainingException">fNoRemainingException</a> if there is no record to fetch.
+</p>
+<pre class="block php"><code>$first_record = fRecordSet::build('User')-&gt;getRecord(0);</code></pre>
+
+<p>
+ It is also possible to use array-style referencing to accomplish the same result as <a href="/api/fRecordSet#getRecord"><code>getRecord()</code></a>.
+</p>
+<pre class="block php"><code>$first_record = $record_set[0];</code></pre>
+
+<h3 id="AllRecords">All Records</h3>
+
+<p>
+To retrieve an array of all records in the set, simply call the method <a href="/api/fRecordSet#getRecords"><code>getRecords()</code></a>.
+</p>
+<pre class="block php"><code>$records = $record_set-&gt;getRecords();</code></pre>
+
+<h2 id="MetadataAccess">Metadata Access</h2>
+
+<p>
+In addition to retrieving the record from a record set, other information about the set and records is available.
+</p>
+
+<h3 id="Size">Size</h3>
+
+<p>
+The size of a record set can often be important since it affect if code can be executed or not. The <a href="/api/fRecordSet#count"><code>count()</code></a> method gives a simple total containing the number of records in the set:
+</p>
+<pre class="block php"><code>if ($records-&gt;count()) {
+    echo 'Records were found!';
+}</code></pre>
+
+<p>
+ In the situation that a record set is actually a <code>LIMIT</code>ed number of records from the full query results, a single <code>TRUE</code> value can be passed to <a href="/api/fRecordSet#count"><code>count()</code></a> to retrieve the total number of records that exist.
+</p>
+<pre class="block php"><code>echo $records-&gt;count() . ' records displayed, ' . $records-&gt;count(TRUE) . ' records total';</code></pre>
+
+<p>
+ It is also possible to throw an exception if no records are contained in a set. The method <a href="/api/fRecordSet#tossIfEmpty"><code>tossIfEmpty()</code></a> will throw an <a href="/docs/fEmptySetException">fEmptySetException</a> if called on a record set with zero records. By default the exception will contain a message indicating that no matching records could be found. It is possible to set a custom message by passing it as the first parameter to <code>tossIfEmpty()</code>.
+</p>
+<pre class="block php"><code>// Throw a general exception message if no records were found
+try {
+    $records-&gt;tossIfEmpty()
+} catch (fEmptySetException $e) {
+    $e-&gt;printMessage();
+}
+
+// Throw a specific exception message
+try {
+    $records-&gt;tossIfEmpty('No active users could be found')
+} catch (fEmptySetException $e) {
+    $e-&gt;printMessage();
+}</code></pre>
+
+<h3 id="Limit">Limit</h3>
+
+<p>
+If a limit was specified when calling <a href="/api/fRecordSet#build"><code>build()</code></a>, it will be available from <a href="/api/fRecordSet#getLimit"><code>getLimit()</code></a>.
+</p>
+<pre class="block php"><code>$limit = $record_set-&gt;getLimit();</code></pre>
+
+<h3 id="PagePages">Page/Pages</h3>
+
+<p>
+If a limit was specified when calling <a href="/api/fRecordSet#build"><code>build()</code></a>, it will be available from <a href="/api/fRecordSet#getPage"><code>getPage()</code></a>.
+</p>
+<pre class="block php"><code>$page = $record_set-&gt;getPage();</code></pre>
+
+<p>
+ The number of pages will be available from <a href="/api/fRecordSet#getPages"><code>getPages()</code></a>.
+</p>
+<pre class="block php"><code>$total_pages = $record_set-&gt;getPages();</code></pre>
+
+<h3 id="PrimaryKeys">Primary Keys</h3>
+
+<p>
+If only the primary keys of the records are needed, the method <a href="/api/fRecordSet#getPrimaryKeys"><code>getPrimaryKeys()</code></a> does just that.
+</p>
+<pre class="block php"><code>$primary_keys = $record_set-&gt;getPrimaryKeys();</code></pre>
+
+<h3 id="ClassNames">Class Names</h3>
+
+<p>
+The method <a href="/api/fRecordSet#getClass"><code>getClass()</code></a> will return the class (or classes) of the record in the record set.
+</p>
+<pre class="block php"><code>if ($record_set-&gt;getClass() == 'Example') {
+    // ...
+}</code></pre>
+
+<h2 id="Manipulation">Manipulation</h2>
+
+<p>
+Once a record set has been created, it can be manipulated in a number of different ways to retrieve information. A number of array-like functions are built into the class, and there is support for the map, reduce and filter operations common in functional programming.
+</p>
+
+<h3 id="MapReduceFilterandCall">Map, Reduce, Filter and Call</h3>
+
+<p>
+The map, reduce and filter operations are declarative constructs that are common in functional programming. <a href="http://en.wikipedia.org/wiki/Map_(higher-order_function)">Map</a> applies a function or method to a set of records and returns the results. <a href="http://en.wikipedia.org/wiki/Filter_(higher-order_function)">Filter</a> applies a function/method to each record and uses the return value to determine if a record should be removed. <a href="http://en.wikipedia.org/wiki/Fold_(higher-order_function)">Reduce</a> uses a function/method to convert all records into a single value via an iterative process of passing two values to the function at a time. Call is a feature implemented on fRecordSet that is not normally included with map, reduce and filter. Call allows a method to be called on every object in the record set, returning all of the values as an array.
+</p>
+
+<h4 id="Map">Map</h4>
+
+<p>
+PHP include a built-in <a href="http://php.net/array_map"><code>array_map()</code></a> function that allows an array of values to be passed to a callback. This works great for callbacks that require only one parameter, however if two or more parameters are required then all parameters must be arrays of equal length. In practical terms, this requires heavy usage of <a href="http://php.net/array_fill"><code>array_fill()</code></a> and leads to code that is a pain to write and difficult to read.
+</p>
+
+<p>
+The <a href="/api/fRecordSet#map"><code>map()</code></a> method in fRecordSet provides some features to reduce the extra work. By default when calling <code>map()</code>, each record will be passed to the callback as the first parameter.
+</p>
+<pre class="block php"><code>function convert_records($record)
+{
+    return new ArrayObject($record);
+}
+
+$array_objects = $record_set-&gt;map('convert_records');</code></pre>
+
+<p>
+ If the callback takes more than one parameter, extra parameters can be passed to <code>map()</code>. Any parameter that is not an array will automatically be converted, so there is no need to calls to <code>array_fill()</code>. The example below would cause the <code>$upper</code> parameter to be set to <code>TRUE</code> for every record.
+</p>
+<pre class="block php"><code>function camel_case($record, $upper)
+{
+    return fGrammar::camelize($record-&gt;getName(), $upper);
+}
+
+$names = $record_set-&gt;map('camel_case', TRUE);</code></pre>
+
+<p>
+ Another important feature is that the output of a method call to each record can be passed to the callback by passing a string such as <code>'{record}::methodName'</code>. If this is the case, the record will not be automatically passed as the first parameter. The example below will cause the output of the <code>getFirstName()</code> method to be passed to <a href="/api/fUTF8#lower">fUTF8::lower()</a>:
+</p>
+<pre class="block php"><code>$names = $record_set-&gt;map('fUTF8::lower', '{record}::getFirstName');</code></pre>
+
+<p>
+ It is also possible to pass the complete record (as opposed to just the output of a method) in a position other than the first parameter by passing <code>'{record}'</code>.
+</p>
+<pre class="block php"><code>function camel_case($upper, $record)
+{
+    return fGrammar::camelize($record-&gt;getName(), $upper);
+}
+
+$names = $record_set-&gt;map('camel_case', TRUE, '{record}');</code></pre>
+
+<h4 id="Reduce">Reduce</h4>
+
+<p>
+The <a href="/api/fRecordSet#reduce"><code>reduce()</code></a> method accepts a callback that accepts two values and iteratively performs an operation on the result of the last operation plus the next record. It uses the same dynamics as the function <a href="http://php.net/array_reduce"><code>array_reduce()</code></a>, except that the initial value can be of any data type.
+</p>
+
+<p>
+The first call to the callback will pass <code>NULL</code> as the first parameter and the first record as the second parameter. All subsequent calls will pass the result of the last call as the first parameter and the next record as the second parameter.
+</p>
+<pre class="block php"><code>function add_products($tally, $next_record)
+{
+    return $tally + $next_record-&gt;getPrice();
+}
+$sum = $record_set-&gt;reduce('add_products');</code></pre>
+
+<p>
+ It is also possible to seed the operation with an initial value other than <code>NULL</code> by passing it as the second parameter to <code>reduce()</code>.
+</p>
+<pre class="block php"><code>function concat_names($string, $next_record)
+{
+    return $string . ' ' . $next_record-&gt;getName();
+}
+$names = $record_set-&gt;reduce('concat_names', 'Names:');</code></pre>
+
+<h4 id="Filter">Filter</h4>
+
+<p>
+The <a href="/api/fRecordSet#filter"><code>filter()</code></a> method allows for creating a new record set by removing records from the existing set by checking with a callback, testing the result of a method call on the record, or by comparing with a conditions array. It functions almost identically to <a href="http://php.net/array_filter"><code>array_filter()</code></a>, except for supporting other methods of checking beyond a simple callback.
+</p>
+
+<p>
+In the most basic form, a callback is passed and each record is passed one at a time to the callback. If the callback returns a value equal to <code>FALSE</code> the record will not be copied to the new record set. 
+</p>
+<pre class="block php"><code>function check_name($record)
+{
+    return (boolean) $record-&gt;getName();
+}
+$users_with_name = $record_set-&gt;filter('check_name');</code></pre>
+
+<p>
+ It is also possible to filter a record set based on the return value of a method. This is accomplished by passing a string in the form <code>'{record}::methodName'</code>. The example below will remove all users with no middle initial:
+</p>
+<pre class="block php"><code>$users = $record_set-&gt;filter('{record}::getMiddleInitial');</code></pre>
+
+<p>
+ As a final option, it is also possible to filter records based on whether or not they match all of the conditions in a conditions array. The conditions array should contain keys that are method names followed by a comparison operator and values to make the comparison with. Below is an example of checking to see if a users status is <code>'Active'</code>:
+</p>
+<pre class="block php"><code>$active_users = $record_set-&gt;filter(array('getStatus=' =&gt; 'Active'));</code></pre>
+
+<p>
+ The following operators are supported for values that are not arrays:
+</p>
+
+<ul>
+<li><code>=</code>: If the output of the method equals the value</li>
+<li><code>!</code>: If the output of the method does not equal the value</li>
+<li><code>&gt;</code>: If the output of the method is greater than the value</li>
+<li><code>&gt;=</code>: If the output of the method is greater than or equal to the value</li>
+<li><code>&lt;</code>: If the output of the method is less than the value</li>
+<li><code>&lt;=</code>: If the output of the method id less than or equal to the value</li>
+<li><code>~</code>: If the output of the method contains the value (case insensitive)</li>
+<li><code>!~</code>: If the output of the method does not contain the value (case insensitive)</li>
+</ul>
+
+<p>
+If the value is an array, the following operators are supported:
+</p>
+
+<ul>
+<li><code>=</code>: If the output of the method is contained in the array</li>
+<li><code>!</code>: If the output of the method is not contained in the array</li>
+<li><code>~</code>: If the output of the method contains one of the values in the array (case insensitive)</li>
+<li><code>!~</code>: If the output of the method contains none of the values in the array (case insensitive)</li>
+<li><code>&amp;~</code>: If the output of the method contains all of the values in the array (case insensitive)</li>
+</ul>
+
+<p>
+The following example will filter out any users who dont have the first name <code>John</code>, who dont have the last name <code>Smith</code> or <code>Henry</code> or who were created on or before January 1st, 2008.
+</p>
+<pre class="block php"><code>$users = $record_set-&gt;filter(
+    array(
+        'getFirstName='   =&gt; 'John',
+        'getLastName='    =&gt; array('Smith', 'Henry'),
+        'getDateCreated&gt;' =&gt; '2008-01-01'
+    )
+);</code></pre>
+
+<p>
+ It is also possible to do a search through the output of multiple method using the <code>~</code> operator. Method names should be separated by the <code>|</code> character.
+</p>
+
+<p>
+If the value is a string, it will be parsed as search terms, which allows for quoted phrases, will removed punctuation from words and will ignore stop words (such as &quot;the' and &quot;a&quot;). If the only words found are stop words, they will be included. If the value is an array, the strings in the array will be searched for.
+</p>
+
+<p>
+The following example will find all users who have the words and phrases <code>john</code>, <code>smith</code> and <code>west peabody</code> in the output of any combination of <code>getFirstName()</code>, <code>getLastName()</code>, <code>getAddress()</code> and <code>getCity()</code>:
+</p>
+<pre class="block php"><code>$users = $record_set-&gt;filter(
+    array('getFirstName|getLastName|getAddress|getCity~' =&gt; 'John Smith &quot;west peabody&quot;')
+);</code></pre>
+
+<p>
+ It is possible to perform an <code>OR</code> comparison using <code>|</code> separated list of method names with operators and the value to be an array of values, with one for each method. For example, the following code will check if <code>getFirstName()</code> returns <code>John</code> or <code>getEmailAddress()</code> contains <code>smith.com</code>:
+</p>
+<pre class="block php"><code>$users = $record_set-&gt;filter(
+    array('getFirstName=|getEmailAddress~' =&gt; array('John', 'smith.com'))
+);</code></pre>
+
+<p>
+ The last supported operator in the intersection operator <code>&gt;&lt;</code>. This operator checks to see if two columns that form a range intersect in any way with two values that form a range. This is most useful for dates, but can be used with numbers too.
+</p>
+
+<p>
+The following example checks to see if <code>getStartDate()</code> and <code>getEndDate()</code> form a date range that includes any days between January 1, 2010 and January 3, 2010:
+</p>
+<pre><code>$users = $record_set-&gt;filter(
+    array('getStartDate|getEndDate&gt;&lt;' =&gt; array(new fDate('2010-01-01'), new fDate('2010-01-03')))
+);</code></pre>
+
+<p>
+ The optional boolean second parameter, <code>$remember_original_count</code>, will save the number of records in the current record set as the non-limited count on the new set. See the section on <a href="#Size">Size</a> for details about how to retrieve this number.
+</p>
+<pre class="block php"><code>$users = $record_set-&gt;filter('{record}::getMiddleInitial', TRUE);</code></pre>
+
+<h4 id="Call">Call</h4>
+
+<p>
+The <a href="/api/fRecordSet#call"><code>call()</code></a> method of fRecordSet returns an array of the return values from a call to a method on each record in the set. The first parameter is a string with the method to call.
+</p>
+<pre class="block php"><code>$first_names = $record_set-&gt;call('getFirstName');</code></pre>
+
+<p>
+ It is also possible to pass parameters to the method by adding them to the <code>call()</code> method. The following example will pass <code>TRUE</code> to each call of the method <code>prepareLink()</code>:
+</p>
+<pre class="block php"><code>$links = $record_set-&gt;call('prepareLink', TRUE);</code></pre>
+
+<h3 id="PreloadingRelatedRecords">Preloading Related Records</h3>
+
+<p>
+While the fRecordSet class uses a minimal number of database queries to fetch a set of records, in turn getting records related to each of those will cause at least one database query to be executed per record. The three actions <code>prebuild</code>, <code>precount</code> and <code>precreate</code> all allow for running a single database query to fetch records related to every record in the set.
+</p>
+
+<p>
+For example, if a record set of users needs to be displayed included how many comments they have left on a blog, the blog comments for each will need to be counted. Normally a call to <code>countBlogComments()</code> be all that is necessary. However, if 100 users are displayed on a page then an additional 100 database queries would be performed. Calling <code>precountBlogComments()</code> on the record set would cause a single database query to be executed to collect the counts for each user.
+</p>
+<pre class="block php"><code>// Count related comments for ever user in a single query
+$record_set-&gt;precountBlogComments();</code></pre>
+
+<p>
+ The <code>prebuild</code> method action would be appropriate to call when it is necessary to build a set of related records that are in a many-to-many or one-to-many.
+</p>
+<pre class="block php"><code>$record_set-&gt;prebuildBlogComments();
+foreach ($record_set as $record) {
+    $comments = $record_set-&gt;buildBlogComments();
+}</code></pre>
+
+<p>
+ The <code>precreate</code> method action allows creating objects from a column that is part of a <code>FOREIGN KEY</code> constraint.
+</p>
+<pre class="block php"><code>$record_set-&gt;precreateStates();
+foreach ($record_set as $record) {
+    echo $record-&gt;createState()-&gt;prepareName();
+}</code></pre>
+
+<h3 id="SliceMergeDiffIntersectUniqueandContainsOperations">Slice, Merge, Diff, Intersect, Unique and Contains Operations</h3>
+
+<p>
+In a manner similar to arrays, an <a href="/docs/fRecord">fRecord</a> contains quite a number of methods to add, remove and change records in a record set.
+</p>
+
+<h4 id="slice"><code>slice()</code></h4>
+
+<p>
+The <a href="/api/fRecordSet#slice"><code>slice()</code></a> method takes up to two parameters, the zero-based <code>$offset</code> to start slicing at and the <code>$length</code> of a slice to make. If the <code>$offset</code> is negative, the slice will start that many records from the end of the set. If the <code>$length</code> is negative, the slice will stop that many records from the end of the set. If the <code>$length</code> is omitted or <code>NULL</code>, all records until the end of the set will be returned.
+</p>
+
+<p>
+The following will create a new record set from the first three records.
+</p>
+<pre class="block php"><code>$new_set = $record_set-&gt;slice(0, 3);</code></pre>
+
+<p>
+ The optional boolean third parameter, <code>$remember_original_count</code>, will save the number of records in the current record set as the non-limited count on the new set. See the section on <a href="#Size">Size</a> for details about how to retrieve this number.
+</p>
+<pre class="block php"><code>$new_set = $record_set-&gt;slice(0, 3, TRUE);</code></pre>
+
+<p>
+ <em>If <code>$remember_original_count</code> is <code>TRUE</code> and the slicing is done in such a way that a valid <code>$limit</code> and <code>$page</code> can be determined, they will be appropriately set on the new record set.</em>
+</p>
+
+<h4 id="merge"><code>merge()</code></h4>
+
+<p>
+The <a href="/api/fRecordSet#merge"><code>merge()</code></a> method accepts a single parameter, the <code>$records</code>, and returns a new record set containing all records from both. All of the records from the second record set will be found after the records from the first. The <code>$records</code> parameter will accept an fRecordSet, an array of <a href="/docs/fActiveRecord">fActiveRecord</a> objects or a single <a href="/docs/fActiveRecord">fActiveRecord</a>.
+</p>
+
+<p>
+Please note that it <em>is</em> possible to merge records sets of different types of records. If a record set contains records of more than one class, however, the <code>prebuild</code>, <code>precount</code> and <code>precreate</code> method actions will be unavailable, along with the methods <code>getPrimaryKeys()</code>, <code>flagAssociate()</code> and <code>isFlaggedForAssociation()</code>.
+</p>
+<pre class="block php"><code>$events_and_meetings = $events-&gt;merge($meetings);</code></pre>
+
+<h4 id="diff"><code>diff()</code></h4>
+
+<p>
+The <a href="/api/fRecordSet#diff"><code>diff()</code></a> method accepts a single parameter, the <code>$records</code> to remove from the current record set. The <code>$records</code> parameter will accept an fRecordSet, an array of <a href="/docs/fActiveRecord">fActiveRecord</a> objects or a single <a href="/docs/fActiveRecord">fActiveRecord</a>.
+</p>
+<pre class="block php"><code>$active_events = $events-&gt;diff($inactive_events);</code></pre>
+
+<p>
+ The optional boolean second parameter, <code>$remember_original_count</code>, will save the number of records in the current record set as the non-limited count on the new set. See the section on <a href="#Size">Size</a> for details about how to retrieve this number.
+</p>
+<pre class="block php"><code>$active_events = $events-&gt;diff($inactive_events, TRUE);</code></pre>
+
+<h4 id="intersect"><code>intersect()</code></h4>
+
+<p>
+The <a href="/api/fRecordSet#intersect"><code>intersect()</code></a> method accepts a single parameter, the <code>$records</code> to create an intersection with the current record set. All records not in both will be removed. The <code>$records</code> parameter will accept an fRecordSet, an array of <a href="/docs/fActiveRecord">fActiveRecord</a> objects or a single <a href="/docs/fActiveRecord">fActiveRecord</a>.
+</p>
+<pre class="block php"><code>$our_free_days = $my_free_days-&gt;intersect($your_free_days);</code></pre>
+
+<p>
+ The optional boolean second parameter, <code>$remember_original_count</code>, will save the number of records in the current record set as the non-limited count on the new set. See the section on <a href="#Size">Size</a> for details about how to retrieve this number.
+</p>
+<pre class="block php"><code>$our_free_days = $my_free_days-&gt;intersect($your_free_days, TRUE);</code></pre>
+
+<h4 id="unique"><code>unique()</code></h4>
+
+<p>
+The <a href="/api/fRecordSet#unique"><code>unique()</code></a> method takes the current record set and removes all duplicate records, returning a new record set.
+</p>
+<pre class="block php"><code>$sessions = $sessions-&gt;unique();</code></pre>
+
+<p>
+ The optional boolean parameter, <code>$remember_original_count</code>, will save the number of records in the current record set as the non-limited count on the new set. See the section on <a href="#Size">Size</a> for details about how to retrieve this number.
+</p>
+<pre class="block php"><code>$sessions = $sessions-&gt;unique(TRUE);</code></pre>
+
+<h3 id="ChunkandSplitOperations">Chunk and Split Operations</h3>
+
+<p>
+For display purposes, it can be useful to segment an fRecordSet into multiple smaller fRecordSet objects. The <a href="/api/fRecordSet#chunk"><code>chunk()</code></a> and <a href="/api/fRecordSet#split"><code>split()</code></a> methods to exactly this.
+</p>
+
+<h4 id="chunk"><code>chunk()</code></h4>
+
+<p>
+The <a href="/api/fRecordSet#chunk"><code>chunk()</code></a> method accepts a <code>$number</code> of records to place in each resulting fRecordSet. The returned value will be an array of fRecordSet objects that each contain <code>$number</code> records, although the last one may have fewer if there are not enough to fill it.
+</p>
+<pre class="block php"><code>// This statement will segment 10 users into 4 records sets containing 3, 3, 3 and 1 users respectively
+$sets = $users-&gt;chunk(3);</code></pre>
+
+<h4 id="split"><code>split()</code></h4>
+
+<p>
+The <a href="/api/fRecordSet#split"><code>split()</code></a> method accepts a <code>$number</code> of fRecordSet objects to return. The returned value will be an array of fRecordSet objects that each contain <code>ceil(total records/$number)</code> records, although the last set may have fewer if there are not enough to fill it.
+</p>
+<pre class="block php"><code>// This statement will split 10 users into 3 records sets containing 4, 4 and 2 users respectively
+$sets = $users-&gt;split(3);</code></pre>
+
+<h3 id="CheckingforaRecord">Checking for a Record</h3>
+
+<p>
+The <a href="/api/fRecordSet#contains"><code>contains()</code></a> method accepts a single <a href="/docs/fActiveRecord">fActiveRecord</a> record and checks if is is present in the record set.
+</p>
+<pre class="block php"><code>if ($users-&gt;contains($user)) {
+    // ...
+}</code></pre>
+
+<h3 id="Sorting">Sorting</h3>
+
+<p>
+<em>When building a record set from conditions, the records can be sorted by the <code>$order_bys</code> parameter. See the section <a href="#Ordering">Ordering</a> for more details.</em>
+</p>
+
+<p>
+Two methods are available with fRecordSet to reorder the records in the set after it has been created. The method <a href="/api/fRecordSet#sort"><code>sort()</code></a> accepts two parameters, the <code>$method</code> to call to get the value to compare, and the <code>$direction</code> to sort those values in. The <code>$direction</code> can be either <code>'asc'</code> or <code>'desc'</code>. The sorting is done using <a href="/api/fUTF8#inatcmp">fUTF8::inatcmp()</a> for comparison. A new sorted fRecordSet object is returned.
+</p>
+<pre class="block php"><code>$sorted_set = $record_set-&gt;sort('getName', 'asc');</code></pre>
+
+<p>
+ If a different sorting method is required, the method <a href="/api/fRecordSet#sortByCallback"><code>sortByCallback()</code></a> will be of interest. This method requires a single parameter, a <code>$callback</code> that accepts two records and returns a negative value if the first record is less than the second, <code>0</code> if they are equal, or a positive value if the first record is greater than the second.
+</p>
+<pre class="block php"><code>function method_sort($record_a, $record_b)
+{
+    return strnatcasecmp($record_a-&gt;getFirstName(), $record_b-&gt;getFirstName());
+}
+
+$sorted_set = $record_set-&gt;sortByCallback('method_sort');</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

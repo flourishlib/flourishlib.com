@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fMessaging – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fMessaging">fMessaging</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fMessaging">Class Documentation</a></strong></li>
+<li><a href="/api/fMessaging">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fMessaging.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#CreatingMessages">Creating Messages</a></li>
+<li><a href="#RetrievingMessages">Retrieving Messages</a></li>
+<li><a href="#DisplayingMessages">Displaying Messages</a></li>
+<li><a href="#UsingNoRecipient">Using No Recipient</a></li>
+</ul>
+</div>
+
+<p>
+The fMessaging class is a simple session-based messaging tool that allows for messaging to be pulled out of your URLs and kept behind the scenes. 
+</p>
+
+<h2 id="CreatingMessages">Creating Messages</h2>
+
+<p>
+The method <a href="/api/fMessaging#create"><code>create()</code></a> will construct a message and save it for later retrieval. It accepts three parameters, the <code>$name</code> of the message, the <code>$recipient</code> and the <code>$message</code> itself. Here is an example of creating a message:
+</p>
+<pre class="block php"><code>fMessaging::create('success', '/admin/users', 'The user was successfully created');</code></pre>
+
+<p>
+ As you can see above, I used a URL as the recipient, however this is not a requirement. Any string can be used as a recipient, you will just need to use the same recipient when retrieving the message, as you will see below.
+</p>
+
+<h2 id="RetrievingMessages">Retrieving Messages</h2>
+
+<p>
+Once a message has been created, it can then be retrieved. The action of retrieving a message deletes it from the session, thus messages are write-once/read-once. The <a href="/api/fMessaging#retrieve"><code>retrieve()</code></a> method requires two parameters, the <code>$name</code> of the message and the <code>$recipient</code>. Both parameters need to be the same as when the message was created.
+</p>
+
+<p>
+If a message for the <code>$name</code> and <code>$recipient</code> combination has not been created, <code>NULL</code> will be returned instead.
+</p>
+
+<p>
+Here is an example of retrieving a message and displaying it:
+</p>
+<pre class="block php"><code>if ($success = fMessaging::retrieve('success', '/admin/users')) {
+    echo $success;
+}</code></pre>
+
+<p>
+ Since calling <code>retrieve()</code> removes the message and prevents it from being retrieved on another page, sometimes it is more appropriate to call the method <a href="/api/fMessaging#check"><code>check()</code></a>. <code>check()</code> will return a boolean, indicating if a message with the <code>$name</code> and <code>$recipient</code> currently exists:
+</p>
+<pre class="block php"><code>if (fMessaging::check('success', '/admin/users')) {
+    // ...
+}</code></pre>
+
+<h2 id="DisplayingMessages">Displaying Messages</h2>
+
+<p>
+The <a href="/api/fMessaging#show"><code>show()</code></a> method will display any message with the <code>$name</code> and <code>$recipient</code> specified. If a message exists, it be displayed in a <code>p</code> or <code>div</code> tag. By default, the <code>$name</code> of the message will be used as the CSS class for the HTML tag, however if a different class is desired, the optional third parameter <code>$css_class</code> can be specified.
+</p>
+
+<p>
+<code>show()</code> will only print the output if the string is not empty, and will detect if the provided content contains any block-level HTML tags, automatically switching from printing a <code>p</code> tag to a <code>div</code> tag.
+</p>
+
+<p>
+Here are a few examples:
+</p>
+<pre class="block php"><code>// Example 1: Show the success message for /admin/users
+fMessaging::show('success', '/admin/users');
+
+// Example 2: Show the error message for /admin/users with the CSS class 'message'
+fMessaging::show('error', '/admin/users', 'message');</code></pre>
+
+<p>
+ And here is the output for the two calls to <code>show()</code> (whitespace added to the HTML for readability):
+</p>
+<pre class="block html"><code>&lt;!-- Example 1 --&gt;
+&lt;p class=&quot;success&quot;&gt;
+    The user was successfully created!
+&lt;/p&gt;
+
+&lt;!-- Example 2 --&gt;
+&lt;div class=&quot;message&quot;&gt;
+    &lt;p&gt;
+        The following fields need a value:
+    &lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Name&lt;/li&gt;
+        &lt;li&gt;Email&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+
+<p>
+ It is also possible to show multiple messages with a single call by passing an array of message names or <code>'*'</code> for all messages. Please note that using either of these options will disable the functionality of the third parameter, <code>$css_class</code>, and the message names will be used for the CSS classes.
+</p>
+<pre class="block php"><code>// Show 'success' and 'error'
+fMessaging::show(
+    array('success', 'error'),
+    '/admin/users'
+);
+
+// Show all messages for the recipient
+fMessaging::show('*', '/admin/users');</code></pre>
+
+<h2 id="UsingNoRecipient">Using No Recipient</h2>
+
+<p>
+It is possible to use all of the fMessaging methods without a recipient. To do this, simply leave out the recipient parameter. Please note that this means each method will have one less parameter, it does <em>not</em> mean that <code>NULL</code> should be passed in instead.
+</p>
+
+<p>
+Here are the methods without a recipient:
+</p>
+<pre class="block php"><code>fMessaging::create('success', 'The user was successfully created');
+$success = fMessaging::retrieve('success');
+if (fMessaging::check('success')) { }
+fMessaging::show('success');</code></pre>
+
+<p>
+ The only downside to not specifying a recipient is the possibility of overwriting messages in a multi-tab browser environment.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

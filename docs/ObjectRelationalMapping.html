@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>ObjectRelationalMapping – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="ORMObject-RelationalMapping">ORM (Object-Relational Mapping)</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#ORMClassesinFlourish">ORM Classes in Flourish</a></li>
+<li><a href="#WhyAnotherORM">Why Another ORM?</a></li>
+</ul>
+</div>
+
+<p>
+When dealing with database-driven web applications (and sites) often times interacting with the DB is one of the most repetitive and messy tasks. Having to manually build <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, and <code>DELETE</code> queries for a multitude of tables is time consuming and mostly deterministic.
+</p>
+
+<p>
+<a href="http://en.wikipedia.org/wiki/Object-relational_mapping">Object-Relational
+Mapping</a> (ORM) helps to reduce the tedium, creates cleaner code, make relationships easy to access. Rows from a relational database management system (RDBMS) such as MySQL, PostgreSQL, SQL Server, Oracle, DB2, etc. are translated into objects in the programming language.
+</p>
+
+<h2 id="ORMClassesinFlourish">ORM Classes in Flourish</h2>
+
+<p>
+The ORM features of Flourish are primarily accomplished by the following two classes:
+</p>
+
+<ul>
+<li><strong><a href="/docs/fActiveRecord">fActiveRecord</a></strong> - Handles creation and manipulation of single database records</li>
+<li><strong><a href="/docs/fRecordSet">fRecordSet</a></strong> - Handles finding and manipulation sets of records</li>
+</ul>
+
+<p>
+There are a number of other classes in Flourish that provide functionality to <a href="/docs/fActiveRecord">fActiveRecord</a> and fRecordSet:
+</p>
+
+<ul>
+<li><strong><a href="/docs/fORM">fORM</a></strong> - Allow for overriding defaults and extending classes</li>
+<li><strong><a href="/docs/fORMColumn">fORMColumn</a></strong> - Provides miscellaneous functionality for columns</li>
+<li><strong><a href="/docs/fORMDatabase">fORMDatabase</a></strong> - Holds the <a href="/docs/fDatabase">fDatabase</a> class to use for all ORM tasks</li>
+<li><strong><a href="/docs/fORMDate">fORMDate</a></strong> - Provides configurable date functionality</li>
+<li><strong><a href="/docs/fORMFile">fORMFile</a></strong> - Provides configurable file upload functionality</li>
+<li><strong><a href="/docs/fORMJSON">fORMJSON</a></strong> - Extends <a href="/docs/fActiveRecord">fActiveRecord</a> and <a href="/docs/fRecordSet">fRecordSet</a> with methods to convert to JSON</li>
+<li><strong><a href="/docs/fORMMoney">fORMMoney</a></strong> - Provides configurable money functionality</li>
+<li><strong><a href="/docs/fORMOrdering">fORMOrdering</a></strong> - Provides configuration record ordering functionality</li>
+<li><strong><a href="/docs/fORMRelated">fORMRelated</a></strong> - Powers the built in support for retrieving related records from <a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><strong><a href="/docs/fORMSchema">fORMSchema</a></strong> - Holds the <a href="/docs/fSchema">fSchema</a> class to use for all ORM tasks</li>
+<li><strong><a href="/docs/fORMValidation">fORMValidation</a></strong> - Powers the built in validation routines and allows for configuration validation functionality</li>
+</ul>
+
+<h2 id="WhyAnotherORM">Why Another ORM?</h2>
+
+<p>
+Many of the big PHP frameworks (<a href="http://cakephp.org">CakePHP</a>, <a href="http://codeigniter.com">Code Igniter</a>,  <a href="http://www.symfony-project.org">Symfony</a>, <a href="http://framework.zend.com">Zend Framework</a>) perform ORM to some degree. There are also a few PHP ORM suites (<a href="http://propel.phpdb.org">Propel</a> and <a href="http://www.phpdoctrine.org">Doctrine</a>) focused on strictly ORM tasks.
+</p>
+
+<p>
+You may be wondering, why build another PHP &quot;framework&quot; with ORM functionality? Flourish is intended to be more of a library of PHP code as opposed to a framework (defined as strict set of conventions, rules and methods that must be followed to build a site). In addition Flourish sits somewhere between the frameworks and ORM suites by providing some of the more advanced ORM features that most of the frameworks are missing, while being lighter weight and easier to use than the ORM suites.
+</p>
+
+<p>
+You may also be interested in checking out some of the <a href="/docs/MotivationsForFlourish">motivations for creating Flourish</a> instead of using an existing solution.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

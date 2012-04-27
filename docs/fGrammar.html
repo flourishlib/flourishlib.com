@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fGrammar – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fGrammar">fGrammar</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fGrammar">Class Documentation</a></strong></li>
+<li><a href="/api/fGrammar">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fGrammar.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#QuantitiesandLists">Quantities and Lists</a></li>
+<li><a href="#PluralsandSingulars">Plurals and Singulars</a></li>
+<li><a href="#NotationConversion">Notation Conversion</a>
+<ul>
+<li><a href="#underscore_notation">underscore_notation</a></li>
+<li><a href="#CamelCase">CamelCase</a></li>
+<li><a href="#HumanFriendlyStrings">Human Friendly Strings</a></li>
+<li><a href="#FixingNotationConversionIssues">Fixing Notation Conversion Issues</a></li>
+</ul>
+</li>
+<li><a href="#Localization">Localization</a></li>
+</ul>
+</div>
+
+<p>
+The fGrammar class was built to handle various grammar tasks. English is the default language, however there is functionality to allow for some localization.
+</p>
+
+<h2 id="QuantitiesandLists">Quantities and Lists</h2>
+
+<p>
+Due to the way the English language works, most messages and output that references quantities will need to change when there is a single item in question, or a quantity other than one. For instance, you may have a message say:
+</p>
+<pre><code>There are currently 15 users.</code></pre>
+
+<p>
+ Which is great as long as your quantity is zero or greater than one. If there is only a single user, the message should change to:
+</p>
+<pre><code>There is currently one user.</code></pre>
+
+<p>
+ Certainly some conditional code could be written to handle the situation, but why introduce a big <code>if</code> statement (or worse, an unreadable tertiary statement) in the middle of display code? The fGrammar class provides a convenient method to handle such situations, <a href="/api/fGrammar#inflectOnQuantity"><code>inflectOnQuantity()</code></a>. 
+</p>
+
+<p>
+<code>inflectOnQuantity()</code> has three required parameters and one optional one we will talk about in a minute. The first parameter is the quantity being measured. This can be an integer, or an array of items. If an array is passed, the size of the array will be used for the quantity. The second parameter is the string to be selected if quantity is one, the third parameter is the string to be selected if the quantity is not one. The third parameter can include <code>%d</code> to be replaced with the actual quantity.
+</p>
+<pre class="block php"><code>echo 'There ' . fGrammar::inflectOnQuantity(1, 'is one user', 'are %d users') . &quot;.\n&quot;;
+echo 'There ' . fGrammar::inflectOnQuantity(5, 'is one user', 'are %d users') . &quot;.&quot;;</code></pre>
+
+<p>
+ The output from the code above would be:
+</p>
+<pre class="block html"><code>There is one user.
+There are 5 users.</code></pre>
+
+<p>
+ The optional fourth parameter is a flag to indicate if you want single digit quantities to be replaced by the word for that quantity:
+</p>
+<pre class="block php"><code>echo 'There ' . fGrammar::inflectOnQuantity(5, 'is one user', 'are %d users', TRUE) . &quot;.&quot;;</code></pre>
+
+<p>
+ Would result in:
+</p>
+<pre class="block html"><code>There are five users.</code></pre>
+
+<p>
+ Another common situation is to have a variable number of terms to display, however it is desirable to produce a well-formed sentence. The <a href="/api/fGrammar#joinArray"><code>joinArray()</code></a> method will take an array of strings and will return the string in a well-formed manner. Here are some examples:
+</p>
+<pre class="block php"><code>echo fGrammar::joinArray(array()) . &quot;\n&quot;;
+echo fGrammar::joinArray(array('one')) . &quot;\n&quot;;
+echo fGrammar::joinArray(array('one', 'two')) . &quot;\n&quot;;
+echo fGrammar::joinArray(array('one', 'two', 'three')) . &quot;\n&quot;;
+echo fGrammar::joinArray(array('one', 'two', 'three', 'four'));</code></pre>
+
+<p>
+ Here would be the HTML output:
+</p>
+<pre class="block html"><code>one
+one and two
+one, two, and three
+one, two, three, and four</code></pre>
+
+<h2 id="PluralsandSingulars">Plurals and Singulars</h2>
+
+<p>
+Although it is unlikely that this functionality will be necessary for the majority of web sites and applications, it is good to talk a little about plurals and singulars. Most of the ORM code in Flourish uses the <a href="/api/fGrammar#pluralize"><code>pluralize()</code></a> and <a href="/api/fGrammar#singularize"><code>singularize()</code></a> methods to handle detecting what a developer is trying to do.
+</p>
+
+<p>
+Here are some examples of how <code>pluralize()</code> and <code>singularize()</code> can be used:
+</p>
+<pre class="block php"><code>// Simple plural and singular forms
+echo fGrammar::pluralize('user') . &quot;\n&quot;;
+echo fGrammar::singularize('users') . &quot;\n&quot;;
+
+// Most irregular forms are automatically handed
+echo fGrammar::pluralize('person') . &quot;\n&quot;;
+echo fGrammar::singularize('people');</code></pre>
+
+<p>
+ The output would be:
+</p>
+<pre><code>users
+user
+people
+person</code></pre>
+
+<p>
+ Unfortunately the English language has some rather complex rules about pluralization with quite a number of exceptions. To compound the matter further, singularization rules are almost non-existent in a formalized nature, and mostly have to be reverse engineered from the pluralization rules. Finally, many website and applications use acronyms heavily, which often times do not follow the same rules as words with similar structures.
+</p>
+
+<p>
+Because of these issues, a day will come when fGrammar will not get a pluralization or singularization of a noun correct. As a fall-back, the static method <a href="/api/fGrammar#addSingularPluralRule"><code>addSingularPluralRule()</code></a> has been included. Simply pass the singular form of a noun as the first parameter and the plural form as the second parameter. All subsequent requests to <code>singularize()</code> and <code>pluralize()</code> will check this rule before the default rules. 
+</p>
+
+<p>
+Here is a rather contrived example of when to use <code>addSingularPluralRule()</code>:
+</p>
+<pre class="block php"><code>// These will produce incorrect results
+echo fGrammar::pluralize('phalanx') . &quot;\n&quot;;
+echo fGrammar::singularize('phalanxes') . &quot;\n&quot;;
+
+// Add a custom rule for phalanx
+fGrammar::addSingularPluralRule('phalanx', 'phalanxes');
+
+// Now the singularization and pluralization work properly
+echo fGrammar::pluralize('phalanx') . &quot;\n&quot;;
+echo fGrammar::singularize('phalanxes') . &quot;\n&quot;;</code></pre>
+
+<p>
+ The output of the PHP above would be:
+</p>
+<pre><code>phalanxs
+phalanxe
+phalanxes
+phalanx</code></pre>
+
+<h2 id="NotationConversion">Notation Conversion</h2>
+
+<p>
+Notation conversion is also used heavily by the ORM code in Flourish to translate between the various coding standards that exist.
+</p>
+
+<h3 id="underscore_notation">underscore_notation</h3>
+
+<p>
+Underscore notation is characterized by all lower-case letters with underscores separating words, like <code>underscore_notation</code>.
+</p>
+
+<p>
+The method <a href="/api/fGrammar#underscorize"><code>underscorize()</code></a> will convert camel case notation or space separated words to underscore notation.
+</p>
+<pre class="block php"><code>echo fGrammar::underscorize('FirstName') . &quot;\n&quot;;
+echo fGrammar::underscorize('Last Name') . &quot;\n&quot;;
+echo fGrammar::underscorize('middleInitial');</code></pre>
+
+<p>
+ would produce the following output:
+</p>
+<pre><code>first_name
+last_name
+middle_initial</code></pre>
+
+<h3 id="CamelCase">CamelCase</h3>
+
+<p>
+Camel case notation uses upper and lower-case letters, with words being separated by a capital letter, like <code>CamelCase</code>. Lower camel case is identical to camel case, except the first letter is always lower-case, like <code>lowerCamelCase</code>.
+</p>
+
+<p>
+The method <a href="/api/fGrammar#camelize"><code>camelize()</code></a> will convert underscore notation or space separated words to camelCase. The first parameter, <code>$string</code> is the string to be converted and the second parameter <code>$upper</code> indicates if the output should be UpperCamelCase instead of lowerCamelCase.
+</p>
+<pre class="block php"><code>echo fGrammar::camelize('first_name', FALSE) . &quot;\n&quot;;
+echo fGrammar::camelize('Last name', FALSE) . &quot;\n&quot;;
+echo fGrammar::camelize('MIDDLE INITIAL', TRUE);</code></pre>
+
+<p>
+ would produce the following output:
+</p>
+<pre><code>firstName
+lastName
+MiddleInitial</code></pre>
+
+<h3 id="HumanFriendlyStrings">Human Friendly Strings</h3>
+
+<p>
+In addition to converting between these two formats, it is sometimes required to convert from underscore or camel case notation to a human friendly form. <a href="/api/fGrammar#humanize"><code>humanize()</code></a> will take any underscore notation or camelCase string and produce output containing spaces and the first letter of each word being capitalized. For specific words know to be all capitals, it will change those words to all capitals. 
+</p>
+<pre class="block php"><code>echo fGrammar::humanize('first_name') . &quot;\n&quot;;
+echo fGrammar::humanize('LastName') . &quot;\n&quot;;
+echo fGrammar::humanize('middleInitial') . &quot;\n&quot;;
+echo fGrammar::humanize('PdfUpload');</code></pre>
+
+<p>
+ would produce the following output:
+</p>
+<pre><code>First Name
+Last Name
+Middle Initial
+PDF Upload</code></pre>
+
+<h3 id="FixingNotationConversionIssues">Fixing Notation Conversion Issues</h3>
+
+<p>
+Occasionally conversion from camelCase to underscore_notation doesnt work properly due to the splitting dynamics. In <code>underscorize()</code>, any number or capital letter following a lower-case letter will cause an <code>_</code> to be inserted. Thus, if a number exists in the middle of an acronym, the conversion will not occur correctly.
+</p>
+
+<p>
+To fix such situation, pass the <code>$camel_case</code> version of the string and the <code>$underscore_notation</code> version of the string to <a href="/api/fGrammar#addCamelUnderscoreRule"><code>addCamelUnderscoreRule()</code></a>:
+</p>
+<pre class="block php"><code>// In this situation the underscores are put in the wrong place
+echo fGrammar::underscorize('w3cCompliant') . &quot;\n&quot;;
+
+fGrammar::addCamelUnderscoreRule('W3cCompliant', 'w3c_compliant');
+
+// In this situation the underscores are put in the right place
+echo fGrammar::underscorize('w3cCompliant');</code></pre>
+
+<p>
+ The above PHP would output:
+</p>
+<pre><code>w_3c_compliant
+w3c_compliant</code></pre>
+
+<p>
+ In addition, calling <code>humanize()</code> can sometimes create results that are not desired. The method uses a simple system of splitting words and capitalizing the first letter. In some situations more than one letter need to be capitalized. The method <a href="/api/fGrammar#addHumanizeRule"><code>addHumanizeRule()</code></a> allows fixing incorrect results.
+</p>
+<pre class="block php"><code>echo fGrammar::humanize('w3c_compliant') . &quot;\n&quot;;
+
+fGrammar::addHumanizeRule('w3c_compliant', 'W3C Compliant');
+
+echo fGrammar::humanize('w3c_compliant');</code></pre>
+
+<p>
+ would output the following:
+</p>
+<pre><code>W3c Compliant
+W3C Compliant</code></pre>
+
+<h2 id="Localization">Localization</h2>
+
+<p>
+Localization of the method <a href="/api/fGrammar#joinArray"><code>joinArray()</code></a> can be accomplished by using <a href="/api/fGrammar#registerJoinArrayCallback"><code>registerJoinArrayCallback()</code></a>. This method accepts a single callback and all calls made to <code>joinArray()</code> are then sent to the registered callback. Obviously the method parameters and return value of the callback should match the real method.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fHTML – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fHTML</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fHTML">Class Documentation</a></li>
+		<li><strong><a href="/api/fHTML">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fHTML.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#containsBlockLevelHTML">containsBlockLevelHTML()</a></li>
+	  			<li><a href="#convertNewlines">convertNewlines()</a></li>
+	  			<li><a href="#decode">decode()</a></li>
+	  			<li><a href="#encode">encode()</a></li>
+	  			<li><a href="#makeLinks">makeLinks()</a></li>
+	  			<li><a href="#prepare">prepare()</a></li>
+	  			<li><a href="#printOption">printOption()</a></li>
+	  			<li><a href="#sendHeader">sendHeader()</a></li>
+	  			<li><a href="#show">show()</a></li>
+	  			<li><a href="#showChecked">showChecked()</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fCRUD">fCRUD</a></li>
+		<li><a href="fMessaging">fMessaging</a></li>
+		<li><a href="fORMColumn">fORMColumn</a></li>
+		<li><a href="fORMFile">fORMFile</a></li>
+		<li><a href="fORMMoney">fORMMoney</a></li>
+		<li><a href="fPagination">fPagination</a></li>
+		<li><a href="fRequest">fRequest</a></li>
+		<li><a href="fTemplating">fTemplating</a></li>
+		<li><a href="fURL">fURL</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b8</span></div>
+<p class="short_description">Provides HTML-related methods</p>
+<div class="description"><p>This class is implemented to use the UTF-8 character encoding. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b8</th><td>Changed <a href="#encode"><tt>encode()</tt></a> and <a href="#prepare"><tt>prepare()</tt></a> to handle arrays of strings <span class="date">5/19/10</span></td></tr><tr><th>1.0.0b7</th><td>Fixed a bug where some conditional comments were causing the regex in <a href="#prepare"><tt>prepare()</tt></a> to break <span class="date">11/4/09</span></td></tr><tr><th>1.0.0b6</th><td>Updated <a href="#showChecked"><tt>showChecked()</tt></a> to require strict equality if one parameter is <tt>NULL</tt> <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b5</th><td>Fixed <a href="#prepare"><tt>prepare()</tt></a> so it does not encode multi-line HTML comments <span class="date">5/9/09</span></td></tr><tr><th>1.0.0b4</th><td>Added methods <a href="#printOption"><tt>printOption()</tt></a> and <a href="#showChecked"><tt>showChecked()</tt></a> that were in <a href="fCRUD">fCRUD</a> <span class="date">5/8/09</span></td></tr><tr><th>1.0.0b3</th><td>Fixed a bug where <a href="#makeLinks"><tt>makeLinks()</tt></a> would double-link some URLs <span class="date">1/8/09</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug where <a href="#makeLinks"><tt>makeLinks()</tt></a> would create links out of URLs in HTML tags <span class="date">12/5/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">9/25/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="containsBlockLevelHTML" class="method static"><span class="resolution">::</span><span class="name">containsBlockLevelHTML()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Checks a string of HTML for block level elements</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">containsBlockLevelHTML</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$content</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$content</td>
+				<td class="param_description">The HTML content to check</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the content contains a block level tag
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="convertNewlines" class="method static"><span class="resolution">::</span><span class="name">convertNewlines()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts newlines into <tt>br</tt> tags as long as there aren't any block-level HTML tags present</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">convertNewlines</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$content</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$content</td>
+				<td class="param_description">The content to display</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="decode" class="method static"><span class="resolution">::</span><span class="name">decode()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts all HTML entities to normal characters, using UTF-8</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">decode</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$content</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$content</td>
+				<td class="param_description">The content to decode</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The decoded content
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="encode" class="method static"><span class="resolution">::</span><span class="name">encode()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts all special characters to entites, using UTF-8.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">encode</span><span class="php-brackets">(</span> <span class="php-vartype">string|array</span> <span class="php-var">$content</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|array</td>
+				<td class="param_name">$content</td>
+				<td class="param_description">The content to encode</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The encoded content
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="makeLinks" class="method static"><span class="resolution">::</span><span class="name">makeLinks()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Takes a block of text and converts all URLs into HTML links</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">makeLinks</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$content</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$link_text_length</span><span class="php-code">=</span>0 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$content</td>
+				<td class="param_description">The content to parse for links</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$link_text_length</td>
+				<td class="param_description">If non-zero, all link text will be truncated to this many characters</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The content with all URLs converted to HTML link
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="prepare" class="method static"><span class="resolution">::</span><span class="name">prepare()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Prepares content for display in UTF-8 encoded HTML - allows HTML tags</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">prepare</span><span class="php-brackets">(</span> <span class="php-vartype">string|array</span> <span class="php-var">$content</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|array</td>
+				<td class="param_name">$content</td>
+				<td class="param_description">The content to prepare</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The encoded html
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="printOption" class="method static"><span class="resolution">::</span><span class="name">printOption()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Prints an <tt>option</tt> tag with the provided value, using the selected value to determine if the option should be marked as selected</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">printOption</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$text</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$value</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$selected_value</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$text</td>
+				<td class="param_description">The text to display in the option tag</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value for the option</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$selected_value</td>
+				<td class="param_description">If the value is the same as this, the option will be marked as selected</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="sendHeader" class="method static"><span class="resolution">::</span><span class="name">sendHeader()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the proper Content-Type header for a UTF-8 HTML (or pseudo-XHTML) page</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">sendHeader</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="show" class="method static"><span class="resolution">::</span><span class="name">show()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Prints a <tt>p</tt> (or <tt>div</tt> if the content has block-level HTML) tag with the contents and the class specified - will not print if no content</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">show</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$content</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$css_class</span><span class="php-code">=</span>'' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$content</td>
+				<td class="param_description">The content to display</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$css_class</td>
+				<td class="param_description">The CSS class to apply</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the content was shown
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="showChecked" class="method static"><span class="resolution">::</span><span class="name">showChecked()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Prints a <tt>checked=&quot;checked&quot;</tt> HTML input attribute if <tt>$value</tt> equals <tt>$checked_value</tt>, or if <tt>$value</tt> is in <tt>$checked_value</tt></p>
+								<p>Please note that if either <tt>$value</tt> or <tt>$checked_value</tt> is <tt>NULL</tt>, a  strict comparison will be performed, whereas normally a non-strict  comparison is made. Thus <tt>0</tt> and <tt>FALSE</tt> will cause the checked  attribute to be printed, but <tt>0</tt> and <tt>NULL</tt> will not.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">showChecked</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$value</span><span class="php-code">,</span> <span class="php-vartype">string|array</span> <span class="php-var">$checked_value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value for the current HTML input tag</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string|array</td>
+				<td class="param_name">$checked_value</td>
+				<td class="param_description">The value (or array of values) that has been checked</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the checked attribute was printed
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

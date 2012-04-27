@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fFilesystem – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fFilesystem</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fFilesystem">Class Documentation</a></li>
+		<li><strong><a href="/api/fFilesystem">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fFilesystem.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#addWebPathTranslation">addWebPathTranslation()</a></li>
+	  			<li><a href="#begin">begin()</a></li>
+	  			<li><a href="#commit">commit()</a></li>
+	  			<li><a href="#convertToBytes">convertToBytes()</a></li>
+	  			<li><a href="#createObject">createObject()</a></li>
+	  			<li><a href="#formatFilesize">formatFilesize()</a></li>
+	  			<li><a href="#getPathInfo">getPathInfo()</a></li>
+	  			<li class="protected"><a href="#hookDeletedMap">hookDeletedMap()</a></li>
+	  			<li class="protected"><a href="#hookFilenameMap">hookFilenameMap()</a></li>
+	  			<li><a href="#isInsideTransaction">isInsideTransaction()</a></li>
+	  			<li><a href="#makeUniqueName">makeUniqueName()</a></li>
+	  			<li><a href="#makeURLSafe">makeURLSafe()</a></li>
+	  			<li class="protected"><a href="#recordAppend">recordAppend()</a></li>
+	  			<li class="protected"><a href="#recordCreate">recordCreate()</a></li>
+	  			<li class="protected"><a href="#recordDelete">recordDelete()</a></li>
+	  			<li class="protected"><a href="#recordDuplicate">recordDuplicate()</a></li>
+	  			<li class="protected"><a href="#recordRename">recordRename()</a></li>
+	  			<li class="protected"><a href="#recordWrite">recordWrite()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#rollback">rollback()</a></li>
+	  			<li><a href="#translateToWebPath">translateToWebPath()</a></li>
+	  			<li class="protected"><a href="#updateDeletedMap">updateDeletedMap()</a></li>
+	  			<li class="protected"><a href="#updateFilenameMap">updateFilenameMap()</a></li>
+	  			<li class="protected"><a href="#updateFilenameMapForDirectory">updateFilenameMapForDirectory()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fDirectory">fDirectory</a></li>
+		<li><a href="fFile">fFile</a></li>
+		<li><a href="fImage">fImage</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fDirectory">fDirectory</a></li>
+		<li><a href="fEmail">fEmail</a></li>
+		<li><a href="fFile">fFile</a></li>
+		<li><a href="fImage">fImage</a></li>
+		<li><a href="fORMFile">fORMFile</a></li>
+		<li><a href="fSMTP">fSMTP</a></li>
+		<li><a href="fTemplating">fTemplating</a></li>
+		<li><a href="fUpload">fUpload</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b16</span></div>
+<p class="short_description">Handles filesystem-level tasks including filesystem transactions and the reference map to keep all <a href="fFile">fFile</a> and <a href="fDirectory">fDirectory</a> objects in sync</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b16</th><td>Added a call to clearstatcache() to <a href="#rollback"><tt>rollback()</tt></a> to prevent incorrect data from being returned by <a href="fFile">fFile</a>getMTime() and <a href="fFile#getSize"><tt>fFile::getSize()</tt></a> <span class="date">11/27/10</span></td></tr><tr><th>1.0.0b15</th><td>Fixed <a href="#translateToWebPath"><tt>translateToWebPath()</tt></a> to handle Windows \s <span class="date">4/9/10</span></td></tr><tr><th>1.0.0b14</th><td>Added <a href="#recordAppend"><tt>recordAppend()</tt></a> <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b13</th><td>Changed the way files/directories deleted in a filesystem transaction are handled, including improvements to the exception that is thrown <span class="date">3/5/10</span></td></tr><tr><th>1.0.0b12</th><td>Updated <a href="#convertToBytes"><tt>convertToBytes()</tt></a> to properly handle integers without a suffix and sizes with fractions <span class="date">11/14/09</span></td></tr><tr><th>1.0.0b11</th><td>Corrected the API documentation for <a href="#getPathInfo"><tt>getPathInfo()</tt></a> <span class="date">9/9/09</span></td></tr><tr><th>1.0.0b10</th><td>Updated updateExceptionMap() to not contain the Exception class parameter hint, allowing NULL to be passed <span class="date">8/20/09</span></td></tr><tr><th>1.0.0b9</th><td>Added some performance tweaks to <a href="#createObject"><tt>createObject()</tt></a> <span class="date">8/6/09</span></td></tr><tr><th>1.0.0b8</th><td>Changed <a href="#formatFilesize"><tt>formatFilesize()</tt></a> to not use decimal places for bytes, add a space before and drop the <tt>B</tt> in suffixes <span class="date">7/12/09</span></td></tr><tr><th>1.0.0b7</th><td>Fixed <a href="#formatFilesize"><tt>formatFilesize()</tt></a> to work when <tt>$bytes</tt> equals zero <span class="date">7/8/09</span></td></tr><tr><th>1.0.0b6</th><td>Changed replacement values in preg_replace() calls to be properly escaped <span class="date">6/11/09</span></td></tr><tr><th>1.0.0b5</th><td>Changed <a href="#formatFilesize"><tt>formatFilesize()</tt></a> to use proper uppercase letters instead of lowercase <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b4</th><td>Added the <a href="#createObject"><tt>createObject()</tt></a> method <span class="date">1/21/09</span></td></tr><tr><th>1.0.0b3</th><td>Removed some unnecessary error suppresion operators <span class="date">12/11/08</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug where the filepath and exception maps weren't being updated after a rollback <span class="date">12/11/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">3/24/08</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="addWebPathTranslation" class="method static"><span class="resolution">::</span><span class="name">addWebPathTranslation()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a directory to the web path translation list</p>
+								<p>The web path conversion list is a list of directory paths that will be  converted (from the beginning of filesystem paths) when preparing a path  for output into HTML.</p><p>By default the <tt>$_SERVER['DOCUMENT_ROOT']</tt> will be converted to a blank  string, in essence stripping it from filesystem paths.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addWebPathTranslation</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$search_path</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$replace_path</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$search_path</td>
+				<td class="param_description">The path to look for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$replace_path</td>
+				<td class="param_description">The path to replace with</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="begin" class="method static"><span class="resolution">::</span><span class="name">begin()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Starts a filesystem pseudo-transaction, should only be called when no transaction is in progress.</p>
+								<p>Flourish filesystem transactions are NOT full ACID-compliant  transactions, but rather more of an filesystem undo buffer which can  return the filesystem to the state when <a href="#begin"><tt>begin()</tt></a> was called. If your PHP  script dies in the middle of an operation this functionality will do  nothing for you and all operations will be retained, except for deletes  which only occur once the transaction is committed.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">begin</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="commit" class="method static"><span class="resolution">::</span><span class="name">commit()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Commits a filesystem transaction, should only be called when a transaction is in progress</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">commit</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="convertToBytes" class="method static"><span class="resolution">::</span><span class="name">convertToBytes()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Takes a file size including a unit of measure (i.e. kb, GB, M) and converts it to bytes</p>
+								<p>Sizes are interpreted using base 2, not base 10. Sizes above 2GB may not  be accurately represented on 32 bit operating systems.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">convertToBytes</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$size</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$size</td>
+				<td class="param_description">The size to convert to bytes</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The number of bytes represented by the size
+				</p>
+			</div>
+			<!-- end method static -->
+						<!-- start method static -->
+			<h3 id="createObject" class="method static"><span class="resolution">::</span><span class="name">createObject()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Takes a filesystem path and creates either an <a href="fDirectory">fDirectory</a>, <a href="fFile">fFile</a> or <a href="fImage">fImage</a> object from it</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fDirectory">fDirectory</a>|<a href="fFile">fFile</a>|<a href="fImage">fImage</a></span> <span class="php-identifier">createObject</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$path</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$path</td>
+				<td class="param_description">The path to the filesystem object</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When no path was specified or the path specified does not exist</dd></dl>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="formatFilesize" class="method static"><span class="resolution">::</span><span class="name">formatFilesize()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Takes the size of a file in bytes and returns a friendly size in B/K/M/G/T</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">formatFilesize</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$bytes</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$decimal_places</span><span class="php-code">=</span>1 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$bytes</td>
+				<td class="param_description">The size of the file in bytes</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$decimal_places</td>
+				<td class="param_description">The number of decimal places to display</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getPathInfo" class="method static"><span class="resolution">::</span><span class="name">getPathInfo()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns info about a path including dirname, basename, extension and filename</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getPathInfo</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$path</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$path</td>
+				<td class="param_description">The file/directory path to retrieve information about</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The piece of information to return: <tt>'dirname'</tt>, <tt>'basename'</tt>, <tt>'extension'</tt>, or <tt>'filename'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The file's dirname, basename, extension and filename
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="hookDeletedMap" class="protected method static"><span class="resolution">::</span><span class="name">hookDeletedMap()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Hooks a file/directory into the deleted backtrace map entry for that filename</p>
+								<p>Since the value is returned by reference, all objects that represent  this file/directory always see the same backtrace.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> &amp;<span class="php-identifier">hookDeletedMap</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The name of the file or directory</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					Will return <tt>NULL</tt> if no match, or the backtrace array if a match occurs
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="hookFilenameMap" class="protected method static"><span class="resolution">::</span><span class="name">hookFilenameMap()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Hooks a file/directory name to the filename map</p>
+								<p>Since the value is returned by reference, all objects that represent  this file/directory will always be update on a rename.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> &amp;<span class="php-identifier">hookFilenameMap</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The name of the file or directory</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					Will return <tt>NULL</tt> if no match, or the exception object if a match occurs
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="isInsideTransaction" class="method static"><span class="resolution">::</span><span class="name">isInsideTransaction()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Indicates if a transaction is in progress</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">isInsideTransaction</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="makeUniqueName" class="method static"><span class="resolution">::</span><span class="name">makeUniqueName()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns a unique name for a file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">makeUniqueName</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$new_extension</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The filename to check</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$new_extension</td>
+				<td class="param_description">The new extension for the filename, should not include <tt>.</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The unique file name
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="makeURLSafe" class="method static"><span class="resolution">::</span><span class="name">makeURLSafe()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Changes a filename to be safe for URLs by making it all lower case and changing everything but letters, numers, - and . to _</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">makeURLSafe</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$filename</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$filename</td>
+				<td class="param_description">The filename to clean up</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The cleaned up filename
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="recordAppend" class="protected method static"><span class="resolution">::</span><span class="name">recordAppend()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Stores what data has been added to a file so it can be removed if there is a rollback</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">recordAppend</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-var">$file</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$data</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fFile">fFile</a></td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The file that is being written to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$data</td>
+				<td class="param_description">The data being appended to the file</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="recordCreate" class="protected method static"><span class="resolution">::</span><span class="name">recordCreate()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Keeps a record of created files so they can be deleted up in case of a rollback</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">recordCreate</span><span class="php-brackets">(</span> <span class="php-vartype">object</span> <span class="php-var">$object</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">object</td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The new file or directory to get rid of on rollback</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="recordDelete" class="protected method static"><span class="resolution">::</span><span class="name">recordDelete()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Keeps track of file and directory names to delete when a transaction is committed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">recordDelete</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fFile">fFile</a>|<a href="fDirectory">fDirectory</a></span> <span class="php-var">$object</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fFile">fFile</a>|<a href="fDirectory">fDirectory</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The filesystem object to delete</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="recordDuplicate" class="protected method static"><span class="resolution">::</span><span class="name">recordDuplicate()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Keeps a record of duplicated files so they can be cleaned up in case of a rollback</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">recordDuplicate</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-var">$file</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fFile">fFile</a></td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The duplicate file to get rid of on rollback</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="recordRename" class="protected method static"><span class="resolution">::</span><span class="name">recordRename()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Keeps a temp file in place of the old filename so the file can be restored during a rollback</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">recordRename</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$old_name</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$new_name</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$old_name</td>
+				<td class="param_description">The old file or directory name</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$new_name</td>
+				<td class="param_description">The new file or directory name</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="recordWrite" class="protected method static"><span class="resolution">::</span><span class="name">recordWrite()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Keeps backup copies of files so they can be restored if there is a rollback</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">recordWrite</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-var">$file</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fFile">fFile</a></td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The file that is being written to</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="rollback" class="method static"><span class="resolution">::</span><span class="name">rollback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Rolls back a filesystem transaction, it is safe to rollback when no transaction is in progress</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">rollback</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="translateToWebPath" class="method static"><span class="resolution">::</span><span class="name">translateToWebPath()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Takes a filesystem path and translates it to a web path using the rules added</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">translateToWebPath</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$path</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$path</td>
+				<td class="param_description">The path to translate</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The filesystem path translated to a web path
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="updateDeletedMap" class="protected method static"><span class="resolution">::</span><span class="name">updateDeletedMap()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Updates the deleted backtrace for a file or directory</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">updateDeletedMap</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$backtrace</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file</td>
+				<td class="param_description">A file or directory name, directories should end in <tt>/</tt> or <tt>\</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$backtrace</td>
+				<td class="param_description">The backtrace for this file/directory</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="updateFilenameMap" class="protected method static"><span class="resolution">::</span><span class="name">updateFilenameMap()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Updates the filename map, causing all objects representing a file/directory to be updated</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">updateFilenameMap</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$existing_filename</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$new_filename</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$existing_filename</td>
+				<td class="param_description">The existing filename</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$new_filename</td>
+				<td class="param_description">The new filename</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="updateFilenameMapForDirectory" class="protected method static"><span class="resolution">::</span><span class="name">updateFilenameMapForDirectory()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Updates the filename map recursively, causing all objects representing a directory to be updated</p>
+								<p>Also updates all files and directories in the specified directory to the new paths.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">updateFilenameMapForDirectory</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$existing_dirname</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$new_dirname</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$existing_dirname</td>
+				<td class="param_description">The existing directory name</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$new_dirname</td>
+				<td class="param_description">The new dirname</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

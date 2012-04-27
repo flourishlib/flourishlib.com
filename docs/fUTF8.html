@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fUTF8 – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fUTF8">fUTF8</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fUTF8">Class Documentation</a></strong></li>
+<li><a href="/api/fUTF8">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fUTF8.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#MethodtoFunctionMapping">Method to Function Mapping</a></li>
+<li><a href="#CleaningStringsSecurity">Cleaning Strings (Security)</a></li>
+</ul>
+</div>
+
+<p>
+The class fUTF8 is a static class that provides UTF-8 compatible versions of almost every string function that is provided with PHP. Since UTF-8 uses multiple bytes of data for some characters and the built-in PHP string functions are built to work with single-byte encodings, many of the PHP string functions will perform incorrectly on UTF-8 strings.
+</p>
+
+<p>
+There is a PHP extension called <a href="http://php.net/mbstring">mbstring</a> that is designed for dealing with multi-byte string encodings, however it is not installed by default, does not include many commonly used functions, and contains some bugs. The fUTF8 class will use the mbstring extension for performance benefits in appropriate situations if it is installed.
+</p>
+
+<h2 id="MethodtoFunctionMapping">Method to Function Mapping</h2>
+
+<p>
+The table below contains a list of the built-in PHP string functions with the equivalent fUTF8 method beside it. Any additional features or differences will also be listed.
+</p>
+<table><tbody>
+<tr>
+<td><strong>PHP Function</strong></td>
+<td><strong>!fUTF8 Method</strong></td>
+<td><strong>Differences</strong></td>
+</tr>
+<tr>
+<td><a href="http://php.net/chr"><code>chr()</code></a></td>
+<td><a href="/api/fUTF8#chr"><code>chr()</code></a></td>
+<td>Accepts U+hex or decimal Unicode code point instead of ASCII decimal value</td>
+</tr>
+<tr>
+<td><a href="http://php.net/explode"><code>explode()</code></a></td>
+<td><a href="/api/fUTF8#explode"><code>explode()</code></a></td>
+<td>Parameter order is switched to <code>$string</code>, <code>$delimeter</code> - also accepts <code>NULL</code> delimeter to explode into characters</td>
+</tr>
+<tr>
+<td><a href="http://php.net/trim"><code>ltrim()</code></a></td>
+<td><a href="/api/fUTF8#ltrim"><code>ltrim()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/ord"><code>ord()</code></a></td>
+<td><a href="/api/fUTF8#ord"><code>ord()</code></a></td>
+<td>Returns U+hex Unicode code point instead of ASCII decimal value</td>
+</tr>
+<tr>
+<td><a href="http://php.net/rtrim"><code>rtrim()</code></a></td>
+<td><a href="/api/fUTF8#rtrim"><code>rtrim()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/str_ireplace"><code>str_ireplace()</code></a></td>
+<td><a href="/api/fUTF8#ireplace"><code>ireplace()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/str_pad"><code>str_pad()</code></a></td>
+<td><a href="/api/fUTF8#pad"><code>pad()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/str_replace"><code>str_replace()</code></a></td>
+<td><a href="/api/fUTF8#replace"><code>replace()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/strcasecmp"><code>strcasecmp()</code></a></td>
+<td><a href="/api/fUTF8#icmp"><code>icmp()</code></a></td>
+<td>Letters that are ASCII letters with diacritics are sorted right after the base ASCII letter</td>
+</tr>
+<tr>
+<td><a href="http://php.net/strcmp"><code>strcmp()</code></a></td>
+<td><a href="/api/fUTF8#cmp"><code>cmp()</code></a></td>
+<td>Letters that are ASCII letters with diacritics are sorted right after the base ASCII letter</td>
+</tr>
+<tr>
+<td><a href="http://php.net/stripos"><code>stripos()</code></a></td>
+<td><a href="/api/fUTF8#ipos"><code>ipos()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/stristr"><code>stristr()</code></a></td>
+<td><a href="/api/fUTF8#istr"><code>istr()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/strlen"><code>strlen()</code></a></td>
+<td><a href="/api/fUTF8#len"><code>len()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/strnatcasecmp"><code>strnatcasecmp()</code></a></td>
+<td><a href="/api/fUTF8#inatcmp"><code>inatcmp()</code></a></td>
+<td>Letters that are ASCII letters with diacritics are sorted right after the base ASCII letter</td>
+</tr>
+<tr>
+<td><a href="http://php.net/strnatcmp"><code>strnatcmp()</code></a></td>
+<td><a href="/api/fUTF8#natcmp"><code>natcmp()</code></a></td>
+<td>Letters that are ASCII letters with diacritics are sorted right after the base ASCII letter</td>
+</tr>
+<tr>
+<td><a href="http://php.net/strpos"><code>strpos()</code></a></td>
+<td><a href="/api/fUTF8#pos"><code>pos()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/strrev"><code>strrev()</code></a></td>
+<td><a href="/api/fUTF8#rev"><code>rev()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/strripos"><code>strripos()</code></a></td>
+<td><a href="/api/fUTF8#irpos"><code>irpos()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/strrpos"><code>strrpos()</code></a></td>
+<td><a href="/api/fUTF8#rpos"><code>rpos()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/strstr"><code>strstr()</code></a></td>
+<td><a href="/api/fUTF8#str"><code>str()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/strtolower"><code>strtolower()</code></a></td>
+<td><a href="/api/fUTF8#lower"><code>lower()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/strtoupper"><code>strtoupper()</code></a></td>
+<td><a href="/api/fUTF8#upper"><code>upper()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/substr"><code>substr()</code></a></td>
+<td><a href="/api/fUTF8#sub"><code>sub()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/trim"><code>trim()</code></a></td>
+<td><a href="/api/fUTF8#trim"><code>trim()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/ucfirst"><code>ucfirst()</code></a></td>
+<td><a href="/api/fUTF8#ucfirst"><code>ucfirst()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/ucwords"><code>ucwords()</code></a></td>
+<td><a href="/api/fUTF8#ucwords"><code>ucwords()</code></a></td>
+</tr>
+<tr>
+<td><a href="http://php.net/wordwrap"><code>wordwrap()</code></a></td>
+<td><a href="/api/fUTF8#wordwrap"><code>wordwrap()</code></a></td>
+</tr>
+</tbody></table>
+
+<h2 id="CleaningStringsSecurity">Cleaning Strings (Security)</h2>
+
+<p>
+Due to the way that UTF-8 is implemented, certain character combinations are not allowed. Allowing such invalid data into a system could easily lead to all sorts of bugs with character parsing. To solve this issue, the <a href="/api/fUTF8#clean"><code>clean()</code></a> method will remove any malformed UTF-8 characters from a string.
+</p>
+
+<p>
+This method should be used when importing data into a system from an external data source that may contain invalid data. <em>Please note that <a href="/api/fRequest#get">fRequest::get()</a> and <a href="/api/fCookie#get">fCookie::get()</a> automatically call this method, so it is not necessary to clean it again.</em>
+</p>
+<pre class="block php"><code>$cleaned_string = fUTF8::clean($imported_string);</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

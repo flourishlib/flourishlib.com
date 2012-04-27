@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Security – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="Security">Security</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Cross-SiteRequestForgery">Cross-Site Request Forgery</a></li>
+<li><a href="#Cross-SiteScripting">Cross-Site Scripting</a></li>
+<li><a href="#SessionFixation">Session Fixation</a></li>
+<li><a href="#Cross-SiteSessionTransfer">Cross-Site Session Transfer</a></li>
+<li><a href="#Pseudo-RandomNumberGeneratorAttacks">Pseudo-Random Number Generator Attacks</a></li>
+<li><a href="#SQLInjection">SQL Injection</a></li>
+<li><a href="#EmailInjection">Email Injection</a></li>
+<li><a href="#PathDisclosure">Path Disclosure</a></li>
+<li><a href="#PathTraversal">Path Traversal</a></li>
+<li><a href="#RequestValueFixation">Request Value Fixation</a></li>
+<li><a href="#InvalidCharacterEncoding">Invalid Character Encoding</a></li>
+<li><a href="#FileUploads">File Uploads</a></li>
+<li><a href="#PasswordHashing">Password Hashing</a></li>
+<li><a href="#MagicQuotesandRegisterGlobals">Magic Quotes and Register Globals</a></li>
+<li><a href="#AdditionalSecurityResources">Additional Security Resources</a></li>
+</ul>
+</div>
+
+<p>
+Security is an important topic when creating web sites. Quite a few techniques exist to compromise web servers, web browsers, or peoples information. This page serves as an overview of the various attacks that Flourish helps to prevent. While technology can help to keep sites secure, the most important part of the equation is that developers know what they are up against.
+</p>
+
+<h2 id="Cross-SiteRequestForgery">Cross-Site Request Forgery</h2>
+
+<p>
+CSRF attacks consist of malicious websites taking advantage of users being logged in to multiple web sites in a single browser, thereby allowing them to direct users to perform password protected tasks in an unauthorized manner. The <a href="/docs/fRequest">fRequest</a> class provides functionality to <a href="/docs/fRequest#PreventingCSRFSecurity">prevent CSRF attacks</a>.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fRequest#PreventingCSRFSecurity">fRequest: Preventing CSRF</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Cross-site_request_forgery">http://en.wikipedia.org/wiki/Cross-site_request_forgery</a></li>
+<li><a href="http://shiflett.org/articles/cross-site-request-forgeries">http://shiflett.org/articles/cross-site-request-forgeries</a></li>
+<li><a href="http://shiflett.org/articles/foiling-cross-site-attacks">http://shiflett.org/articles/foiling-cross-site-attacks</a></li>
+</ul>
+
+<h2 id="Cross-SiteScripting">Cross-Site Scripting</h2>
+
+<p>
+Cross-site scripting (or XSS) is an attack that injects malicious code into a normally &quot;safe&quot; page. This usually takes the form of a link containing malicious content which is embedded in a page or by allowing posting of permanent data (such as blog comments) that gets embedded in the page. To prevent this type of attack, all input should be filtered and all output should be escaped. The <a href="/api/fRequest#get">fRequest::get()</a> method allows for filtering input data with typecasting, while <a href="/api/fHTML#escape">fHTML::escape()</a> ensures that all output is properly escaped for output in HTML.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fRequest#InputFilteringbyTypecastingSecurity">fRequest: Input Filtering
+   by Typecasting</a></li>
+<li><a href="/docs/fHTML#EscapingContentSecurity">fHTML: Escaping Content</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Cross-site_scripting">http://en.wikipedia.org/wiki/Cross-site_scripting</a></li>
+<li><a href="http://shiflett.org/articles/foiling-cross-site-attacks">http://shiflett.org/articles/foiling-cross-site-attacks</a></li>
+</ul>
+
+<h2 id="SessionFixation">Session Fixation</h2>
+
+<p>
+Session fixation is when an attacker tricks a user into using a known session id to log into a website and then uses the same session id to access their account. The <a href="/docs/fSession">fSession</a> class helps prevent this by setting the appropriate ini settings so that session ids can only be specified in cookies and not in the query string. The <a href="/docs/fAuthorization">fAuthorization</a> class takes it a step further and regenerates the session identifier whenever any new user information (such as ACLs or authorization level) is set.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fAuthorization#PreventingPrivilegeEscalationSecurity">fAuthorization:
+   Preventing Privilege Escalation</a></li>
+<li><a href="/docs/fSession#PreventingSessionFixationSecurity">fSession: Preventing
+   Session Fixation</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Session_fixation">http://en.wikipedia.org/wiki/Session_fixation</a></li>
+<li><a href="http://shiflett.org/articles/session-fixation">http://shiflett.org/articles/session-fixation</a></li>
+</ul>
+
+<h2 id="Cross-SiteSessionTransfer">Cross-Site Session Transfer</h2>
+
+<p>
+When multiple sites on a single server share the same directory to store their session files, it is possible that a user could log into a legitimate account on one site and then copy and paste the session id into the other sites session id cookie. This type of attack would allow an attacker to gain access to information of the second site as long as the <code>$_SESSION</code> data is structured the same as the first site.
+</p>
+
+<p>
+The easiest way to prevent such an attack is to have each site use a custom directory to store session files by calling the static method <a href="/api/fSession#setPath">fSession::setPath()</a>.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fSession#ConfigurationSecurity">fSession: Configuration</a></li>
+<li><a href="http://www.suspekt.org/wp-content/uploads/2008/09/lesserknownsecurityproblemsinphpapplications.pdf">Slides from Stefan Essers talk &quot;Lesser Known Security Problems in PHP
+   Applications&quot;</a> </li>
+</ul>
+
+<h2 id="Pseudo-RandomNumberGeneratorAttacks">Pseudo-Random Number Generator Attacks</h2>
+
+<p>
+The pseudo-random number generator (PRNG) built into PHP includes a fairly secure seeding system to make sure that the number generated are hard to guess or replicate. Unfortunately the functions <a href="http://php.net/srand"><code>srand()</code></a> and <a href="http://php.net/mt_srand"><code>mt_srand()</code></a> allow seeding the <a href="http://php.net/rand"><code>rand()</code></a> and <a href="http://php.net/mt_rand"><code>mt_rand()</code></a> functions, and the seeds used are usually very insecure and can be calculated by attackers. It is also possible via a number of different techniques for an attacker to manage to reset the seed to a known value.
+</p>
+
+<p>
+The <a href="/docs/fCryptography">fCryptography</a> class provides functionality where the OS random number generator (<code>/dev/urandom</code> on BSD/Linux and the CAPICOM object on Windows) is used to seed the PRNG. If neither of those sources is available, a combination of a number of other attributes about the current server and install are used to create a seed value. Because of this functionality, the static method <a href="/api/fCrytography#random">fCrytography::random()</a> should always be used for random numbers and the static method <a href="/api/fCryptography#randomString">fCryptography::randomString()</a> should always be used for random strings.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fCryptography#RandomNumbersandStrings">fCryptography: Random Numbers
+   and Strings</a></li>
+<li><a href="http://www.suspekt.org/2008/08/17/mt_srand-and-not-so-random-numbers/">http://www.suspekt.org/2008/08/17/mt_srand-and-not-so-random-numbers/</a></li>
+</ul>
+
+<h2 id="SQLInjection">SQL Injection</h2>
+
+<p>
+SQL injection is a technique where an attacker passes in a value into a site that includes SQL commands where the application is normally expecting a value to use in a query. Suppose there is a site that accepts a blog id in the query string of the blog page:
+</p>
+<pre><code>http://example.com/blogs.php?blog_id=25</code></pre>
+
+<p>
+ This value would then be used in the SQL query to look up the appropriate blog:
+</p>
+<pre class="block php"><code>$sql = &quot;SELECT * FROM blogs WHERE blog_id = '&quot; . $_GET['blog_id'] . &quot;'&quot;;</code></pre>
+
+<p>
+ which would create the following SQL statement:
+</p>
+<pre class="block sql"><code>SELECT * FROM blogs WHERE blog_id = '2'</code></pre>
+
+<p>
+ If an attacker were to use a different value for the blog id, such as below, they could execute arbitrary SQL statements.
+</p>
+<pre><code>http://example.com/blogs.php?blog_id=2'%3B%20DELETE%20FROM%20blogs%3B</code></pre>
+
+<p>
+ which would end up creating the following SQL statement:
+</p>
+<pre class="block sql"><code>SELECT * FROM blogs WHERE blog_id = '2'; DELETE FROM blogs;</code></pre>
+
+<p>
+ The way to prevent such attacks is to always escape data that is being placed into a SQL query. The <a href="/docs/fDatabase">fDatabase</a> class is built with this in mind, providing the static method <a href="/api/fDatabase#escape">fDatabase::escape()</a> which allows escaping of data based on its type. In addition, each of the four different query methods allow using the same escape syntax.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fDatabase#EscapingDataSecurity">fDatabase: Escaping Data</a></li>
+<li><a href="http://en.wikipedia.org/wiki/SQL_injection">http://en.wikipedia.org/wiki/SQL_injection</a></li>
+</ul>
+
+<h2 id="EmailInjection">Email Injection</h2>
+
+<p>
+Email injection is an attack similar to SQL injection, except that the malicious content must be placed in the <code>$additional_headers</code> parameter of the <a href="http://php.net/function.mail"><code>mail()</code></a> function. Since the <code>From:</code> header is added to an email using this additional headers parameter, it is possible to an attacker to set additional headers or even inject full messages if user submitted data is included in the <code>From:</code> header.
+</p>
+
+<p>
+Below is an example of code that would be vulnerable to an email injection attack:
+</p>
+<pre class="block php"><code>$headers = &quot;From: &quot; . $_POST['name'] . &quot; &lt;&quot; . $_POST['email'] . &quot;&gt;&quot;;
+mail($to, $subject, $body, $headers);</code></pre>
+
+<p>
+ If an attacker were to include line breaks in the name or email fields, they could add additional headers including <code>To:</code>, <code>Cc:</code>, <code>Bcc:</code>, <code>Subject:</code>, and even more like setting up a mime type. PHP automatically prevents line break characters in the <code>$subject</code> parameter of <code>mail()</code>, while the <code>$to</code> parameter requires a valid email address and the <code>$message</code> parameter would just display the headers as normal text content.
+</p>
+
+<p>
+Both the <a href="/docs/fValidation">fValidation</a> and <a href="/docs/fEmail">fEmail</a> classes contain features to help prevent email injection attacks. The <a href="/docs/fValidation">fValidation</a> class includes methods to check fields for being valid email addresses and to make sure they dont include line breaks. The <a href="/docs/fEmail">fEmail</a> class provides full prevention against attacks by validating each email address and name (to, from, reply to, etc) plus the subject to ensure they dont contain vulnerabilities.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fEmail">fEmail</a></li>
+<li><a href="/docs/fValidation">fValidation</a></li>
+<li><a href="http://en.wikipedia.org/wiki/E-mail_injection">http://en.wikipedia.org/wiki/E-mail_injection</a></li>
+</ul>
+
+<h2 id="PathDisclosure">Path Disclosure</h2>
+
+<p>
+Error messages and unhandled exception messages often include full file or directory paths to documents on your server. During development it is useful to display this information so that debugging is easier. Once a site has moved to its production environment, however, these file and directory paths can be a security risk. While not a risk in an of themselves, the information is useful when combined with other attacks.
+</p>
+
+<p>
+Say that a site is on a shared server with a custom session path to prevent cross-site session transfer attacks. Obviously the directory has to be readable and writable by the web server, otherwise the session files would not be saved. If the attacker was able to find the session path via an error or exception message, they could then set their application to use the same session path and execute an attack.
+</p>
+
+<p>
+To prevent this information from leaking, error and exception messages should be routed to a log file or an email address once a site is in production. The static methods <a href="/api/fCore#enableErrorHandling">fCore::enableErrorHandling()</a> and <a href="/api/fCore#enableExceptionHandling">fCore::enableExceptionHandling()</a> provide such functionality, plus more.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fCore#ErrorExceptionHandling">fCore: Error/Exception Handling</a></li>
+</ul>
+
+<h2 id="PathTraversal">Path Traversal</h2>
+
+<p>
+Path traversal is an attack in which a script that uses user input to access a file is fed a path outside of the intended directory. Suppose the following URL allows downloading files from a directory:
+</p>
+<pre><code>http://example.com/download.php?file=image.gif</code></pre>
+
+<p>
+And that <code>download.php</code> contained code such as:
+</p>
+<pre class="block php"><code>$path   = '/path/to/download/dir/' . $_GET['file'];
+$handle = fopen($path, 'rb');
+fpassthru($handle);
+fclose($handle);
+exit;</code></pre>
+
+<p>
+ If a user specified the following URL, they could access the file <code>/etc/passwd</code> since they are using the <code>../</code> notation for the parent directory:
+</p>
+<pre><code>http://example.com/download.php?file=..%2F..%2F..%2F..%2Fetc%2Fpasswd</code></pre>
+
+<p>
+ The best way to prevent such an attack is to not accept filenames from users, but instead accept an identifer which can be mapped to a filename.
+</p>
+<pre class="block php"><code>$valid_files = array(
+    '1' =&gt; 'image.gif',
+    '2' =&gt; 'image.jpg',
+    '3' =&gt; 'image.png'
+);
+
+$file = $_GET['file'];
+
+if (isset($valid_files[$file])) {
+    // Handle the error
+}
+
+$path = '/path/to/download/dir/' . $file;</code></pre>
+
+<p>
+ Similarly, another option is to create some sort of whitelist of valid files and make sure the file requested is in the whitelist.
+</p>
+
+<p>
+If it is not possible to create a whitelist, the function <a href="http://php.net/realpath"><code>realpath()</code></a> will return the canonical form of a path, resolving any <code>../</code> paths and following any symlinks. For the example above, <code>realpath()</code> would have returned <code>/etc/passwd</code>. Thus, checking the output of <code>realpath()</code> against the valid file directory can prevent unauthorized filesystem access:
+</p>
+<pre class="block php"><code>$dir  = '/path/to/download/dir/';
+$path = realpath($dir . $_GET['file']);
+
+if (strpos($path, $dir) !== 0 || $path == $dir) {
+    // Handle the error
+}</code></pre>
+
+<p>
+ The <a href="/docs/fFile">fFile</a> class can be useful in validating files since it will throw an <a href="/docs/fValidation">fValidation</a> exception if the file is not found and will return the output of <code>realpath()</code> from the method <a href="/api/fFile#getPath">fFile::getPath()</a>.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fFile">fFile</a></li>
+<li><a href="http://www.owasp.org/index.php/Path_Traversal">http://www.owasp.org/index.php/Path_Traversal</a></li>
+</ul>
+
+<h2 id="RequestValueFixation">Request Value Fixation</h2>
+
+<p>
+Request value fixation is an attack that is only effective against script that use the <code>$_REQUEST</code> superglobal. The <code>$_REQUEST</code> superglobal pulls in values from <code>$_GET</code>, <code>$_POST</code>, and <code>$_COOKIE</code>, in that order. This means that any value specified in a cookie with the same key as a value passed in by a query string will always resolve to the cookie value.
+</p>
+
+<p>
+This type of attack would require that a users cookie be compromised, but could cause serious issues. Because of this vulnerability, the <code>$_REQUEST</code> superglobal should not be used. The <a href="/docs/fRequest">fRequest</a> class provides functionality to retrieve values from both the <code>$_GET</code> and <code>$_POST</code> superglobals (in that order) and provides additional useful features.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fRequest#GettingValues">fRequest: Getting Values</a></li>
+<li><a href="http://kuza55.blogspot.com/2006/03/request-variable-fixation.html">http://kuza55.blogspot.com/2006/03/request-variable-fixation.html</a></li>
+<li><a href="http://www.suspekt.org/2008/10/01/php-53-and-delayed-cross-site-request-forgerieshijacking/">http://www.suspekt.org/2008/10/01/php-53-and-delayed-cross-site-request-forgerieshijacking/</a></li>
+</ul>
+
+<h2 id="InvalidCharacterEncoding">Invalid Character Encoding</h2>
+
+<p>
+Some multibyte character encodings can cause issues when escaping data, especially when creating SQL statements. The issues is that some character encodings use the <code>\</code> character as a second, third or fourth byte in a multibyte sequence, however that can be combined with other characters to cause escaping to be done incorrectly.
+</p>
+
+<p>
+UTF-8, the character encoding that Flourish uses for everything, does not suffer from this type of vulnerability. As a precaution, however, the static method <a href="/api/fRequest#get">fRequest::get()</a> filters all incoming content through <a href="/api/fUTF8#clean">fUTF8::clean()</a> to ensure that no malformed UTF-8 characters are present. In a similar sense, all data imported into the system should be converted to UTF-8, and cleaned to make sure no invalid characters exist.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fRequest#SpecialDataTypeHandling">fRequest: Special Data Type Handling</a></li>
+<li><a href="/docs/fUTF8#CleaningStringsSecurity">fUTF8: Cleaning Strings</a></li>
+<li><a href="http://shiflett.org/blog/2006/jan/addslashes-versus-mysql-real-escape-string">http://shiflett.org/blog/2006/jan/addslashes-versus-mysql-real-escape-string</a></li>
+<li><a href="http://www.suspekt.org/2008/09/18/slides-from-my-lesser-known-security-problems-in-php-applications-talk-at-zendcon/">http://www.suspekt.org/2008/09/18/slides-from-my-lesser-known-security-problems-in-php-applications-talk-at-zendcon/</a></li>
+</ul>
+
+<h2 id="FileUploads">File Uploads</h2>
+
+<p>
+File uploads can clearly be a security vulnerability if no filtering is done of user input. Malicious users could upload executables containing viruses, trojans, or any other sort of harmful content. Because of this, it is best practice to limit the accepted file types to those that are suitable for the task at hand.
+</p>
+
+<p>
+The <code>$_FILES</code> superglobal that PHP provides to access file uploads includes a <code>type</code> key which contains the mime type of the file. This mime type, however, is specified by the user and should not be trusted for filtering nefarious files. The <a href="/docs/fUpload">fUpload</a> class, however, includes functionality that filters uploaded files by their mime type, with the mime type checking being done on the server side.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fUpload#SettingOptionsSecurity">fUpload: Setting Options</a></li>
+</ul>
+
+<h2 id="PasswordHashing">Password Hashing</h2>
+
+<p>
+Users' passwords should never be stored in plain text. As much as there is a desire to provide functionality such as &quot;email me my password,&quot; the benefit is not worth the risk of an attacker obtaining a list of users and their passwords. Instead, all user passwords should be hashed and then functionality such as &quot;reset my password&quot; should be implemented.
+</p>
+
+<p>
+It is also important to understand that simply hashing a password using <a href="http://php.net/md5"><code>md5()</code></a> or <a href="http://php.net/sha1"><code>sha1()</code></a> is not enough to provide reasonable security. Before hashing the password, it should be combined with a salt to provide extra security and protect against certain forms of attack. The <a href="/docs/fCryptography">fCryptography</a> class provides secure password hashing functionality via the static methods <a href="/api/fCryptography#hashPassword">fCryptography::hashPassword()</a> and <a href="/api/fCryptography#checkPasswordHash">fCryptography::checkPasswordHash()</a>.
+</p>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fCryptography#PasswordHashing">fCryptography: Password Hashing</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Key_strengthening">http://en.wikipedia.org/wiki/Key_strengthening</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Password_cracking">http://en.wikipedia.org/wiki/Password_cracking</a></li>
+<li><a href="http://phpsec.org/articles/2005/password-hashing.html">http://phpsec.org/articles/2005/password-hashing.html</a></li>
+<li><a href="http://www.securityfocus.com/blogs/262">http://www.securityfocus.com/blogs/262</a></li>
+</ul>
+
+<h2 id="MagicQuotesandRegisterGlobals">Magic Quotes and Register Globals</h2>
+
+<p>
+Magic quotes and register globals are two features built into PHP that can cause security issues and affect how user input is treated in PHP.
+</p>
+
+<p>
+Magic quotes (specifically the ini setting <code>magic_quotes_gpc</code>) tries to prevent SQL injection attacks by automatically escaping all <code>'</code>, <code>&quot;</code>, <code>\</code> and <code>NULL</code> characters with a <code>\</code>. This affects all data in the <code>$_GET</code>, <code>$_POST</code> and <code>$_COOKIE</code> superglobals and is enabled by default in new PHP installations. The <a href="/api/fRequest#get">fRequest::get()</a> and <a href="/api/fCookie#get">fCookie::get()</a> static methods will automatically detect if <code>magic_quotes_gpc</code> is turned on and will remove the extra escape <code>\</code> characters.
+</p>
+
+<p>
+Register globals is a feature where all data from the <code>$_GET</code>, <code>$_POST</code> and <code>$_COOKIE</code> superglobals are exported into the global scope as variables. This can very quickly lead to injection vulnerabilities and this feature should never be enabled. Register globals has been disabled by default since PHP version
+</p>
+
+<ol>
+<li>2.0.</li>
+</ol>
+
+<p>
+<strong>More info:</strong>
+</p>
+
+<ul>
+<li><a href="/docs/fRequest#GettingValues">fRequest: Getting Values</a></li>
+<li><a href="/docs/fCookie#GettingValues">fCookie: Getting Values</a></li>
+<li><a href="http://php.net/security.magicquotes.disabling">http://php.net/security.magicquotes.disabling</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Magic_quotes">http://en.wikipedia.org/wiki/Magic_quotes</a></li>
+<li><a href="http://php.net/ini.core#ini.register-globals">http://php.net/ini.core#ini.register-globals</a></li>
+<li><a href="http://php.net/register_globals">http://php.net/register_globals</a></li>
+</ul>
+
+<h2 id="AdditionalSecurityResources">Additional Security Resources</h2>
+
+<p>
+The following web sites and blogs have a wealth of information about web/PHP security and best practices.
+</p>
+
+<ul>
+<li><a href="http://shiflett.org/articles">http://shiflett.org/articles</a></li>
+<li><a href="http://blog.php-security.org/">http://blog.php-security.org/</a></li>
+<li><a href="http://www.suspekt.org/category/security/">http://www.suspekt.org/category/security/</a></li>
+<li><a href="http://www.owasp.org/index.php/Category:Attack">http://www.owasp.org/index.php/Category:Attack</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Category:Web_security_exploits">http://en.wikipedia.org/wiki/Category:Web_security_exploits</a></li>
+</ul>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

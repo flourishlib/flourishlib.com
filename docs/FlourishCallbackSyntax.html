@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>FlourishCallbackSyntax – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="FlourishCallbackSyntax">Flourish Callback Syntax</h1>
+
+<p>
+In most programming languages where functions are first-class members, the syntax for a function or method callback is simply the function/method name without the parenthesis. The below snippet of javascript defines a function and then uses a callback for setTimeout to cause the function to be executed at a later time.
+</p>
+<pre class="block js"><code>function foo() {
+    // Do stuff
+}
+setTimeout(foo, 100);</code></pre>
+
+<p>
+ Unfortunately PHP does not treat function at first-class members of the language. It uses strings and arrays for function and method callbacks respectively. In an attempt to make the callback syntax a little more intuitive, Flourish uses class constants and the <code>__get()</code> magic method to make javascript-style callbacks.
+</p>
+
+<p>
+Flourish defines class constants with the same name as all static methods:
+</p>
+<pre class="block php"><code>// Uppercase a UTF-8 string
+$string = fUTF8::upper($string);
+
+// Uppercase an array of UTF-8 strings (PHP 5.2 only)
+$strings = array_map(fUTF8::upper, $strings);</code></pre>
+
+<p>
+ The only caveat with these class constants is that in PHP 5.1 they need to be passed to <a href="/api/fCore#callback">fCore::callback()</a> if they are going to be used with built-in PHP functions. This is because the constants are the string-style static method callbacks, which were added in PHP 5.2. The method <a href="/api/fCore#callback">fCore::callback()</a> translates them into the array-style syntax that works in 5.1.
+</p>
+<pre class="block php"><code>// PHP 5.1 compatible callbacks for PHP functions
+$string = array_map(fCore::callback(fUTF8::upper), $strings);</code></pre>
+
+<p>
+ For instance method callbacks, Flourish uses the <code>__get()</code> magic method to create the appropriate array-syntax callback for the object being called.
+</p>
+<pre class="block php"><code>$ten_dollars = new fMoney(10);
+echo $ten_dollars-&gt;format();
+
+// Callback syntax for format
+fCore::call($ten_dollars-&gt;format);</code></pre>
+
+<p>
+ Both the instance and static method callback syntaxes work on every method of every Flourish class.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

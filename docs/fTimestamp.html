@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fTimestamp – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fTimestamp">fTimestamp</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fTimestamp">Class Documentation</a></strong></li>
+<li><a href="/api/fTimestamp">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fTimestamp.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#DefaultTimezone">Default Timezone</a></li>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#Modification">Modification</a></li>
+<li><a href="#Adjustments">Adjustments</a></li>
+<li><a href="#Formatting">Formatting</a></li>
+<li><a href="#DefiningFormats">Defining Formats</a></li>
+<li><a href="#Comparing">Comparing</a></li>
+<li><a href="#FuzzyDifferences">Fuzzy Differences</a></li>
+<li><a href="#Localization">Localization</a></li>
+</ul>
+
+<h2 id="DateTimeClasses">Date/Time Classes </h2>
+
+<ul>
+<li><a href="/docs/fDate">fDate</a></li>
+<li><a href="/docs/fTime">fTime</a></li>
+<li><strong>fTimestamp</strong></li>
+</ul>
+
+<h2 id="ValueObjects">Value Objects </h2>
+
+<ul>
+<li><a href="/docs/fDate">fDate</a></li>
+<li><a href="/docs/fMoney">fMoney</a></li>
+<li><a href="/docs/fNumber">fNumber</a></li>
+<li><a href="/docs/fTime">fTime</a></li>
+<li><strong>fTimestamp</strong></li>
+</ul>
+</div>
+
+<p>
+The fTimestamp class is a <a href="/docs/ValueObjects">value object</a> representation of a date/time. One of the primary attributes of the object is that its value can not be changed, but instead a new object is created. This object has full support for timezones.
+</p>
+
+<p>
+This class is built on top of the PHP date/time functions and can only handle dates ranging from 19012038.
+</p>
+
+<h2 id="DefaultTimezone">Default Timezone</h2>
+
+<p>
+The fTimestamp class is fully compatible with timezones thanks the the great changes in PHP 5.1. Classically timezones were represented by short abbreviations such as <code>EST</code>, <code>GMT</code>, <code>PST</code>, etc. To help remove abiguity, PHP now recommends using the <a href="http://en.wikipedia.org/wiki/List_of_zoneinfo_timezones">zoneinfo timezone names</a>.
+</p>
+
+<p>
+Due to the revamped timezone support in PHP 5.1, it is now necessary to define the default timezone. This is done to ensure the proper timezone is being used and also prevent strict error reporting messages from appearing. fTimestamp provides two methods for setting and getting the default timezone, <a href="/api/fTimestamp#setDefaultTimezone"><code>setDefaultTimezone()</code></a> and <a href="/api/fTimestamp#getDefaultTimezone"><code>getDefaultTimezone()</code></a>.
+</p>
+<pre class="block php"><code>// Set the default timezone to New York time
+fTimestamp::setDefaultTimezone('America/New_York');
+
+echo fTimestamp::getDefaultTimezone();
+// Output: America/New_York</code></pre>
+
+<p>
+ There will be more timezone discussion throughout the rest of this document in the relevant places.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+The fTimestamp constructor takes two parameters, including <code>$datetime</code> and <code>$timezone</code>. <code>$datetime</code> is a string, object (with a <code>__toString()</code> method) or integer representing a date/time. For strings and objects, any format accepted by <a href="http://php.net/strtotime"><code>strtotime()</code></a> will work. Integers are interpreted as a unix timestamp. <code>$timezone</code> is optional and if passed should be a string with a zoneinfo timezone name. This timezone will be used throughout the life of the timestamp. 
+</p>
+<pre class="block php"><code>// Date/times without a timezone
+$timestamp1 = new fTimestamp('today');
+$timestamp2 = new fTimestamp('now');
+$timestamp3 = new fTimestamp('3 Feb 2008 5:12 pm');
+$timestamp4 = new fTimestamp('8 am');
+$timestamp5 = new fTimestamp('next wednesday');
+$timestamp6 = new fTimestamp(1223926420);
+
+// Date/times with a timezone
+$timestamp7 = new fTimestamp('2008-03-01 1 pm', 'America/New_York');
+$timestamp8 = new fTimestamp('2008-03-01 1 pm', 'America/Los_Angeles');
+$timestamp9 = new fTimestamp('2008-03-01 1 pm', 'Europe/London');</code></pre>
+
+<h2 id="Modification">Modification</h2>
+
+<p>
+Rather than allowing an fTimestamp object value to be modified, which can create issues since objects are passed by reference, all changes to a timestamp create a new object.
+</p>
+
+<p>
+Usually when modifying a timestamp, only one or two components (such as month, year, hour or minute) of the timestamp will change. The <a href="/api/fTimestamp#modify"><code>modify()</code></a> method leverages the formatting codes from the <a href="http://php.net/function.date"><code>date()</code></a> function to keep parts of the existing timestamp while replacing others.
+</p>
+
+<p>
+Here are some examples of <code>modify()</code>:
+</p>
+<pre class="block php"><code>// The new timestamps year would be 2007 while the rest would be the same
+$new_timestamp = $timestamp1-&gt;modify('2007-m-d H:i:s');
+
+// The new timestamp would be the 1st day (Monday) of the 9th week of the year
+$new_timestamp = $timestamp2-&gt;modify('Y-\W9-1 00:00:00');
+
+// The new timestamp would be moved to the beginning of the hour
+$new_timestamp = $timestamp3-&gt;modify('Y-m-d H:00:00');
+
+// The new timestamp would be moved to the end of the hour
+$new_timestamp = $timestamp4-&gt;modify('Y-m-d H:59:59');</code></pre>
+
+<p>
+ It is also possible to set the timezone of the new timestamp. The timezone can be passed as the optional second parameter to <code>modify()</code>. If no timezone is specified, the new timestamp will have the same timezone as the original.
+</p>
+<pre class="block php"><code>$timestamp = new fTimestamp('now', 'America/New_York');
+
+// This new timestamp is different by three hours due to the timezone change
+$new_timestamp = $timestamp-&gt;modify('c', 'America/Los_Angeles');</code></pre>
+
+<h2 id="Adjustments">Adjustments</h2>
+
+<p>
+Occasionally you may have the need to adjust a timestamp. The <a href="/api/fTimestamp#adjust"><code>adjust()</code></a> method takes a single parameter which can contain any relative time measurement that <a href="http://php.net/strtotime"><code>strtotime()</code></a> accepts. Since fTimestamp is a value object, a new object is returned with the adjusted value. Here are some examples:
+</p>
+<pre class="block php"><code>$new_timestamp = $timestamp1-&gt;adjust('tomorrow');
+$new_timestamp = $timestamp2-&gt;adjust('+1 day');
+$new_timestamp = $timestamp3-&gt;adjust('-2 years +1 week +5 hours');
+$new_timestamp = $timestamp4-&gt;adjust('next wednesday');
+$new_timestamp = $timestamp5-&gt;adjust('+1 hour');
+$new_timestamp = $timestamp6-&gt;adjust('-2 hours +5 minutes +3 seconds');</code></pre>
+
+<p>
+ Adjustments can also be adjustments of timezone. If a valid timezone is passed, the actual date/time will not be changed, however the date/time will appear different from <a href="/api/fTimestamp#format"><code>format()</code></a>.
+</p>
+<pre class="block php"><code>$new_timestamp = $timestamp1-&gt;adjust('America/Los_Angeles');
+
+// Since the unix timestamp is always in UTC, these will be equal
+if ($new_timestamp-&gt;format('U') == $timestamp1-&gt;format('U')) {
+    echo 'The date/time has not changed, but the timezone has';
+}</code></pre>
+
+<h2 id="Formatting">Formatting</h2>
+
+<p>
+To format the timestamp, simply call the <a href="/api/fTimestamp#format"><code>format()</code></a> method with any valid formatting string from <a href="http://php.net/date"><code>date()</code></a>. Here are some examples:
+</p>
+<pre class="block php"><code>// Normal date/time formatting
+echo $timestamp1-&gt;format('Y-m-d H:i:s');
+echo $timestamp2-&gt;format('n/j/y g:ia');
+
+// Using format to retrieve the timezone
+echo $timestamp3-&gt;format('e');</code></pre>
+
+<h2 id="DefiningFormats">Defining Formats</h2>
+
+<p>
+When dealing with date across a site or application, it is easy to create inconsistent formatting. In an effort to encourage consistency and at the same time prevent the need to clutter the global namespace with constants, the <a href="/api/fTimestamp#defineFormat"><code>defineFormat()</code></a> static method allows for creating named formats for use with the <a href="/api/fTimestamp#format"><code>format()</code></a> method and the method <a href="/api/fTime#format">fTime::format()</a> and <a href="/api/fDate#format">fDate::format()</a>.
+</p>
+
+<p>
+Definition of the formats would logically go in a configuration file. <code>defineFormat()</code> takes two parameters, the <code>$name</code> and the <code>$formatting_string</code>.
+</p>
+<pre class="block php"><code>fTimestamp::defineFormat('list_date', 'n/j/y');
+fTimestamp::defineFormat('list_time', 'g:ia');</code></pre>
+
+<p>
+ Once defined, the format names can be passed into the <code>format()</code> method of <a href="/docs/fDate">fDate</a>, <a href="/docs/fTime">fTime</a> and fTimestamp.
+</p>
+<pre class="block php"><code>echo $timestamp-&gt;format('list_date');
+echo $time-&gt;format('list_time');</code></pre>
+
+<h2 id="Comparing">Comparing</h2>
+
+<p>
+There are five different methods available to compare timestamps, <a href="/api/fTimestamp#eq"><code>eq()</code></a>, <a href="/api/fTimestamp#gt"><code>gt()</code></a>, <a href="/api/fTimestamp#gte"><code>gte()</code></a>, <a href="/api/fTimestamp#lt"><code>lt()</code></a> and <a href="/api/fTimestamp#lte"><code>lte()</code></a>. Each method optionally accepts a parameter <code>$other_timestamp</code>. If no <code>$other_timestamp</code> is specified, the timestamp is compared to the current timestamp. If <code>$other_timestamp</code> is specified, the two are compared. <code>$other_timestamp</code> accepts any valid date string that works with <a href="/api/fTimestamp#__construct"><code>__construct()</code></a>.
+</p>
+
+<p>
+Here are some examples:
+</p>
+<pre class="block php"><code>$now = new fTimestamp();
+$day_ago = new fTimestamp('-1 day');
+
+// These return TRUE
+$now-&gt;eq();
+$now-&gt;eq('now');
+$now-&gt;gt($day_ago);
+$now-&gt;gte($day_ago);
+$now-&gt;lt('+5 min');
+
+// These calls return FALSE
+$day_ago-&gt;gt($now);
+$now-&gt;lt($day_ago);
+$now-&gt;lte($day_ago);</code></pre>
+
+<h2 id="FuzzyDifferences">Fuzzy Differences</h2>
+
+<p>
+If you are looking to get a fuzzy difference between two timestamps for display, youll want to use the <a href="/api/fTimestamp#getFuzzyDifference"><code>getFuzzyDifference()</code></a> method. The first parameter, <code>$other_timestamp</code>, optionally accepts a valid timestamp descriptor that can be passed to <a href="/api/fTimestamp#__construct"><code>__construct()</code></a>. If a valid timestamp descriptor is passed, the difference will be between the two timestamps, if nothing is passed, the difference will be between the fTimestamp and the current timestamp.
+</p>
+
+<p>
+The value returned by <code>getFuzzyDifference()</code> will be a string representing the most broad time measurement between the two timestamps. In addition, if the difference is just shy of the next largest time measurement, it will be rounded up. Thus 3.5 weeks would become 1 month.
+</p>
+
+<p>
+Here are some examples to clarify. The following examples are comparing two timestamps:
+</p>
+<pre class="block php"><code>$timestamp1 = new fTimestamp('2008-01-01 8:00 am');
+$timestamp2 = new fTimestamp('2008-01-04 5:00 pm');
+
+echo $timestamp1-&gt;getFuzzyDifference($timestamp2);
+// Output: 3 days before
+
+echo $timestamp2-&gt;getFuzzyDifference('2008-01-01 8:00 am');
+// Output: 3 days after
+
+$timestamp3 = new fTimestamp('2008-01-10 1:00 am');
+
+echo $timestamp3-&gt;getFuzzyDifference($timestamp1);
+// Output: 1 week after
+
+$timestamp4 = new fTimestamp('2008-01-28 12:00pm');
+
+echo $timestamp4-&gt;getFuzzyDifference('2008-01-01 8:00 am');
+// Output: 1 month after</code></pre>
+
+<p>
+ These examples show output when comparing an fTimestamp object with the current timestamp:
+</p>
+<pre class="block php"><code>// First, lets assume the current day/time is January 1st, 2008 at 9:00 am.
+
+$timestamp1 = new fTimestamp('2008-01-01 12:00 pm');
+$timestamp2 = new fTimestamp('2008-01-09 9:00 am');
+$timestamp3 = new fTimestamp('2007-12-02 5:00 pm');
+
+echo $timestamp1-&gt;getFuzzyDifference();
+// Output: 3 hours from now
+
+echo $timestamp2-&gt;getFuzzyDifference();
+// Output: 1 week from now
+
+echo $timestamp3-&gt;getFuzzyDifference();
+// Output: 1 month ago</code></pre>
+
+<p>
+ An optional boolean parameter, <code>$simple</code>, can also be passed to <code>getFuzzyDifference()</code>. When <code>TRUE</code>, this parameter causes the method to return the difference in time, but not the direction.
+</p>
+<pre class="block php"><code>$timestamp1 = new fTimestamp('2008-01-01 8:00 am');
+$timestamp2 = new fTimestamp('2008-01-04 5:00 pm');
+
+echo $timestamp1-&gt;getFuzzyDifference($timestamp2, TRUE);
+// Output: 3 days
+
+echo $timestamp2-&gt;getFuzzyDifference('2008-01-01 8:00 am', TRUE);
+// Output: 3 days
+
+$timestamp3 = new fTimestamp('2008-01-10 1:00 am');
+
+echo $timestamp3-&gt;getFuzzyDifference($timestamp1, TRUE);
+// Output: 1 week</code></pre>
+
+<h2 id="Localization">Localization</h2>
+
+<p>
+PHP contains built-in support for formatting date and times in different languages via the <a href="http://php.net/setlocale"><code>setlocale()</code></a> function. This function, however, has a number of shortcomings including it requiring a non-threaded web server and requiring that locale files be installed for each locale to support.
+</p>
+
+<p>
+The fTimestamp class provides a hook for formatting <a href="/docs/fDate">fDate</a>, <a href="/docs/fTime">fTime</a> and fTimestamp objects in whatever fashion is necessary. A callback can be assigned to the hook by passing it to the static method <a href="/api/fTimestamp#registerFormatCallback"><code>registerFormatCallback()</code></a>. The callback should accept a single string and return a single string.
+</p>
+
+<p>
+It is also possible to parse locale-specific date/time/timestamp strings by passing a callback to <a href="/api/fTimestamp#registerUnformatCallback"><code>registerUnformatCallback()</code></a>. The callback should accept a string and return a string that will properly be parsed by <a href="http://php.net/strtotime"><code>strtotime()</code></a>. An example of a valid return string would be <code>2009-05-01 15:22:01</code>.
+</p>
+
+<p>
+Below is an example of how the hooks could be used.
+</p>
+<pre class="block php"><code>function parse_uk_dates($date_time_string)
+{
+    if (preg_match('#^(\d{1,2})/(\d{1,2})/(\d{2}|\d{4})$#', $date_time_string, $matches)) {
+        if (strlen($matches[3]) == 2) {
+            $matches[3] = ($matches[3] &lt;= 37) ? '20' . $matches[3] : '19' . $matches[3];
+        }
+        return $matches[3] . '-' . $matches[2] . '-' . $matches[1];
+    }
+    return $date_time_string;
+}
+function translate_dates_to_spanish($formatted_string)
+{
+    $replacements = array(
+        'Monday' =&gt; 'lunes',
+        // ...
+        'Mon' =&gt; 'lun',
+        // ...
+    );
+    return strtr($formatted_string, $replacements);
+}
+fTimestamp::registerFormatCallback('translate_dates_to_spanish');
+fTimestamp::registerUnformatCallback('parse_uk_dates');</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

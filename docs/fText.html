@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fText – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fText">fText</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fText">Class Documentation</a></strong></li>
+<li><a href="/api/fText">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fText.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#ComposingMessages">Composing Messages</a></li>
+<li><a href="#LocalizationofFlourish">Localization of Flourish</a></li>
+</ul>
+</div>
+
+<p>
+The fText class is a static class with the sole purpose of creating a hook to allow for writing internationalized application and localizing Flourish. None of the Flourish classes require it be loaded, but if it is, all message/parameter interpolation is passed through this class.
+</p>
+
+<h2 id="ComposingMessages">Composing Messages</h2>
+
+<p>
+The fText class includes a key method to help with the i18n of code. The method <a href="/api/fText#compose"><code>compose()</code></a> allows creating a message in multiple pieces that are later interpolated, allowing for efficient translation efforts.
+</p>
+
+<p>
+Typically, a call to <code>compose()</code> will look like:
+</p>
+<pre class="block php"><code>// Example variable values
+$message_type      = 'error';
+$message_part_name = 'parts';
+
+echo fText::compose(
+    'This is an example of displaying an %1$s message containing variable %2$s',
+    $message_type,
+    $message_part_name
+);</code></pre>
+
+<p>
+ which would produce the result:
+</p>
+<pre><code>This is an example of displaying an error message containing variable parts</code></pre>
+
+<p>
+ At its core, <code>compose()</code> is simply a wrapper around <a href="http://php.net/sprintf"><code>sprintf()</code></a>. However, being a wrapper allows setting up two hooks for translation. The method <a href="/api/fText#registerComposeCallback"><code>registerComposeCallback()</code></a> allows us to intercept any string sent to <code>compose()</code> and modify it. The first parameter, <code>$timing</code>, allow registering the callback <code>'pre'</code> or <code>'post'</code> the <code>sprintf()</code> call. The second parameter, <code>$callback</code>, defines which method to pass the string to.
+</p>
+
+<p>
+Any callback registered <code>pre</code> will get the un-interpolated string, while any callback registered <code>post</code> will get the interpolated string. Here is an example of translation using compose:
+</p>
+<pre class="block php"><code>function translate($string)
+{
+    static $translations = array(
+        'This is an example of displaying an %1$s message containing variable %2$s' =&gt; 'This is an %1$s message containing %2$s'
+    );
+
+    if (isset($translations[$string])) {
+        return $translations[$string];
+    }
+    return $string;
+}
+
+fText::registerComposeCallback('pre', 'translate');
+
+$message_type      = 'error';
+$message_part_name = 'parts';
+
+echo fText::compose(
+    'This is an example of displaying an %1$s message containing variable %2$s',
+    $message_type,
+    $message_part_name
+);</code></pre>
+
+<p>
+ The above PHP would output the following:
+</p>
+<pre><code>This is an error message containing parts</code></pre>
+
+<h2 id="LocalizationofFlourish">Localization of Flourish</h2>
+
+<p>
+Every exception and error in Flourish will be passed through <a href="/api/fText#compose"><code>compose()</code></a>, thus allowing for localization of the Flourish code base. Please see the MessagesList page for a list of all messages and their location in the source code.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fResult – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fResult">fResult</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fResult">Class Documentation</a></strong></li>
+<li><a href="/api/fResult">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fResult.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Creation">Creation</a></li>
+<li><a href="#RowFormat">Row Format</a></li>
+<li><a href="#UnescapingData">Unescaping Data</a></li>
+<li><a href="#Iteration">Iteration</a></li>
+<li><a href="#Seeking">Seeking</a></li>
+<li><a href="#DataRetrieval">Data Retrieval</a></li>
+<li><a href="#Exceptions">Exceptions</a></li>
+<li><a href="#QueryInfo">Query Info</a></li>
+</ul>
+
+<h2 id="DatabaseClasses">Database Classes </h2>
+
+<ul>
+<li><a href="/docs/fDatabase">fDatabase</a></li>
+<li><a href="/docs/fNoRowsException">fNoRowsException</a></li>
+<li><strong>fResult</strong></li>
+<li><a href="/docs/fSQLException">fSQLException</a></li>
+<li><a href="/docs/fSQLTranslation">fSQLTranslation</a></li>
+<li><a href="/docs/fSQLSchemaTranslation">fSQLSchemaTranslation</a></li>
+<li><a href="/docs/fSchema">fSchema</a></li>
+<li><a href="/docs/fStatement">fStatement</a></li>
+<li><a href="/docs/fUnbufferedResult">fUnbufferedResult</a></li>
+</ul>
+</div>
+
+<p>
+The fResult class is an iterable result object that is returned when an SQL query is executed. It contains all of the information about a query including any rows that may have been returned. This class uses result buffering to provide more features than <a href="/docs/fUnbufferedResult">fUnbufferedResult</a>, albeit at the cost of extra memory usage proportional to amount of data returned.
+</p>
+
+<h2 id="Creation">Creation</h2>
+
+<p>
+The fResult class can be created by executing the methods <a href="/api/fDatabase#query">fDatabase::query()</a> or <a href="/api/fDatabase#translatedQuery">fDatabase::translatedQuery()</a>.
+</p>
+<pre class="block php"><code>// Creation of fResult from a normal query
+$result = $db-&gt;query(&quot;SELECT * FROM users&quot;);
+
+// Creation of an fResult object from a translated query
+$result2 = $db-&gt;translatedQuery(&quot;SELECT * FROM users LIMIT 5&quot;);</code></pre>
+
+<h2 id="RowFormat">Row Format</h2>
+
+<p>
+By default when retrieving rows from a result object, they are returned as associative arrays. In the case of Oracle databases, where columns are case-insensitive, the array keys are lowercase.
+</p>
+
+<p>
+It is possible to retrieve <code>stdClass</code> objects back for each row instead of associative arrays. This is done by calling the method <a href="/api/fResult#asObjects"><code>asObjects()</code></a>. The method returns the fResult object, allowing for method chaining:
+</p>
+<pre class="block php"><code>// Set the result to return objects
+$res = $db-&gt;query(&quot;SELECT * FROM users&quot;)-&gt;asObjects();</code></pre>
+
+<p>
+ <em>If you are looking for objects with more functionality, please see <a href="/docs/fActiveRecord">fActiveRecord</a>.</em>
+</p>
+
+<h2 id="UnescapingData">Unescaping Data</h2>
+
+<p>
+While it is certainly possible to manually unescape data from a result set, one row and column at a time, unescaping the whole result is often much easier. The method <a href="/api/fResult#unescape"><code>unescape()</code></a> accepts an associative array of the column name as the key and the data type as the value. This method should be called before any rows are fetched.
+</p>
+<pre class="block php"><code>$result = $db-&gt;query(&quot;SELECT * FROM users&quot;);
+$result-&gt;unescape(array(
+    'first_name'       =&gt; 'string',
+    'last_name'        =&gt; 'string',
+    'is_authenticated' =&gt; 'boolean',
+    'last_login'       =&gt; 'timestamp'
+));
+
+foreach ($result as $row) {
+    // $row now contains the data in native PHP data types
+}</code></pre>
+
+<h2 id="Iteration">Iteration</h2>
+
+<p>
+The fResult class implements the Iterator interface, which means that you can use the <code>foreach</code> construct to loop through all resulting rows. Below is an example of iterating over a result:
+</p>
+<pre class="block php"><code>$result = $db-&gt;query(&quot;SELECT * FROM users&quot;);
+
+foreach ($result as $row) {
+    echo $row['name'] . '&lt;br /&gt;';
+}</code></pre>
+
+<p>
+ If the result did not return any rows, the <code>foreach</code> construct will not be looped at all and the execution of the code will continue. If you wish to execute different code if no rows are returned, see the next section about <a href="#Exceptions">exceptions</a>.
+</p>
+
+<p>
+If you wish to do manual iteration you can use the <a href="/api/fResult#fetchRow"><code>fetchRow()</code></a> and <a href="/api/fResult#valid"><code>valid()</code></a> methods as shown below:
+</p>
+<pre class="block php"><code>// Iteration using valid() and fetchRow()
+while ($result-&gt;valid()) {
+    $row = $result-&gt;fetchRow();
+}</code></pre>
+
+<h2 id="Seeking">Seeking</h2>
+
+<p>
+Since an fResult object is a buffered result of a database call, it is possible to seek forwards and backwards in the set. The method <a href="/api/fResult#seek"><code>seek()</code></a> accepts a single integer parameter <code>$row</code> that will change the zero-based pointer in the result set.
+</p>
+<pre class="block php"><code>// This would set the current row to be row #3
+$result-&gt;seek(2);</code></pre>
+
+<h2 id="DataRetrieval">Data Retrieval</h2>
+
+<p>
+In addition to allowing for iteration over the database query result, there are also two method that allow for simple data retrieval.
+</p>
+
+<p>
+The method <a href="/api/fResult#fetchScalar"><code>fetchScalar()</code></a> will return the first value from the first row of a result set. This is useful if it is known that a query will only return a single value. If no rows are returned, a <a href="/docs/fNoRowsException">fNoRowsException</a> will be thrown.
+</p>
+<pre class="block php"><code>$result = $db-&gt;query(&quot;SELECT count(*) FROM users&quot;);
+$count  = $result-&gt;fetchScalar();</code></pre>
+
+<p>
+ While <code>fetchScalar()</code> allows retrieving data in amounts less than a row, the method <a href="/api/fResult#fetchAllRows"><code>fetchAllRows()</code></a> does the opposite by allowing access to all rows at once. The return value of the method is an array of all row arrays.
+</p>
+<pre class="block php"><code>$rows = $result-&gt;fetchAllRows();</code></pre>
+
+<h2 id="Exceptions">Exceptions</h2>
+
+<p>
+As mentioned in the last section, if you iterate through the result and no rows are returned, nothing will happen. If you do need to execute different code when no rows are returned, you will want to call the <a href="/api/fResult#tossIfNoRows"><code>tossIfNoRows()</code></a> to cause an <a href="/docs/fNoRowsException">fNoRowsException</a> to be thrown:
+</p>
+<pre class="block php"><code>try {
+    $result = $db-&gt;query(&quot;SELECT * FROM users&quot;);
+    $result-&gt;tossIfNoRows();
+    ?&gt;
+    &lt;h1&gt;Users&lt;/h1&gt;
+    &lt;?
+    foreach ($result as $row) {
+        echo $row['name'] . '&lt;br /&gt;';
+    }
+} catch (fNoRowsException $e) {
+    ?&gt;
+    &lt;p&gt;No users were found&lt;/p&gt;
+    &lt;?php
+}</code></pre>
+
+<p>
+ In addition to calling <code>tossIfNoRows()</code>, an <a href="/docs/fNoRowsException">fNoRowsException</a> will be thrown if any Iterator interface methods (such as <code>current()</code>, <code>next()</code>, etc), <code>fetchRow()</code> or <code>fetchAllRows()</code> are called on a result object which returned no rows.
+</p>
+
+<h2 id="QueryInfo">Query Info</h2>
+
+<p>
+Along with providing an iterable interface to a query result, the fResult class stores some information about the query including:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fResult#countAffectedRows"><code>countAffectedRows()</code></a></td>
+<td>Returns how many rows were affected by a <code>DELETE</code>, <code>INSERT</code> or <code>UPDATE</code> query</td>
+</tr>
+<tr>
+<td><a href="/api/fResult#countReturnedRows"><code>countReturnedRows()</code></a></td>
+<td>Returns how many rows were returned by a <code>SELECT</code> query</td>
+</tr>
+<tr>
+<td><a href="/api/fResult#getAutoIncrementedValue"><code>getAutoIncrementedValue()</code></a></td>
+<td>Returns the last value generated by an auto-incrementing integer field</td>
+</tr>
+<tr>
+<td><a href="/api/fResult#getSQL"><code>getSQL()</code></a></td>
+<td>Returns the SQL statement executed for this result</td>
+</tr>
+<tr>
+<td><a href="/api/fResult#getUntranslatedSQL"><code>getUntranslatedSQL()</code></a></td>
+<td>Returns the SQL from before translation happened - only applicable for results from <a href="/api/fResult#translatedQuery"><code>translatedQuery()</code></a></td>
+</tr>
+</tbody></table>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

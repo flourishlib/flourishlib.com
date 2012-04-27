@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fCore – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fCore">fCore</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fCore">Class Documentation</a></strong></li>
+<li><a href="/api/fCore">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fCore.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#ErrorExceptionHandling">Error/Exception Handling</a>
+<ul>
+<li><a href="#UsinganSMTPConnection">Using an SMTP Connection</a></li>
+</ul>
+</li>
+<li><a href="#CapturingErrors">Capturing Errors</a></li>
+<li><a href="#Debugging">Debugging</a></li>
+<li><a href="#EnvironmentHandling">Environment Handling</a></li>
+</ul>
+</div>
+
+<p>
+The fCore class centralizes debugging, error and exception handling and more.
+</p>
+
+<h2 id="ErrorExceptionHandling">Error/Exception Handling</h2>
+
+<p>
+When maintaining production systems, knowing about errors and unhandled exceptions that have occurred is key. The fCore class provides two handy methods to simply this task. 
+</p>
+
+<p>
+The <a href="/api/fCore#enableErrorHandling"><code>enableErrorHandling()</code></a> and <a href="/api/fCore#enableExceptionHandling"><code>enableExceptionHandling()</code></a> methods each take a first parameter that is the destination for errors and unhandled exceptions respectively. The options are an email address, a file, or the string <code>'html'</code> for output into the currently rendering page.
+</p>
+
+<p>
+Since unhandled exceptions cause the page execution to stop immediately, <a href="/api/fCore#enableExceptionHandling"><code>enableExceptionHandling()</code></a> takes a callback as a second parameter to allow you to cleanly finish HTML output. The optional third parameter is an array of parameters to send to the callback. 
+</p>
+
+<p>
+Both the error and exception handling provide full backtraces, allowing for an easy time finding bugs.
+</p>
+<pre class="block php"><code>// Set the site to send me an email every time an error or unhandled exception gets thrown
+fCore::enableErrorHandling('will@flourishlib.com');
+fCore::enableExceptionHandling('will@flourishlib.com', array($templating, 'place'), array('footer'));
+
+// Set the site to log errors and exceptions to my logs dir
+fCore::enableErrorHandling($_SERVER['DOCUMENT_ROOT'] . '/writable/logs/errors.log');
+fCore::enableExceptionHandling($_SERVER['DOCUMENT_ROOT'] . '/writable/logs/exceptions.log', array($templating, 'place'), array('footer'));
+
+// Set the site to display errors and exception in the html
+fCore::enableErrorHandling('html');
+fCore::enableExceptionHandling('html', array($templating, 'place'), array('footer'));</code></pre>
+
+<p>
+ Multiple email addresses may be specified, separated by commas.
+</p>
+<pre class="block php"><code>fCore::enableErrorHandling('will@flourishlib.com,john.smith@example.com');</code></pre>
+
+<p>
+ By default, error and exception output includes a dump of the state of a number of PHP superglobals including <code>$_GET</code>, <code>$_POST</code>, <code>$_FILES</code>, <code>$_COOKIE</code>, <code>$_SESSION</code> and <code>$_SERVER</code> to aid in debugging. It is possible to disable this functionality by calling <a href="/api/fCore#disableContext"><code>disableContext()</code></a>.
+</p>
+<pre class="block php"><code>// Disable the context dumps that happen with error and exception handling
+fCore::disableContext();</code></pre>
+
+<h3 id="UsinganSMTPConnection">Using an SMTP Connection</h3>
+
+<p>
+By default, error and exception emails are sent using the <code>mail()</code> function. An SMTP server may be used by passing an instance of <a href="/docs/fSMTP">fSMTP</a> and a <code>From</code> email address to <a href="/api/fCore#configureSMTP"><code>configureSMTP()</code></a>.
+</p>
+<pre class="block php"><code>$smtp = new fSMTP('server.example.com');
+$smtp-&gt;authenticate('username', 'password');
+fCore::configureSMTP($smtp, 'noreply@example.com');</code></pre>
+
+<h2 id="CapturingErrors">Capturing Errors</h2>
+
+<p>
+While exceptions are fairly easy to use due to the way they bubble up to the closest matching <code>catch</code> block, errors in PHP are not as simple. Errors don't interrupt program flow and can only be captured by an error handler. <a href="/api/fCore#startErrorCapture"><code>startErrorCapture()</code></a> and <a href="/api/fCore#stopErrorCapture"><code>stopErrorCapture()</code></a> provide functionality that allows capturing errors and returning them in an array for futher processing.
+</p>
+<pre class="block php"><code>// Here we don't need warning messages if this fails, we can just check to see if $result is FALSE
+fCore::startErrorCapture();
+$result = file_get_contents('http://example.com');
+$errors = fCore::stopErrorCapture();</code></pre>
+
+<p>
+ While a similar result can be accomplished by using the <a href="http://php.net/error_reporting"><code>error_reporting()</code></a> function and simplying lowering the error reporting level, this may not be available if it has been set via the <code>php_admin_value</code> Apache configuration directive.
+</p>
+
+<p>
+In addition, turning down <code>error_reporting()</code> does not allow for acting upon errors, just silencing them. Since <code>stopErrorCapture()</code> returns an array of information about each error that occurred, the messages can be used to determine the next course of action or combined into an exception.
+</p>
+<pre class="block php"><code>fCore::startErrorCapture();
+$connection = pg_connect('dbname=example');
+$errors = fCore::stopErrorCapture();
+if (!$connection) {
+    $error_strings = array();
+    foreach ($errors as $error) {
+         $error_strings[] = $error['string'];
+    }
+    throw new fConnectivityException(&quot;Unable to connect to the PostgreSQL database:\n%s&quot;, join(&quot;\n&quot;, $error_strings));
+}</code></pre>
+
+<p>
+ It is possible to capture only specific <code>$types</code> of errors by passing them as the first parameter to <code>startErrorCapture()</code>. The values are the same as those passed to <code>error_reporting()</code>, a bitmask of the desired error types. The captured messages can be further restricted by passing a PCRE <code>$regex</code> as the second parameter. Any errors that are not captured are passed on to the normal error handler.
+</p>
+
+<p>
+<em>Please note that all errors that match <code>$types</code> will be captured, even if they are excluded by the current <code>error_reporting()</code> setting.</em>
+</p>
+<pre class="block php"><code>// Capture only warnings about SSL
+fCore::startErrorCapture(E_WARNING, '#ssl#i');</code></pre>
+
+<p>
+ It is also possible to capture all errors, but only return some from <code>stopErrorCapture()</code>. This is accomplished by by passing a PCRE <code>$regex</code> as the first parameter.
+</p>
+<pre class="block php"><code>// Capture all warnings, but only return errors about SSL
+fCore::startErrorCapture(E_WARNING);
+// 
+$errors = fCore::stopErrorCapture('#ssl#i');</code></pre>
+
+<h2 id="Debugging">Debugging</h2>
+
+<p>
+fCore provides a few useful functions when you are trying to debug code. The simplest way to debug is to use the <a href="/api/fCore#expose"><code>expose()</code></a> method to show the contents of a file. <a href="/api/fCore#expose"><code>expose()</code></a> creates output similar to <a href="http://php.net/print_r"><code>print_r()</code></a>, however it uses symbols to differentiate between <code>''</code>, <code>NULL</code> and <code>FALSE</code>. Here is a usage example.
+</p>
+<pre class="block php"><code>fCore::expose(array('foo', 1, '', NULL, FALSE, TRUE));</code></pre>
+
+<p>
+ The above call to <a href="/api/fCore#expose"><code>expose()</code></a> would create the following HTML:
+</p>
+<pre class="block html"><code>&lt;pre class=&quot;exposed&quot;&gt;Array
+(
+    [0] =&gt; foo
+    [1] =&gt; 1
+    [2] =&gt; {empty_string}
+    [3] =&gt; {null}
+    [4] =&gt; {false}
+    [5] =&gt; {true}
+)&lt;/pre&gt;</code></pre>
+
+<p>
+ If you want to set your code up to conditionally display debugging information, youll want to use the <a href="/api/fCore#debug"><code>debug()</code></a> method. Content sent to <a href="/api/fCore#debug"><code>debug()</code></a> is displayed via <a href="/api/fCore#expose"><code>expose()</code></a> only if <a href="/api/fCore#enableDebugging"><code>enableDebugging()</code></a> has been passed <code>TRUE</code> or if the second parameter, <code>$force</code>, is <code>TRUE</code>. 
+</p>
+<pre class="block php"><code>// Enable debugging
+fCore::enableDebugging(TRUE);
+
+// Display a debugging message only when fCore::enableDebugging() has been called
+fCore::debug('This is only shown when fCore::enableDebugging(TRUE) is called before this code', FALSE);
+
+// Display a debugging message even if fCore::enableDebugging() has not been called
+fCore::debug('This will always be shown', TRUE);</code></pre>
+
+<p>
+ If you wish to pass debug information to another debugging or logging system, a callback can be registered via the static method <a href="/api/fCore#registerDebugCallback"><code>registerDebugCallback()</code></a>. This method accepts a single parameter, the <code>$callback</code> to send all debug messages to. The <code>$callback</code> should accept a single parameter, a string debug message.
+</p>
+<pre class="block php"><code>// Create a function to handle debug messages
+function handleDebug($message)
+{
+    // Code to pass message to another debugging or logging system
+}
+ 
+// Register the function as the message handler
+fCore::registerDebugCallback('handleDebug');</code></pre>
+
+<p>
+ The <a href="/api/fCore#backtrace"><code>backtrace()</code></a> method provides a compact and nicely formatted version of <a href="http://php.net/debug_backtrace"><code>debug_backtrace()</code></a>. Below is an example of usage:
+</p>
+<pre class="block php"><code>class Example {
+    static public function backtrace()
+    {
+        fCore::expose(fCore::backtrace());
+    }
+}
+
+Example::backtrace();</code></pre>
+
+<p>
+ Which would produce the following HTML:
+</p>
+<pre class="block html"><code>&lt;pre class=&quot;exposed&quot;&gt;
+{doc_root}/example.php(8): Example::backtrace()
+{doc_root}/example.php(4): fCore::backtrace()
+&lt;/pre&gt;</code></pre>
+
+<h2 id="EnvironmentHandling">Environment Handling</h2>
+
+<p>
+In some situations it is necessary to write code based on the version of PHP or the operating system the code is running on.
+</p>
+
+<p>
+The static method <a href="/api/fCore#checkVersion"><code>checkVersion()</code></a> will return <code>TRUE</code> if the currently running version of PHP is greater or equal to the version string passed in.
+</p>
+<pre class="block php"><code>if (fCore::checkVersion('5.1')) {
+    echo 'You are running PHP version 5.1 or newer';
+}</code></pre>
+
+<p>
+ The static method <a href="/api/fCore#checkOS"><code>checkOS()</code></a> will return <code>TRUE</code> if the current operating system is one of the OSes passed in as a parameter. Valid operating system strings include:
+</p>
+
+<ul>
+<li><code>'linux'</code></li>
+<li><code>'bsd'</code></li>
+<li><code>'osx'</code></li>
+<li><code>'solaris'</code></li>
+<li><code>'windows'</code></li>
+</ul>
+<pre class="block php"><code>if (fCore::checkOS('bsd', 'osx')) {
+    echo 'You are running either a BSD or OSX';
+}</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

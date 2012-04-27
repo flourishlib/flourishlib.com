@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>PHP Floating Point Bug – Blog – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="PHPFloatingPointBug">PHP Floating Point Bug</h1>
+
+<p>
+Just last week a rather serious denial of service (DoS) vulnerability was found in PHP, affecting versions 5.2.0 through 5.2.16 and 5.3.0 through 5.3.4. The bug, <a href="http://bugs.php.net/53632">#53632</a>, causes PHP to enter an infinite loop when working with the value <code>2.2250738585072011e-308</code> as a floating point number. The simple submission of this value to a site multiple times can easily cause the web server to become unresponsive to users.
+</p>
+
+<p>
+The good news is that if you are using <a href="/api/fRequest#get">fRequest::get()</a> and passing <code>float</code> to the <code>$cast_to</code> parameter and Flourish r950 or newer, you will be automatically protected from this vulnerability. The value <code>2.2250738585072011e-308</code> will be converted to <code>2.2250738585072012e-308</code>, which resolves to the same floating point value, but does not cause the infinite loop.
+</p>
+
+<p>
+If you are using an older revision of Flourish, I strongly recommend you use the <code>flourish.rev</code> file in your Flourish directory with the <a href="/docs/BackwardsCompatibilityBreak">backwards compatibility breaks page</a> to upgrade your code to the latest revision.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fUpload – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fUpload">fUpload</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fUpload">Class Documentation</a></strong></li>
+<li><a href="/api/fUpload">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fUpload.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Prerequisites">Prerequisites</a></li>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#SettingOptionsSecurity">Setting Options (Security)</a>
+<ul>
+<li><a href="#setMIMETypes">setMIMETypes()</a></li>
+<li><a href="#setMaxSize">setMaxSize()</a></li>
+<li><a href="#setOptional">setOptional()</a></li>
+<li><a href="#enableOverwrite">enableOverwrite()</a></li>
+<li><a href="#allowPHPallowDotFiles">allowPHP(), allowDotFiles()</a></li>
+</ul>
+</li>
+<li><a href="#ValidationMoving">Validation/Moving</a>
+<ul>
+<li><a href="#move">move()</a></li>
+<li><a href="#validate">validate()</a></li>
+</ul>
+</li>
+<li><a href="#ArraysofFileUploads">Arrays of File Uploads</a>
+<ul>
+<li><a href="#Filtering">Filtering</a></li>
+</ul>
+</li>
+</ul>
+
+<h2 id="FilesystemClasses">Filesystem Classes </h2>
+
+<ul>
+<li><a href="/docs/fFilesystem">fFilesystem</a></li>
+<li><a href="/docs/fFile">fFile</a>
+<ul>
+<li><a href="/docs/fImage">fImage</a></li>
+</ul>
+</li>
+<li><a href="/docs/fDirectory">fDirectory</a></li>
+<li><strong>fUpload</strong></li>
+</ul>
+</div>
+
+<p>
+The fUpload class provides functionality to validate and move files uploaded through HTML forms.
+</p>
+
+<h2 id="Prerequisites">Prerequisites</h2>
+
+<p>
+In order to use the fUpload class, a file needs to uploaded to PHP by the <code>POST</code> HTTP method. If the <code>POST</code> is coming from an HTML form, the form will need to have its <code>enctype</code> set to <code>multipart/form-data</code>.
+</p>
+<pre class="block html"><code>&lt;form action=&quot;&quot; method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot;&gt;
+    &lt;fieldset&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;file&quot;&gt;File&lt;/label&gt;
+            &lt;input id=&quot;file&quot; type=&quot;file&quot; name=&quot;file&quot; /&gt;
+        &lt;/p&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+The constructor does not accept any parameters.
+</p>
+<pre class="block php"><code>$uploader = new fUpload();</code></pre>
+
+<h2 id="SettingOptionsSecurity">Setting Options (Security)</h2>
+
+<p>
+Uploaded files can be validated by configuring the fUpload instance using <a href="/api/fUpload#setMIMETypes"><code>setMIMETypes()</code></a>, <a href="/api/fUpload#setMaxSize"><code>setMaxSize()</code></a>, <a href="/api/fUpload#setOptional"><code>setOptional()</code></a>, <a href="/api/fUpload#enableOverwrite"><code>enableOverwrite()</code></a>, <a href="/api/fUpload#allowPHP"><code>allowPHP()</code></a> and <a href="/api/fUpload#allowDotFiles"><code>allowDotFiles()</code></a>. All of these methods must be called <em>before</em> the methods <a href="/api/fUpload#move"><code>move()</code></a> or <a href="/api/fUpload#validate"><code>validate()</code></a> are called.
+</p>
+
+<h3 id="setMIMETypes">setMIMETypes()</h3>
+
+<p>
+As with all other data accepted from users, file uploads should be filtered to only allow safe content. The method <code>setMIMETypes()</code> allows defining the mime types to allow with an appropriate error message. The first parameter is an array of valid mime types and the second parameter is the error message to display if the mime types are not matched.
+</p>
+<pre class="block php"><code>$uploader-&gt;setMIMETypes(
+    array(
+        'image/gif',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png'
+    ),
+    'The file uploaded is not an image'
+);</code></pre>
+
+<p>
+ While the <code>$_FILES</code> superglobal includes a mime type for the uploaded file, fUpload does not use this value since it is provided by the user and thus not trustworthy. Instead, mime type checking is done on the server side by inspecting the contents of the file. Please see the <a href="/api/fFile#getMimeType">fFile::getMimeType()</a> method documentation for a list of all supported mime types.
+</p>
+
+<h3 id="setMaxSize">setMaxSize()</h3>
+
+<p>
+<a href="/api/fUpload#setMaxSize"><code>setMaxSize()</code></a> allows validating a file to ensure it does not exceed a specific size. It accepts a single parameter, <code>$size</code>, that can be any filesize with units or an integer to be interpreted as bytes.
+</p>
+
+<p>
+This method works in concert with two other settings, the <a href="http://php.net/upload_max_filesize">upload_max_filesize ini setting</a> and the <a href="http://php.net/file-upload.post-method">MAX_FILE_SIZE hidden input</a>. The <code>upload_max_filesize</code> ini setting controls the maximum size of a file that can be uploaded by a user, and must be larger or equal to the value passed to <code>setMaxSize()</code>. This setting can not be controlled in the PHP script since file uploads are processed before the request executes PHP.
+</p>
+
+<p>
+The <code>MAX_FILE_SIZE</code> hidden input is primarily designed for the convenience of end-users since it will reject large files before they are fully uploaded. Since the hidden input element is controlled by the program submitting the request, it can no be trusted and the <code>setMaxSize()</code> method must be used as a server-side failsafe.
+</p>
+<pre class="block php"><code>// These three method calls will all limit the uploaded file to 2 megabytes
+$uploader-&gt;setMaxSize('2m');
+$uploader-&gt;setMaxSize('2MB');
+$uploader-&gt;setMaxSize('2048k');</code></pre>
+
+<h3 id="setOptional">setOptional()</h3>
+
+<p>
+By default, fUpload treats every file as required and will throw and exception or return an error if no file is uploaded. The method <a href="/api/fUpload#setOptional"><code>setOptional()</code></a> changes this behavior to not treat the absence of a file as an error. This will cause the <a href="/api/fUpload#move"><code>move()</code></a> method to return <code>NULL</code> when no file is uploaded.
+</p>
+<pre class="block php"><code>$uploader-&gt;setOptional();</code></pre>
+
+<h3 id="enableOverwrite">enableOverwrite()</h3>
+
+<p>
+When uploading files, if there is an existing file with the same name in the destination directory the fUpload class will rename the uploaded file to a unique name. If this is not the desired action, the method <a href="/api/fUpload#enableOverwrite"><code>enableOverwrite()</code></a> will allow the class to overwrite existing files.
+</p>
+<pre class="block php"><code>$uploader-&gt;enableOverwrite();</code></pre>
+
+<h3 id="allowPHPallowDotFiles">allowPHP(), allowDotFiles()</h3>
+
+<p>
+By default the fUpload class does not allow files ending in <code>.php</code>, <code>.php4</code> or <code>.php5</code> or beginning with <code>.</code> to be uploaded due to security concerns. If there is a need for PHP files to uploaded the method <a href="/api/fUpload#allowPHP"><code>allowPHP()</code></a> can be called. Files beginning with <code>.</code> may be allowed by calling <a href="/api/fUpload#allowDotFiles"><code>allowDotFiles()</code></a>.
+</p>
+<pre class="block php"><code>$uploader-&gt;allowPHP();
+$uploader-&gt;allowDotFiles();</code></pre>
+
+<h2 id="ValidationMoving">Validation/Moving</h2>
+
+<p>
+Once options have been set it is time to try moving (or possibly just validating) the uploaded file or files. The method <a href="/api/fUpload#move"><code>move()</code></a> will move the file uploading in the specified field to the directory requested, while the <a href="/api/fUpload#validate"><code>validate()</code></a> method will simply ensure the uploaded file matches the options that were set. Calling <code>move()</code> will also cause <code>validate()</code> to happen.
+</p>
+
+<h3 id="move">move()</h3>
+
+<p>
+The <a href="/api/fUpload#move"><code>move()</code></a> accepts three parameters, the <code>$directory</code> to move the file to, the <code>$field</code> the file was uploaded through and optionally the <code>$index</code> of the file if the file upload was part of an array of file upload fields. The return value is an <a href="/docs/fFile">fFile</a> object representing the newly moved file. An <a href="/docs/fValidationException">fValidationException</a> will be thrown if no file was uploaded or one of the options is not met.
+</p>
+<pre class="block php"><code>// An example of uploading a file passing the destination directory as a string
+$file = $uploader-&gt;move('/uploaded/file/destination', 'file_input_name');
+
+// An example of passing the destination directory as an fDirectory object
+$dir = new fDirectory('/some/directory');
+$file = $uploader-&gt;move($dir, 'file_input_name');</code></pre>
+
+<p>
+ If <a href="/api/fUpload#setOptional"><code>setOptional()</code></a> has been called and no file was uploaded, <code>NULL</code> will be returned instead of an <a href="/docs/fFile">fFile</a> object.
+</p>
+
+<h3 id="validate">validate()</h3>
+
+<p>
+The <code>validate()</code> method accepts two parameters, the <code>$field</code> to validate and optionally the <code>$index</code> of the file if the file upload was part of an array of file upload fields. As with all other Flourish methods that begin with <code>validate</code>, this method will throw an <a href="/docs/fValidationException">fValidationException</a> if one of the options is not met or no file is uploaded.
+</p>
+<pre class="block php"><code>$uploader-&gt;validate('file_input_name');</code></pre>
+
+<p>
+ It is also possible to return an error instead of throwing an exception by passing <code>TRUE</code> as the second parameter.
+</p>
+<pre class="block php"><code>// $error will contain any error that occurs, or NULL if there is none
+$error = $uploader-&gt;validate('file_input_name', TRUE);</code></pre>
+
+<h2 id="ArraysofFileUploads">Arrays of File Uploads</h2>
+
+<p>
+When it is necessary to have a user upload multiple file, it is possible to take advantage of PHP array syntax for input fields. Any input field name that ends in <code>[]</code> will cause an array to be created in the <code>$_GET</code> or <code>$_POST</code> superglobals for normal inputs, or in the <code>$_FILES</code> superglobal for file uploads. Please note that on the PHP side, the <code>[]</code> is dropped from the input name, e.g. <code>file_input_name[]</code> would be found in <code>$_FILES['file_input_name']</code>.
+</p>
+<pre class="block html"><code>&lt;form action=&quot;&quot; method=&quot;POST&quot; enctype=&quot;multipart/form-data&quot;&gt;
+    &lt;fieldset&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;file_1&quot;&gt;File 1&lt;/label&gt;
+            &lt;input id=&quot;file_1&quot; type=&quot;file&quot; name=&quot;file_input_name[]&quot; /&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;file_2&quot;&gt;File 2&lt;/label&gt;
+            &lt;input id=&quot;file_2&quot; type=&quot;file&quot; name=&quot;file_input_name[]&quot; /&gt;
+        &lt;/p&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+
+<p>
+ fUpload provides the static method <a href="/api/fUpload#count"><code>count()</code></a> to determine how many files were uploaded by a user. This can be used with the optional third parameter, <code>$index</code>, of <a href="/api/fUpload#move"><code>move()</code></a> or optional second parameter, <code>$index</code> of <a href="/api/fUpload#validate"><code>validate()</code></a> to perform the action on the specified file.
+</p>
+<pre class="block php"><code>$files    = array();
+$uploaded = fUpload::count('file_input_name');
+for ($i=0; $i &lt; $uploaded; $i++) {
+    $files[] = $uploader-&gt;move($dir, 'file_input_name', $i);
+}</code></pre>
+
+<p>
+ When an index is specified for <code>validate()</code>, the boolean <code>$return_message</code> parameter to return the message instead of throw an exception is passed as the third parameter.
+</p>
+<pre class="block php"><code>// Return an error for the second file upload named attachment
+$error = $uploader-&gt;validate('attachment', 1, TRUE);</code></pre>
+
+<h3 id="Filtering">Filtering</h3>
+
+<p>
+When multiple files are uploaded for a field, it is common for one or more file upload fields to not actually upload a file. The static method <a href="/api/fUpload#filter"><code>filter()</code></a> accepts a <code>$field</code> name and will removed info about any file upload fields where a file was not uploaded.
+</p>
+<pre class="block php"><code>fUpload::filter('attachments');
+$uploader   = new fUpload();
+$attachment = array();
+$uploaded   = fUpload::count('attachments');
+for ($i=0; $i &lt; $uploaded; $i++) {
+    $attachments[] = $uploader-&gt;move($dir, 'attachments', $i);
+}</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

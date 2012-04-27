@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fCRUD – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fCRUD</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fCRUD">Class Documentation</a></li>
+		<li><strong><a href="/api/fCRUD">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fCRUD.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#getColumnClass">getColumnClass()</a></li>
+	  			<li><a href="#getRowClass">getRowClass()</a></li>
+	  			<li><a href="#getSearchValue">getSearchValue()</a></li>
+	  			<li><a href="#getSortColumn">getSortColumn()</a></li>
+	  			<li><a href="#getSortDirection">getSortDirection()</a></li>
+	  			<li><a href="#printSortableColumn">printSortableColumn()</a></li>
+	  			<li><a href="#redirectWithLoadedValues">redirectWithLoadedValues()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fHTML">fHTML</a></li>
+		<li><a href="fRequest">fRequest</a></li>
+		<li><a href="fSession">fSession</a></li>
+		<li><a href="fURL">fURL</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b5</span></div>
+<p class="short_description">Provides miscellaneous functionality for <a class="ext-link" href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete"><span class="icon">CRUD-like</span></a> pages</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b5</th><td>Updated class to use new <a href="fSession">fSession</a> API <span class="date">10/23/09</span></td></tr><tr><th>1.0.0b4</th><td>Updated class to use new <a href="fSession">fSession</a> API <span class="date">5/8/09</span></td></tr><tr><th>1.0.0b3</th><td>Backwards Compatiblity Break - moved printOption() to <a href="fHTML#printOption"><tt>fHTML::printOption()</tt></a>, showChecked() to <a href="fHTML">fHTML</a>showChecked(), removeListItems() and reorderListItems() to <a href="fException#splitMessage"><tt>fException::splitMessage()</tt></a>, generateRequestToken() to <a href="fRequest">fRequest</a>generateCSRFToken(), and validateRequestToken() to <a href="fRequest#validateCSRFToken"><tt>fRequest::validateCSRFToken()</tt></a> <span class="date">5/8/09</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug preventing loaded search values from being included in redirects <span class="date">3/18/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/14/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="getColumnClass" class="method static"><span class="resolution">::</span><span class="name">getColumnClass()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Return the string <tt>'sorted'</tt> if <tt>$column</tt> is the column that is currently being sorted by, otherwise returns <tt>''</tt></p>
+								<p>This method will only be useful if used with the other sort methods  <a href="#printSortableColumn"><tt>printSortableColumn()</tt></a>, <a href="#getSortColumn"><tt>getSortColumn()</tt></a> and <a href="#getSortDirection"><tt>getSortDirection()</tt></a>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getColumnClass</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$column</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to check</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The CSS class for the column, either <tt>''</tt> or <tt>'sorted'</tt>
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getRowClass" class="method static"><span class="resolution">::</span><span class="name">getRowClass()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns a CSS class name for a row</p>
+								<p>Will return <tt>'even'</tt>, <tt>'odd'</tt>, or <tt>'highlighted'</tt> if the two parameters  are equal and not <tt>NULL</tt>. The first call to this method will return  the appropriate class concatenated with <tt>' first'</tt>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getRowClass</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$row_value</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$affected_value</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$row_value</td>
+				<td class="param_description">The value from the row</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$affected_value</td>
+				<td class="param_description">The value that was just added or updated</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The css class
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getSearchValue" class="method static"><span class="resolution">::</span><span class="name">getSearchValue()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets the current value of a search field</p>
+								<p>If a value is an empty string and no cast to is specified, the value will  become <tt>NULL</tt>.</p><p>If a query string of <tt>?reset</tt> is passed, all previous search values will  be erased.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">getSearchValue</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$cast_to</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$default</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column that is being pulled back</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$cast_to</td>
+				<td class="param_description">The data type to cast to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$default</td>
+				<td class="param_description">The default value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The current value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getSortColumn" class="method static"><span class="resolution">::</span><span class="name">getSortColumn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets the current column to sort by, defaults to first one specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getSortColumn</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$possible_column</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$possible_column <em>[, ... ]</em></td>
+				<td class="param_description">The columns that can be sorted by, defaults to first</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The column to sort by
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getSortDirection" class="method static"><span class="resolution">::</span><span class="name">getSortDirection()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets the current sort direction</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getSortDirection</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$default_direction</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$default_direction</td>
+				<td class="param_description">The default direction, <tt>'asc'</tt> or <tt>'desc'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The direction, <tt>'asc'</tt> or <tt>'desc'</tt>
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="printSortableColumn" class="method static"><span class="resolution">::</span><span class="name">printSortableColumn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Prints a sortable column header <tt>a</tt> tag</p>
+								<p>The a tag will include the CSS class <tt>'sortable_column'</tt> and the  direction being sorted, <tt>'asc'</tt> or <tt>'desc'</tt>.</p><pre class="block php"><code>fCRUD::printSortableColumn('name', 'Name');</code></pre><p>would create the following HTML based on the page context</p><pre class="block html"><code><!-- If name is the current sort column in the asc direction, the output would be -->
+<a href="?sort=name&dir=desc" class="sorted_column asc">Name</a>
+<!-- If name is not the current sort column, the output would be -->
+<a href="?sort-name&dir=asc" class="sorted_column">Name</a></code></pre>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">printSortableColumn</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column_name</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to create the sortable header for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column_name</td>
+				<td class="param_description">This will override the humanized version of the column</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="redirectWithLoadedValues" class="method static"><span class="resolution">::</span><span class="name">redirectWithLoadedValues()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Checks to see if any values (search or sort) were loaded from the session, and if so redirects the user to the current URL with those values added</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">redirectWithLoadedValues</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration and data of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

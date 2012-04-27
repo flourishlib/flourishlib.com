@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fPagination – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fPagination</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fPagination">Class Documentation</a></li>
+		<li><strong><a href="/api/fPagination">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fPagination.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  			<li><a href="#defineTemplate">defineTemplate()</a></li>
+	  			<li><a href="#extend">extend()</a></li>
+	  	  			<li class="protected"><a href="#printRecordSetInfo">printRecordSetInfo()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  	  	  			<li class="protected"><a href="#showRecordSetLinks">showRecordSetLinks()</a></li>
+	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  	  	  			<li><a href="#printInfo">printInfo()</a></li>
+	  	  	  			<li><a href="#set">set()</a></li>
+	  			<li><a href="#showLinks">showLinks()</a></li>
+	  	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fHTML">fHTML</a></li>
+		<li><a href="fNoRemainingException">fNoRemainingException</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fURL">fURL</a></li>
+		<li><a href="fUTF8">fUTF8</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b</span></div>
+<p class="short_description">Prints pagination links for <a href="fRecordSet">fRecordSet</a> or other paginated records</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b</th><td>Added the <tt>prev_disabled</tt> and <tt>next_disabled</tt> pieces <span class="date">9/6/11</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="defineTemplate" class="method static"><span class="resolution">::</span><span class="name">defineTemplate()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Defines a new template to use with the paginator</p>
+								<p>The <tt>$pieces</tt> array must contain the following array keys:  </p><ul><li><tt>info</tt>:          the template to use when calling the <tt>printInfo()</tt> method</li><li><tt>start</tt>:         the template to start the page list with</li><li><tt>prev</tt>:          the template for the previous link</li><li><tt>prev_disabled</tt>: the template for the previous link, when disabled</li><li><tt>page</tt>:          the template for a single page link</li><li><tt>separator</tt>:     the template for the separator to use when the type is <tt>with_first_last</tt></li><li><tt>next</tt>:          the template for the next link</li><li><tt>next_disabled</tt>: the template for the next link, when disabled</li><li><tt>end</tt>:           the template to end the page list with</li></ul><p>There are various pre-defined variables available for use in the template  pieces. These variables are printed by using the syntax <tt>{{ variable }}</tt>.</p><p>The <tt>info</tt>, <tt>start</tt> and <tt>end</tt> pieces may use the following variables:  </p><ul><li><tt>page</tt>:          the page of records being shown</li><li><tt>total_pages</tt>:   the total number of pages of records</li><li><tt>first_record</tt>:  the record number of the first record being shown</li><li><tt>last_record</tt>:   the record number of the last record being shown</li><li><tt>total_records</tt>: the total number of records being paginated</li></ul><p>The <tt>prev</tt> and <tt>next</tt> pieces may use the following variables:  </p><ul><li><tt>page</tt>: the page number of the page of results being linked to</li><li><tt>url</tt>:  the URL of the page being linked to</li></ul><p>The <tt>page</tt> piece may use the following variables:  </p><ul><li><tt>page</tt>:    the page number of the page being linked to</li><li><tt>url</tt>:     the URL of the page being linked to</li><li><tt>first</tt>:   the string &quot;first&quot; if the link is to the first page</li><li><tt>last</tt>:    the string &quot;last&quot; if the link is to the last page</li><li><tt>current</tt>: the string &quot;current&quot; if the link is to the current page</li></ul><p>The <tt>separator</tt> piece does not have access to any pre-defined variables.</p><p>In addition to the pre-defined variables, it is possible to add any other  variables to be used in any of the pieces by calling the instance method  <a href="#set"><tt>set()</tt></a>.</p><p>It is possible to use variable filters on a variable to modify it. The  most common variable to filter would be <tt>name</tt>. To filter a variable,  add a <tt>|</tt> and the filter name after the variable name, in the form  <tt>{{ variable|filter }}</tt>. The following filters are available:  </p><ul><li><tt>inflect</tt>:    if the total number of records is not 1, pluralize the variable - this only works for nouns</li><li><tt>lower</tt>:      converts the contents of the variable to lower case</li><li><tt>url_encode</tt>: encode the value for inclusion in a URL</li><li><tt>humanize</tt>:   converts a <tt>underscore_notation</tt> or <tt>CamelCase</tt> string to a string with spaces between words and in <tt>Title Caps</tt></li></ul><p>Filters can be combined, in which case they are list one after the other  in the form <tt>{{ variable|filter_1|filter_2 }}</tt>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">defineTemplate</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$type</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$size</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$pieces</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The name of the template</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of pagination: <tt>without_first_last</tt> or <tt>with_first_last</tt> - <tt>with_first_last</tt> always includes links to the first and last pages</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$size</td>
+				<td class="param_description">The number of pages to show on either side of the current page</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$pieces</td>
+				<td class="param_description">The chunks of HTML to create the paginator from - see method description for details</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="extend" class="method static"><span class="resolution">::</span><span class="name">extend()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds the methods <tt>printInfo()</tt> and <tt>showLinks()</tt> to <a href="fRecordSet">fRecordSet</a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">extend</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="printRecordSetInfo" class="protected method static"><span class="resolution">::</span><span class="name">printRecordSetInfo()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Handles the <tt>printInfo()</tt> method for <a href="fRecordSet">fRecordSet</a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">printRecordSetInfo</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fRecordSet">fRecordSet</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">string|array</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fRecordSet">fRecordSet</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The record set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string|array</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class(es) contained in the record set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$records</td>
+				<td class="param_description">The records</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="showRecordSetLinks" class="protected method static"><span class="resolution">::</span><span class="name">showRecordSetLinks()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Handles the <tt>showLinks()</tt> method for <a href="fRecordSet">fRecordSet</a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">showRecordSetLinks</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fRecordSet">fRecordSet</a></span> <span class="php-var">$object</span><span class="php-code">,</span> <span class="php-vartype">string|array</span> <span class="php-var">$class</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$records</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$method_name</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fRecordSet">fRecordSet</a></td>
+				<td class="param_name">$object</td>
+				<td class="param_description">The record set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string|array</td>
+				<td class="param_name">$class</td>
+				<td class="param_description">The class(es) contained in the record set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$records</td>
+				<td class="param_description">The records</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method_name</td>
+				<td class="param_description">The method that was called</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters passed to the method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the links were shown
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+						<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Accepts the record information necessary for printing pagination</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype">fPaginator</span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$records</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$per_page</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$page</span> <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype">fPaginator</span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fRecordSet">fRecordSet</a></span> <span class="php-var">$records</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$records</td>
+				<td class="param_description">The total number of records</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$per_page</td>
+				<td class="param_description">The number of records per page</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$page</td>
+				<td class="param_description">The page number</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNoRemainingException">fNoRemainingException</a></dt><dd>When there are not records for the specified <tt>$page</tt> and <tt>$page</tt> is greater than 1</dd> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the <tt>$page</tt> is less than 1 or not an integer</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="printInfo" class="method"><span class="resolution">-></span><span class="name">printInfo()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Prints which records are showing on the current page</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">printInfo</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$template</span><span class="php-code">=</span>'default' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$template</td>
+				<td class="param_description">The template to use</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="set" class="method"><span class="resolution">-></span><span class="name">set()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets data to be available to the templates</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">set</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$key</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype">void</span> <span class="php-identifier">set</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$data</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key</td>
+				<td class="param_description">The key to set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to set</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$data</td>
+				<td class="param_description">An associative array of keys and values</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="showLinks" class="method"><span class="resolution">-></span><span class="name">showLinks()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Shows links to other pages when more than one page of records exists</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">showLinks</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$template</span><span class="php-code">=</span>'default' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$template</td>
+				<td class="param_description">The template to use</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If link were printed
+				</p>
+		</div>
+		<!-- end method -->	
+				</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

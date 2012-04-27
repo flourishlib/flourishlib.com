@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMValidation – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fORMValidation">fORMValidation</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fORMValidation">Class Documentation</a></strong></li>
+<li><a href="/api/fORMValidation">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMValidation.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#AddingValidationRules">Adding Validation Rules</a>
+<ul>
+<li><a href="#RequiredRules">Required Rules</a></li>
+<li><a href="#ConditionalRules">Conditional Rules</a></li>
+<li><a href="#Many-to-ManyRules">Many-to-Many Rules</a></li>
+<li><a href="#One-to-ManyRules">One-to-Many Rules</a></li>
+<li><a href="#OneorMoreRules">One or More Rules</a></li>
+<li><a href="#OnlyOneRules">Only One Rules</a></li>
+<li><a href="#RegexRules">Regex Rules</a></li>
+<li><a href="#ValidValuesRules">Valid Values Rules</a></li>
+</ul>
+</li>
+<li><a href="#CustomValidation">Custom Validation</a></li>
+<li><a href="#ColumnCaseSensitivity">Column Case Sensitivity</a></li>
+<li><a href="#ValidationMessageOrder">Validation Message Order</a></li>
+<li><a href="#MessageModification">Message Modification</a></li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><strong>fORMValidation</strong></li>
+</ul>
+</div>
+
+<p>
+The fORMValidation class is a built-in part of the ORM that provides validation functionality for <a href="/docs/fActiveRecord">fActiveRecord</a> classes.
+</p>
+
+<h2 id="AddingValidationRules">Adding Validation Rules</h2>
+
+<p>
+While most databases support a fairly broad set of restrictions on data format and validity, some validation tasks are too complicated or not possible with the standard databases. The fORMValidation class allows for supplementing the database schema with additional validation rules to help ensure valid data is being stored. These rules will be checked whenever <a href="/api/fActiveRecord#validate">fActiveRecord::validate()</a> or <a href="/api/fActiveRecord#store">fActiveRecord::store()</a> is called.
+</p>
+
+<h3 id="RequiredRules">Required Rules</h3>
+
+<p>
+By default, any database column that is set to <code>NOT NULL</code> and does <em>not</em> have a <code>DEFAULT</code> value, will be required. The static method <a href="/api/fORMValidation#addRequiredRule"><code>addRequiredRule()</code></a> allow setting columns that do allow <code>NULL</code> or have a default to also be required. It accepts a <code>$class</code> and one or more <code>$column</code> names.
+</p>
+<pre class="block php"><code>class NewsArticle extends fActiveRecord
+{
+    protected function configure()
+    {
+        // Makes the photo column required
+        fORMValidation::addRequiredRule($this, 'photo');
+
+        // Makes the publish_date and removal_date columns required
+        fORMValidation::addRequiredRule($this, array('publish_date', 'removal_date'));
+    }
+}</code></pre>
+
+<h3 id="ConditionalRules">Conditional Rules</h3>
+
+<p>
+The static method <a href="/api/fORMValidation#addConditionalRule"><code>addConditionalRule()</code></a> allows adding a rule where a column can be required to be filled in based on the presence of a value in another column. <code>addConditionalRule()</code> accepts four parameters, the <code>$class</code> being configured, the (one or more) <code>$main_columns</code> to trigger the rule, the optional <code>$conditional_values</code> to trigger the rule, and the <code>$conditional_columns</code> to require. If <code>$conditional_values</code> is <code>NULL</code>, the <code>$conditional_columns</code> will be required if any value is entered into any of the <code>$main_columns</code>, otherwise one of the values in <code>$conditional_values</code> would need to be entered.
+</p>
+
+<p>
+The following example will require a photo if the type is set to photo:
+</p>
+<pre class="block php"><code>class NewsArticle extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::addConditionalRule($this, 'type', 'Photo', 'photo');
+    }
+}</code></pre>
+
+<p>
+ This example show how to require all three of a set of columns must be filled in if any of them are filled in:
+</p>
+<pre class="block php"><code>class Product extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::addConditionalRule(
+            $this,
+            array('price', 'discount_price', 'member_price'),
+            NULL,
+            array('price', 'discount_price', 'member_price')
+        );
+    }
+}</code></pre>
+
+<h3 id="Many-to-ManyRules">Many-to-Many Rules</h3>
+
+<p>
+Many-to-many validations rules all requiring that a record have at least one of another type of record related to it in a many-to-many relationship. The static method <a href="/api/fORMValidation#addManyToManyRule"><code>addManyToManyRule()</code></a> accepts three parameters, the <code>$class</code> to configure, the <code>$related_class</code> to require and optionally the <code>$route</code> to the <code>$related_class</code>.
+</p>
+
+<p>
+The following example will require that a user is associated with at least one group:
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::addManyToManyRule($this, 'Group');
+    }
+}</code></pre>
+
+<h3 id="One-to-ManyRules">One-to-Many Rules</h3>
+
+<p>
+One-to-many validations rules all requiring that a record have at least one of another type of record related to it in a one-to-many relationship. The static method <a href="/api/fORMValidation#addOneToManyRule"><code>addOneToManyRule()</code></a> accepts three parameters, the <code>$class</code> to configure, the <code>$related_class</code> to require and optionally the <code>$route</code> to the <code>$related_class</code>.
+</p>
+
+<p>
+The following example will require that a survey question has at least one option to pick from:
+</p>
+<pre class="block php"><code>class SurveyQuestion extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::addOneToManyRule($this, 'SurveyQuestionOption');
+    }
+}</code></pre>
+
+<h3 id="OneorMoreRules">One or More Rules</h3>
+
+<p>
+In some situations it is necessary to require that a user fills in at least one of a group of columns. This can be accomplished by calling the static method <a href="/api/fORMValidation#addOneOrMoreRule"><code>addOneOrMoreRule()</code></a>. The method accepts two parameters, the <code>$class</code> to configure and an array of <code>$columns</code> to require one or more of.
+</p>
+
+<p>
+The following example would require that at least one of photo, link and body were entered:
+</p>
+<pre class="block php"><code>class NewsArticle extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::addOneOrMoreRule(
+            $this,
+            array(
+                'photo',
+                'link',
+                'body'
+            )
+        );
+    }
+}</code></pre>
+
+<h3 id="OnlyOneRules">Only One Rules</h3>
+
+<p>
+When presenting multiple options to users, sometimes it is necessary to restrict the user to only be able to select one from a number of choices. The static method <a href="/api/fORMValidation#addOnlyOneRule"><code>addOnlyOneRule()</code></a> accepts the <code>$class</code> to configure, plus an array of the <code>$columns</code> to restrict.
+</p>
+
+<p>
+The following example would only allow the entry of one of photo, link and body:
+</p>
+<pre class="block php"><code>class NewsArticle extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::addOnlyOneRule(
+            $this,
+            array(
+                'photo',
+                'link',
+                'body'
+            )
+        );
+    }
+}</code></pre>
+
+<h3 id="RegexRules">Regex Rules</h3>
+
+<p>
+The static method <a href="/api/fORMValidation#addRegexRule"><code>addRegexRule()</code></a> allow validating a value against a <a href="http://php.net/pcre">perl-compatible regular expression</a> (PCRE). This method accepts the <code>$class</code> and <code>$column</code> to test, the <code>$regex</code> to use and the <code>$message</code> for when the regular expression does not match. The rule will not be checked if the value is <code>NULL</code>.
+</p>
+
+<p>
+The following example would allow the length only allow a number, followed by zero or more spaces and <code>in</code>, <code>inches</code>, <code>cm</code>, <code>m</code>, <code>meters</code>, <code>ft</code> or <code>feet</code>:
+</p>
+<pre class="block php"><code>class Box extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::addRegexRule(
+            $this,
+            'length',
+            '#^\d+\s*(in(ches)?|cm|m(eters)?|ft|feet)$#',
+            'Please enter a length in cm, in, ft or m'
+        );
+    }
+}</code></pre>
+
+<h3 id="ValidValuesRules">Valid Values Rules</h3>
+
+<p>
+While it is possible to restrict the valid input to a column via a <code>CHECK</code> constraint (or the MySQL <code>ENUM</code> data type), there is also a method in fORMValidation to do the same thing. <a href="/api/fORMValidation#addValidValuesRule"><code>addValidValuesRule()</code></a> accepts the <code>$class</code> to configure, the <code>$column</code> to restrict the value of and an array of the <code>$valid_values</code>. <em>Please note that <code>NULL</code> is always allowed as long as the column is not set as <code>NOT NULL</code>.</em>
+</p>
+
+<p>
+The following example would only allow <code>'Active'</code> or <code>'Inactive'</code> in the status column:
+</p>
+<pre class="block php"><code>class NewsArticle extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::addValidValuesRule(
+            $this,
+            'status',
+            array(
+                'Active',
+                'Inactive'
+            )
+        );
+    }
+}</code></pre>
+
+<p>
+ The list of valid values can be retrieved by requesting the <code>'valid_values'</code> element during an <em>inspect</em> method call. This is also true if the valid values are defined in the database by a <code>CHECK</code> constraint.
+</p>
+<pre class="block php"><code>$valid_values = $news_article-&gt;inspectStatus('valid_values');
+foreach ($valid_values as $valid_status) {
+    // ...
+}</code></pre>
+
+<h2 id="CustomValidation">Custom Validation</h2>
+
+<p>
+In addition to using the built-in validation rules, it is possible to do custom validation by using an ORM hook via <a href="/docs/fORM">fORM</a>. Please see the <a href="/docs/fORM#AddingFunctionalitytofActiveRecord">Adding Functionality to fActiveRecord</a> and <a href="/docs/fORM#CustomValidationUsingaHook">Custom Validation Using a Hook</a> sections for details and example code.
+</p>
+
+<h2 id="ColumnCaseSensitivity">Column Case Sensitivity</h2>
+
+<p>
+<code>UNIQUE</code> constraints on databases are normally case sensitive, meaning that the values <code>will@flourishlib.com</code> and <code>Will@flourishlib.com</code> can both exist in a column with a <code>UNIQUE</code> constraint. For most users this distinction is more confusing than useful. The static method <a href="/api/fORMValidation#setColumnCaseInsensitive"><code>setColumnCaseInsensitive()</code></a> restricts values to be unique in a case-insensitive manner. The method accepts two parameters, the <code>$class</code> to configure and the <code>$column</code> to treat as case-insensitive.
+</p>
+
+<p>
+The following example will ensure that category names must have a unique spelling, not just unique case:
+</p>
+<pre class="block php"><code>class Category extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::setColumnCaseInsensitive($this, 'name');
+    }
+}</code></pre>
+
+<h2 id="ValidationMessageOrder">Validation Message Order</h2>
+
+<p>
+When <a href="/api/fActiveRecord#validate">fActiveRecord::validate()</a> finds one of more validation issues (either by being called explicitly, or through <a href="/api/fActiveRecord#store">fActiveRecord::store()</a>), the error messages are created in the order they are detected. The static method <a href="/api/fORMValidation#setMessageOrder"><code>setMessageOrder()</code></a> accepts two parameters, the <code>$class</code> to configure and an ordered array of <code>$matches</code> to use to set the order of the error messages.
+</p>
+
+<p>
+The <code>$matches</code> array should contain strings that will be matched to the error messages, with the first array entry causing any matching error message to be first, the second array match to be next, and so forth. All matches are done in a case-insensitive manner.
+</p>
+
+<p>
+The longest matches are made first to help prevent unintended substring matches. Any messages that dont match anything will be placed at the end of the exception message. <em>Please note that there is no special format necessary to the match stringit can include any part of the message, including punctuation.</em>
+</p>
+
+<p>
+Below is an example that will ensure that the error messages are displayed with first name first, last name second and email last:
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::setMessageOrder(
+            $this,
+            array(
+                'First Name:',
+                'Last Name:',
+                'Email:'
+            )
+        );
+    }
+}</code></pre>
+
+<h2 id="MessageModification">Message Modification</h2>
+
+<p>
+There are two static methods to modifying validation messages, <a href="/api/fORMValidation#addStringReplacement"><code>addStringReplacement()</code></a> and <a href="/api/fORMValidation#addRegexReplacement"><code>addRegexReplacement()</code></a>. Each accepts the <code>$class</code> to apply the replacement to, the string/regex to <code>$search</code> for, and the string to <code>$replace</code> with. The search and replace action is performed on every validation message generated in the class, and is performed right before the messages are reordered.
+</p>
+
+<p>
+<code>addRegexReplacement()</code> accepts Perl-compatible regular expressions (<a href="http://php.net/pcre">PCRE</a>) and thus the <code>$replace</code> parameter needs to escape any literal <code>$</code> or <code>\</code> characters.
+</p>
+
+<p>
+The following example shows how the text of an error message can be easily changed:
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMValidation::addStringReplacement($this, 'Favorite Genre: Please enter a value', 'Favorite Genre: Please check at least one');
+    }
+}</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

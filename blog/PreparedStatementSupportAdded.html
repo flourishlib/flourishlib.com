@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Prepared Statement Support Added – Blog – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="PreparedStatementSupportAdded">Prepared Statement Support Added</h1>
+
+<p>
+Since back in December there has been kind of a lull in activity on Flourish due to some major work adding prepared statement support to <a href="/docs/fDatabase">fDatabase</a> and re-architecting the tests. The result of this work was a new class added to Flourish, <a href="/docs/fStatement">fStatement</a>, that works in combination with <a href="/docs/fDatabase">fDatabase</a> to provide prepared statement support across all database extensions. You can read more about it in the <a href="/docs/fDatabase#PreparedStatements">fDatabase section about
+Prepared Statements</a>.
+</p>
+
+<p>
+A good amount of time was spent adapting the various PHP extension APIs to work with the existing <a href="/api/fDatabase#query">fDatabase::query()</a> style of using data-type-specific placeholders. As you can see below, using prepared statements with Flourish will feel very natural if you have used the other query methods.
+</p>
+<pre class="block php"><code>// Prepare a statement
+$statement = $db-&gt;prepare(&quot;SELECT * FROM users WHERE user_id = %i&quot;);
+
+// Execute it any number of times
+$user_1 = $db-&gt;query($statement, 1);
+$user_2 = $db-&gt;query($statement, 2);
+// </code></pre>
+
+<p>
+ The <a href="/api/fDatabase#prepare">fDatabase::prepare()</a> method will create an <a href="/docs/fStatement">fStatement</a> object out of database-specific SQL string, while <a href="/api/fDatabase#translatedPrepare">fDatabase::translatedPrepare()</a> will translate the SQL throught <a href="/docs/fSQLTranslation">fSQLTranslation</a> before creating the object. The object can then be passed in place of a SQL string to <a href="/api/fDatabase#query">fDatabase::query()</a> or <a href="/api/fDatabase#unbufferedQuery">fDatabase::unbufferedQuery()</a>.
+</p>
+
+<p>
+There are a couple of other methods that were added including <a href="/api/fDatabase#execute">fDatabase::execute()</a> and <a href="/api/fDatabate#translatedExecute">fDatabate::translatedExecute()</a>. These function the same as <a href="/api/fDatabase#query">fDatabase::query()</a> and <a href="/api/fDatabase#translatedQuery">fDatabase::translatedQuery()</a>, respectively, except for the fact that they don't return anything. They will be useful for situations where the result of a SQL statement is not required, such as an <code>UPDATE</code> statement. As you would expect, an <a href="/docs/fStatement">fStatement</a> object can be passed as the first parameter to <a href="/api/fDatabase#execute">fDatabase::execute()</a>.
+</p>
+
+<p>
+I'll be posting another blog in the near future with some details of the new testing architecture, which was made possible by the <a href="/docs/ServerFund">server
+fundraiser</a> that was run last fall. A quick glance at the <a href="/docs/Tests">Tests</a> page will show that the tests run on each commit have gone up from around 2500 to over 42,000!
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

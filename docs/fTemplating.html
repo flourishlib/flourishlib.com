@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fTemplating – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fTemplating">fTemplating</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fTemplating">Class Documentation</a></strong></li>
+<li><a href="/api/fTemplating">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fTemplating.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Initialization">Initialization</a></li>
+<li><a href="#SettingGettingandDeletingElements">Setting, Getting and Deleting Elements</a></li>
+<li><a href="#AddingRemovingandFilteringElements">Adding, Removing and Filtering Elements</a></li>
+<li><a href="#EncodingandPreparingElements">Encoding and Preparing Elements</a></li>
+<li><a href="#ArrayDereferencing">Array Dereferencing</a></li>
+<li><a href="#PlacingElements">Placing Elements</a></li>
+<li><a href="#InjectingFiles">Injecting Files</a></li>
+<li><a href="#Minification">Minification</a>
+<ul>
+<li><a href="#EnablingMinification">Enabling Minification</a></li>
+<li><a href="#HowMinificationAffectsHTMLOutput">How Minification Affects HTML Output</a></li>
+<li><a href="#MinificationAlgorithm">Minification Algorithm</a></li>
+</ul>
+</li>
+<li><a href="#PHPShortTags">PHP Short Tags</a></li>
+<li><a href="#BufferedOutput">Buffered Output</a></li>
+<li><a href="#NamedInstances">Named Instances</a></li>
+<li><a href="#Sub-Templating">Sub-Templating</a></li>
+</ul>
+</div>
+
+<p>
+The fTemplating class allows for simple PHP templating with abstraction of HTML into a separate scope. This is a contrast to system like Smarty where a complete language has been developed, and must be learned, to use templating.
+</p>
+
+<h2 id="Initialization">Initialization</h2>
+
+<p>
+When creating an instance of the fTemplating class, a single optional parameter <code>$root</code> can be passed. This controls the directory that is used as the basis for relative paths. If no root is passed, the <code>$_SERVER['DOCUMENT_ROOT']</code> is used as a default.
+</p>
+<pre class="block php"><code>$template = new fTemplating('/var/www/inc/templates/');</code></pre>
+
+<h2 id="SettingGettingandDeletingElements">Setting, Getting and Deleting Elements</h2>
+
+<p>
+The fTemplating class is built around the concept of elements. Elements can be any data type, and may represent anything from a chunk of data, to an object, or a file path.
+</p>
+
+<p>
+The first operation to be performed is setting an element via the <a href="/api/fTemplating#set"><code>set()</code></a> method. The first parameter, <code>$element</code>, is an identifier for the element you are setting. The second parameter is the <code>$value</code>.
+</p>
+
+<p>
+Here are some example of setting various elements:
+</p>
+<pre class="block php"><code>// These value would usually be set in the initialization script for a site
+$template-&gt;set('header', 'header.php');
+$template-&gt;set('footer', 'footer.php');
+
+$template-&gt;set('db',  $database);</code></pre>
+
+<p>
+ Multiple elements can be set in one method call by passing an associative array to <a href="/api/fTemplating#set"><code>set()</code></a>.
+</p>
+<pre class="block php"><code>$template-&gt;set(array(
+    'header' =&gt; 'header.php',
+    'footer' =&gt; 'footer.php'
+));</code></pre>
+
+<p>
+ Elements can be retrieved by calling the <a href="/api/fTemplating#get"><code>get()</code></a> method. This method required the first parameter, <code>$element</code>, which is what you want to retrieve. You can also optionally pass a second parameter <code>$default_value</code> to specify what should be returned in the element has not yet been set. If no <code>$default_value</code> is specified and the element has not been set, <code>NULL</code> will be returned.
+</p>
+<pre class="block php"><code>// This will be the name or NULL
+$name = $template-&gt;get('name');
+
+// This will be the name or 'No name provided'
+$name = $template-&gt;get('name', 'No name provided');</code></pre>
+
+<p>
+ Multiple elements can be retrieved in one method call by passing an array of element names to <a href="/api/fTemplating#get"><code>get()</code></a>. If default values are required, an associative array can be passed with the element name being the key and the default value being the value.
+</p>
+<pre class="block php"><code>// Get an array with two values - the element names will be the keys and the
+// values will be the values, NULL will be returned if an element is not set
+$values = $template-&gt;get(array('first_name', 'last_name'));
+
+// This returns the same elements, but with the explicit default values N/A
+$values = $template-&gt;get(array(
+    'first_name' =&gt; 'N/A',
+    'last_name'  =&gt; 'N/A'
+));</code></pre>
+
+<p>
+ Elements can be removed by passing the <code>$element</code> name to <a href="/api/fTemplating#delete"><code>delete()</code></a>. The value of the element being deleted will be returned.
+</p>
+<pre class="block php"><code>$value = $template-&gt;delete('name');</code></pre>
+
+<p>
+ A <code>$default_value</code> can be passed as the second parameter to <a href="/api/fTemplating#delete"><code>delete()</code></a>, and it will be returned if the element specified was not set.
+</p>
+<pre class="block php"><code>$value = $template-&gt;delete('name', 'None specified');</code></pre>
+
+<p>
+ Multiple elements can be deleted at a time by passing an array of element names to <a href="/api/fTemplating#delete"><code>delete()</code></a>. Default values can be provided by passing an associative array of element names as keys and default values as values.
+</p>
+<pre class="block php"><code>// Delete the first_name and last_name elements
+$values = $template-&gt;delete(array('first_name', 'last_name'));
+
+// Delete the first_name and last_name elements, providing defaults
+$values = $template-&gt;delete(array(
+    'first_name' =&gt; 'No first name provided',
+    'last_name'  =&gt; 'No last name provided'
+));</code></pre>
+
+<h2 id="AddingRemovingandFilteringElements">Adding, Removing and Filtering Elements</h2>
+
+<p>
+In addition to <code>set()</code>, there is a method called <a href="/api/fTemplating#add"><code>add()</code></a> that will allow appending a value to an element that is an array. It will also initialize an element to an array if the element does not already exist.
+</p>
+<pre class="block php"><code>$template-&gt;add('js',  '/sup/js/main.js');
+
+$template-&gt;add('css', array('path' =&gt; '/sup/css/print.css', 'media' =&gt; 'print'));
+$template-&gt;add('css', '/sup/css/base.css');</code></pre>
+
+<p>
+ A value can be added at the beginning by passing <code>TRUE</code> as the third parameter.
+</p>
+<pre class="block php"><code>$template-&gt;add('js', '/sup/js/jquery-min.js', TRUE);</code></pre>
+
+<p>
+ The <a href="/api/fTemplating#remove"><code>remove()</code></a> method can used to remove a value from an array element. The removed value will be returned.
+</p>
+<pre class="block php"><code>$template-&gt;add('numbers', 1);
+$template-&gt;add('numbers', 2);
+$two = $template-&gt;remove('numbers');</code></pre>
+
+<p>
+ A value may be removed from the beginning of an array element by passing <code>TRUE</code> as a second parameter to <a href="/api/fTemplating#remove"><code>remove()</code></a>.
+</p>
+<pre class="block php"><code>$one = $template-&gt;remove('numbers');</code></pre>
+
+<p>
+ Values may be removed from an array element by calling <a href="/api/fTemplating#filter"><code>filter()</code></a> with the <code>$element</code> as the first parameter, and the <code>$value</code> to remove as the second.
+</p>
+<pre class="block php"><code>$template-&gt;filter('numbers', 1);</code></pre>
+
+<p>
+ The <a href="/api/fTemplating#filter"><code>filter()</code></a> method does a normal equality comparison, so filtering <code>0</code> will also removed <code>FALSE</code> and other empty values. All matching values will be removed from the array, not just the first one.
+</p>
+
+<h2 id="EncodingandPreparingElements">Encoding and Preparing Elements</h2>
+
+<p>
+While simply retrieving elements is useful in certain situations, much of the time there will be a need to process text content for output in the HTML. The <a href="/api/fTemplating#encode"><code>encode()</code></a> and <a href="/api/fTemplating#prepare"><code>prepare()</code></a> methods function the same was as <code>get()</code> except that they run the returned value through <a href="/api/fHTML#encode">fHTML::encode()</a> and <a href="/api/fHTML#prepare">fHTML::prepare()</a>, respectively.
+</p>
+<pre class="block php"><code>// Encode turns &lt;, &gt;, &amp; and &quot; into HTML entities to prevent XSS
+echo $template-&gt;encode('name');
+
+// ::prepare() should only be used with trusted content to make
+// sure special characters outside of HTML tags are encoded
+echo $template-&gt;prepare('html_bio');</code></pre>
+
+<h2 id="ArrayDereferencing">Array Dereferencing</h2>
+
+<p>
+When an element is an array, it is possible to use array dereference syntax in the element name to access a specific array key. This syntax works with <a href="/api/fTemplating#set"><code>set()</code></a>, <a href="/api/fTemplating#get"><code>get()</code></a>, <a href="/api/fTemplating#delete"><code>delete()</code></a>, <a href="/api/fTemplating#add"><code>add()</code></a>, <a href="/api/fTemplating#remove"><code>remove()</code></a>, <a href="/api/fTemplating#filter"><code>filter()</code></a>, <a href="/api/fTemplating#encode"><code>encode()</code></a> and <a href="/api/fTemplating#prepare"><code>prepare()</code></a>.
+</p>
+<pre class="block php"><code>$template-&gt;set(
+    'user',
+    array(
+        'first_name' =&gt; 'John',
+        'last_name'  =&gt; 'Smith'
+    )
+);
+// This will echo John
+echo $template-&gt;get('user[first_name]');</code></pre>
+
+<p>
+ Array dereferencing can be any number of layers deep.
+</p>
+<pre class="block php"><code>echo $template-&gt;get('user[groups][0][name]');</code></pre>
+
+<h2 id="PlacingElements">Placing Elements</h2>
+
+<p>
+Probably the most useful aspect of the fTemplating class is the <a href="/api/fTemplating#place"><code>place()</code></a> method. This method takes a single parameter, <code>$element</code>, in which you specify what element you want to place in the page.
+</p>
+
+<p>
+<code>place()</code> works differently depending of the type of path is contained in the element. If the element contains a path is to a .php (.inc or .php5) file, the file will be included inside the scope of the fTemplating class (i.e. <code>$this</code> will return to the instance of the class). If a .css, .js or .rss (.xml) path is placed, the proper XHTML tags will be echoed.
+</p>
+
+<p>
+In order to handle the <code>title</code> attribute for RSS feeds and the <code>media</code> attribute for CSS files it is possible to set the value of an element to be an associative array containing a key <code>path</code> and a key corresponding to the appropriate attributes.
+</p>
+
+<p>
+Here are some examples of using <code>place()</code> for different types of files:
+</p>
+<pre class="block php"><code>$template-&gt;set('title', 'Flourish');
+$template-&gt;add('rss', array('path' =&gt; '/sup/rss/blog.rss', 'title' =&gt; 'Blog Posts'));
+$template-&gt;place('header');
+?&gt;
+&lt;h1&gt;Flourish&lt;/h1&gt;
+...
+&lt;?php
+$template-&gt;place('footer');</code></pre>
+
+<p>
+ Placing the header would include the file <code>header.php</code> from the root we defined earlier of <code>/var/www/inc/templates/</code>. Placing the footer would do that same thing for <code>footer.php</code>.
+</p>
+
+<p>
+Here is an example <code>header.php</code>:
+</p>
+<pre class="block php"><code>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot; lang=&quot;en&quot;&gt;
+    &lt;head&gt;  
+        &lt;title&gt;&lt;?php echo $this-&gt;prepare('title') ?&gt;&lt;/title&gt;
+        &lt;?php echo $this-&gt;place('css') ?&gt;
+        &lt;?php echo $this-&gt;place('js') ?&gt;
+        &lt;?php echo $this-&gt;place('rss') ?&gt;
+    &lt;/head&gt;
+    &lt;body&gt;</code></pre>
+
+<p>
+ The HTML output from the above script would be:
+</p>
+<pre class="block html"><code>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot; lang=&quot;en&quot;&gt;
+    &lt;head&gt;  
+        &lt;title&gt;Flourish&lt;/title&gt;
+        &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/sup/css/base.css&quot; media=&quot;all&quot; /&gt;
+        &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/sup/css/print.css&quot; media=&quot;print&quot; /&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;/sup/js/main.js&quot;&gt;&lt;/script&gt;
+        &lt;link rel=&quot;alternate&quot; type=&quot;application/rss+xml&quot; href=&quot;/sup/rss/blog.rss&quot; title=&quot;Blog Posts&quot; /&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Flourish&lt;/h1&gt;
+        ...
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>
+ If paths are contained in element that do not end in one of the extensions listed below, you can force all paths in an element to be displayed as a certain type of file by passing the type of file as the second parameter to place.
+</p>
+
+<p>
+Here are the valid extensions:
+</p>
+
+<ul>
+<li><strong>PHP:</strong> <code>.php</code>, <code>.php5</code>, <code>.inc</code></li>
+<li><strong>JS:</strong> <code>.js</code></li>
+<li><strong>CSS:</strong> <code>.css</code></li>
+<li><strong>RSS:</strong> <code>.rss</code>, <code>.xml</code></li>
+</ul>
+
+<p>
+Here is how you could force all paths in an element to be displayed as a certain type regaredless of the path extensions:
+</p>
+<pre class="block php"><code>// JS files
+$this-&gt;place('element1', 'js');
+
+// CSS files
+$this-&gt;place('element2', 'css');
+
+// RSS files
+$this-&gt;place('element3', 'rss');
+
+// PHP files
+$this-&gt;place('element4', 'php');</code></pre>
+
+<h2 id="InjectingFiles">Injecting Files</h2>
+
+<p>
+The method <a href="/api/fTemplating#inject"><code>inject()</code></a> works identically to <a href="/api/fTemplating#place"><code>place()</code></a>, except that is accepts a file name or path instead of an element name. This allows placing a file without having to pass it to <a href="/api/fTemplating#set"><code>set()</code></a> first.
+</p>
+<pre class="block php"><code>// Include a PHP file in the template root
+$template-&gt;inject('sidebar.php');
+
+// Add a JS file
+$template-&gt;inject('/path/to/example.js');</code></pre>
+
+<p>
+ The second parameter also functions identically to <a href="/api/fTemplating#place"><code>place()</code></a>, allowing the developer to specify the type of file being injected if it can't be auto-detected.
+</p>
+<pre class="block php"><code>// Specifying the file type
+$template-&gt;inject('/path/to/rss', 'rss');</code></pre>
+
+<h2 id="Minification">Minification</h2>
+
+<p>
+fTemplating includes functionality that will minify javascript and CSS, combine multiple files into one, and add a query string to allow for far-futures expire headers. All of these features provide increased performance for HTTP clients.
+</p>
+
+<p>
+Minification reduces the number of bytes sent to a user by removing whitespace and other unnecessary syntactic sugar. Combining multiple files reduces the number of HTTP requests made for each script execution. Adding a query string of the cache-file creation date allows use of far-futures expires headers without worrying about out-dated browser caches, which further reduces the number of HTTP requests.
+</p>
+
+<p>
+<em>In this section of documentation, a **cache file** refers to a file containing minified code of one or more original code files.</em>
+</p>
+
+<h3 id="EnablingMinification">Enabling Minification</h3>
+
+<p>
+JS and CSS minification is enabled by calling <a href="/api/fTemplating#enableMinification"><code>enableMinification()</code></a> with a <code>$mode</code>, <code>$cache_directory</code> and optional <code>$path_prefix</code>. This should be called before calling <a href="/api/fTemplating#place"><code>place()</code></a> on any elements since it works through the <code>place()</code> method.
+</p>
+<pre class="block php"><code>$template-&gt;enableMinification('development', $_SERVER['DOCUMENT_ROOT'] . '/sup/minification_cache/');</code></pre>
+
+<p>
+ The <code>$mode</code> can be either <code>'development'</code> or <code>'production'</code>. In <code>'development'</code> mode, all files are checked for modifications on each script execution. If a file has been modified since the cache was last created, the cache is regenerated. In <code>'production'</code> mode, cache files are only regenerated if they are missing.
+</p>
+
+<p>
+The <code>$cache_directory</code> should be a web-accessible directory for fTemplating to write the cache files to. It needs to be web-accessible since <code>&lt;script&gt;</code> and <code>&lt;link&gt;</code> tags will be referencing cache files stored inside of it.
+</p>
+
+<p>
+The <code>$path_prefix</code> is optional, and defaults to <code>$_SERVER['DOCUMENT_ROOT']</code>. The <code>$path_prefix</code> is appended to all JS and CSS paths in order to load them from the filesystem. For example a CSS file <code>/css/main.css</code> would be prefixed with <code>$_SERVER['DOCUMENT_ROOT']</code>, resulting in fTemplating looking for the file in <code>/document/root/css/main.css</code>.
+</p>
+
+<p>
+Since the minified files are stored on the filesystem, fTemplating must know how to translate the filesystem path into a URL. This translation is done by using <a href="/api/fFilesystem#translateToWebPath">fFilesystem::translateToWebPath()</a>. If fTemplating is generating incorrect URLs for the minified files, please use <a href="/api/fFilesystem#addWebPathTranslation">fFilesystem::addWebPathTranslation()</a> to indicate what translation should be done. <a href="/docs/fFilesystem#Translation">fFilesystem: Translation</a> has an example showing how the method is used.
+</p>
+
+<h3 id="HowMinificationAffectsHTMLOutput">How Minification Affects HTML Output</h3>
+
+<p>
+Once minification is enabled, all calls to <a href="/api/fTemplating#place"><code>place()</code></a> that end up placing one or more CSS or JS files will automatically be minified.
+</p>
+<pre class="block php"><code>$template-&gt;add('css', '/css/structure.css');
+$template-&gt;add('css', '/css/typography.css');
+$template-&gt;place('css');</code></pre>
+
+<p>
+ Would normally result in the following HTML being written to the output:
+</p>
+<pre class="block html"><code>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/css/structure.css&quot; /&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/css/typography.css&quot; /&gt;</code></pre>
+
+<p>
+ With minification enabled, it would be written as:
+</p>
+<pre class="block html"><code>&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;/cache/ae9210f4cbd017f4cbes.css?v=10298382912&quot; /&gt;</code></pre>
+
+<h3 id="MinificationAlgorithm">Minification Algorithm</h3>
+
+<p>
+fTemplating uses Douglas Crockfords <a href="http://www.crockford.com/javascript/jsmin.html">JSMin algorithm</a>, but has its own implementation that is optimized for PHP.
+</p>
+
+<p>
+For CSS, there is not a definitive algorithm like JSMin. Currently fTemplating performs the following steps to minify CSS:
+</p>
+
+<ul>
+<li>Runs of two of more whitespace characters are reduced to a single space</li>
+<li>Whitespace around <code>;</code>, <code>{</code>, <code>}</code>, <code>,</code>, <code>&gt;</code> and <code>+</code> is removed</li>
+<li>Whitespace around <code>:</code> inside of rule blocks is removed</li>
+<li><code>;}</code> is reduced to <code>}</code></li>
+<li>Units of measure for zero values are discarded</li>
+<li>Unnecessary leading and trailing zeroes are discarded</li>
+<li>Measurements repeated four times are reduced to a single measurement</li>
+<li>6-digit hex color codes are reduced to three if possible</li>
+</ul>
+
+<p>
+CSS minification does not touch <code>@import</code> statements or <code>url()</code> literals. Depending on the location of the <code>$cache_directory</code> relative to the normal CSS directory, some <code>@import</code> statements may break. However, with <a href="/api/fTemplating#enableMinification"><code>enableMinification()</code></a>, <code>@import</code> statements should not generally be necessary. Similarly, <code>url()</code> literals may break if the <code>$cache_directory</code> is on a different directory level than the original CSS directory. This can be remedied by placing them on the same level, or using website-relative URLs. 
+</p>
+
+<h2 id="PHPShortTags">PHP Short Tags</h2>
+
+<p>
+PHP short tags, such as <code>&lt;?</code> and <code>&lt;?=</code> often make for easy-to-read and easy-to-write templates in raw PHP. Unfortunately, short tags can be disabled by an ini setting, and cant be relied upon when developing PHP for different environments.
+</p>
+
+<p>
+The method <a href="/api/fTemplating#enablePHPShortTags"><code>enablePHPShortTags()</code></a> allows any PHP file directly included via <a href="/api/fTemplating#place"><code>place()</code></a> or <a href="/api/fTemplating#inject"><code>inject()</code></a> to use PHP short tags even if they are turned off. This is accomplished by transforming short tags into long tags and saving the transformed PHP into a cache directory. The method accepts two parameters, <code>$mode</code> and <code>$cache_directory</code>.
+</p>
+<pre class="block php"><code>$template-&gt;enablePHPShortTags('development', '/path/to/php/cache');</code></pre>
+
+<p>
+ The <code>$mode</code> can be either <code>'development'</code> or <code>'production'</code>. In <code>'development'</code> mode, all files are checked for modifications on each script execution. If a file has been modified since the cache was last created, the cache is regenerated. In <code>'production'</code> mode, cache files are only regenerated if they are missing.
+</p>
+
+<p>
+The <code>$cache_directory</code> is where the transformed PHP files are saved. This directory should not be web-accessible, but must be writable by the web server. <em>fTemplating will properly preserve the value of <code>__FILE__</code> and <code>__DIR__</code> constants that are contained within templates that are transformed.</em>
+</p>
+
+<h2 id="BufferedOutput">Buffered Output</h2>
+
+<p>
+In certain circumstances it is useful to buffer the output of the page to allow for elements to be changed after content has already been output. The <a href="/api/fTemplating#buffer"><code>buffer()</code></a> method allows such buffering to be enabled.
+</p>
+
+<p>
+When buffering is enabled, all calls to <code>place()</code> actually insert a text token into the output. When the fTemplating class destructor is called (explicitly, or at the end of the page execution) the text tokens are all replaced by the output of the <code>place()</code> call. The <code>place()</code> method is actually executed in the destructor, so it will have the state of all elements at the end of the page, thus allowing elements to be modified after they have been seemingly already output.
+</p>
+
+<p>
+There are two caveats to using the fTemplating output buffering.
+</p>
+
+<ol>
+<li>If any of your code relies on sequential execution of code in a <code>place()</code> call and then in other non-templating code, it will be executed in the wrong order due to the fact that the <code>place()</code> call is not done until the end of the page. If this is the case, you should probably not use buffering, or consider a way to refactor your code so that such sequential code execution is not required.</li>
+<li>All objects that are used inside of PHP that is placed by the fTemplating object need to be constructed before the fTemplating object is constructed. This is because destructors are executed in the reverse order of constructors, which means the objects being used by fTemplating will be destructed before fTemplating itself. Since fTemplating's destructor is what causes PHP code to be placed, the object being used may no longer be in a usable state. This happens most often with <a href="/docs/fDatabase">fDatabase</a>.</li>
+</ol>
+
+<p>
+Here is an example of using buffered output:
+</p>
+<pre class="block php"><code>// Create the template and turn on buffering
+$temp = new fTemplating();
+$temp-&gt;buffer();
+
+// Set up out elements
+$temp-&gt;set('header', 'header.php');
+$temp-&gt;set('title',  'This is the old title');
+
+// Output the header
+$temp-&gt;place('header');
+
+// Change the title after the fact
+$temp-&gt;set('title', 'This is the new title');</code></pre>
+
+<p>
+ Lets assume that <code>header.php</code> looks like this:
+</p>
+<pre class="block php"><code>echo $this-&gt;get('title');</code></pre>
+
+<p>
+ The output from above would be:
+</p>
+<pre class="block html"><code>This is the new title</code></pre>
+
+<p>
+ since the <code>place()</code> call is not executed until the <code>$temp</code> destructor is called at the end of the code (implicitly) and the title was changed before the end of the code.
+</p>
+
+<p>
+This buffering technique can greatly reduce the complexity of the code that needs to be executed before the first output can be sent to the user.
+</p>
+
+<h2 id="NamedInstances">Named Instances</h2>
+
+<p>
+It is possible to attach and retrieve fTemplating objects in any scope using the static methods <a href="/api/fTemplating#attach"><code>attach()</code></a> and <a href="/api/fTemplating#retrieve"><code>retrieve()</code></a>. <code>attach()</code> accepts an fTemplating instance and an optional <code>$name</code> for it. If no <code>$name</code> is provided, it will be set to <code>default</code>.
+</p>
+<pre class="block php"><code>fTemplating::attach(new fTemplating('/path/to/root'));</code></pre>
+
+<p>
+ The method <a href="/api/fTemplating#retrieve"><code>retrieve()</code></a> accepts the <code>$name</code> of a previously creating instance and returns it. If no <code>$name</code> is passed, the <code>default</code> template is returned.
+</p>
+<pre class="block php"><code>$tmpl = fTemplating::retrieve();</code></pre>
+
+<h2 id="Sub-Templating">Sub-Templating</h2>
+
+<p>
+It is possible to nest fTemplating objects for more complex situations. The concept is to have a child fTemplating object that will be placed by a parent. Such a child fTemplating object will automatically call <a href="/api/fTemplating#place"><code>place()</code></a> on the <code>__main__</code> element when it itself is placed.
+</p>
+
+<p>
+The <code>__main__</code> element will normally be set by passing a PHP file path to the second parameter of the constructor. Like calls to <a href="/api/fTemplating#set"><code>set()</code></a>, any file path that is not absolute and does not start with <code>./</code> will be relative to the template root.
+</p>
+<pre class="block php"><code>$user_info = new fTemplating('/templating/root/', 'sub_templates/user_info.php');</code></pre>
+
+<p>
+ The fTemplating object may then be set to another fTemplating object and placed.
+</p>
+<pre class="block php"><code>$template-&gt;set('user_info', $user_info);
+// At this point sub_templates/user_info.php is placed
+$template-&gt;place('user_info');</code></pre>
+
+<p>
+ All sub-templates will inherit all minification and PHP short tag settings from their parent if not explicitly set.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

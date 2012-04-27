@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fMailbox – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fMailbox">fMailbox</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fMailbox">Class Documentation</a></strong></li>
+<li><a href="/api/fMailbox">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fMailbox.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#Listing">Listing</a></li>
+<li><a href="#Fetching">Fetching</a></li>
+<li><a href="#Deleting">Deleting</a></li>
+<li><a href="#Parsing">Parsing</a></li>
+<li><a href="#SMIMEDecryptionandVerification">S/MIME Decryption and Verification</a></li>
+</ul>
+
+<h2 id="EmailClasses">Email Classes </h2>
+
+<ul>
+<li><a href="/docs/fEmail">fEmail</a></li>
+<li><strong>fMailbox</strong></li>
+<li><a href="/docs/fSMTP">fSMTP</a></li>
+</ul>
+</div>
+
+<p>
+The fMailbox class provides an interface to list, fetch and delete emails from POP3 and IMAP servers. It fully parses the messages, handles attachments, related content and inline files. All text content is converted to UTF-8. <em>This class does <strong>not</strong> require the PHP <a href="http://php.net/imap">imap extension</a>.</em> Secure connections are supported if the <a href="http://php.net/openssl">openssl extension</a> is installed.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+To create a mailbox object, you must provide the <code>$type</code> (either <code>pop3</code> or <code>imap</code>), <code>$server</code>, <code>$username</code> and <code>$password</code>.
+</p>
+<pre class="block php"><code>// Connect to a local pop3 server
+$mailbox = new fMailbox('pop3', 'localhost', 'user', 'password');
+
+// Connect to a remote imap server
+$mailbox = new fMailbox('imap', 'example.com', 'user', 'password');</code></pre>
+
+<p>
+ The <code>$port</code> is automatically determined by the type, but can be overridden as a fifth parameter.
+</p>
+<pre class="block php"><code>// Connect to an imap server on port 874
+$mailbox = new fMailbox('imap', 'example.com', 'user', 'password', 874);</code></pre>
+
+<p>
+ If the connection needs to be <code>$secure</code>, pass <code>TRUE</code> to the sixth parameter.
+</p>
+<pre class="block php"><code>// Make a secure connection on the default secure IMAP port
+$mailbox = new fMailbox('imap', 'example.com', 'user', 'password', NULL, TRUE);</code></pre>
+
+<p>
+ The default socket <code>$timeout</code> in seconds can be adjusted with the seventh parameter.
+</p>
+<pre class="block php"><code>// Timeout after 5 seconds
+$mailbox = new fMailbox('imap', 'example.com', 'user', 'password', NULL, FALSE, 5);</code></pre>
+
+<h2 id="Listing">Listing</h2>
+
+<p>
+A list of messages can be retrieved from a mailbox by calling the <a href="/api/fMailbox#listMessages"><code>listMessages()</code></a> method.
+</p>
+<pre class="block php"><code>// Retrieve an overview of all messages
+$messages = $mailbox-&gt;listMessages();</code></pre>
+
+<p>
+ The result in an array of messages, with the key being the message's unique identifier (UID) and the value being an array with the keys:
+</p>
+
+<ul>
+<li><code>uid</code>: a unique identifier for this message on this server <em>integer</em></li>
+<li><code>received</code>: date message was received <em>string</em></li>
+<li><code>size</code>: size of message in bytes <em>integer</em></li>
+<li><code>date</code>: date message was sent <em>string</em></li>
+<li><code>from</code>: the <code>From:</code> header value <em>string</em></li>
+<li><code>subject</code>: the message subject <em>string</em></li>
+<li><code>message_id</code>: the message-id header value, should be globally unique <em>string, optional</em></li>
+<li><code>to</code>: the to header value <em>string. optional</em></li>
+<li><code>in_reply_to</code>: the in-reply-to header value <em>string, optional</em></li>
+</ul>
+
+<p>
+Below is an example of a list containing a single example messages:
+</p>
+<pre class="block php"><code>array(
+    7556 =&gt; array(
+        'uid' =&gt; 7556,
+        'received' =&gt; '28 Jan 2010 19:45:07 -400',
+        'size' =&gt; 1735,
+        'date' =&gt; '28 Jan 2010 19:44:48 -400',
+        'from' =&gt; '&quot;John Smith&quot; &lt;john@example.com&gt;',
+        'subject' =&gt; 'Thanks for Signing Up!',
+        'message_id' =&gt; '&lt;788a8c8865e19b0c3243@example.com&gt;',
+        'to' =&gt; 'will@flourishlib.com, Joe &lt;joe@example.com&gt;',
+        'in_reply_to' =&gt; '',
+    )
+)</code></pre>
+
+<p>
+ <code>listMessages()</code> has two optional parameters, the <code>$limit</code> and <code>$page</code> which control how many and which messages should be retrieved.
+</p>
+<pre class="block php"><code>// Get the first five messages
+$messages = $mailbox-&gt;listMessages(5);
+
+// Get messages 11 to 15
+$messages = $mailbox-&gt;listMessage(5, 3);</code></pre>
+
+<h2 id="Fetching">Fetching</h2>
+
+<p>
+Individual messages can be retrieved in a parsed format by calling the method <a href="/api/fMailbox#fetchMessage"><code>fetchMessage()</code></a>. It requires a single parameter, <code>$uid</code>, which can be retrieved by the <a href="/api/fMailbox#listMessages"><code>listMessages()</code></a> method.
+</p>
+<pre class="block php"><code>$message = $mailbox-&gt;fetchMessage(7556);</code></pre>
+
+<p>
+ The return value is an associative array containing information about the message. The array will always include the following keys:
+</p>
+
+<ul>
+<li><code>uid</code>: The UID of the message</li>
+<li><code>received</code>: The date the message was received by the server</li>
+<li><code>headers</code>: An associative array of mail headers, the keys being the lowercase header names. By default the values are a string, but the following headers are further parsed:
+<ul>
+<li><code>received</code>: An array of the <code>Recieved</code> headers</li>
+<li><code>to</code>: An array of parsed addressees, each being an associative array in the format:
+<ul>
+<li><code>mailbox</code>: The part before the <code>@</code></li>
+<li><code>host</code>: The part after the <code>@</code></li>
+<li><code>personal</code>: The addressee's name <em>optional</em></li>
+</ul>
+</li>
+<li><code>cc</code>: An array of parsed addressees, in the same format as <code>to</code></li>
+<li><code>from</code>: An associative array of the from address, in the same format as <code>to</code></li>
+<li><code>sender</code>: An associative array of the sender address, in the same format as <code>to</code></li>
+<li><code>reply-to</code>: An associative array of the address to reply to, in the same format as <code>to</code></li>
+<li><code>content-type</code>: An associative array in the format:
+<ul>
+<li><code>value</code>: The main header value</li>
+<li><code>fields</code>: An associative array of the <code>;</code> separated key=value pairs after the main value</li>
+</ul>
+</li>
+<li><code>content-disposition</code>: An associative array in the same format as <code>content-type</code></li>
+</ul>
+</li>
+</ul>
+
+<p>
+And one or more of the following keys:
+</p>
+
+<ul>
+<li><code>text</code>: The plaintext body</li>
+<li><code>html</code>: The HTML body</li>
+<li><code>attachment</code>: An array of attachments, each containing:
+<ul>
+<li><code>filename</code>: The name of the file</li>
+<li><code>mimetype</code>: The mimetype of the file</li>
+<li><code>data</code>: The raw contents of the file</li>
+</ul>
+</li>
+<li><code>inline</code>: An array of inline files, each containing:
+<ul>
+<li><code>filename</code>: The name of the file</li>
+<li><code>mimetype</code>: The mimetype of the file</li>
+<li><code>data</code>: The raw contents of the file</li>
+</ul>
+</li>
+<li><code>related</code>: An associative array of related files, such as embedded images, with the key <code>cid:{content-id}</code> and an array value containing:
+<ul>
+<li><code>mimetype</code>: The mimetype of the file</li>
+<li><code>data</code>: The raw contents of the file</li>
+</ul>
+</li>
+<li><code>verified</code>: If the message contents were verified via an S/MIME certificate - if not verified the <code>smime.p7s</code> file will be listed as an attachment</li>
+<li><code>decrypted</code>: If the message contents were decrypted via an S/MIME private key - if not decrypted the <code>smime.p7m</code> file will be listed as an attachment</li>
+</ul>
+
+<p>
+All values in headers, text and body will have been decoded to UTF-8. Files in the attachment, inline and related array will all retain their original encodings.
+</p>
+
+<p>
+Here is an example of a parsed message:
+</p>
+<pre class="block php"><code>array(
+    'received' =&gt; '28 Apr 2010 22:00:38 -0400',
+    'headers'  =&gt; array(
+		'received' =&gt; array(
+			0 =&gt; '(qmail 25838 invoked from network); 28 Apr 2010 22:00:38 -0400',
+			1 =&gt; 'from example.com (HELO ?192.168.10.2?) (example) by example.com with (DHE-RSA-AES256-SHA encrypted) SMTP; 28 Apr 2010 22:00:38 -0400'
+		),
+		'message-id' =&gt; '&lt;4BD8E815.1050209@flourishlib.com&gt;',
+		'date' =&gt; 'Wed, 28 Apr 2010 21:59:49 -0400',
+		'from' =&gt; array(
+			'personal' =&gt; 'Will Bond',
+			'mailbox'  =&gt; 'tests',
+			'host'     =&gt; 'flourishlib.com'
+		),
+		'user-agent'   =&gt; 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.9) Gecko/20100317 Thunderbird/3.0.4',
+		'mime-version' =&gt; '1.0',
+		'to' =&gt; array(
+			0 =&gt; array(
+				'mailbox' =&gt; 'tests',
+				'host'    =&gt; 'flourishlib.com'
+			)
+		),
+		'subject' =&gt; 'This message is encrypted'
+    ),
+    'text'      =&gt; 'This message is encrypted',
+    'decrypted' =&gt; TRUE,
+    'uid'       =&gt; 15
+);</code></pre>
+
+<p>
+ The second, optional boolean parameter <code>$convert_newlines</code> will convert all <code>\r\n</code> line-endings to <code>\n</code> inside of the <code>text</code> and <code>html</code> elements when set to <code>TRUE</code>.
+</p>
+<pre class="block php"><code>// Convert all line-endings to \n for the text and html
+$message = $mailbox-&gt;fetchMessage(7556, TRUE);</code></pre>
+
+<h2 id="Deleting">Deleting</h2>
+
+<p>
+One or more messages can be deleted at a time by calling <a href="/api/fMailbox#deleteMessages"><code>deleteMessages()</code></a> and passing a single UID, or an array of UIDs.
+</p>
+<pre class="block php"><code>// Delete a single message
+$mailbox-&gt;deleteMessages(7556);
+
+// Delete multiple messages
+$mailbox-&gt;deleteMessages(array(54, 928, 892));</code></pre>
+
+<h2 id="Parsing">Parsing</h2>
+
+<p>
+The static method <a href="/api/fMailbox#parseMessage"><code>parseMessage()</code></a> can be used to parse a full MIME email message into the same format that <a href="/api/fMailbox#fetchMessage"><code>fetchMessage()</code></a> returns, minus the <code>uid</code> key.
+</p>
+<pre class="block php"><code>$parsed_message = fMailbox::parseMessage(file_get_contents('/path/to/email'));</code></pre>
+
+<p>
+ Like <code>fetchMessage()</code>, it also supports a second, optional boolean parameter <code>$convert_newlines</code> to change <code>\r\n</code> into <code>\n</code> for <code>text</code> and <code>html</code>.
+</p>
+
+<h2 id="SMIMEDecryptionandVerification">S/MIME Decryption and Verification</h2>
+
+<p>
+One of the more advanced features of fMailbox is the ability to seamlessly handle S/MIME signed and encrypted messages. The static method <a href="/api/fMailbox#addSMIMEPair"><code>addSMIMEPair()</code></a> accepts an <code>$email_address</code> and either a single S/MIME <code>$certificate_file</code> path or that combined with an S/MIME <code>$private_key_file</code> path and <code>$private_key_password</code>.
+</p>
+<pre class="block php"><code>// Adds the certificate and private key for will@flourishlib.com
+fMailbox::addSMIMEPair('will@flourishlib.com', '/path/to/will.crt', '/path/to/will.key', 'password');</code></pre>
+
+<p>
+ If the certificate is provided, messages coming from the <code>$email_address</code> and S/MIME signed will be checked for authenticity. Currently the class is configured to only verify messages with an explicitly added key, and will not use the certificate included in the signature.
+</p>
+
+<p>
+If the private key and certificate are provided, any messages coming to the <code>$email_address</code> and S/MIME encrypted will be decrypted. The parsed message will contain the decrypted content in the appropriate <code>text</code>, <code>html</code>, <code>attachment</code>, etc. sections of the parsed message array.
+</p>
+
+<p>
+If verification succeeds, the <code>verified</code> key will be set to <code>TRUE</code> in the parsed message array. If decryption is successful, the <code>decrypted</code> key will be set to <code>TRUE</code>. If either fail, or a certificate or key is not available for the specified email address, the S/MIME signature or encrypted message will appear as a file in the <code>attachment</code> element.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

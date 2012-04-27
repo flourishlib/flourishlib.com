@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fSchema – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fSchema</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fSchema">Class Documentation</a></li>
+		<li><strong><a href="/api/fSchema">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fSchema.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li class="protected"><a href="#clearCache">clearCache()</a></li>
+	  			<li><a href="#enableCaching">enableCaching()</a></li>
+	  			<li><a href="#getColumnInfo">getColumnInfo()</a></li>
+	  			<li><a href="#getDatabases">getDatabases()</a></li>
+	  			<li><a href="#getKeys">getKeys()</a></li>
+	  			<li><a href="#getRelationships">getRelationships()</a></li>
+	  			<li><a href="#getTables">getTables()</a></li>
+	  			<li><a href="#setColumnInfoOverride">setColumnInfoOverride()</a></li>
+	  			<li><a href="#setKeysOverride">setKeysOverride()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fNumber">fNumber</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fORMSchema">fORMSchema</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b51</span></div>
+<p class="short_description">Gets schema information for the selected database</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b51</th><td>Fixed handling of getting tables in table creation order when a table references itself, fixed default value detection for the last column in a MySQL table <span class="date">1/12/12</span></td></tr><tr><th>1.0.0b50</th><td>Fixed detection of explicitly named SQLite foreign key constraints <span class="date">8/23/11</span></td></tr><tr><th>1.0.0b49</th><td>Added support for spatial/geometric data types in MySQL and PostgreSQL <span class="date">5/26/11</span></td></tr><tr><th>1.0.0b48</th><td>Fixed a bug with <a href="#getTables"><tt>getTables()</tt></a> not working on MySQL 4.x, fixed <a href="#getKeys"><tt>getKeys()</tt></a> to always return a reset array <span class="date">5/24/11</span></td></tr><tr><th>1.0.0b47</th><td>Backwards Compatibility Break - <a href="#getTables"><tt>getTables()</tt></a>, <a href="#getColumnInfo"><tt>getColumnInfo()</tt></a>, <a href="#getDatabases"><tt>getDatabases()</tt></a>, <a href="#getKeys"><tt>getKeys()</tt></a> and <a href="#getRelationships"><tt>getRelationships()</tt></a> now return database, schema, table and column names in lowercase, added the <tt>$creation_order</tt> parameter to <a href="#getTables"><tt>getTables()</tt></a>, fixed bugs with getting column and key information from MSSQL, Oracle and SQLite <span class="date">5/9/11</span></td></tr><tr><th>1.0.0b46</th><td>Enhanced SQLite schema detection to cover situations where <tt>UNIQUE</tt> constraints are defined separately from the table and when comments are used in <tt>CREATE TABLE</tt> statements <span class="date">2/6/11</span></td></tr><tr><th>1.0.0b45</th><td>Fixed Oracle auto incrementing detection to work with <tt>INSERT OR UPDATE</tt> triggers, fixed detection of dynamic default date/time/timestamp values for DB2 and Oracle <span class="date">12/4/10</span></td></tr><tr><th>1.0.0b44</th><td>Fixed the list of valid elements for <a href="#getColumnInfo"><tt>getColumnInfo()</tt></a> <span class="date">11/28/10</span></td></tr><tr><th>1.0.0b43</th><td>Added the <tt>comment</tt> element to the information returned by <a href="#getColumnInfo"><tt>getColumnInfo()</tt></a> <span class="date">11/28/10</span></td></tr><tr><th>1.0.0b42</th><td>Fixed a bug with MySQL detecting default <tt>ON DELETE</tt> clauses <span class="date">10/19/10</span></td></tr><tr><th>1.0.0b41</th><td>Fixed handling MySQL table names that require quoting <span class="date">8/24/10</span></td></tr><tr><th>1.0.0b40</th><td>Fixed bugs in the documentation and error message of <a href="#getColumnInfo"><tt>getColumnInfo()</tt></a> about what are valid elements <span class="date">7/21/10</span></td></tr><tr><th>1.0.0b39</th><td>Fixed a regression where key detection SQL was not compatible with PostgreSQL 8.1 <span class="date">4/13/10</span></td></tr><tr><th>1.0.0b38</th><td>Added Oracle support to <a href="#getDatabases"><tt>getDatabases()</tt></a> <span class="date">4/13/10</span></td></tr><tr><th>1.0.0b37</th><td>Fixed <a href="#getDatabases"><tt>getDatabases()</tt></a> for MSSQL <span class="date">4/9/10</span></td></tr><tr><th>1.0.0b36</th><td>Fixed PostgreSQL to properly report explicit <tt>NULL</tt> default values via <a href="#getColumnInfo"><tt>getColumnInfo()</tt></a> <span class="date">3/30/10</span></td></tr><tr><th>1.0.0b35</th><td>Added <tt>max_length</tt> values for various text and blob data types across all databases <span class="date">3/29/10</span></td></tr><tr><th>1.0.0b34</th><td>Added <tt>min_value</tt> and <tt>max_value</tt> attributes to <a href="#getColumnInfo"><tt>getColumnInfo()</tt></a> to specify the valid range for numeric columns <span class="date">3/16/10</span></td></tr><tr><th>1.0.0b33</th><td>Changed it so that PostgreSQL unique indexes containing functions are ignored since they can't be properly detected at this point <span class="date">3/14/10</span></td></tr><tr><th>1.0.0b32</th><td>Fixed <a href="#getTables"><tt>getTables()</tt></a> to not include views for MySQL <span class="date">3/14/10</span></td></tr><tr><th>1.0.0b31</th><td>Fixed the creation of the default caching key for <a href="#enableCaching"><tt>enableCaching()</tt></a> <span class="date">3/2/10</span></td></tr><tr><th>1.0.0b30</th><td>Fixed the class to work with lower privilege Oracle accounts and added detection of Oracle number columns <span class="date">1/25/10</span></td></tr><tr><th>1.0.0b29</th><td>Added on_delete and on_update elements to one-to-one relationship info retrieved by <a href="#getRelationships"><tt>getRelationships()</tt></a> <span class="date">12/16/09</span></td></tr><tr><th>1.0.0b28</th><td>Fixed a bug with detecting some multi-column unique constraints in SQL Server databases <span class="date">11/13/09</span></td></tr><tr><th>1.0.0b27</th><td>Added a parameter to <a href="#enableCaching"><tt>enableCaching()</tt></a> to provide a key token that will allow cached values to be shared between multiple databases with the same schema <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b26</th><td>Added the placeholder element to the output of <a href="#getColumnInfo"><tt>getColumnInfo()</tt></a>, added support for PostgreSQL, MSSQL and Oracle &quot;schemas&quot;, added support for parsing quoted SQLite identifiers <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b25</th><td>One-to-one relationships utilizing the primary key as a foreign key are now properly detected <span class="date">9/22/09</span></td></tr><tr><th>1.0.0b24</th><td>Fixed MSSQL support to work with ODBC database connections <span class="date">9/18/09</span></td></tr><tr><th>1.0.0b23</th><td>Fixed a bug where one-to-one relationships were being listed as many-to-one <span class="date">7/21/09</span></td></tr><tr><th>1.0.0b22</th><td>PostgreSQL UNIQUE constraints that are created as indexes and not table constraints are now properly detected <span class="date">7/8/09</span></td></tr><tr><th>1.0.0b21</th><td>Added support for the UUID data type in PostgreSQL <span class="date">6/18/09</span></td></tr><tr><th>1.0.0b20</th><td>Add caching of merged info, improved performance of <a href="#getColumnInfo"><tt>getColumnInfo()</tt></a> <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b19</th><td>Fixed a couple of bugs with <a href="#setKeysOverride"><tt>setKeysOverride()</tt></a> <span class="date">6/4/09</span></td></tr><tr><th>1.0.0b18</th><td>Added missing support for MySQL mediumint columns <span class="date">5/18/09</span></td></tr><tr><th>1.0.0b17</th><td>Fixed a bug with <a href="#clearCache"><tt>clearCache()</tt></a> not properly reseting the tables and databases list <span class="date">5/13/09</span></td></tr><tr><th>1.0.0b16</th><td>Backwards Compatibility Break - setCacheFile() changed to <a href="#enableCaching"><tt>enableCaching()</tt></a> and now requires an <a href="fCache">fCache</a> object, flushInfo() renamed to <a href="#clearCache"><tt>clearCache()</tt></a>, added Oracle support <span class="date">5/4/09</span></td></tr><tr><th>1.0.0b15</th><td>Added support for the three different types of identifier quoting in SQLite <span class="date">3/28/09</span></td></tr><tr><th>1.0.0b14</th><td>Added support for MySQL column definitions containing the COLLATE keyword <span class="date">3/28/09</span></td></tr><tr><th>1.0.0b13</th><td>Fixed a bug with detecting PostgreSQL columns having both a CHECK constraint and a UNIQUE constraint <span class="date">2/27/09</span></td></tr><tr><th>1.0.0b12</th><td>Fixed detection of multi-column primary keys in MySQL <span class="date">2/27/09</span></td></tr><tr><th>1.0.0b11</th><td>Fixed an issue parsing MySQL tables with comments <span class="date">2/25/09</span></td></tr><tr><th>1.0.0b10</th><td>Added the <a href="#getDatabases"><tt>getDatabases()</tt></a> method <span class="date">2/24/09</span></td></tr><tr><th>1.0.0b9</th><td>Now detects unsigned and zerofill MySQL data types that do not have a parenthetical part <span class="date">2/16/09</span></td></tr><tr><th>1.0.0b8</th><td>Mapped the MySQL data type <tt>'set'</tt> to <tt>'varchar'</tt>, however valid values are not implemented yet <span class="date">2/1/09</span></td></tr><tr><th>1.0.0b7</th><td>Fixed a bug with detecting MySQL timestamp columns <span class="date">1/28/09</span></td></tr><tr><th>1.0.0b6</th><td>Fixed a bug with detecting MySQL columns that accept <tt>NULL</tt> <span class="date">1/19/09</span></td></tr><tr><th>1.0.0b5</th><td>setColumnInfo(): fixed a bug with not grabbing the real database schema first, made general improvements <span class="date">1/19/09</span></td></tr><tr><th>1.0.0b4</th><td>Added support for MySQL binary data types, numeric data type options unsigned and zerofill, and per-column character set definitions <span class="date">1/17/09</span></td></tr><tr><th>1.0.0b3</th><td>Fixed detection of the data type of MySQL timestamp columns, added support for dynamic default date/time values <span class="date">1/11/09</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug with detecting multi-column unique keys in MySQL <span class="date">1/3/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">9/25/07</span></td></tr></table></div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the database</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fSchema">fSchema</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-var">$database</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDatabase">fDatabase</a></td>
+				<td class="param_name">$database</td>
+				<td class="param_description">The <a href="fDatabase">fDatabase</a> instance</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="clearCache" class="protected method"><span class="resolution">-></span><span class="name">clearCache()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Clears all of the schema info out of the object and, if set, the <a href="fCache">fCache</a> object</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">clearCache</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="enableCaching" class="method"><span class="resolution">-></span><span class="name">enableCaching()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the schema to be cached to the <a href="fCache">fCache</a> object specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableCaching</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fCache">fCache</a></span> <span class="php-var">$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$key_token</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fCache">fCache</a></td>
+				<td class="param_name">$cache</td>
+				<td class="param_description">The cache to cache to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key_token</td>
+				<td class="param_description">Internal use only! (this will be used in the cache key to uniquely identify the cache for this <a href="fSchema">fSchema</a> object)</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getColumnInfo" class="method"><span class="resolution">-></span><span class="name">getColumnInfo()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns column information for the table specified</p>
+								<p>If only a table is specified, column info is in the following format:</p><pre class="block "><code>array(
+    (string) {column name} => array(
+        'type'           => (string)  {data type},
+        'placeholder'    => (string)  {fDatabase::escape() placeholder for this data type},
+        'not_null'       => (boolean) {if value can't be null},
+        'default'        => (mixed)   {the default value},
+        'valid_values'   => (array)   {the valid values for a varchar field},
+        'max_length'     => (integer) {the maximum length in a varchar field},
+        'min_value'      => (numeric) {the minimum value for an integer/float field},
+        'max_value'      => (numeric) {the maximum value for an integer/float field},
+        'decimal_places' => (integer) {the number of decimal places for a decimal/numeric/money/smallmoney field},
+        'auto_increment' => (boolean) {if the integer primary key column is a serial/autoincrement/auto_increment/indentity column},
+        'comment'        => (string)  {the SQL comment/description for the column}
+    ), ...
+)</code></pre><p>If a table and column are specified, column info is in the following format:</p><pre class="block "><code>array(
+    'type'           => (string)  {data type},
+    'placeholder'    => (string)  {fDatabase::escape() placeholder for this data type},
+    'not_null'       => (boolean) {if value can't be null},
+    'default'        => (mixed)   {the default value-may contain special strings CURRENT_TIMESTAMP, CURRENT_TIME or CURRENT_DATE},
+    'valid_values'   => (array)   {the valid values for a varchar field},
+    'max_length'     => (integer) {the maximum length in a char/varchar field},
+    'min_value'      => (fNumber) {the minimum value for an integer/float field},
+    'max_value'      => (fNumber) {the maximum value for an integer/float field},
+    'decimal_places' => (integer) {the number of decimal places for a decimal/numeric/money/smallmoney field},
+    'auto_increment' => (boolean) {if the integer primary key column is a serial/autoincrement/auto_increment/indentity column},
+    'comment'        => (string)  {the SQL comment/description for the column}
+)</code></pre><p>If a table, column and element are specified, returned value is the single element specified.</p><p>The <tt>'type'</tt> element is homogenized to a value from the following list:  </p><ul><li><tt>'varchar'</tt></li><li><tt>'char'</tt></li><li><tt>'text'</tt></li><li><tt>'integer'</tt></li><li><tt>'float'</tt></li><li><tt>'timestamp'</tt></li><li><tt>'date'</tt></li><li><tt>'time'</tt></li><li><tt>'boolean'</tt></li><li><tt>'blob'</tt></li></ul><p>Please note that MySQL reports boolean data types as <tt>tinyint(1)</tt>, so  all <tt>tinyint(1)</tt> columns will be listed as <tt>boolean</tt>. This can be fixed  by calling:</p><pre class="block php"><code>$schema->setColumnInfoOverride(
+    array(
+        'type'        => 'integer',
+        'placeholder' => '%i',
+        'default'     => {default integer},
+        'min_value'   => new fNumber(-128),
+        'max_value'   => new fNumber(127)
+    ),
+    '{table name}',
+    '{column name}'
+);</code></pre><p>The <tt>'comment'</tt> element pulls from the database's column comment facility  with the exception of MSSQL and SQLite.</p><p>For MSSQL, the comment is pulled from the <tt>MS_Description</tt> extended  property, which can be added via the <tt>Description</tt> field in SQL Server  Management Studio, or via the <tt>sp_addextendedproperty</tt> stored procedure.</p><p>For SQLite, the comment is extracted from any SQL comment that is placed  at the end of the line on which the column is defined:</p><pre class="block sql"><code>CREATE TABLE users (
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(200) NOT NULL -- This is the full name
+);</code></pre><p>For the SQLite <tt>users</tt> table defined above, the <tt>name</tt> column will have  the comment <tt>This is the full name</tt>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">getColumnInfo</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table to get the column info for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to get the info for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to return: <tt>'type'</tt>, <tt>'placeholder'</tt>, <tt>'not_null'</tt>, <tt>'default'</tt>, <tt>'valid_values'</tt>, <tt>'max_length'</tt>, <tt>'min_value'</tt>, <tt>'max_value'</tt>, <tt>'decimal_places'</tt>, <tt>'auto_increment'</tt>, <tt>'comment'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The column info for the table/column/element specified - see method description for format
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getDatabases" class="method"><span class="resolution">-></span><span class="name">getDatabases()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the databases on the current server</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getDatabases</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The databases on the current server
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getKeys" class="method"><span class="resolution">-></span><span class="name">getKeys()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns a list of primary key, foreign key and unique key constraints for the table specified</p>
+								<p>The structure of the returned array is:</p><pre class="block "><code>array(
+     'primary' => array(
+         {column name}, ...
+     ),
+     'unique'  => array(
+         array(
+             {column name}, ...
+         ), ...
+     ),
+     'foreign' => array(
+         array(
+             'column'         => {column name},
+             'foreign_table'  => {foreign table name},
+             'foreign_column' => {foreign column name},
+             'on_delete'      => {the ON DELETE action: 'no_action', 'restrict', 'cascade', 'set_null', or 'set_default'},
+             'on_update'      => {the ON UPDATE action: 'no_action', 'restrict', 'cascade', 'set_null', or 'set_default'}
+         ), ...
+     )
+)</code></pre>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getKeys</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$key_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table to return the keys for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key_type</td>
+				<td class="param_description">The type of key to return: <tt>'primary'</tt>, <tt>'foreign'</tt>, <tt>'unique'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 An array of all keys, or just the type specified - see method description for format
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getRelationships" class="method"><span class="resolution">-></span><span class="name">getRelationships()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns a list of one-to-one, many-to-one, one-to-many and many-to-many relationships for the table specified</p>
+								<p>The structure of the returned array is:</p><pre class="block "><code>array(
+    'one-to-one' => array(
+        array(
+            'table'          => (string) {the name of the table this relationship is for},
+            'column'         => (string) {the column in the specified table},
+            'related_table'  => (string) {the related table},
+            'related_column' => (string) {the related column},
+            'on_delete'      => (string) {the ON DELETE action: 'no_action', 'restrict', 'cascade', 'set_null', or 'set_default'},
+            'on_update'      => (string) {the ON UPDATE action: 'no_action', 'restrict', 'cascade', 'set_null', or 'set_default'}
+        ), ...
+    ),
+    'many-to-one' => array(
+        array(
+            'table'          => (string) {the name of the table this relationship is for},
+            'column'         => (string) {the column in the specified table},
+            'related_table'  => (string) {the related table},
+            'related_column' => (string) {the related column}
+        ), ...
+    ),
+    'one-to-many' => array(
+        array(
+            'table'          => (string) {the name of the table this relationship is for},
+            'column'         => (string) {the column in the specified table},
+            'related_table'  => (string) {the related table},
+            'related_column' => (string) {the related column},
+            'on_delete'      => (string) {the ON DELETE action: 'no_action', 'restrict', 'cascade', 'set_null', or 'set_default'},
+            'on_update'      => (string) {the ON UPDATE action: 'no_action', 'restrict', 'cascade', 'set_null', or 'set_default'}
+        ), ...
+    ),
+    'many-to-many' => array(
+        array(
+            'table'               => (string) {the name of the table this relationship is for},
+            'column'              => (string) {the column in the specified table},
+            'related_table'       => (string) {the related table},
+            'related_column'      => (string) {the related column},
+            'join_table'          => (string) {the table that joins the specified table to the related table},
+            'join_column'         => (string) {the column in the join table that references 'column'},
+            'join_related_column' => (string) {the column in the join table that references 'related_column'},
+            'on_delete'           => (string) {the ON DELETE action: 'no_action', 'restrict', 'cascade', 'set_null', or 'set_default'},
+            'on_update'           => (string) {the ON UPDATE action: 'no_action', 'restrict', 'cascade', 'set_null', or 'set_default'}
+        ), ...
+    )
+)</code></pre>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getRelationships</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$relationship_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table to return the relationships for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$relationship_type</td>
+				<td class="param_description">The type of relationship to return: <tt>'one-to-one'</tt>, <tt>'many-to-one'</tt>, <tt>'one-to-many'</tt>, <tt>'many-to-many'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 An array of all relationships, or just the type specified - see method description for format
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getTables" class="method"><span class="resolution">-></span><span class="name">getTables()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the tables in the current database</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getTables</span><span class="php-brackets">(</span> <span class="php-vartype">boolean|string</span> <span class="php-var">$creation_order</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean|string</td>
+				<td class="param_name">$creation_order</td>
+				<td class="param_description"><tt>TRUE</tt> to return in a valid table creation order, or a table name to return that table and any tables that depend on it, in table creation order</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The tables in the current database, all converted to lowercase
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setColumnInfoOverride" class="method"><span class="resolution">-></span><span class="name">setColumnInfoOverride()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Allows overriding of column info</p>
+								<p>Performs an array merge with the column info detected from the database.</p><p>To erase a whole table, set the <tt>$column_info</tt> to <tt>NULL</tt>. To erase a  column, set the <tt>$column_info</tt> for that column to <tt>NULL</tt>.</p><p>If the <tt>$column_info</tt> parameter is not <tt>NULL</tt>, it should be an  associative array containing one or more of the following keys. Please  see <a href="#getColumnInfo"><tt>getColumnInfo()</tt></a> for a description of each.</p><ul><li><tt>'type'</tt></li><li><tt>'placeholder'</tt></li><li><tt>'not_null'</tt></li><li><tt>'default'</tt></li><li><tt>'valid_values'</tt></li><li><tt>'max_length'</tt></li><li><tt>'min_value'</tt></li><li><tt>'max_value'</tt></li><li><tt>'decimal_places'</tt></li><li><tt>'auto_increment'</tt></li><li><tt>'comment'</tt></li></ul><p>The following keys may be set to <tt>NULL</tt>:</p><ul><li><tt>'not_null'</tt></li><li><tt>'default'</tt></li><li><tt>'valid_values'</tt></li><li><tt>'max_length'</tt></li><li><tt>'min_value'</tt></li><li><tt>'max_value'</tt></li><li><tt>'decimal_places'</tt></li><li><tt>'comment'</tt></li></ul><p>The key <tt>'auto_increment'</tt> should be a boolean.</p><p>The <tt>'type'</tt> key should be one of:</p><ul><li><tt>'blob'</tt></li><li><tt>'boolean'</tt></li><li><tt>'char'</tt></li><li><tt>'date'</tt></li><li><tt>'float'</tt></li><li><tt>'integer'</tt></li><li><tt>'text'</tt></li><li><tt>'time'</tt></li><li><tt>'timestamp'</tt></li><li><tt>'varchar'</tt></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setColumnInfoOverride</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$column_info</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$column</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$column_info</td>
+				<td class="param_description">The modified column info - see method description for format</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table to override</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$column</td>
+				<td class="param_description">The column to override</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setKeysOverride" class="method"><span class="resolution">-></span><span class="name">setKeysOverride()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Allows overriding of key info. Replaces existing info, so be sure to provide full key info for type selected or all types.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setKeysOverride</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$keys</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$table</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$key_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$keys</td>
+				<td class="param_description">The modified keys - see <a href="#getKeys"><tt>getKeys()</tt></a> for format</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$table</td>
+				<td class="param_description">The table to override</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key_type</td>
+				<td class="param_description">The key type to override: <tt>'primary'</tt>, <tt>'foreign'</tt>, <tt>'unique'</tt></td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

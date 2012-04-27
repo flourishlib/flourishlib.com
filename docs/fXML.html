@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fXML – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fXML">fXML</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fXML">Class Documentation</a></strong></li>
+<li><a href="/api/fXML">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fXML.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a>
+<ul>
+<li><a href="#FixingInvalidXML">Fixing Invalid XML</a>
+<ul>
+<li><a href="#InvalidNamedEntities">Invalid Named Entities</a></li>
+<li><a href="#IncorrectlyEncodedContent">Incorrectly Encoded Content</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#ElementInformation">Element Information</a></li>
+<li><a href="#RawXML">Raw XML</a></li>
+<li><a href="#AttributeValues">Attribute Values</a></li>
+<li><a href="#ChildElementTextContent">Child Element Text Content</a></li>
+<li><a href="#Traversing">Traversing</a></li>
+<li><a href="#CustomPrefixes">Custom Prefixes</a></li>
+<li><a href="#EncodingData">Encoding Data</a></li>
+<li><a href="#SendingtheContentTypeHeader">Sending the Content Type Header</a></li>
+</ul>
+</div>
+
+<p>
+The fXML class provides functionality to read and create XML. An fXML object represents an XML string for reading/traversing, but does not allow modification. The static methods <a href="/api/fXML#encode"><code>encode()</code></a> and <a href="/api/fXML#sendHeader"><code>sendHeader()</code></a> are useful when creating XML.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+The fXML constructor will accept four different types of sources for the XML to represent:
+</p>
+
+<ol>
+<li>An <a href="/docs/fFile">fFile</a> object</li>
+<li>A file path</li>
+<li>A URL</li>
+<li>An XML string</li>
+</ol>
+<pre class="block php"><code>// From an fFile
+$file = new fFile('/path/to/file');
+$xml  = new fXML($file);
+
+// From a file path
+$xml  = new fXML('/path/to/file');
+
+// From a URL
+$xml  = new fXML('http://example.com/rss');
+
+// From an XML string
+$xml  = new fXML('&lt;?xml ');</code></pre>
+
+<p>
+ XML files with invalid data will cause an <a href="/docs/fValidationException">fValidationException</a> to be thrown.
+</p>
+
+<p>
+When fetching XML from a URL, an optional second parameter, <code>$timeout</code>, can be specified. If not specified, the <code>default_socket_timeout</code> ini setting is used.
+</p>
+<pre class="block php"><code>// Fetch the XML with a 5 second timeout
+$xml = new fXML('http://examples.com/rss', 5);</code></pre>
+
+<h3 id="FixingInvalidXML">Fixing Invalid XML</h3>
+
+<p>
+Two of the most common errors when creating XML are encoding characters as HTML entities for XML and delivering <code>ISO-8859-1</code> (or <code>Windows-1252</code>) encoded XML as <code>UTF-8</code>. An optional boolean parameter, <code>$fix_entities_encoding</code> can fix both of these problems.
+</p>
+<pre class="block php"><code>// Used with an HTTP timeout
+$xml = new fXML('http://example.com/rss', 5, TRUE);
+
+// Used without a timeout
+$xml = new fXML('./foo.xml', TRUE);</code></pre>
+
+<h4 id="InvalidNamedEntities">Invalid Named Entities</h4>
+
+<p>
+In XML, there are only five pre-defined named entities: <code>&amp;amp;</code>, <code>&amp;gt;</code>, <code>&amp;lt;</code>, <code>&amp;quot;</code> and <code>&amp;apos;</code>. All other named entities from HTML will cause a parse error if included in XML without further encoding. For instance, <code>&amp;rsquo;</code> is invalid, but <code>&amp;amp;rsquo;</code> or <code>’</code> is valid.
+</p>
+
+<p>
+<code>$fix_entities_encoding</code> will take
+</p>
+<pre class="block xml"><code>&lt;book&gt;&lt;title&gt;Isn&amp;rsquo;t Valid XML&lt;/title&gt;&lt;/book&gt;</code></pre>
+
+<p>
+ and convert it to
+</p>
+<pre class="block xml"><code>&lt;book&gt;&lt;title&gt;Isnt Valid XML&lt;/title&gt;&lt;/book&gt;</code></pre>
+
+<p>
+ before passing the XML to the parser.
+</p>
+
+<h4 id="IncorrectlyEncodedContent">Incorrectly Encoded Content</h4>
+
+<p>
+If no encoding is specified for an XML document, the encoded is assumed to be UTF-8. Many developers not familiar with XML and issues related to encoding will omit the encoding attribute of the <code>&lt;?xml&gt;</code> tag and will insert <code>ISO-8859-1</code> or <code>Windows-1252</code> (also called Latin or Latin 1) content.
+</p>
+
+<p>
+fXML will throw an exception when such an XML document is parsed, since the parser being used will find invalid UTF-8 characters and give up encoding. The <code>$fix_entities_encoding</code> parameter will detect non-UTF-8 characters for documents defined as UTF-8 (whether explicitly or by omission of the encoding attribute) and convert the content.
+</p>
+
+<h2 id="ElementInformation">Element Information</h2>
+
+<p>
+Information about the root XML element that was passed into the constructor can be accessed by the following methods:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fXML#getName"><code>getName()</code></a></td>
+<td>Returns the name of the element <em>without</em> any preceding namespace prefix</td>
+</tr>
+<tr>
+<td><a href="/api/fXML#getNamespace"><code>getNamespace()</code></a></td>
+<td>Returns the full namespace URI for the element, <em>if any</em></td>
+</tr>
+<tr>
+<td><a href="/api/fXML#getPrefix"><code>getPrefix()</code></a></td>
+<td>Returns the namespace prefix for the element, <em>if any</em></td>
+</tr>
+<tr>
+<td><a href="/api/fXML#getText"><code>getText()</code></a></td>
+<td>Returns the text content of the element</td>
+</tr>
+</tbody></table>
+
+<h2 id="RawXML">Raw XML</h2>
+
+<p>
+The raw XML being modeled by the fXML object can be retrieved by calling the method <a href="/api/fXML#toXML"><code>toXML()</code></a>.
+</p>
+<pre class="block php"><code>echo $xml-&gt;toXML();</code></pre>
+
+<h2 id="AttributeValues">Attribute Values</h2>
+
+<p>
+Attributes of the XML element can be accessed using array notation.
+</p>
+<pre class="block php"><code>// Normal attribute
+echo $xml['my_attribute'];
+
+// Attribute with namespace prefix
+echo $xml['ns:attribute'];</code></pre>
+
+<h2 id="ChildElementTextContent">Child Element Text Content</h2>
+
+<p>
+The text content of children of the XML element can be accessed by requesting object memebers.
+</p>
+<pre class="block php"><code>// The content of the child element &quot;firstName&quot;
+echo $xml-&gt;firstName;
+
+// Child &quot;title&quot; in the &quot;ns&quot; prefix
+echo $xml-&gt;{'ns:title'};</code></pre>
+
+<h2 id="Traversing">Traversing</h2>
+
+<p>
+For anything beyond attribute and child element text content of the root XML element, the <a href="/api/fXML#xpath"><code>xpath()</code></a> method will need to be used. This method returns an array of all matching parts of the XML file.
+</p>
+
+<p>
+If you aren't familiar with XPath, the <a href="http://en.wikipedia.org/wiki/XPath_1.0">Wikipedia page about XPath 1.0</a> is a good place to start. XPath allow traversal of the XML file using element names combined with predicates and functions.
+</p>
+
+<p>
+<a href="/api/fXML#xpath"><code>xpath()</code></a> accepts two parameter, the XPath <code>$path</code>, and optionally a boolean flag, <code>$first_only</code>, to return only the first match.
+</p>
+<pre class="block php"><code>// Select every &quot;item&quot; element in the &quot;channel&quot;
+foreach ($xml-&gt;xpath(&quot;channel/item&quot;) as $item) {
+    echo $item-&gt;title;
+}</code></pre>
+
+<p>
+ The items matched by <code>xpath()</code> may be child elements, text content or attributes. Here are the data types for various types of matches:
+</p>
+
+<ul>
+<li><strong>XML Element:</strong> an fXML object with an integer array key</li>
+<li><strong>Attribute:</strong> a string with the array key being the attribute name</li>
+<li><strong>Text Content:</strong> a string with an integer array key</li>
+</ul>
+
+<p>
+It is also possible to pull back just the first matched element by passing the second parameter as <code>TRUE</code>.
+</p>
+<pre class="block php"><code>// Pull the first attribute only, thus returning a string
+echo $xml-&gt;xpath('@attribute', TRUE);</code></pre>
+
+<h2 id="CustomPrefixes">Custom Prefixes</h2>
+
+<p>
+When using XPath, array-style attribute access or child element text content access, it can be useful to set a custom namespace prefix to allow for compatibility with various XML sources. The method <a href="/api/fXML#addCustomPrefix"><code>addCustomPrefix()</code></a> accepts two parameters, the <code>$ns_prefix</code> to register and its corresponding <code>$namespace</code>. One registered, this prefix will be available throughout fXML.
+</p>
+<pre class="block php"><code>$xml = new fXML('http://example.com/rss');
+$xml-&gt;addCustomPrefix('pf', 'http://namspace');
+
+echo $xml['pf:attribute'];
+echo $xml-&gt;{'pf:child'};
+foreach ($xml-&gt;xpath('pf:*') as $element) {
+    echo $element-&gt;getText();
+}</code></pre>
+
+<h2 id="EncodingData">Encoding Data</h2>
+
+<p>
+When creating XML documents, such as RSS feeds, it is necessary to create properly encoded XML, otherwise strict XML parsers will not be able to parse the document. The <a href="/api/fXML#encode"><code>encode()</code></a> method will ensure that all content is properly encoded for including in a UTF-8 XML file.
+</p>
+
+<p>
+Here is an example of usage:
+</p>
+<pre class="block php"><code>$xml  = '&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;' . &quot;\n&quot;;
+$xml .= &quot;&lt;articles&gt;&quot;;
+
+foreach ($articles as $article) {
+    $xml .= &quot;&lt;article&gt;&lt;title&gt;&quot;;
+    $xml .= fXML::encode($article-&gt;getTitle());
+    $xml .= &quot;&lt;/title&gt;&lt;description&gt;&quot;;
+    $xml .= fXML::encode($article-&gt;getDescription());
+    $xml .= &quot;&lt;/description&gt;&lt;/article&gt;&quot;;
+}
+
+$xml .= &quot;&lt;/articles&gt;&quot;;</code></pre>
+
+<h2 id="SendingtheContentTypeHeader">Sending the Content Type Header</h2>
+
+<p>
+When sending XML files over HTTP, the method <a href="/api/fXML#sendHeader"><code>sendHeader()</code></a> should be called ensure that the <code>Content-Type</code> header is set to the correct value of <code>text/xml; charset=utf-8</code>. The <code>utf-8</code> character set encoding is specified since all of Flourish is built to work with UTF-8 and all XML parsers must support that character set.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

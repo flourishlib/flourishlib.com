@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>SQLite 3.2.8 Binary – Blog – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="SQLite328Binary">SQLite 3.2.8 Binary</h1>
+
+<p>
+This post is now very out of date, and the download links no longer work.
+</p>
+
+<h2 id="OriginalPost">Original Post</h2>
+
+<p>
+If you are working with a server running PHP 5.1.x (such as a VPS with CentOS 4) you may have run into an issue with using SQLite as a database. The version of the <code>sqlite3</code> command line program is 3.3.6, however the version of the SQLite library used for the PDO SQLite driver is 3.2.8. To complicate matters further, between versions 3.2.8 and 3.3.0 the database file format was changed in a way that databases created by 3.3.0 and newer are not readable by 3.2.8 and before.
+</p>
+
+<p>
+<em>In practical terms, this means you can't use the <code>sqlite3</code> binary provided by the OS to create a database to use with PHP.</em>
+</p>
+
+<p>
+Unfortunately the SQLite website has removed all source and binary files for everything before 3.6.x. While I was unable to find a 3.2.8 binary for linux, I was able to find a copy of the source tarball from an old Ubuntu repository, and I have mirrored it here along with a statically linked binary that I compiled.
+</p>
+
+<h2 id="Downloads">Downloads</h2>
+
+<ul>
+<li><a href="http://static.flourishlib.com/sqlite_3.2.8/sqlite3">SQLite 3.2.8 Linux
+   Binary</a></li>
+<li><a href="http://static.flourishlib.com/sqlite_3.2.8/sqlite3_3.2.8.tar.gz">SQLite
+   3.2.8 Tarball</a></li>
+</ul>
+
+<h2 id="SimpleQuickInstructions">Simple/Quick Instructions</h2>
+
+<p>
+The following directions will allow you to create a new SQLite 3.2.8 database on any linux server where you have SSH access:
+</p>
+
+<ol>
+<li>Log onto the server</li>
+<li>Execute: <code>wget http://static.flourishlib.com/sqlite_3.2.8/sqlite3</code></li>
+<li>Execute: <code>chmod 755 sqlite3</code></li>
+<li>Create a database: <code>./sqlite3 my_new_db</code></li>
+</ol>
+
+<h2 id="Compiling">Compiling</h2>
+
+<p>
+If the pre-compiled binary I provided above does not work on your system, you should be able to fairly easily compile your own binary. You'll need standard compilation tools such as gcc, make, etc installed on your system.
+</p>
+
+<ol>
+<li><code>tar xvfz sqlite3_3.2.8.tar.gz</code></li>
+<li><code>cd sqlite-3.2.8</code></li>
+<li><code>./configure --disable-tcl --disable-shared</code></li>
+<li><code>make</code></li>
+</ol>
+
+<p>
+Once those four steps are complete, there will be an executable named <code>sqlite3</code> in the current directory. You can use that to create databases that will be compatible with the PDO SQLite driver in PHP 5.1.x.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

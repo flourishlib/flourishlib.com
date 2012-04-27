@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fImage – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fImage</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fImage">Class Documentation</a></li>
+		<li><strong><a href="/api/fImage">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fImage.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  			<li><a href="#create">create()</a></li>
+	  	  	  	  			<li class="protected"><a href="#getCompatibleMimetypes">getCompatibleMimetypes()</a></li>
+	  	  	  			<li class="protected"><a href="#getInfo">getInfo()</a></li>
+	  	  	  			<li class="protected"><a href="#isImageCompatible">isImageCompatible()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  	  	  	  			<li><a href="#setImageMagickDirectory">setImageMagickDirectory()</a></li>
+	  			<li><a href="#setImageMagickTempDir">setImageMagickTempDir()</a></li>
+	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li><a href="#append">append()</a></li>
+	  	  			<li><a href="#crop">crop()</a></li>
+	  			<li><a href="#cropToRatio">cropToRatio()</a></li>
+	  			<li><a href="#desaturate">desaturate()</a></li>
+	  	  			<li><a href="#getDimensions">getDimensions()</a></li>
+	  			<li><a href="#getHeight">getHeight()</a></li>
+	  	  			<li><a href="#getType">getType()</a></li>
+	  			<li><a href="#getWidth">getWidth()</a></li>
+	  	  	  			<li><a href="#resize">resize()</a></li>
+	  			<li><a href="#rotate">rotate()</a></li>
+	  			<li><a href="#saveChanges">saveChanges()</a></li>
+	  	  	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fDirectory">fDirectory</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fFile">fFile</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fLoader">fLoader</a></li>
+		<li><a href="fUpload">fUpload</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b33</span></div>
+<p class="short_description">Represents an image on the filesystem, also provides image manipulation functionality</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b33</th><td>Fixed a method signature <span class="date">8/24/11</span></td></tr><tr><th>1.0.0b32</th><td>Added a call to clearstatcache() to <a href="#saveChanges"><tt>saveChanges()</tt></a> to solve a bug when <a href="fFile#output"><tt>fFile::output()</tt></a> is called in the same script execution <span class="date">5/23/11</span></td></tr><tr><th>1.0.0b31</th><td>Fixed a bug in using ImageMagick to convert files with a colon in the filename <span class="date">3/20/11</span></td></tr><tr><th>1.0.0b30</th><td>Added a check for systems using the GD extension and no memory limit, plus a check for ImageMagick's convert command failing <span class="date">3/20/11</span></td></tr><tr><th>1.0.0b29</th><td>Added checks for AIX <span class="date">1/19/11</span></td></tr><tr><th>1.0.0b28</th><td>Added the <a href="#rotate"><tt>rotate()</tt></a> method, added code to try and prevent fatal errors due to hitting the memory limit when using GD <span class="date">11/29/10</span></td></tr><tr><th>1.0.0b27</th><td>Backwards Compatibility Break - changed the parameter order in <a href="#crop"><tt>crop()</tt></a> from <tt>$crop_from_x</tt>, <tt>$crop_from_y</tt>, <tt>$new_width</tt>, <tt>$new_height</tt> to <tt>$new_width</tt>, <tt>$new_height</tt>, <tt>$crop_from_x</tt>, <tt>$crop_from_y</tt> - added <tt>$horizontal_position</tt> and <tt>$vertical_position</tt> parameters to <a href="#cropToRatio"><tt>cropToRatio()</tt></a> <span class="date">11/9/10</span></td></tr><tr><th>1.0.0b26</th><td>Fixed a bug where processing via ImageMagick was not properly setting the default RGB colorspace <span class="date">10/19/10</span></td></tr><tr><th>1.0.0b25</th><td>Fixed the class to not generate multiple files when saving a JPG from an animated GIF or a TIF with a thumbnail <span class="date">9/12/10</span></td></tr><tr><th>1.0.0b24</th><td>Updated class to use <a href="fCore#startErrorCapture"><tt>fCore::startErrorCapture()</tt></a> instead of <tt>error_reporting()</tt> <span class="date">8/9/10</span></td></tr><tr><th>1.0.0b23</th><td>Fixed the class to detect when exec() is disabled and the function has a space before or after in the list <span class="date">7/21/10</span></td></tr><tr><th>1.0.0b22</th><td>Fixed <a href="#isImageCompatible"><tt>isImageCompatible()</tt></a> to handle certain JPGs created with Photoshop <span class="date">4/3/10</span></td></tr><tr><th>1.0.0b21</th><td>Fixed <a href="#resize"><tt>resize()</tt></a> to allow dimensions to be numeric strings instead of just integers <span class="date">4/9/10</span></td></tr><tr><th>1.0.0b20</th><td>Added <a href="#append"><tt>append()</tt></a> <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b19</th><td>Updated for the new <a href="fFile">fFile</a> API <span class="date">3/5/10</span></td></tr><tr><th>1.0.0b18</th><td>Fixed a bug in <a href="#saveChanges"><tt>saveChanges()</tt></a> that would incorrectly cause new filenames to be created, added the $overwrite parameter to <a href="#saveChanges"><tt>saveChanges()</tt></a>, added the $allow_upsizing parameter to <a href="#resize"><tt>resize()</tt></a> <span class="date">3/3/10</span></td></tr><tr><th>1.0.0b17</th><td>Fixed a couple of bug with using ImageMagick on Windows and BSD machines <span class="date">3/2/10</span></td></tr><tr><th>1.0.0b16</th><td>Fixed some bugs with GD not properly handling transparent backgrounds and desaturation of .gif files <span class="date">10/27/09</span></td></tr><tr><th>1.0.0b15</th><td>Added <a href="#getDimensions"><tt>getDimensions()</tt></a> <span class="date">8/7/09</span></td></tr><tr><th>1.0.0b14</th><td>Performance updates for checking image type and compatiblity <span class="date">7/31/09</span></td></tr><tr><th>1.0.0b13</th><td>Updated class to work even if the file extension is wrong or not present, <a href="#saveChanges"><tt>saveChanges()</tt></a> detects files that aren't writable <span class="date">7/29/09</span></td></tr><tr><th>1.0.0b12</th><td>Fixed a bug where calling <a href="#saveChanges"><tt>saveChanges()</tt></a> after unserializing would throw an exception related to the image processor <span class="date">5/27/09</span></td></tr><tr><th>1.0.0b11</th><td>Added a <a href="#crop"><tt>crop()</tt></a> method <span class="date">5/27/09</span></td></tr><tr><th>1.0.0b10</th><td>Fixed a bug with GD not saving changes to files ending in .jpeg <span class="date">3/18/09</span></td></tr><tr><th>1.0.0b9</th><td>Changed processWithGD() to explicitly free the image resource <span class="date">3/18/09</span></td></tr><tr><th>1.0.0b8</th><td>Updated for new <a href="fCore">fCore</a> API <span class="date">2/16/09</span></td></tr><tr><th>1.0.0b7</th><td>Changed @ error suppression operator to <tt>error_reporting()</tt> calls <span class="date">1/26/09</span></td></tr><tr><th>1.0.0b6</th><td>Fixed <a href="#cropToRatio"><tt>cropToRatio()</tt></a> and <a href="#resize"><tt>resize()</tt></a> to always return the object even if nothing is to be done <span class="date">1/5/09</span></td></tr><tr><th>1.0.0b5</th><td>Added check to see if exec() is disabled, which causes ImageMagick to not work <span class="date">1/3/09</span></td></tr><tr><th>1.0.0b4</th><td>Fixed <a href="#saveChanges"><tt>saveChanges()</tt></a> to not delete the image if no changes have been made <span class="date">12/18/08</span></td></tr><tr><th>1.0.0b3</th><td>Fixed a bug with $jpeg_quality in <a href="#saveChanges"><tt>saveChanges()</tt></a> from 1.0.0b2 <span class="date">12/16/08</span></td></tr><tr><th>1.0.0b2</th><td>Changed some int casts to round() to fix <a href="#resize"><tt>resize()</tt></a> dimension issues <span class="date">12/11/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">12/19/07</span></td></tr></table></div>
+<div class="genealogy">	
+	<h2>Genealogy</h2>
+		<div class="class_tree">
+		<h3>Class Tree</h3>
+		<pre class="class_tree"><a href="fFile">fFile</a>
+   |
+   --fImage</pre>
+	</div>
+		<div class="protected inherited_variables">
+	<h3>Inherited Variables</h3>
+		<dl>
+		<dt class="protected"><a href="fFile#deleted">fFile::$deleted</a></dt>
+	<dd class="protected">A backtrace from when the file was deleted </dd>
+		<dt class="protected"><a href="fFile#file">fFile::$file</a></dt>
+	<dd class="protected">The full path to the file </dd>
+		</dl>
+		</div>
+		<div class="inherited_methods">
+	<h3>Inherited Methods</h3>
+		<dl>
+	  	  <dt class="public"><a href="fFile#__construct"><tt>fFile::__construct()</tt></a></dt>
+	  <dd class="public">Creates an object to represent a file on the filesystem</dd>
+	  	  <dt class="public"><a href="fFile#__clone"><tt>fFile::__clone()</tt></a></dt>
+	  <dd class="public">Duplicates a file in the current directory when the object is cloned</dd>
+	  	  <dt class="public"><a href="fFile#__get"><tt>fFile::__get()</tt></a></dt>
+	  <dd class="public">All requests that hit this method should be requests for callbacks</dd>
+	  	  <dt class="public"><a href="fFile#__sleep"><tt>fFile::__sleep()</tt></a></dt>
+	  <dd class="public">The iterator information doesn't need to be serialized since a resource can't be</dd>
+	  	  <dt class="public"><a href="fFile#__toString"><tt>fFile::__toString()</tt></a></dt>
+	  <dd class="public">Returns the filename of the file</dd>
+	  	  <dt class="public"><a href="fFile#__wakeup"><tt>fFile::__wakeup()</tt></a></dt>
+	  <dd class="public">Re-inserts the file back into the filesystem map when unserialized</dd>
+	  	  <dt class="public"><a href="fFile#append"><tt>fFile::append()</tt></a></dt>
+	  <dd class="public">Appends the provided data to the file</dd>
+	  	  <dt class="public"><a href="fFile#count"><tt>fFile::count()</tt></a></dt>
+	  <dd class="public">Returns the number of lines in the file</dd>
+	  	  <dt class="public"><a href="fFile#create"><tt>fFile::create()</tt></a></dt>
+	  <dd class="public">Creates a file on the filesystem and returns an object representing it.</dd>
+	  	  <dt class="public"><a href="fFile#current"><tt>fFile::current()</tt></a></dt>
+	  <dd class="public">Returns the current line of the file (required by iterator interface)</dd>
+	  	  <dt class="public"><a href="fFile#delete"><tt>fFile::delete()</tt></a></dt>
+	  <dd class="public">Deletes the current file</dd>
+	  	  <dt class="public"><a href="fFile#determineMimeType"><tt>fFile::determineMimeType()</tt></a></dt>
+	  <dd class="public">Determines the file's mime type by either looking at the file contents or matching the extension</dd>
+	  	  <dt class="public"><a href="fFile#duplicate"><tt>fFile::duplicate()</tt></a></dt>
+	  <dd class="public">Creates a new file object with a copy of this file</dd>
+	  	  <dt class="public"><a href="fFile#getExtension"><tt>fFile::getExtension()</tt></a></dt>
+	  <dd class="public">Gets the file extension</dd>
+	  	  <dt class="public"><a href="fFile#getMimeType"><tt>fFile::getMimeType()</tt></a></dt>
+	  <dd class="public">Gets the file's mime type</dd>
+	  	  <dt class="public"><a href="fFile#getMTime"><tt>fFile::getMTime()</tt></a></dt>
+	  <dd class="public">Returns the last modification time of the file</dd>
+	  	  <dt class="public"><a href="fFile#getName"><tt>fFile::getName()</tt></a></dt>
+	  <dd class="public">Gets the filename (i.e. does not include the directory)</dd>
+	  	  <dt class="public"><a href="fFile#getParent"><tt>fFile::getParent()</tt></a></dt>
+	  <dd class="public">Gets the directory the file is located in</dd>
+	  	  <dt class="public"><a href="fFile#getPath"><tt>fFile::getPath()</tt></a></dt>
+	  <dd class="public">Gets the file's current path (directory and filename)</dd>
+	  	  <dt class="public"><a href="fFile#getSize"><tt>fFile::getSize()</tt></a></dt>
+	  <dd class="public">Gets the size of the file</dd>
+	  	  <dt class="public"><a href="fFile#isWritable"><tt>fFile::isWritable()</tt></a></dt>
+	  <dd class="public">Check to see if the current file is writable</dd>
+	  	  <dt class="public"><a href="fFile#key"><tt>fFile::key()</tt></a></dt>
+	  <dd class="public">Returns the current one-based line number (required by iterator interface)</dd>
+	  	  <dt class="public"><a href="fFile#move"><tt>fFile::move()</tt></a></dt>
+	  <dd class="public">Moves the current file to a different directory</dd>
+	  	  <dt class="public"><a href="fFile#next"><tt>fFile::next()</tt></a></dt>
+	  <dd class="public">Advances to the next line in the file (required by iterator interface)</dd>
+	  	  <dt class="public"><a href="fFile#output"><tt>fFile::output()</tt></a></dt>
+	  <dd class="public">Prints the contents of the file</dd>
+	  	  <dt class="public"><a href="fFile#read"><tt>fFile::read()</tt></a></dt>
+	  <dd class="public">Reads the data from the file</dd>
+	  	  <dt class="public"><a href="fFile#rename"><tt>fFile::rename()</tt></a></dt>
+	  <dd class="public">Renames the current file</dd>
+	  	  <dt class="public"><a href="fFile#rewind"><tt>fFile::rewind()</tt></a></dt>
+	  <dd class="public">Rewinds the file handle (required by iterator interface)</dd>
+	  	  <dt class="protected"><a href="fFile#tossIfDeleted"><tt>fFile::tossIfDeleted()</tt></a></dt>
+	  <dd class="protected">Throws an <a href="fProgrammerException">fProgrammerException</a> if the file has been deleted</dd>
+	  	  <dt class="public"><a href="fFile#valid"><tt>fFile::valid()</tt></a></dt>
+	  <dd class="public">Returns if the file has any lines left (required by iterator interface)</dd>
+	  	  <dt class="public"><a href="fFile#write"><tt>fFile::write()</tt></a></dt>
+	  <dd class="public">Writes the provided data to the file</dd>
+	  	</dl>
+		</div>
+	</div>	
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+						<!-- start method static -->
+			<h3 id="create" class="method static"><span class="resolution">::</span><span class="name">create()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Creates an image on the filesystem and returns an object representing it</p>
+								<p>This operation will be reverted by a filesystem transaction being rolled  back.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fImage">fImage</a></span> <span class="php-identifier">create</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file_path</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$contents</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file_path</td>
+				<td class="param_description">The path to the new image</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$contents</td>
+				<td class="param_description">The contents to write to the image</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When no image was specified or when the image already exists</dd></dl>
+							<h4>Overrides</h4>
+				<div class="overrides">
+					<dl>
+						<dt><a href="fFile#create"><tt>fFile::create()</tt></a></dt>
+												<dd>Creates a file on the filesystem and returns an object representing it.</dd>
+											</dl>
+				</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getCompatibleMimetypes" class="protected method static"><span class="resolution">::</span><span class="name">getCompatibleMimetypes()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns an array of acceptable mime types for the processor that was detected</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getCompatibleMimetypes</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					The mime types that the detected image processor can manipulate
+				</p>
+			</div>
+			<!-- end method static -->
+						<!-- start protected method static -->
+			<h3 id="getInfo" class="protected method static"><span class="resolution">::</span><span class="name">getInfo()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Gets the dimensions and type of an image stored on the filesystem</p>
+								<p>The <tt>'type'</tt> key will have one of the following values:  </p><ul><li><tt>{null}</tt> (File type is not supported)</li><li><tt>'jpg'</tt></li><li><tt>'gif'</tt></li><li><tt>'png'</tt></li><li><tt>'tif'</tt></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">getInfo</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$image_path</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$element</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$image_path</td>
+				<td class="param_description">The path to the image to get stats for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$element</td>
+				<td class="param_description">The element to retrieve: <tt>'type'</tt>, <tt>'width'</tt>, <tt>'height'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					An associative array: <tt>'type' =&gt; {mixed}, 'width' =&gt; {integer}, 'height' =&gt; {integer}</tt>, or the element specified
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the file specified is not an image</dd></dl>
+			</div>
+			<!-- end method static -->
+						<!-- start protected method static -->
+			<h3 id="isImageCompatible" class="protected method static"><span class="resolution">::</span><span class="name">isImageCompatible()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Checks to make sure the class can handle the image file specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isImageCompatible</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$image</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$image</td>
+				<td class="param_description">The image to check for incompatibility</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the image is compatible with the detected image processor
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the image specified does not exist</dd></dl>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setImageMagickDirectory" class="method static"><span class="resolution">::</span><span class="name">setImageMagickDirectory()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the directory the ImageMagick binary is installed in and tells the class to use ImageMagick even if GD is installed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setImageMagickDirectory</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$directory</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$directory</td>
+				<td class="param_description">The directory ImageMagick is installed in</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setImageMagickTempDir" class="method static"><span class="resolution">::</span><span class="name">setImageMagickTempDir()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets a custom directory to use for the ImageMagick temporary files</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setImageMagickTempDir</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$temp_dir</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$temp_dir</td>
+				<td class="param_description">The directory to use for the ImageMagick temp dir</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+	</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+						<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Creates an object to represent an image on the filesystem</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fImage">fImage</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file_path</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$skip_checks</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file_path</td>
+				<td class="param_description">The path to the image</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$skip_checks</td>
+				<td class="param_description">If file checks should be skipped, which improves performance, but may cause undefined behavior - only skip these if they are duplicated elsewhere</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When no image was specified, when the image does not exist or when the path specified is not an image</dd></dl>
+							<h4>Overrides</h4>
+				<div class="overrides">
+					<dl>
+						<dt><a href="fFile#__construct"><tt>fFile::__construct()</tt></a></dt>
+												<dd>Creates an object to represent a file on the filesystem</dd>
+											</dl>
+				</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="append" class="method"><span class="resolution">-></span><span class="name">append()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Prevents a programmer from trying to append an image</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">append</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$data</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$data</td>
+				<td class="param_description">The data to append to the image</td>
+			  </tr>
+						</table>
+			</div>
+							<h4>Overrides</h4>
+				<div class="overrides">
+					<dl>
+						<dt><a href="fFile#append"><tt>fFile::append()</tt></a></dt>
+												<dd>Appends the provided data to the file</dd>
+											</dl>
+				</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="crop" class="method"><span class="resolution">-></span><span class="name">crop()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Crops the image by the exact pixel dimensions specified</p>
+								<p>The crop does not occur until <a href="#saveChanges"><tt>saveChanges()</tt></a> is called.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fImage">fImage</a></span> <span class="php-identifier">crop</span><span class="php-brackets">(</span> <span class="php-vartype">numeric</span> <span class="php-var">$new_width</span><span class="php-code">,</span> <span class="php-vartype">numeric</span> <span class="php-var">$new_height</span><span class="php-code">,</span> <span class="php-vartype">numeric|string</span> <span class="php-var">$crop_from_x</span><span class="php-code">,</span> <span class="php-vartype">numeric|string</span> <span class="php-var">$crop_from_y</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">numeric</td>
+				<td class="param_name">$new_width</td>
+				<td class="param_description">The width in pixels to crop the image to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">numeric</td>
+				<td class="param_name">$new_height</td>
+				<td class="param_description">The height in pixels to crop the image to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">numeric|string</td>
+				<td class="param_name">$crop_from_x</td>
+				<td class="param_description">The number of pixels from the left of the image to start the crop from, or a horizontal position of <tt>'left'</tt>, <tt>'center'</tt> or <tt>'right'</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">numeric|string</td>
+				<td class="param_name">$crop_from_y</td>
+				<td class="param_description">The number of pixels from the top of the image to start the crop from, or a vertical position of <tt>'top'</tt>, <tt>'center'</tt> or <tt>'bottom'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The image object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="cropToRatio" class="method"><span class="resolution">-></span><span class="name">cropToRatio()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Crops the biggest area possible from the center of the image that matches the ratio provided</p>
+								<p>The crop does not occur until <a href="#saveChanges"><tt>saveChanges()</tt></a> is called.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fImage">fImage</a></span> <span class="php-identifier">cropToRatio</span><span class="php-brackets">(</span> <span class="php-vartype">numeric</span> <span class="php-var">$ratio_width</span><span class="php-code">,</span> <span class="php-vartype">numeric</span> <span class="php-var">$ratio_height</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$horizontal_position</span><span class="php-code">=</span>'center'<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$vertical_position</span><span class="php-code">=</span>'center' <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">numeric</td>
+				<td class="param_name">$ratio_width</td>
+				<td class="param_description">The width ratio to crop the image to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">numeric</td>
+				<td class="param_name">$ratio_height</td>
+				<td class="param_description">The height ratio to crop the image to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$horizontal_position</td>
+				<td class="param_description">A horizontal position of <tt>'left'</tt>, <tt>'center'</tt> or <tt>'right'</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$vertical_position</td>
+				<td class="param_description">A vertical position of <tt>'top'</tt>, <tt>'center'</tt> or <tt>'bottom'</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The image object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="desaturate" class="method"><span class="resolution">-></span><span class="name">desaturate()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Converts the image to grayscale</p>
+								<p>Desaturation does not occur until <a href="#saveChanges"><tt>saveChanges()</tt></a> is called.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fImage">fImage</a></span> <span class="php-identifier">desaturate</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The image object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getDimensions" class="method"><span class="resolution">-></span><span class="name">getDimensions()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the width and height of the image as a two element array</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getDimensions</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 In the format <tt>0 =&gt; (integer) {width}, 1 =&gt; (integer) {height}</tt>
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getHeight" class="method"><span class="resolution">-></span><span class="name">getHeight()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the height of the image</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">getHeight</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The height of the image in pixels
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getType" class="method"><span class="resolution">-></span><span class="name">getType()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the type of the image</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getType</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The type of the image: <tt>'jpg'</tt>, <tt>'gif'</tt>, <tt>'png'</tt>, <tt>'tif'</tt>
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getWidth" class="method"><span class="resolution">-></span><span class="name">getWidth()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the width of the image</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">getWidth</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The width of the image in pixels
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="resize" class="method"><span class="resolution">-></span><span class="name">resize()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the image to be resized proportionally to a specific size canvas</p>
+								<p>Will only size down an image. This method uses resampling to ensure the  resized image is smooth in appearance. Resizing does not occur until  <a href="#saveChanges"><tt>saveChanges()</tt></a> is called.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fImage">fImage</a></span> <span class="php-identifier">resize</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$canvas_width</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$canvas_height</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$allow_upsizing</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$canvas_width</td>
+				<td class="param_description">The width of the canvas to fit the image on, <tt>0</tt> for no constraint</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$canvas_height</td>
+				<td class="param_description">The height of the canvas to fit the image on, <tt>0</tt> for no constraint</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$allow_upsizing</td>
+				<td class="param_description">If the image is smaller than the desired canvas, the image will be increased in size</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The image object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="rotate" class="method"><span class="resolution">-></span><span class="name">rotate()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the image to be rotated</p>
+								<p>Rotation does not occur until <a href="#saveChanges"><tt>saveChanges()</tt></a> is called.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">rotate</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$degrees</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$degrees</td>
+				<td class="param_description">The number of degrees to rotate - 90, 180, or 270</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="saveChanges" class="method"><span class="resolution">-></span><span class="name">saveChanges()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Saves any changes to the image</p>
+								<p>If the file type is different than the current one, removes the current  file once the new one is created.</p><p>This operation will be reverted by a filesystem transaction being rolled  back. If a transaction is in progress and the new image type causes a  new file to be created, the old file will not be deleted until the  transaction is committed.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fImage">fImage</a></span> <span class="php-identifier">saveChanges</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$new_image_type</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$jpeg_quality</span><span class="php-code">=</span>90<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$overwrite</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fImage">fImage</a></span> <span class="php-identifier">saveChanges</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$new_image_type</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$overwrite</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$new_image_type</td>
+				<td class="param_description">The new file format for the image: 'NULL<tt> (no change), </tt>'jpg'<tt>, </tt>'gif'<tt>, </tt>'png'`</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$jpeg_quality</td>
+				<td class="param_description">The quality setting to use for JPEG images - this may be ommitted</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$overwrite</td>
+				<td class="param_description">If an existing file with the same name and extension should be overwritten</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The image object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+					</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

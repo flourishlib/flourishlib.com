@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fException – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fException</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fException">Class Documentation</a></li>
+		<li><strong><a href="/api/fException">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fException.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  			<li class="protected"><a href="#compose">compose()</a></li>
+	  			<li class="protected"><a href="#dump">dump()</a></li>
+	  	  	  	  	  	  			<li><a href="#registerCallback">registerCallback()</a></li>
+	  	  	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  	  	  			<li><a href="#formatTrace">formatTrace()</a></li>
+	  			<li class="protected"><a href="#getCSSClass">getCSSClass()</a></li>
+	  			<li class="protected"><a href="#prepare">prepare()</a></li>
+	  			<li><a href="#printMessage">printMessage()</a></li>
+	  			<li><a href="#printTrace">printTrace()</a></li>
+	  	  			<li><a href="#reorderMessage">reorderMessage()</a></li>
+	  			<li><a href="#setMessage">setMessage()</a></li>
+	  			<li><a href="#splitMessage">splitMessage()</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fExpectedException">fExpectedException</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fUnexpectedException">fUnexpectedException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">abstract class</span>,
+		<span class="version">v1.0.0b8</span></div>
+<p class="short_description">An exception that allows for easy l10n, printing, tracing and hooking</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b8</th><td>Added a missing line of backtrace to <a href="#formatTrace"><tt>formatTrace()</tt></a> <span class="date">6/28/09</span></td></tr><tr><th>1.0.0b7</th><td>Updated <a href="#__construct"><tt>__construct()</tt></a> to no longer require a message, like the Exception class, and allow for non-integer codes <span class="date">6/26/09</span></td></tr><tr><th>1.0.0b6</th><td>Fixed <a href="#splitMessage"><tt>splitMessage()</tt></a> so that the original message is returned if no list items are found, added <a href="#reorderMessage"><tt>reorderMessage()</tt></a> <span class="date">6/2/09</span></td></tr><tr><th>1.0.0b5</th><td>Added <a href="#splitMessage"><tt>splitMessage()</tt></a> to replace <a href="fCRUD">fCRUD</a>removeListItems() and fCRUD::reorderListItems() <span class="date">5/8/09</span></td></tr><tr><th>1.0.0b4</th><td>Added a check to <a href="#__construct"><tt>__construct()</tt></a> to ensure that the <tt>$code</tt> parameter is numeric <span class="date">5/4/09</span></td></tr><tr><th>1.0.0b3</th><td>Fixed a bug with <a href="#printMessage"><tt>printMessage()</tt></a> messing up some HTML messages <span class="date">3/27/09</span></td></tr><tr><th>1.0.0b2</th><td><a href="#compose"><tt>compose()</tt></a> more robustly handles <tt>$components</tt> passed as an array, <a href="#__construct"><tt>__construct()</tt></a> now detects stray <tt>%</tt> characters <span class="date">2/5/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/14/07</span></td></tr></table></div>
+<div class="genealogy">	
+	<h2>Genealogy</h2>
+		<div class="class_tree">
+		<h3>Class Tree</h3>
+		<pre class="class_tree">Exception
+   |
+   --fException</pre>
+	</div>
+		<div class="child_classes">
+	<h3>Child Classes</h3>
+	<dl>
+		<dt><a href="fExpectedException">fExpectedException</a></dt>
+	<dd>An exception that should be handled by the display code</dd>
+		<dt><a href="fUnexpectedException">fUnexpectedException</a></dt>
+	<dd>An exception that should probably not be handled by the display code, fCore::enableExceptionHandler() is recommended</dd>
+		</dl>
+	</div>
+		<div class="inherited_variables">
+	<h3>Inherited Variables</h3>
+		<dl>
+		<dt class="protected">$code</dt>
+	<dd class="protected"> </dd>
+		<dt class="protected">$file</dt>
+	<dd class="protected"> </dd>
+		<dt class="protected">$line</dt>
+	<dd class="protected"> </dd>
+		<dt class="protected">$message</dt>
+	<dd class="protected"> </dd>
+		<dt class="private">$previous</dt>
+	<dd class="private"> </dd>
+		<dt class="private">$string</dt>
+	<dd class="private"> </dd>
+		<dt class="private">$trace</dt>
+	<dd class="private"> </dd>
+		</dl>
+		</div>
+		<div class="inherited_methods">
+	<h3>Inherited Methods</h3>
+		<dl>
+	  	  <dt class="public">constructor __construct ( [$message = ], [$code = ], [$previous = ] )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">__clone (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">__toString (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getCode (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getFile (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getLine (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getMessage (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getPrevious (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getTrace (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getTraceAsString (  )</dt>
+	  <dd class="public"></dd>
+	  	</dl>
+		</div>
+	</div>	
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="compose" class="protected method static"><span class="resolution">::</span><span class="name">compose()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Composes text using <a href="fText">fText</a> if loaded</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">compose</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$component</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to compose</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$component <em>[, ... ]</em></td>
+				<td class="param_description">A string or number to insert into the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The composed and possible translated message
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="dump" class="protected method static"><span class="resolution">::</span><span class="name">dump()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Creates a string representation of any variable using predefined strings for booleans, <tt>NULL</tt> and empty strings</p>
+								<p>The string output format of this method is very similar to the output of  <a class="ext-link" href="http://php.net/print_r"><span class="icon"><tt>print_r()</tt></span></a> except that the following values  are represented as special strings:    </p><ul><li><tt>TRUE</tt>: <tt>'{true}'</tt></li><li><tt>FALSE</tt>: <tt>'{false}'</tt></li><li><tt>NULL</tt>: <tt>'{null}'</tt></li><li><tt>''</tt>: <tt>'{empty_string}'</tt></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">dump</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$data</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$data</td>
+				<td class="param_description">The value to dump</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The string representation of the value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerCallback" class="method static"><span class="resolution">::</span><span class="name">registerCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a callback for when certain types of exceptions are created</p>
+								<p>The callback will be called when any exception of this class, or any  child class, specified is tossed. A single parameter will be passed  to the callback, which will be the exception object.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerCallback</span><span class="php-brackets">(</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$exception_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$exception_type</td>
+				<td class="param_description">The type of exception to call the callback for</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+				</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the message for the exception, allowing for string interpolation and internationalization</p>
+								<p>The <tt>$message</tt> can contain any number of formatting placeholders for  string and number interpolation via <a class="ext-link" href="http://php.net/sprintf"><span class="icon"><tt>sprintf()</tt></span></a>.  Any <tt>%</tt> signs that do not appear to be part of a valid formatting  placeholder will be automatically escaped with a second <tt>%</tt>.</p><p>The following aspects of valid <tt>sprintf()</tt> formatting codes are not  accepted since they are redundant and restrict the non-formatting use of  the <tt>%</tt> sign in exception messages:</p><ul><li><tt>% 2d</tt>: Using a literal space as a padding character - a space will be used if no padding character is specified</li><li><tt>%'.d</tt>: Providing a padding character but no width - no padding will be applied without a width</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fException">fException</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">=</span>''<span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$component</span> [<span class="php-code">, ... </span>]<span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$code</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message for the exception. This accepts a subset of <a class="ext-link" href="http://php.net/sprintf"><span class="icon"><tt>sprintf()</tt></span></a> strings - see method description for more details.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$component <em>[, ... ]</em></td>
+				<td class="param_description">A string or number to insert into the message</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$code</td>
+				<td class="param_description">The exception code to set</td>
+			  </tr>
+						</table>
+			</div>
+							<h4>Overridden By</h4>
+				<div class="overridden">
+					<dl>
+												<dt><a href="fValidationException#__construct"><tt>fValidationException::__construct()</tt></a></dt>
+												<dd>Sets the message for the exception, allowing for custom formatting beyond <a href="fException">fException</a></dd>
+																	</dl>
+				</div>
+							<h4>Overrides</h4>
+				<div class="overrides">
+					<dl>
+						<dt>Exception::constructor __construct ( [$message = ], [$code = ], [$previous = ] )</dt>
+											</dl>
+				</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="formatTrace" class="method"><span class="resolution">-></span><span class="name">formatTrace()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the backtrace to currently called exception</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">formatTrace</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 A nicely formatted backtrace to this exception
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="getCSSClass" class="protected method"><span class="resolution">-></span><span class="name">getCSSClass()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Returns the CSS class name for printing information about the exception</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">getCSSClass</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="prepare" class="protected method"><span class="resolution">-></span><span class="name">prepare()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Prepares content for output into HTML</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">prepare</span><span class="php-brackets">(</span> <span class="php-vartype"></span> <span class="php-var">$content</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"></td>
+				<td class="param_name">$content</td>
+				<td class="param_description"></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The prepared content
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="printMessage" class="method"><span class="resolution">-></span><span class="name">printMessage()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Prints the message inside of a div with the class being 'exception %THIS_EXCEPTION_CLASS_NAME%'</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">printMessage</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+							<h4>Overridden By</h4>
+				<div class="overridden">
+					<dl>
+												<dt><a href="fUnexpectedException#printMessage"><tt>fUnexpectedException::printMessage()</tt></a></dt>
+												<dd>Prints out a generic error message inside of a <tt>div</tt> with the class being <tt>'exception {exception_class_name}'</tt></dd>
+																	</dl>
+				</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="printTrace" class="method"><span class="resolution">-></span><span class="name">printTrace()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Prints the backtrace to currently called exception inside of a pre tag with the class being 'exception %THIS_EXCEPTION_CLASS_NAME% trace'</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">printTrace</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="reorderMessage" class="method"><span class="resolution">-></span><span class="name">reorderMessage()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Reorders list items in the message based on simple string matching</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fException">fException</a></span> <span class="php-identifier">reorderMessage</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$match</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$match <em>[, ... ]</em></td>
+				<td class="param_description">This should be a string to match to one of the list items - whatever the order this is in the parameter list will be the order of the list item in the adjusted message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The exception object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setMessage" class="method"><span class="resolution">-></span><span class="name">setMessage()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Allows the message to be overwriten</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setMessage</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$new_message</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$new_message</td>
+				<td class="param_description">The new message for the exception</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="splitMessage" class="method"><span class="resolution">-></span><span class="name">splitMessage()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Splits an exception with an HTML list into multiple strings each containing part of the original message</p>
+								<p>This method should be called with two or more parameters of arrays of  string to match. If any of the provided strings are matching in a list  item in the exception message, a new copy of the message will be created  containing just the matching list items.</p><p>Here is an exception message to be split:</p><pre class="block html"><code><p>The following problems were found:</p>
+<ul>
+    <li>First Name: Please enter a value</li>
+    <li>Last Name: Please enter a value</li>
+    <li>Email: Please enter a value</li>
+    <li>Address: Please enter a value</li>
+    <li>City: Please enter a value</li>
+    <li>State: Please enter a value</li>
+    <li>Zip Code: Please enter a value</li>
+</ul></code></pre><p>The following PHP would split the exception into two messages:</p><pre class="block php"><code>list ($name_exception, $address_exception) = $exception->splitMessage(
+    array('First Name', 'Last Name', 'Email'),
+    array('Address', 'City', 'State', 'Zip Code')
+);</code></pre><p>The resulting messages would be:</p><pre class="block html"><code><p>The following problems were found:</p>
+<ul>
+    <li>First Name: Please enter a value</li>
+    <li>Last Name: Please enter a value</li>
+    <li>Email: Please enter a value</li>
+</ul></code></pre><p>and</p><pre class="block html"><code><p>The following problems were found:</p>
+<ul>
+    <li>Address: Please enter a value</li>
+    <li>City: Please enter a value</li>
+    <li>State: Please enter a value</li>
+    <li>Zip Code: Please enter a value</li>
+</ul></code></pre><p>If no list items match the strings in a parameter, the result will be  an empty string, allowing for simple display:</p><pre class="block php"><code>fHTML::show($name_exception, 'error');</code></pre><p>An empty string is returned when none of the list items matched the  strings in the parameter. If no list items are found, the first value in  the returned array will be the existing message and all other array  values will be an empty string.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">splitMessage</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$list_item_matches</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$list_item_matches <em>[, ... ]</em></td>
+				<td class="param_description">An array of strings to filter the list items by, list items will be ordered in the same order as this array</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 This will contain an array of strings corresponding to the parameters passed - see method description for details
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

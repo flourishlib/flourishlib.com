@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fDirectory – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fDirectory">fDirectory</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fDirectory">Class Documentation</a></strong></li>
+<li><a href="/api/fDirectory">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fDirectory.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#GettingInformation">Getting Information</a></li>
+<li><a href="#Manipulation">Manipulation</a></li>
+<li><a href="#ListingChildren">Listing Children</a></li>
+</ul>
+
+<h2 id="FilesystemClasses">Filesystem Classes </h2>
+
+<ul>
+<li><a href="/docs/fFilesystem">fFilesystem</a></li>
+<li><a href="/docs/fFile">fFile</a>
+<ul>
+<li><a href="/docs/fImage">fImage</a></li>
+</ul>
+</li>
+<li><strong>fDirectory</strong></li>
+<li><a href="/docs/fUpload">fUpload</a></li>
+</ul>
+</div>
+
+<p>
+The fDirectory class is a simple object representation of a directory on the filesystem. It provides an object-based interface to common directory functions and allows actions to be grouped into transactions via the <a href="/docs/fFilesystem">fFilesystem</a> class.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+The fDirectory constructor takes a single argument, the filesystem path to a directory. The path can be absolute or relative.
+</p>
+<pre class="block php"><code>$directory1 = new fDirectory('/var/www/vhosts/examples.com/httpdocs/images/');
+$directory2 = new fDirectory('./output/');
+$directory3 = new fDirectory('../uploads/documents/');</code></pre>
+
+<p>
+ It is also possible to create a directory on the filesystem and instantiate an fDirectory object for that new directory by calling the static method <a href="/api/fDirectory#create"><code>create()</code></a>. <code>create()</code> takes up to two parameters, with the first being <code>$directory_path</code> and the second optional parameter being <code>$mode</code>. The <code>$mode</code> parameter allows setting the permissions for the new directory, and usually is set using an octal number (represented by a number with a leading zero such as 0777).
+</p>
+
+<p>
+Please note that directory creation is recursive, so any non-existant parent directories will also be created as needed.
+</p>
+<pre class="block php"><code>$new_directory = fDirectory::create('./logs/');</code></pre>
+
+<h2 id="GettingInformation">Getting Information</h2>
+
+<p>
+The fDirectory class includes a few methods to grab some basic information about a directory. These include:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#getName"><code>getName()</code></a></td>
+<td>Returns the name of the directory as a string - does not include the full path</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#getSize"><code>getSize()</code></a></td>
+<td>Returns the size of the directory and all contents in bytes as an integer, or optionally formatted for easy human readability</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#getParent"><code>getParent()</code></a></td>
+<td>Returns the fDirectory object for the directorys parent directory</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#getPath"><code>getPath()</code></a></td>
+<td>Returns the full path to the directory as a string</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#isWritable"><code>isWritable()</code></a></td>
+<td>Indicates if the directory can be written to by the current user</td>
+</tr>
+</tbody></table>
+
+<p>
+If you want more specific information about a directory, you can pass the output of <code>getPath()</code> into the various <a href="http://php.net/filesystem">PHP filesystem functions</a>. 
+</p>
+
+<h2 id="Manipulation">Manipulation</h2>
+
+<p>
+The following methods provide a straight-forward interface for some standard manipulation of directories. Also note that these manipulations can be wrapped in a <a href="/docs/fFilesystem#Transactions">filesystem transactions</a> to allow for rolling back changes in the event of a later error.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#rename"><code>rename()</code></a></td>
+<td>Renames the directory to a new path</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#move"><code>move()</code></a></td>
+<td>Moves the directory into a different parent directory, keeping the current name</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#delete"><code>delete()</code></a></td>
+<td>Removes the directory and all contained files and folders from the filesystem. Please note that if inside of a filesystem transaction, this event will be deferred until commit is called, but instances of fDirectory and <a href="/docs/fFile">fFile</a> for all affected files and directories will act as if the directory/file no longer exists.</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#clear"><code>clear()</code></a></td>
+<td>Removes all contained files and folders from the filesystem. Please note that if inside of a filesystem transaction, this event will be deferred until commit is called, but instances of fDirectory and <a href="/docs/fFile">fFile</a> for all affected files and directories will act as if the directory/file no longer exists.</td>
+</tr>
+</tbody></table>
+
+<h2 id="ListingChildren">Listing Children</h2>
+
+<p>
+The <a href="/api/fDirectory#scan"><code>scan()</code></a> and <a href="/api/fDirectory#scanRecursive"><code>scanRecursive()</code></a> method provide functionality for listing all <a href="/docs/fFile">fFile</a>, <a href="/docs/fImage">fImage</a> and fDirectory children of an fDirectory object. Both return an array of objects, however <code>scan()</code> returns only direct children, whereas <code>scanRecursive()</code> returns all descendants.
+</p>
+<pre class="block php"><code>$children = $dir-&gt;scan();
+
+$descendants = $dir-&gt;scanRecursive();</code></pre>
+
+<p>
+ Both methods accept a single optional parameter, <code>$filter</code>. The filter can be a valid <a href="http://php.net/pcre">PCRE regex pattern</a>, or a string pattern containing <code>*</code> and <code>?</code> wildcards. <code>*</code> will match zero or more characters, while <code>?</code> will match zero or one characters. When matching the <code>$filter</code>, all file paths will have <code>/</code> directory separators, and all directories will end in <code>/</code>.
+</p>
+<pre class="block php"><code>// This will list all directory children
+$directories = $dir-&gt;scan('*/');
+
+// This will find all jpg and gif files under the current directory
+$images = $dir-&gt;scanRecursive('#\.(jpe?g|gif)$#i');</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

@@ -1,0 +1,28 @@
+RewriteEngine On
+RewriteBase /
+
+DirectorySlash Off
+
+Redirect permanent /license	                     /License
+Redirect permanent /discussion                   http://forum.flourishlib.com
+
+Redirect permanent /docs/Documentation           /docs
+
+RewriteRule ^api$                                /docs [R=301,L]
+
+RewriteRule ^(f[A-Z][a-zA-Z0-9]+)$               /docs/$1 [R=301,L]
+
+RewriteCond %{ENV:REDIRECT_STATUS}               ^$
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}       -d
+RewriteRule ^(.*)/$  /$1 [L,R=301,QSA]
+
+RewriteCond %{ENV:REDIRECT_STATUS}               ^$
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}       !-f
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}       -d
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html  -f
+RewriteRule ^(.*)$  /$1/index.html [L,QSA]
+
+RewriteCond %{ENV:REDIRECT_STATUS}               ^$
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}       !-f
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html  -f
+RewriteRule ^(.*)$  /$1.html [L,QSA]

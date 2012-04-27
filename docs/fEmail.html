@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fEmail – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fEmail">fEmail</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fEmail">Class Documentation</a></strong></li>
+<li><a href="/api/fEmail">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fEmail.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#Recipients">Recipients</a></li>
+<li><a href="#FromHeaders">From Headers</a></li>
+<li><a href="#SubjectandBody">Subject and Body</a>
+<ul>
+<li><a href="#InlineBodyTemplating">Inline Body Templating</a></li>
+<li><a href="#LoadingaBodyTemplate">Loading a Body Template</a></li>
+</ul>
+</li>
+<li><a href="#HTMLBody">HTML Body</a>
+<ul>
+<li><a href="#LoadinganHTMLBodyTemplate">Loading an HTML Body Template</a></li>
+</ul>
+</li>
+<li><a href="#Self-ContainedHTMLImagesRelatedFiles">Self-Contained HTML Images (Related Files)</a></li>
+<li><a href="#Attachments">Attachments</a></li>
+<li><a href="#SMIMEEncryptionandSigning">S/MIME Encryption and Signing</a></li>
+<li><a href="#Sending">Sending</a></li>
+<li><a href="#CustomHeaders">Custom Headers</a></li>
+<li><a href="#FixingFormattingIssues">Fixing Formatting Issues</a></li>
+<li><a href="#ValidatingEmailAddresses">Validating Email Addresses</a></li>
+</ul>
+
+<h2 id="EmailClasses">Email Classes </h2>
+
+<ul>
+<li><strong>fEmail</strong></li>
+<li><a href="/docs/fMailbox">fMailbox</a></li>
+<li><a href="/docs/fSMTP">fSMTP</a></li>
+</ul>
+</div>
+
+<p>
+The fEmail class provides an interface to very easily send well-formed emails with UTF-8 content, HTML, attachments and S/MIME encryption and signing. fEmail uses PHPs built-in <a href="http://php.net/function.mail"><code>mail()</code></a> function by default, but can be used with <a href="/docs/fSMTP">fSMTP</a> for mass emailing or mailing via a remote mail server.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+Creating a new email is as simple as making a new instance of fEmail:
+</p>
+<pre class="block php"><code>$email = new fEmail();</code></pre>
+
+<h2 id="Recipients">Recipients</h2>
+
+<p>
+fEmail supports <code>To:</code>, <code>CC:</code> and <code>BCC:</code> recipients through the methods <a href="/api/fEmail#addRecipient"><code>addRecipient()</code></a>, <a href="/api/fEmail#addCCRecipient"><code>addCCRecipient()</code></a> and <a href="/api/fEmail#addBCCRecipient"><code>addBCCRecipient()</code></a>. Each method requires a single parameter <code>$email</code> and accepts a second optional parameter <code>$name</code>. The add methods can be called any number of times to add any number of recipients:
+</p>
+<pre class="block php"><code>// Add our recipient
+$email-&gt;addRecipient('will@example.com', 'Will');
+
+// Add a few people to the CC and BCC lists
+$email-&gt;addCCRecipient('john@example.com');
+$email-&gt;addCCRecipient('bob@example.com', 'Bob Smith, Jr.');
+
+$email-&gt;addBCCRecipient('alice@example.com');</code></pre>
+
+<p>
+ If need be, all regular, CC and BCC recipients can be cleared by calling the method <a href="/api/fEmail#clearRecipients"><code>clearRecipients()</code></a>.
+</p>
+<pre class="block php"><code>$email-&gt;clearRecipients();</code></pre>
+
+<h2 id="FromHeaders">From Headers</h2>
+
+<p>
+When sending a message you will also need to set the <code>From:</code> address via the method <a href="/api/fEmail#setFromEmail"><code>setFromEmail()</code></a>. The first parameter, <code>$email</code>, is required, however the second parameter, <code>$name</code>, is optional. Unfortunately the implementation of <code>mail()</code> on Windows does not allow setting the <code>$name</code> parameter. <em>A <code>$name</code> will work on Windows if you use <a href="/docs/fSMTP">fSMTP</a>.</em>
+</p>
+<pre class="block php"><code>// Set who the email is from
+$email-&gt;setFromEmail('will@example.com');
+
+// Include the users name
+$email-&gt;setFromEmail('will@example.com', 'Will');</code></pre>
+
+<p>
+ It is also possible to set the <code>Return-Path:</code> header on almost all servers. This email address is listed as the true source of the email and will be the recipient of any bounces or delivery notifications. The method <a href="/api/fEmail#setBounceToEmail"><code>setBounceToEmail()</code></a> sets this address with just a single parameter <code>$email</code>:
+</p>
+<pre class="block php"><code>$email-&gt;setBounceToEmail('will@example.com');</code></pre>
+
+<h2 id="SubjectandBody">Subject and Body</h2>
+
+<p>
+All email must have a subject and body set by the methods <a href="/api/fEmail#setSubject"><code>setSubject()</code></a> and <a href="/api/fEmail#setBody"><code>setBody()</code></a>. Both of these methods accept a single parameter, a UTF-8 string.
+</p>
+<pre class="block php"><code>// Set the subject include UTF-8 curly quotes
+$email-&gt;setSubject('This wont break email programs because it is properly encoded by the class');
+
+// Set the body to include a string containing UTF-8
+$email-&gt;setBody('This is the body of the email');</code></pre>
+
+<h3 id="InlineBodyTemplating">Inline Body Templating</h3>
+
+<p>
+The <a href="/api/fEmail#setBody"><code>setBody()</code></a> method can also take a second parameter, <code>$unindent_expand_constants</code>, which is a boolean. When this parameter is <code>TRUE</code>, the body will be unindented as much as possible, and will have all <code>{CONSTANT_NAME}</code> strings replaced with the constants value, if defined. This parameter is useful for inline generation of bodies where you dont want to deal with the issues of having a fully unindented end to a <code>HEREDOC</code> string.
+</p>
+
+<p>
+For example, the following PHP:
+</p>
+<pre class="block php"><code>// Unindenting the body and exapanding curly-braced constant names
+if ($email_address) {
+    $email = new fEmail();
+    $email-&gt;addRecipient($email_address);
+    // 
+    $email-&gt;setBody(&quot;
+        Hello $name,
+        
+        Thanks for submitting your request, well get back to you as soon as we can!
+
+        {EMAIL_SIGNATURE}
+    &quot;, TRUE);
+}</code></pre>
+
+<p>
+ would create the email body:
+</p>
+<pre><code>Hello John Smith,
+
+Thanks for submitting your request, well get back to you as soon as we can!
+
+Sincerely,
+The ACME Co. Team</code></pre>
+
+<p>
+ Without the parameter, the body would be:
+</p>
+<pre><code> 
+        Hello John Smith,
+
+        Thanks for submitting your request, well get back to you as soon as we can!
+
+        {EMAIL_SIGNATURE}
+ </code></pre>
+
+<p>
+ The <code>HEREDOC</code> equivalent of our desired output would be:
+</p>
+<pre class="block php"><code>if ($email_address) {
+    $email = new fEmail();
+    // 
+    $signature = EMAIL_SIGNATURE;
+    $email-&gt;setBody(&lt;&lt;&lt;EOF
+Hello $name,
+
+Thanks for submitting your request, well get back to you as soon as we can!
+
+$signature
+EOF
+    , TRUE);
+}</code></pre>
+
+<p>
+ In short, the <code>$unindent_expand_constants</code> parameter allows for cleaner PHP with logical indentation levels.
+</p>
+
+<h3 id="LoadingaBodyTemplate">Loading a Body Template</h3>
+
+<p>
+When dealing with a more complex body example, or wishing to separate the email templates from your PHP, the method <a href="/api/fEmail#loadBody"><code>loadBody()</code></a> can be used. This methods accepts two parameters, the <code>$file</code> to load the body from and an array of <code>$replacements</code> to be performed.
+</p>
+
+<p>
+The <code>$file</code> parameter can be either a file path or an <a href="/docs/fFile">fFile</a> object. The <code>$replacements</code> parameter should be an associative array with the terms to search for being the keys and the strings to replace them with being the values.
+</p>
+<pre class="block php"><code>$email-&gt;loadBody(
+    './email_templates/welcome.txt',
+    array(
+        '{NAME}'  =&gt; $name,
+        '{LOGIN}' =&gt; $login
+    )
+);</code></pre>
+
+<p>
+ <em>Please note that the terms to search for do not have to be in any particular format, a simple <a href="http://php.net/str_replace"><code>str_replace()</code></a> call is used to do the replacements.</em>
+</p>
+
+<h2 id="HTMLBody">HTML Body</h2>
+
+<p>
+It is also possible to add an HTML version of the body by passing it to <a href="/api/fEmail#setHTMLBody"><code>setHTMLBody()</code></a>. This HTML content should be encoded using UTF-8:
+</p>
+<pre class="block php"><code>$email-&gt;setHTMLBody('&lt;p&gt;This it the HTML version of the body&lt;/p&gt;');</code></pre>
+
+<h3 id="LoadinganHTMLBodyTemplate">Loading an HTML Body Template</h3>
+
+<p>
+Just like <a href="/api/fEmail#loadBody"><code>loadBody()</code></a> for the plaintext body, the HTML body can be loaded from a file via <a href="/api/fEmail#loadHTMLBody"><code>loadHTMLBody()</code></a>. This methods accepts two parameters, the <code>$file</code> to load the body from and an array of <code>$replacements</code> to be performed.
+</p>
+
+<p>
+The <code>$file</code> parameter can be either a file path or an <a href="/docs/fFile">fFile</a> object. The <code>$replacements</code> parameter should be an associative array with the terms to search for being the keys and the strings to replace them with being the values.
+</p>
+<pre class="block php"><code>$email-&gt;loadHTMLBody(
+    './email_templates/welcome.html',
+    array(
+        '{NAME}'  =&gt; $name,
+        '{LOGIN}' =&gt; $login
+    )
+);</code></pre>
+
+<p>
+ <em>Please note that the terms to search for do not have to be in any particular format, a simple <a href="http://php.net/str_replace"><code>str_replace()</code></a> call is used to do the replacements.</em>
+</p>
+
+<h2 id="Self-ContainedHTMLImagesRelatedFiles">Self-Contained HTML Images (Related Files)</h2>
+
+<p>
+When using an HTML body, it is possible to add files to the email that can be referenced in the HTML, but do not appear as an attachment. Such related files are added by the <a href="/api/fEmail#addRelatedFile"><code>addRelatedFile()</code></a> method. This method requires either one or two parameters: <code>$contents</code>, or <code>$contents</code> and <code>$filename</code>. If <code>$contents</code> is an <a href="/docs/fFile">fFile</a> object, no <code>$filename</code> is necessary. A URL will be returned for direct embedding into HTML <code>src</code> or <code>href</code> attributes.
+</p>
+<pre class="block php"><code>$logo_url = $email-&gt;addRelatedFile(new fFile('./images/logo.gif'));
+$email-&gt;setHTMLBody(&quot;&lt;p&gt;Thanks for your input!&lt;/p&gt;&lt;p&gt;ACME Corp.&lt;img src='$logo_url' alt='ACME Corp'&gt;&lt;/p&gt;&quot;);</code></pre>
+
+<p>
+ There is an optional third parameter, <code>$mime_type</code>, which can be used to fix incorrect detection of the mime type of a related file.
+</p>
+<pre class="block php"><code>$logo_url = $email-&gt;addRelatedFile(new fFile('./images/logo.gif'), 'email_logo.gif', 'image/gif');</code></pre>
+
+<h2 id="Attachments">Attachments</h2>
+
+<p>
+Attachments can be added to an email by calling the method <a href="/api/fEmail#addAttachment"><code>addAttachment()</code></a>. The method requires either one or two parameters: <code>$contents</code>, or <code>$contents</code> and <code>$filename</code>. If <code>$contents</code> is an <a href="/docs/fFile">fFile</a> object, no <code>$filename</code> is necessary.
+</p>
+<pre class="block php"><code>foreach ($result as $row) {
+    $csv_contents .= join(&quot;,&quot;, $row) . &quot;\n&quot;;
+}
+
+// Pass in the contents of the file, plus a filename for it
+$email-&gt;addAttachment($csv_contents, 'report.csv');
+
+// Passing an fFile object
+$email-&gt;addAttachment(new fFile('./report.pdf'));</code></pre>
+
+<p>
+ There is an optional third parameter, <code>$mime_type</code>, which can be used to fix incorrect detection of the mime type of an attachment.
+</p>
+<pre class="block php"><code>$email-&gt;addAttachment($file_contents, 'filename.tab', 'text/csv');</code></pre>
+
+<p>
+ There is no limit to the number of attachments.
+</p>
+
+<h2 id="SMIMEEncryptionandSigning">S/MIME Encryption and Signing</h2>
+
+<p>
+The fEmail class provides support for encrypting and signing messages using S/MIME. To encrypt a message, the PEM-encoded public certificate will be needed. To sign a message, the PEM-encoded private key will be needed. To encrypt and sign you will need both (but not for the user). Please see <a href="/docs/ObtainingaSecureCertificateKeyPair">Obtaining a Secure Certificate/Key Pair</a> for information about how to get the necessary files.
+</p>
+
+<p>
+To encrypt a message, call the method <a href="/api/fEmail#encrypt"><code>encrypt()</code></a> and pass the path to the recipients PEM-encoded public certificate:
+</p>
+<pre class="block php"><code>$email-&gt;encrypt('/path/to/recipients.cer');</code></pre>
+
+<p>
+ To sign a message, call <a href="/api/fEmail#sign"><code>sign()</code></a> and pass in the senders public certificate path, private key path and private key password (if applicable):
+</p>
+<pre class="block php"><code>$email-&gt;sign('/path/to/senders.cer', '/path/to/senders.key', 'key_password');</code></pre>
+
+<p>
+ If you call both <code>sign()</code> and <code>encrypt()</code> (in either order), the message will be signed, then encrypted and then signed again. This is the most secure method, however certain older email clients may not open such emails. 
+</p>
+
+<h2 id="Sending">Sending</h2>
+
+<p>
+To send an email, simply call the <a href="/api/fEmail#send"><code>send()</code></a> method.
+</p>
+<pre class="block php"><code>$message_id = $email-&gt;send();</code></pre>
+
+<p>
+ The return value is the generated <code>Message-ID</code> header for the email, which can be used with the <code>In-Reply-To</code> header for tracking replies. <em>The <a href="/docs/fMailbox">fMailbox</a> class provides functionality for checking and parsing email.</em>
+</p>
+
+<h2 id="CustomHeaders">Custom Headers</h2>
+
+<p>
+If there is a need to add custom headers to an email message, the method <a href="/api/fEmail#addCustomHeader"><code>addCustomHeader()</code></a> will accept the header <code>$name</code> and <code>$value</code>. The <code>$value</code> should be a plain string - the method will handle any necessary encoding or line wrapping necessary to keep the headers standards-compliant.
+</p>
+<pre class="block php"><code>$email-&gt;addCustomHeader('X-My-Header', 'This is the value I want to send!');</code></pre>
+
+<p>
+ It is possible to set multiple headers at once by passing an associative array to <a href="/api/fEmail#addCustomHeader"><code>addCustomHeader()</code></a>.
+</p>
+<pre class="block php"><code>// Set headers that some programs use to indicate priority
+$email-&gt;addCustomHeader(array(
+    'X-Priority' =&gt; '1',
+    'Importance' =&gt; 'High'
+));</code></pre>
+
+<h2 id="FixingFormattingIssues">Fixing Formatting Issues</h2>
+
+<p>
+On some linux/unix server running <a href="http://en.wikipedia.org/wiki/Qmail">qmail</a> as the sendmail replacement, you may experience issues with emails looking corrupted to the recipients. This will often take the form of equal signs (=) appearing throughout the content and lines being wrapped in odd places.
+</p>
+
+<p>
+The technical cause of the issue is that the qmail sendmail binary is automatically replacing every line feed (\n) with a CR-LF (\r\n) because the email specifications require emails use CR-LF and linux uses LF as the line ending. Qmail is trying to ensure you are sending emails that meet specifications, however it is not checking to see if the email already has the proper line endings.
+</p>
+
+<p>
+The first way to try and solve this issue is to use <a href="/docs/fSMTP">fSMTP</a> and connect to the SMTP server on <code>localhost</code>. This by-passes the command-line interface to qmail:
+</p>
+<pre class="block php"><code>$smtp = new fSMTP('localhost');
+$email-&gt;send($smtp);</code></pre>
+
+<p>
+ If that is not possible, the static method <a href="/api/fEmail#fixQmail"><code>fixQmail()</code></a> should fix the issue. On servers where <code>open_basedir</code> and <code>safe_mode</code> are not in effect, fEmail will make a commandline call to sendmail and will replace all CR-LF with just LF. If that is not possible, fEmail will simply replace all CR-LFs with LF, however emails with long headers may still have issues. 
+</p>
+
+<p>
+Normally you would only enable this fix if you experience the issue. Since the fix affects all instances of fEmail, youll normally want to call it in a configuration file.
+</p>
+<pre class="block php"><code>fEmail::fixQmail();</code></pre>
+
+<h2 id="ValidatingEmailAddresses">Validating Email Addresses</h2>
+
+<p>
+In certain situations it may be necessary to validate an email address when not using <a href="/docs/fValidation">fValidation</a> or <a href="/docs/fORMValidation">fORMValidation</a> with the ORM. The fEmail class provides two regular expression constants to help with the task.
+</p>
+
+<p>
+These regular expressions are designed to fully match the <code>mailbox</code> specification of <a href="http://tools.ietf.org/html/rfc2822#section-3.4">RFC2822 Section 3.4</a> <strong>except</strong> for allowing comments and folding white space. Quoted strings <strong>are</strong> supported along with the <code>+</code>, <code>-</code> and other special characters.
+</p>
+
+<p>
+Below is an example of some of the various <em>valid</em> email address formats that are supported:
+</p>
+<pre><code># regular address
+will@example.com
+
+# with + suffix
+will+foo@example.com
+
+# with - suffix
+will-foo@example.com
+
+# periods
+will.foo@example.com
+
+# quoted strings
+&quot;will foo&quot;@example.com
+
+# combinations
+&quot;will foo&quot;.bar+baz@example.com</code></pre>
+
+<p>
+The two constants are <a href="/api/fEmail#EMAIL_REGEX"><code>EMAIL_REGEX</code></a> and <a href="/api/fEmail#NAME_EMAIL_REGEX"><code>NAME_EMAIL_REGEX</code></a>. <code>EMAIL_REGEX</code> will match an email address, while <code>NAME_EMAIL_REGEX</code> will match a <code>name &lt;email&gt;</code> string.
+</p>
+
+<p>
+<code>EMAIL_REGEX</code> captures 3 subpatterns in the following format:
+</p>
+
+<ul>
+<li>!<a href="0">0</a>: The whole email address</li>
+<li>!<a href="1">1</a>: The part of the email before the @</li>
+<li>!<a href="2">2</a>: The part of the email after the @</li>
+</ul>
+
+<p>
+For example:
+</p>
+<pre class="block php"><code>preg_match(fEmail::EMAIL_REGEX, 'will@example.com', $matches);
+
+echo $matches[0] . &quot;\n&quot;;
+echo $matches[1] . &quot;\n&quot;;
+echo $matches[2];</code></pre>
+
+<p>
+ will output the following:
+</p>
+<pre><code>will@example.com
+will
+example.com</code></pre>
+
+<p>
+ <code>NAME EMAIL_REGEX</code> captures 5 subpatterns in the following format:
+</p>
+
+<ul>
+<li>!<a href="0">0</a>: The whole name and email address</li>
+<li>!<a href="1">1</a>: The name</li>
+<li>!<a href="2">2</a>: The whole email address</li>
+<li>!<a href="3">3</a>: The part of the email before the @</li>
+<li>!<a href="4">4</a>: The part of the email after the @</li>
+</ul>
+
+<p>
+For example:
+</p>
+<pre class="block php"><code>preg_match(fEmail::NAME_EMAIL_REGEX, 'Will &lt;will@example.com&gt;', $matches);
+
+echo $matches[0] . &quot;\n&quot;;
+echo $matches[1] . &quot;\n&quot;;
+echo $matches[2] . &quot;\n&quot;;
+echo $matches[3] . &quot;\n&quot;;
+echo $matches[4];</code></pre>
+
+<p>
+ will output the following:
+</p>
+<pre><code>Will &lt;will@example.com&gt;
+Will
+will@example.com
+will
+example.com</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

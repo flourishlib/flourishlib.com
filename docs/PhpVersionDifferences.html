@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>PhpVersionDifferences – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="PHPVersionDifferences">PHP Version Differences</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#CallbackFormats">Callback Formats</a></li>
+<li><a href="#ConvertingObjectstoStrings">Converting Objects to Strings</a></li>
+</ul>
+</div>
+
+<p>
+Flourish is designer to be fully functional on PHP 5.1+. There are, however a number of end-programmer differences between PHP 5.1 and 5.2. This page contains an overview of the major differences.
+</p>
+
+<h2 id="CallbackFormats">Callback Formats</h2>
+
+<p>
+In both 5.1 and 5.2, callbacks to instance methods of object are formulated as an array with the first element being the object and the second being a string of the method name.
+</p>
+<pre class="block php"><code>$date = new fDate();
+$callback = array($date, '__toString');</code></pre>
+
+<p>
+ Similarly, with both 5.1 and 5.2 static method callbacks can be created with an array containing a string of the class and a string of the static method to call.
+</p>
+<pre class="block php"><code>$callback = array('fCore', 'backtrace');</code></pre>
+
+<p>
+ In 5.2, however, a second static method callback format was added. The new format consists of a single string with the class name concatenated with <code>::</code> and then the method name.
+</p>
+<pre class="block php"><code>$callback = 'fCore::backtrace';</code></pre>
+
+<p>
+ If you are using callbacks with Flourish, be sure to check out how Flourish provides an <a href="/docs/FlourishCallbackSyntax">intuitive callback syntax</a>.
+</p>
+
+<h2 id="ConvertingObjectstoStrings">Converting Objects to Strings</h2>
+
+<p>
+Many different kinds of objects, especially value objects, will intrinsically have a string representation of their value. In both 5.1 and 5.2 a <code>__toString()</code> method can be defined for any object. The difference between 5.1 and 5.2 is the automatic conversion of an object to a string.
+</p>
+
+<p>
+In 5.1, the <code>__toString()</code> method is only automatically called when an object is <code>echo</code>ed or <code>print</code>ed. However, if the object is concatenated with another string during the <code>echo</code> or <code>print</code> statement, the <code>__toString()</code> method is <strong>not</strong> called. In PHP 5.2 this behavior was fixed, and the <code>__toString()</code> method is called whenever a string is expected.
+</p>
+
+<p>
+In the context of Flourish, all classes that represent some sort of simple value have a predefined <code>__toString()</code> methods. Also, any methods that accept strings or objects will automatically check for a <code>__toString()</code> method on a object and call that. The only thing to keep in mind is that when using objects where strings are expected you will need to explicitly call <code>__toString()</code> if the code will be run on an environment with 5.1.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

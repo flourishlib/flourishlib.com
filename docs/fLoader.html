@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fLoader – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fLoader">fLoader</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fLoader">Class Documentation</a></strong></li>
+<li><a href="/api/fLoader">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fLoader.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#StandardUsage">Standard Usage</a></li>
+<li><a href="#ConstructorFunctions">Constructor Functions</a></li>
+<li><a href="#DetectingOpcodeCaches">Detecting Opcode Caches</a></li>
+</ul>
+</div>
+
+<p>
+The fLoader class is designed to load Flourish class. By default it detects the optimal type of loading to perform based on the server environment. In addition to loading classes, it creates constructor functions for the various Flourish value object classes.
+</p>
+
+<h2 id="StandardUsage">Standard Usage</h2>
+
+<p>
+Loading Flourish should normally be performed by calling the static method <a href="/api/fLoader#best"><code>best()</code></a>.
+</p>
+<pre class="block php"><code>include './path/to/fLoader.php';
+fLoader::best();</code></pre>
+
+<p>
+ If an opcode cache (e.g. APC, XCache, etc) is detected, all class file are immediately included. If an opcode cache is not detected, an autoload function is registered via <a href="http://php.net/spl_autoload_register"><code>spl_autoload_register()</code></a>.
+</p>
+
+<p>
+If you need explicit control over what type of loading is performed, you should call one of the static methods <a href="/api/fLoader#eager"><code>eager()</code></a> or <a href="/api/fLoader#lazy"><code>lazy()</code></a> instead.
+</p>
+
+<h2 id="ConstructorFunctions">Constructor Functions</h2>
+
+<p>
+Constructor functions is a term used to refer to functions that simply call the constructor of a class. The functions have the same name as the class, which effectively means that the <code>new</code> keyword is not required, and that method calls may be changed off of the constructor.
+</p>
+<pre class="block php"><code>// Without constructor functions
+$date = new fDate();
+$date = $date-&gt;modify('Y-m-01');
+
+// With constructor functions
+$date = fDate()-&gt;modify('Y-m-01');</code></pre>
+
+<p>
+ fLoader automatically creates constructor functions for all <a href="/docs/ValueObjects">value object classes</a>:
+</p>
+
+<ul>
+<li><a href="/docs/fDate">fDate</a></li>
+<li><a href="/docs/fMoney">fMoney</a></li>
+<li><a href="/docs/fNumber">fNumber</a></li>
+<li><a href="/docs/fTime">fTime</a></li>
+<li><a href="/docs/fTimestamp">fTimestamp</a></li>
+</ul>
+
+<h2 id="DetectingOpcodeCaches">Detecting Opcode Caches</h2>
+
+<p>
+The static method <a href="/api/fLoader#hasOpcodeCache"><code>hasOpcodeCache()</code></a> can be used to create intelligent loading functionality for other code.
+</p>
+<pre class="block php"><code>include './other/project/Loader.php';
+if (fLoader::hasOpcodeCache()) {
+    Loader::includeAll();
+} else {
+    Loader::autoload();
+}</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

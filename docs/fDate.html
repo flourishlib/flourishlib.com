@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fDate – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fDate">fDate</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fDate">Class Documentation</a></strong></li>
+<li><a href="/api/fDate">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fDate.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#Modification">Modification</a></li>
+<li><a href="#Adjustments">Adjustments</a></li>
+<li><a href="#Formatting">Formatting</a></li>
+<li><a href="#Comparing">Comparing</a></li>
+<li><a href="#FuzzyDifferences">Fuzzy Differences</a></li>
+</ul>
+
+<h2 id="DateTimeClasses">Date/Time Classes </h2>
+
+<ul>
+<li><strong>fDate</strong></li>
+<li><a href="/docs/fTime">fTime</a></li>
+<li><a href="/docs/fTimestamp">fTimestamp</a></li>
+</ul>
+
+<h2 id="ValueObjects">Value Objects </h2>
+
+<ul>
+<li><strong>fDate</strong></li>
+<li><a href="/docs/fMoney">fMoney</a></li>
+<li><a href="/docs/fNumber">fNumber</a></li>
+<li><a href="/docs/fTime">fTime</a></li>
+<li><a href="/docs/fTimestamp">fTimestamp</a></li>
+</ul>
+</div>
+
+<p>
+The fDate class is a <a href="/docs/ValueObjects">value object</a> representation of a date. One of the primary attributes of the object is that its value can not be changed, but instead a new object is created.
+</p>
+
+<p>
+This class is built on top of the PHP date/time functions and can only handle dates ranging from 1901&amp;ndash;2038.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+The fDate constructor takes a single argument, either a string, integer or object (with a <code>__toString()</code> method) representing a date. Any string format accepted by <a href="http://php.net/strtotime"><code>strtotime()</code></a> will work.
+</p>
+<pre class="block php"><code>$date1 = new fDate('today');
+$date2 = new fDate('sunday');
+$date3 = new fDate('3 Feb 2008');
+$date4 = new fDate('2005-01-02');</code></pre>
+
+<h2 id="Modification">Modification</h2>
+
+<p>
+Rather than allowing an fDate object value to be modified, which can create issues since objects are passed by reference, all changes to a date create a new object.
+</p>
+
+<p>
+Usually when modifying a date, only one or two components (such as month or year) of the date will change. The <a href="/api/fDate#modify"><code>modify()</code></a> method leverages the formatting codes from the <a href="http://php.net/function.date"><code>date()</code></a> function to keep parts of the existing date while replacing others.
+</p>
+
+<p>
+Here are some examples of <code>modify()</code>:
+</p>
+<pre class="block php"><code>// The new dates year would be 2007 while the month and day would be the same
+$new_date = $date1-&gt;modify('2007-m-d');
+
+// The new date would be the 1st day (Monday) of the 9th week of the year
+$new_date = $date2-&gt;modify('Y-\W9-1');
+
+// The new date would simply change the day of the month to the 1st
+$new_date = $date3-&gt;modify('Y-m-01');
+
+// The new date would have the same year and day, but the month would be June
+$new_date = $date4-&gt;modify('Y-06-d');</code></pre>
+
+<h2 id="Adjustments">Adjustments</h2>
+
+<p>
+Occasionally you may have the need to adjust a date. The <a href="/api/fDate#adjust"><code>adjust()</code></a> method takes a single parameter which can contain any relative time measurement that <a href="http://php.net/strtotime"><code>strtotime()</code></a> accepts. Since the fDate class is an immutable value object, calls to <code>adjust()</code> return a new fDate object.
+</p>
+<pre class="block php"><code>$new_date = $date1-&gt;adjust('tomorrow');
+$new_date = $date2-&gt;adjust('+1 day');
+$new_date = $date3-&gt;adjust('-2 years +1 week');
+$new_date = $date4-&gt;adjust('next wednesday');</code></pre>
+
+<h2 id="Formatting">Formatting</h2>
+
+<p>
+To format the date, simply call the <a href="/api/fDate#format"><code>format()</code></a> method with any valid date formatting string from <a href="http://php.net/date"><code>date()</code></a>. Here are some examples:
+</p>
+<pre class="block php"><code>// Normal date formatting
+echo $date1-&gt;format('Y-m-d');
+echo $date2-&gt;format('n/j/y');</code></pre>
+
+<h2 id="Comparing">Comparing</h2>
+
+<p>
+There are five different methods available to compare dates, <a href="/api/fDate#eq"><code>eq()</code></a>, <a href="/api/fDate#gt"><code>gt()</code></a>, <a href="/api/fDate#gte"><code>gte()</code></a>, <a href="/api/fDate#lt"><code>lt()</code></a> and <a href="/api/fDate#lte"><code>lte()</code></a>. Each method optionally accepts a parameter <code>$other_date</code>. If no <code>$other_date</code> is specified, the date is compared to the current date. If <code>$other_date</code> is specified, the two are compared. <code>$other_date</code> accepts any valid date descriptor that works with <a href="/api/fDate#__construct"><code>__construct()</code></a>.
+</p>
+
+<p>
+Here are some examples:
+</p>
+<pre class="block php"><code>$today    = new fDate();
+$tomorrow = new fDate('+1 day');
+
+// These return TRUE
+$today-&gt;eq();
+$today-&gt;eq('now');
+$today-&gt;lt($tomorrow);
+$today-&gt;lte($tomorrow);
+$today-&gt;lt('+1 year');
+
+// These calls return FALSE
+$tomorrow-&gt;lt($today);
+$today-&gt;gt($tomorrow);
+$today-&gt;gte($tomorrow);</code></pre>
+
+<h2 id="FuzzyDifferences">Fuzzy Differences</h2>
+
+<p>
+If you are looking to get a fuzzy difference between two dates for display, youll want to use the <a href="/api/fDate#getFuzzyDifference"><code>getFuzzyDifference()</code></a> method. The first parameter, <code>$other_date</code>, optionally accepts a valid date descriptor that can be passed to <a href="/api/fDate#__construct"><code>__construct()</code></a>. If one is passed, the difference will be between the two dates, if nothing is passed, the difference will be between the fDate and the current date.
+</p>
+
+<p>
+The value returned by <code>getFuzzyDifference()</code> will be a string representing the most broad time measurement between the two dates. In addition, if the difference is just shy of the next largest time measurement, it will be rounded up. Thus 3.5 weeks would become 1 month.
+</p>
+
+<p>
+Here are some examples to clarify. The following examples are comparing two date descriptors:
+</p>
+<pre class="block php"><code>$date1 = new fDate('2008-01-01');
+$date2 = new fDate('2008-01-04');
+
+echo $date1-&gt;getFuzzyDifference($date2);
+// Output: 3 days before
+
+echo $date2-&gt;getFuzzyDifference($date1);
+// Output: 3 days after
+
+$date3 = new fDate('2008-01-10');
+
+echo $date3-&gt;getFuzzyDifference('2008-01-01');
+// Output: 1 week after
+
+$date4 = new fDate('2008-01-28');
+
+echo $date4-&gt;getFuzzyDifference('2008-01-01');
+// Output: 1 month after</code></pre>
+
+<p>
+ These examples show output when comparing an fDate object with the current date:
+</p>
+<pre class="block php"><code>// First, lets assume today is January 1st, 2008.
+
+$date1 = new fDate('2008-01-04');
+$date2 = new fDate('2008-01-09');
+$date2 = new fDate('2007-12-02');
+
+echo $date1-&gt;getFuzzyDifference();
+// Output: 3 days from now
+
+echo $date2-&gt;getFuzzyDifference();
+// Output: 1 week from now
+
+echo $date3-&gt;getFuzzyDifference();
+// Output: 1 month ago</code></pre>
+
+<p>
+ An optional boolean parameter, <code>$simple</code>, can also be passed to <code>getFuzzyDifference()</code>. When <code>TRUE</code>, this parameter causes the method to return the difference in time, but not the direction.
+</p>
+<pre class="block php"><code>$date1 = new fDate('2008-01-01');
+$date2 = new fDate('2008-01-04');
+
+echo $date1-&gt;getFuzzyDifference($date2, TRUE);
+// Output: 3 days
+
+echo $date2-&gt;getFuzzyDifference($date1, TRUE);
+// Output: 3 days
+
+$date3 = new fDate('2008-01-10');
+
+echo $date3-&gt;getFuzzyDifference('2008-01-01', TRUE);
+// Output: 1 week</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

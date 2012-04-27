@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fTime – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fTime</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fTime">Class Documentation</a></li>
+		<li><strong><a href="/api/fTime">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fTime.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected variables">
+<h2><a href="#class_vars">Variables</a></h2>
+<ul>
+  	 		<li class="protected"><a href="#time">$time</a></li>
+	   </ul>
+</div>
+<div class="protected methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  			<li class="protected"><a href="#compose">compose()</a></li>
+	  	  	  	  	  	  	  	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li><a href="#__toString">__toString()</a></li>
+	  			<li><a href="#adjust">adjust()</a></li>
+	  	  			<li><a href="#eq">eq()</a></li>
+	  			<li><a href="#format">format()</a></li>
+	  			<li><a href="#getFuzzyDifference">getFuzzyDifference()</a></li>
+	  			<li><a href="#gt">gt()</a></li>
+	  			<li><a href="#gte">gte()</a></li>
+	  			<li><a href="#lt">lt()</a></li>
+	  			<li><a href="#lte">lte()</a></li>
+	  			<li><a href="#modify">modify()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fDatabase">fDatabase</a></li>
+		<li><a href="fLoader">fLoader</a></li>
+		<li><a href="fORM">fORM</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fRequest">fRequest</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b12</span></div>
+<p class="short_description">Represents a time of day as a value object</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b12</th><td>Fixed a method signature <span class="date">8/24/11</span></td></tr><tr><th>1.0.0b11</th><td>Fixed a bug with the constructor not properly handling unix timestamps that are negative integers <span class="date">6/2/11</span></td></tr><tr><th>1.0.0b10</th><td>Changed the <tt>$time</tt> attribute to be protected <span class="date">3/20/11</span></td></tr><tr><th>1.0.0b9</th><td>Added the <tt>$simple</tt> parameter to <a href="#getFuzzyDifference"><tt>getFuzzyDifference()</tt></a> <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b8</th><td>Added a call to <a href="fTimestamp#callUnformatCallback"><tt>fTimestamp::callUnformatCallback()</tt></a> in <a href="#__construct"><tt>__construct()</tt></a> for localization support <span class="date">6/1/09</span></td></tr><tr><th>1.0.0b7</th><td>Backwards compatibility break - Removed getSecondsDifference(), added <a href="#eq"><tt>eq()</tt></a>, <a href="#gt"><tt>gt()</tt></a>, <a href="#gte"><tt>gte()</tt></a>, <a href="#lt"><tt>lt()</tt></a>, <a href="#lte"><tt>lte()</tt></a> <span class="date">3/5/09</span></td></tr><tr><th>1.0.0b6</th><td>Fixed an outdated <a href="fCore">fCore</a> method call <span class="date">2/23/09</span></td></tr><tr><th>1.0.0b5</th><td>Updated for new <a href="fCore">fCore</a> API <span class="date">2/16/09</span></td></tr><tr><th>1.0.0b4</th><td>Fixed <a href="#__construct"><tt>__construct()</tt></a> to properly handle the 5.0 to 5.1 change in strtotime() <span class="date">1/21/09</span></td></tr><tr><th>1.0.0b3</th><td>Added support for CURRENT_TIMESTAMP and CURRENT_TIME SQL keywords <span class="date">1/11/09</span></td></tr><tr><th>1.0.0b2</th><td>Removed the adjustment amount check from <a href="#adjust"><tt>adjust()</tt></a> <span class="date">12/31/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">2/12/08</span></td></tr></table></div>
+<div class="class_variables" id="class_vars">
+<h2>Variables</h2>
+	<!-- start protected variable -->
+	<h3 id="time" class="protected variable"><span class="resolution">-></span><span class="name">time</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>A timestamp of the time</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">integer</p>
+	</div>
+	<!-- end variable -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="compose" class="protected method static"><span class="resolution">::</span><span class="name">compose()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Composes text using <a href="fText">fText</a> if loaded</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">compose</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$component</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to compose</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$component <em>[, ... ]</em></td>
+				<td class="param_description">A string or number to insert into the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The composed and possible translated message
+				</p>
+			</div>
+			<!-- end method static -->
+									</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+						<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Creates the time to represent, no timezone is allowed since times don't have timezones</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fTime">fTime</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fTime">fTime</a>|object|string|integer</span> <span class="php-var">$time</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fTime">fTime</a>|object|string|integer</td>
+				<td class="param_name">$time</td>
+				<td class="param_description">The time to represent, <tt>NULL</tt> is interpreted as now</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$time</tt> is not a valid time</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="__toString" class="method"><span class="resolution">-></span><span class="name">__toString()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns this time in <tt>'H:i:s'</tt> format</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">__toString</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The <tt>'H:i:s'</tt> format of this time
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="adjust" class="method"><span class="resolution">-></span><span class="name">adjust()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Changes the time by the adjustment specified, only adjustments of <tt>'hours'</tt>, <tt>'minutes'</tt>, and <tt>'seconds'</tt> are allowed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fTime">fTime</a></span> <span class="php-identifier">adjust</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$adjustment</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$adjustment</td>
+				<td class="param_description">The adjustment to make</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The adjusted time
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$adjustment</tt> is not a valid relative time measurement</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="eq" class="method"><span class="resolution">-></span><span class="name">eq()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>If this time is equal to the time passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">eq</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fTime">fTime</a>|object|string|integer</span> <span class="php-var">$other_time</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fTime">fTime</a>|object|string|integer</td>
+				<td class="param_name">$other_time</td>
+				<td class="param_description">The time to compare with, <tt>NULL</tt> is interpreted as today</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this time is equal to the one passed
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="format" class="method"><span class="resolution">-></span><span class="name">format()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Formats the time</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">format</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$format</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$format</td>
+				<td class="param_description">The <a class="ext-link" href="http://php.net/date"><span class="icon"><tt>date()</tt></span></a> function compatible formatting string, or a format name from <a href="fTimestamp#defineFormat"><tt>fTimestamp::defineFormat()</tt></a></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The formatted time
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When a non-time formatting character is included in <tt>$format</tt></dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getFuzzyDifference" class="method"><span class="resolution">-></span><span class="name">getFuzzyDifference()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the approximate difference in time, discarding any unit of measure but the least specific.</p>
+								<p>The output will read like:  </p><ul><li>&quot;This time is <tt>{return value}</tt> the provided one&quot; when a time it passed</li><li>&quot;This time is <tt>{return value}</tt>&quot; when no time is passed and comparing with the current time</li></ul><p>Examples of output for a time passed might be:  </p><ul><li><tt>'5 minutes after'</tt></li><li><tt>'2 hours before'</tt></li><li><tt>'at the same time'</tt></li></ul><p>Examples of output for no time passed might be:  </p><ul><li><tt>'5 minutes ago'</tt></li><li><tt>'2 hours ago'</tt></li><li><tt>'right now'</tt></li></ul><p>You would never get the following output since it includes more than one unit of time measurement:  </p><ul><li><tt>'5 minutes and 28 seconds'</tt></li><li><tt>'1 hour, 15 minutes'</tt></li></ul><p>Values that are close to the next largest unit of measure will be rounded up:  </p><ul><li><tt>'55 minutes'</tt> would be represented as <tt>'1 hour'</tt>, however <tt>'45 minutes'</tt> would not</li></ul>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getFuzzyDifference</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fTime">fTime</a>|object|string|integer</span> <span class="php-var">$other_time</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$simple</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype">string</span> <span class="php-identifier">getFuzzyDifference</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$simple</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fTime">fTime</a>|object|string|integer</td>
+				<td class="param_name">$other_time</td>
+				<td class="param_description">The time to create the difference with, <tt>NULL</tt> is interpreted as now</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$simple</td>
+				<td class="param_description">When <tt>TRUE</tt>, the returned value will only include the difference in the two times, but not <tt>from now</tt>, <tt>ago</tt>, <tt>after</tt> or <tt>before</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The fuzzy difference in time between the this time and the one provided
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="gt" class="method"><span class="resolution">-></span><span class="name">gt()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>If this time is greater than the time passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">gt</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fTime">fTime</a>|object|string|integer</span> <span class="php-var">$other_time</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fTime">fTime</a>|object|string|integer</td>
+				<td class="param_name">$other_time</td>
+				<td class="param_description">The time to compare with, <tt>NULL</tt> is interpreted as now</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this time is greater than the one passed
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="gte" class="method"><span class="resolution">-></span><span class="name">gte()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>If this time is greater than or equal to the time passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">gte</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fTime">fTime</a>|object|string|integer</span> <span class="php-var">$other_time</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fTime">fTime</a>|object|string|integer</td>
+				<td class="param_name">$other_time</td>
+				<td class="param_description">The time to compare with, <tt>NULL</tt> is interpreted as now</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this time is greater than or equal to the one passed
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="lt" class="method"><span class="resolution">-></span><span class="name">lt()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>If this time is less than the time passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">lt</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fTime">fTime</a>|object|string|integer</span> <span class="php-var">$other_time</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fTime">fTime</a>|object|string|integer</td>
+				<td class="param_name">$other_time</td>
+				<td class="param_description">The time to compare with, <tt>NULL</tt> is interpreted as today</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this time is less than the one passed
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="lte" class="method"><span class="resolution">-></span><span class="name">lte()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>If this time is less than or equal to the time passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">lte</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fTime">fTime</a>|object|string|integer</span> <span class="php-var">$other_time</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fTime">fTime</a>|object|string|integer</td>
+				<td class="param_name">$other_time</td>
+				<td class="param_description">The time to compare with, <tt>NULL</tt> is interpreted as today</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this time is less than or equal to the one passed
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="modify" class="method"><span class="resolution">-></span><span class="name">modify()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Modifies the current time, creating a new <a href="fTime">fTime</a> object</p>
+								<p>The purpose of this method is to allow for easy creation of a time  based on this time. Below are some examples of formats to  modify the current time:  </p><ul><li><tt>'17:i:s'</tt> to set the hour of the time to 5 PM</li><li>'H:00:00'` to set the time to the beginning of the current hour</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fTime">fTime</a></span> <span class="php-identifier">modify</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$format</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$format</td>
+				<td class="param_description">The current time will be formatted with this string, and the output used to create a new object</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The new time
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

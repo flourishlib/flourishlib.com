@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMMoney – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fORMMoney">fORMMoney</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fORMMoney">Class Documentation</a></strong></li>
+<li><a href="/api/fORMMoney">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMMoney.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#MoneyColumns">Money Columns</a></li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><strong>fORMMoney</strong></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fORMMoney class is an ORM plugin to provide functionality to treat columns as monetary values.
+</p>
+
+<h2 id="MoneyColumns">Money Columns</h2>
+
+<p>
+When dealing with monetary values, it is usually very important that the values stored and calculated are accurate. The <a href="/docs/fMoney">fMoney</a> class provides this sort of accuracy and the fORMMoney class allows a column to be configured so that values coming out of the database are automatically converted to <a href="/docs/fMoney">fMoney</a> object. The static method <a href="/api/fORMMoney#configureMoneyColumn"><code>configureMoneyColumn()</code></a> accepts three parameters, the <code>$class</code> being configured, the <code>$column</code> to set as a money column, and <em>optionally</em> a <code>$currency_column</code> to store the currency of the monetary value in.
+</p>
+
+<p>
+When configuring a money column <em>without</em> a corresponding currency column, a default currency must be set via <a href="/api/fMoney#setDefaultCurrency">fMoney::setDefaultCurrency()</a>. All <a href="/docs/fMoney">fMoney</a> objects created will use this default currency. If an <a href="/docs/fMoney">fMoney</a> object is set to the value of the money column, and it contains a different currency than the default and no currency column is set, the currency will be lost when the record is saved in the database.
+</p>
+<pre class="block php"><code>class Order extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMMoney::configureMoneyColumn($this, 'total');
+    }
+}</code></pre>
+
+<p>
+ When calling the <code>get</code> method for a money column, an <a href="/docs/fMoney">fMoney</a> object should be expected whenever a record has been freshly loaded from the databaseit is possible that if a value has been set that it is not a valid money value, and thus will not be an <a href="/docs/fMoney">fMoney</a> object. The <code>prepare</code> method for a money column will call the <a href="/api/fMoney#format">fMoney::format()</a> method on the <a href="/docs/fMoney">fMoney</a> object, while the <code>encode</code> method will return the output of <a href="/api/fMoney#__toString">fMoney::__toString()</a>.
+</p>
+
+<p>
+If a currency column is set for the money column, the currency contained in the <a href="/docs/fMoney">fMoney</a> object will be stored in that column when the record is saved to the database. If the <code>set</code> method is called on the money column with a non-<a href="/docs/fMoney">fMoney</a> object, a new <a href="/docs/fMoney">fMoney</a> object will be created with the currency currently stored in the currency column. If the <code>set</code> method is called on the currency column, a new <a href="/docs/fMoney">fMoney</a> object will be created with that currency and the current money amount. Setting an <a href="/docs/fMoney">fMoney</a> object to the money column will cause the currency column to be updated to the currency of the object.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

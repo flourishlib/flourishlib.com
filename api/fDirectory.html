@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fDirectory – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fDirectory</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fDirectory">Class Documentation</a></li>
+		<li><strong><a href="/api/fDirectory">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fDirectory.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected variables">
+<h2><a href="#class_vars">Variables</a></h2>
+<ul>
+  	 		<li class="protected"><a href="#deleted">$deleted</a></li>
+	   	 		<li class="protected"><a href="#directory">$directory</a></li>
+	   </ul>
+</div>
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  			<li><a href="#create">create()</a></li>
+	  	  	  	  	  	  	  			<li><a href="#makeCanonical">makeCanonical()</a></li>
+	  	  	  	  	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li><a href="#__toString">__toString()</a></li>
+	  			<li><a href="#clear">clear()</a></li>
+	  	  			<li><a href="#delete">delete()</a></li>
+	  			<li><a href="#getName">getName()</a></li>
+	  			<li><a href="#getParent">getParent()</a></li>
+	  			<li><a href="#getPath">getPath()</a></li>
+	  			<li><a href="#getSize">getSize()</a></li>
+	  			<li><a href="#isWritable">isWritable()</a></li>
+	  	  			<li><a href="#move">move()</a></li>
+	  			<li><a href="#rename">rename()</a></li>
+	  			<li><a href="#scan">scan()</a></li>
+	  			<li><a href="#scanRecursive">scanRecursive()</a></li>
+	  			<li class="protected"><a href="#tossIfDeleted">tossIfDeleted()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fFile">fFile</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fImage">fImage</a></li>
+		<li><a href="fLoader">fLoader</a></li>
+		<li><a href="fORMFile">fORMFile</a></li>
+		<li><a href="fSession">fSession</a></li>
+		<li><a href="fTemplating">fTemplating</a></li>
+		<li><a href="fUpload">fUpload</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b14</span></div>
+<p class="short_description">Represents a directory on the filesystem, also provides static directory-related methods</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b14</th><td>Fixed a bug in <a href="#delete"><tt>delete()</tt></a> where a non-existent method was being called on <a href="fFilesystem">fFilesystem</a>, added a permission check to <a href="#delete"><tt>delete()</tt></a> <span class="date">8/23/11</span></td></tr><tr><th>1.0.0b13</th><td>Added the <a href="#clear"><tt>clear()</tt></a> method <span class="date">1/10/11</span></td></tr><tr><th>1.0.0b12</th><td>Fixed <a href="#scanRecursive"><tt>scanRecursive()</tt></a> to not add duplicate entries for certain nested directory structures <span class="date">8/10/10</span></td></tr><tr><th>1.0.0b11</th><td>Fixed <a href="#scan"><tt>scan()</tt></a> to properly add trailing /s for directories <span class="date">3/16/10</span></td></tr><tr><th>1.0.0b10</th><td>BackwardsCompatibilityBreak - Fixed <a href="#scan"><tt>scan()</tt></a> and <a href="#scanRecursive"><tt>scanRecursive()</tt></a> to strip the current directory's path before matching, added support for glob style matching <span class="date">3/5/10</span></td></tr><tr><th>1.0.0b9</th><td>Changed the way directories deleted in a filesystem transaction are handled, including improvements to the exception that is thrown <span class="date">3/5/10</span></td></tr><tr><th>1.0.0b8</th><td>Backwards Compatibility Break - renamed getFilesize() to <a href="#getSize"><tt>getSize()</tt></a>, added <a href="#move"><tt>move()</tt></a> <span class="date">12/16/09</span></td></tr><tr><th>1.0.0b7</th><td>Fixed <a href="#__construct"><tt>__construct()</tt></a> to throw an <a href="fValidationException">fValidationException</a> when the directory does not exist <span class="date">8/21/09</span></td></tr><tr><th>1.0.0b6</th><td>Fixed a bug where deleting a directory would prevent any future operations in the same script execution on a file or directory with the same path <span class="date">8/20/09</span></td></tr><tr><th>1.0.0b5</th><td>Added the ability to skip checks in <a href="#__construct"><tt>__construct()</tt></a> for better performance in conjunction with <a href="fFilesystem#createObject"><tt>fFilesystem::createObject()</tt></a> <span class="date">8/6/09</span></td></tr><tr><th>1.0.0b4</th><td>Refactored <a href="#scan"><tt>scan()</tt></a> to use the new <a href="fFilesystem#createObject"><tt>fFilesystem::createObject()</tt></a> method <span class="date">1/21/09</span></td></tr><tr><th>1.0.0b3</th><td>Added the $regex_filter parameter to <a href="#scan"><tt>scan()</tt></a> and <a href="#scanRecursive"><tt>scanRecursive()</tt></a>, fixed bug in <a href="#scanRecursive"><tt>scanRecursive()</tt></a> <span class="date">1/5/09</span></td></tr><tr><th>1.0.0b2</th><td>Removed some unnecessary error suppresion operators <span class="date">12/11/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">12/21/07</span></td></tr></table></div>
+<div class="class_variables" id="class_vars">
+<h2>Variables</h2>
+	<!-- start protected variable -->
+	<h3 id="deleted" class="protected variable"><span class="resolution">-></span><span class="name">deleted</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>A backtrace from when the file was deleted</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="directory" class="protected variable"><span class="resolution">-></span><span class="name">directory</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The full path to the directory</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">string</p>
+	</div>
+	<!-- end variable -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+						<!-- start method static -->
+			<h3 id="create" class="method static"><span class="resolution">::</span><span class="name">create()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Creates a directory on the filesystem and returns an object representing it</p>
+								<p>The directory creation is done recursively, so if any of the parent  directories do not exist, they will be created.</p><p>This operation will be reverted by a filesystem transaction being rolled back.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fDirectory">fDirectory</a></span> <span class="php-identifier">create</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$directory</span><span class="php-code">,</span> <span class="php-vartype">numeric</span> <span class="php-var">$mode</span><span class="php-code">=</span>0777 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$directory</td>
+				<td class="param_description">The path to the new directory</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">numeric</td>
+				<td class="param_name">$mode</td>
+				<td class="param_description">The mode (permissions) to use when creating the directory. This should be an octal number (requires a leading zero). This has no effect on the Windows platform.</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When no directory was specified, or the directory already exists</dd></dl>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="makeCanonical" class="method static"><span class="resolution">::</span><span class="name">makeCanonical()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Makes sure a directory has a <tt>/</tt> or <tt>\</tt> at the end</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">makeCanonical</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$directory</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$directory</td>
+				<td class="param_description">The directory to check</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The directory name in canonical form
+				</p>
+			</div>
+			<!-- end method static -->
+						</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+						<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Creates an object to represent a directory on the filesystem</p>
+								<p>If multiple <a href="fDirectory">fDirectory</a> objects are created for a single directory,  they will reflect changes in each other including rename and delete  actions.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fDirectory">fDirectory</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$directory</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$skip_checks</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$directory</td>
+				<td class="param_description">The path to the directory</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$skip_checks</td>
+				<td class="param_description">If file checks should be skipped, which improves performance, but may cause undefined behavior - only skip these if they are duplicated elsewhere</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When no directory was specified, when the directory does not exist or when the path specified is not a directory</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="__toString" class="method"><span class="resolution">-></span><span class="name">__toString()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the full filesystem path for the directory</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">__toString</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The full filesystem path
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="clear" class="method"><span class="resolution">-></span><span class="name">clear()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Removes all files and directories inside of the directory</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">clear</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="delete" class="method"><span class="resolution">-></span><span class="name">delete()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Will delete a directory and all files and directories inside of it</p>
+								<p>This operation will not be performed until the filesystem transaction  has been committed, if a transaction is in progress. Any non-Flourish  code (PHP or system) will still see this directory and all contents as  existing until that point.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">delete</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getName" class="method"><span class="resolution">-></span><span class="name">getName()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the name of the directory</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getName</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The name of the directory
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getParent" class="method"><span class="resolution">-></span><span class="name">getParent()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the parent directory</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fDirectory">fDirectory</a></span> <span class="php-identifier">getParent</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The object representing the parent directory
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getPath" class="method"><span class="resolution">-></span><span class="name">getPath()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the directory's current path</p>
+								<p>If the web path is requested, uses translations set with  <a href="fFilesystem#addWebPathTranslation"><tt>fFilesystem::addWebPathTranslation()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getPath</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$translate_to_web_path</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$translate_to_web_path</td>
+				<td class="param_description">If the path should be the web path</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The path for the directory
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getSize" class="method"><span class="resolution">-></span><span class="name">getSize()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the disk usage of the directory and all files and folders contained within</p>
+								<p>This method may return incorrect results if files over 2GB exist and the  server uses a 32 bit operating system</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer|string</span> <span class="php-identifier">getSize</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$format</span><span class="php-code">=</span>FALSE<span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$decimal_places</span><span class="php-code">=</span>1 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$format</td>
+				<td class="param_description">If the filesize should be formatted for human readability</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$decimal_places</td>
+				<td class="param_description">The number of decimal places to format to (if enabled)</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If formatted, a string with filesize in b/kb/mb/gb/tb, otherwise an integer
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="isWritable" class="method"><span class="resolution">-></span><span class="name">isWritable()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Check to see if the current directory is writable</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isWritable</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the directory is writable
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="move" class="method"><span class="resolution">-></span><span class="name">move()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Moves the current directory into a different directory</p>
+								<p>Please note that <a href="#rename"><tt>rename()</tt></a> will rename a directory in its current  parent directory or rename it into a different parent directory.</p><p>If the current directory's name already exists in the new parent  directory and the overwrite flag is set to false, the name will be  changed to a unique name.</p><p>This operation will be reverted if a filesystem transaction is in  progress and is later rolled back.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fDirectory">fDirectory</a></span> <span class="php-identifier">move</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDirectory">fDirectory</a>|string</span> <span class="php-var">$new_parent_directory</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$overwrite</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDirectory">fDirectory</a>|string</td>
+				<td class="param_name">$new_parent_directory</td>
+				<td class="param_description">The directory to move this directory into</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$overwrite</td>
+				<td class="param_description">If the current filename already exists in the new directory, <tt>TRUE</tt> will cause the file to be overwritten, <tt>FALSE</tt> will cause the new filename to change</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The directory object, to allow for method chaining
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the new parent directory passed is not a directory, is not readable or is a sub-directory of this directory</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="rename" class="method"><span class="resolution">-></span><span class="name">rename()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Renames the current directory</p>
+								<p>This operation will NOT be performed until the filesystem transaction  has been committed, if a transaction is in progress. Any non-Flourish  code (PHP or system) will still see this directory (and all contained  files/dirs) as existing with the old paths until that point.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">rename</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$new_dirname</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$overwrite</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$new_dirname</td>
+				<td class="param_description">The new full path to the directory or a new name in the current parent directory</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$overwrite</td>
+				<td class="param_description">If the new dirname already exists, TRUE will cause the file to be overwritten, FALSE will cause the new filename to change</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="scan" class="method"><span class="resolution">-></span><span class="name">scan()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Performs a <a class="ext-link" href="http://php.net/scandir"><span class="icon"><tt>scandir()</tt></span></a> on a directory, removing the <tt>.</tt> and <tt>..</tt> entries</p>
+								<p>If the <tt>$filter</tt> looks like a valid PCRE pattern - matching delimeters  (a delimeter can be any non-alphanumeric, non-backslash, non-whitespace  character) followed by zero or more of the flags <tt>i</tt>, <tt>m</tt>, <tt>s</tt>, <tt>x</tt>,  <tt>e</tt>, <tt>A</tt>, <tt>D</tt>,  <tt>S</tt>, <tt>U</tt>, <tt>X</tt>, <tt>J</tt>, <tt>u</tt> - then  <a class="ext-link" href="http://php.net/preg_match"><span class="icon"><tt>preg_match()</tt></span></a> will be used.</p><p>Otherwise the <tt>$filter</tt> will do a case-sensitive match with <tt>*</tt> matching  zero or more characters and <tt>?</tt> matching a single character.</p><p>On all OSes (even Windows), directories will be separated by <tt>/</tt>s when  comparing with the <tt>$filter</tt>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">scan</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$filter</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$filter</td>
+				<td class="param_description">A PCRE or glob pattern to filter files/directories by path - directories can be detected by checking for a trailing / (even on Windows)</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The <a href="fFile">fFile</a> (or <a href="fImage">fImage</a>) and <a href="fDirectory">fDirectory</a> objects for the files/directories in this directory
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="scanRecursive" class="method"><span class="resolution">-></span><span class="name">scanRecursive()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Performs a <strong>recursive</strong> <a class="ext-link" href="http://php.net/scandir"><span class="icon"><tt>scandir()</tt></span></a> on a directory, removing the <tt>.</tt> and <tt>..</tt> entries</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">scanRecursive</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$filter</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$filter</td>
+				<td class="param_description">A PCRE or glob pattern to filter files/directories by path - see <a href="#scan"><tt>scan()</tt></a> for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The <a href="fFile">fFile</a> (or <a href="fImage">fImage</a>) and <a href="fDirectory">fDirectory</a> objects for the files/directories (listed recursively) in this directory
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="tossIfDeleted" class="protected method"><span class="resolution">-></span><span class="name">tossIfDeleted()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Throws an exception if the directory has been deleted</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">tossIfDeleted</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

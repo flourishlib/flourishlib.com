@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>HowDoI – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="HowDoI">How Do I?</h1>
+
+<p>
+This page is meant to be sort of a compass to new users of Flourish to help them figure out where to look for solutions to their problems.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Task at Hand</strong></td>
+<td><strong>Where to Look</strong></td>
+</tr>
+<tr>
+<td>Handle exceptions and errors gracefully</td>
+<td><a href="/docs/fCore">fCore</a></td>
+</tr>
+<tr>
+<td>Ensure content is properly encoded (HTML entities)</td>
+<td><a href="/docs/fHTML">fHTML</a></td>
+</tr>
+<tr>
+<td>Handle UTF-8 content</td>
+<td><a href="/docs/fUTF8">fUTF8</a></td>
+</tr>
+<tr>
+<td>Perform simple form validation (contact forms, etc)</td>
+<td><a href="/docs/fValidation">fValidation</a></td>
+</tr>
+<tr>
+<td>Simple (non-ORM) interaction with a database</td>
+<td><a href="/docs/fDatabase">fDatabase</a>, <a href="/docs/fResult">fResult</a>, <a href="/docs/fUnbufferedResult">fUnbufferedResult</a></td>
+</tr>
+<tr>
+<td>Retrieve the structure of the database I am connected to</td>
+<td><a href="/docs/fSchema">fSchema</a></td>
+</tr>
+<tr>
+<td>Interact with the database simply by using <a href="/docs/ObjectRelationalMapping">object-relational mapping</a> (ORM)</td>
+<td><a href="/docs/fActiveRecord">fActiveRecord</a>, <a href="/docs/fRecordSet">fRecordSet</a></td>
+</tr>
+<tr>
+<td>Get and sanitize information from the users request, including <code>GET</code>, <code>POST</code>, <code>PUT</code> and <code>DELETE</code> data</td>
+<td><a href="/docs/fRequest">fRequest</a></td>
+</tr>
+<tr>
+<td>Pass transient messages around without polluting URLs</td>
+<td><a href="/docs/fMessaging">fMessaging</a></td>
+</tr>
+<tr>
+<td>Store and retrieve session information</td>
+<td><a href="/docs/fSession">fSession</a></td>
+</tr>
+<tr>
+<td>Handle user permissions and access control</td>
+<td><a href="/docs/fAuthorization">fAuthorization</a></td>
+</tr>
+<tr>
+<td>Ensure that data is stored securely (passwords, confidential information, etc)</td>
+<td><a href="/docs/fCryptography">fCryptography</a></td>
+</tr>
+<tr>
+<td>Handle dates and times, including timezones</td>
+<td><a href="/docs/fDate">fDate</a>, <a href="/docs/fTime">fTime</a>, <a href="/docs/fTimestamp">fTimestamp</a></td>
+</tr>
+<tr>
+<td>Manipulate images</td>
+<td><a href="/docs/fImage">fImage</a></td>
+</tr>
+<tr>
+<td>Manipulate and query files and directories</td>
+<td><a href="/docs/fFile">fFile</a>, <a href="/docs/fDirectory">fDirectory</a></td>
+</tr>
+<tr>
+<td>Handle file uploads</td>
+<td><a href="/docs/fUpload">fUpload</a></td>
+</tr>
+<tr>
+<td>Use templating to reduce code duplication and keep logic and presentation separate</td>
+<td><a href="/docs/fTemplating">fTemplating</a></td>
+</tr>
+<tr>
+<td>Conditionally build English language constructs and convert between syntax notations</td>
+<td><a href="/docs/fGrammar">fGrammar</a></td>
+</tr>
+<tr>
+<td>Handle translation or modification of messages</td>
+<td><a href="/docs/fText">fText</a></td>
+</tr>
+<tr>
+<td>Send emails and validate email addresses</td>
+<td><a href="/docs/fEmail">fEmail</a></td>
+</tr>
+<tr>
+<td>Encode and decode JSON data</td>
+<td><a href="/docs/fJSON">fJSON</a></td>
+</tr>
+<tr>
+<td>Deal with precise numbers and calculations</td>
+<td><a href="/docs/fNumber">fNumber</a></td>
+</tr>
+<tr>
+<td>Represent, manipulate and translate monetary values</td>
+<td><a href="/docs/fMoney">fMoney</a></td>
+</tr>
+<tr>
+<td>Handle sticky search values and sortable columns for list pages</td>
+<td><a href="/docs/fCRUD">fCRUD</a></td>
+</tr>
+<tr>
+<td>Get and set cookies, including HTTPOnly cookies and default values</td>
+<td><a href="/docs/fCookie">fCookie</a></td>
+</tr>
+<tr>
+<td>Encode content for XML files</td>
+<td><a href="/docs/fXML">fXML</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="TopicPages">Topic Pages</h2>
+
+<p>
+The following pages include some more in-depth information about topics, including links to the relevant Flourish classes.
+</p>
+
+<ul>
+<li><a href="/docs/ObjectRelationalMapping">ORM (Object-Relational Mapping)</a></li>
+<li><a href="/docs/Security">PHP/web security</a></li>
+<li><a href="/docs/UTF-8">UTF-8 in PHP</a></li>
+</ul>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

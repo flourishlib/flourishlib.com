@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fDatabase – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fDatabase</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fDatabase">Class Documentation</a></li>
+		<li><strong><a href="/api/fDatabase">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fDatabase.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected variables">
+<h2><a href="#class_vars">Variables</a></h2>
+<ul>
+  	 		<li class="protected"><a href="#extension">$extension</a></li>
+	   	 		<li class="protected"><a href="#schema_info">$schema_info</a></li>
+	   </ul>
+</div>
+<div class="protected methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  	  			<li class="protected"><a href="#compose">compose()</a></li>
+	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__destruct">__destruct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li><a href="#clearCache">clearCache()</a></li>
+	  			<li><a href="#close">close()</a></li>
+	  	  			<li><a href="#connect">connect()</a></li>
+	  			<li class="protected"><a href="#determineCharacterSet">determineCharacterSet()</a></li>
+	  			<li class="protected"><a href="#determineExtension">determineExtension()</a></li>
+	  			<li><a href="#enableCaching">enableCaching()</a></li>
+	  			<li><a href="#enableDebugging">enableDebugging()</a></li>
+	  			<li><a href="#escape">escape()</a></li>
+	  			<li><a href="#execute">execute()</a></li>
+	  			<li><a href="#getConnection">getConnection()</a></li>
+	  			<li><a href="#getDatabase">getDatabase()</a></li>
+	  			<li class="protected"><a href="#getExtension">getExtension()</a></li>
+	  			<li><a href="#getHost">getHost()</a></li>
+	  			<li><a href="#getPort">getPort()</a></li>
+	  			<li><a href="#getSQLTranslation">getSQLTranslation()</a></li>
+	  			<li><a href="#getType">getType()</a></li>
+	  			<li><a href="#getUsername">getUsername()</a></li>
+	  			<li><a href="#getVersion">getVersion()</a></li>
+	  			<li class="protected"><a href="#inject">inject()</a></li>
+	  			<li><a href="#isInsideTransaction">isInsideTransaction()</a></li>
+	  			<li><a href="#prepare">prepare()</a></li>
+	  			<li class="protected"><a href="#preprocess">preprocess()</a></li>
+	  			<li><a href="#query">query()</a></li>
+	  			<li><a href="#registerHookCallback">registerHookCallback()</a></li>
+	  			<li><a href="#translatedExecute">translatedExecute()</a></li>
+	  			<li><a href="#translatedPrepare">translatedPrepare()</a></li>
+	  			<li><a href="#translatedQuery">translatedQuery()</a></li>
+	  			<li><a href="#unbufferedQuery">unbufferedQuery()</a></li>
+	  			<li><a href="#unbufferedTranslatedQuery">unbufferedTranslatedQuery()</a></li>
+	  			<li><a href="#unescape">unescape()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fAuthorizationException">fAuthorizationException</a></li>
+		<li><a href="fConnectivityException">fConnectivityException</a></li>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fDate">fDate</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fNotFoundException">fNotFoundException</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fSQLException">fSQLException</a></li>
+		<li><a href="fSQLTranslation">fSQLTranslation</a></li>
+		<li><a href="fStatement">fStatement</a></li>
+		<li><a href="fTime">fTime</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b40</span></div>
+<p class="short_description">Provides a common API for different databases - will automatically use any installed extension</p>
+<div class="description"><p>This class is implemented to use the UTF-8 character encoding. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p><p>The following databases are supported:  </p><ul><li><a class="ext-link" href="http://ibm.com/db2"><span class="icon">DB2</span></a></li><li><a class="ext-link" href="http://microsoft.com/sql/"><span class="icon">MSSQL</span></a></li><li><a class="ext-link" href="http://mysql.com"><span class="icon">MySQL</span></a></li><li><a class="ext-link" href="http://oracle.com"><span class="icon">Oracle</span></a></li><li><a class="ext-link" href="http://postgresql.org"><span class="icon">PostgreSQL</span></a></li><li><a class="ext-link" href="http://sqlite.org"><span class="icon">SQLite</span></a></li></ul><p>The class will automatically use the first of the following extensions it finds:  </p><ul><li>DB2
+   <ul><li><a class="ext-link" href="http://php.net/ibm_db2"><span class="icon">ibm_db2</span></a></li><li><a class="ext-link" href="http://php.net/pdo_ibm"><span class="icon">pdo_ibm</span></a></li></ul></li><li>MSSQL
+   <ul><li><a class="ext-link" href="http://msdn.microsoft.com/en-us/library/cc296221.aspx"><span class="icon">sqlsrv</span></a></li><li><a class="ext-link" href="http://php.net/pdo_dblib"><span class="icon">pdo_dblib</span></a></li><li><a class="ext-link" href="http://php.net/mssql"><span class="icon">mssql</span></a> (or <a class="ext-link" href="http://php.net/sybase"><span class="icon">sybase</span></a>)</li></ul></li><li>MySQL
+   <ul><li><a class="ext-link" href="http://php.net/mysql"><span class="icon">mysql</span></a></li><li><a class="ext-link" href="http://php.net/mysqli"><span class="icon">mysqli</span></a></li><li><a class="ext-link" href="http://php.net/pdo_mysql"><span class="icon">pdo_mysql</span></a></li></ul></li><li>Oracle
+   <ul><li><a class="ext-link" href="http://php.net/oci8"><span class="icon">oci8</span></a></li><li><a class="ext-link" href="http://php.net/pdo_oci"><span class="icon">pdo_oci</span></a></li></ul></li><li>PostgreSQL
+   <ul><li><a class="ext-link" href="http://php.net/pgsql"><span class="icon">pgsql</span></a></li><li><a class="ext-link" href="http://php.net/pdo_pgsql"><span class="icon">pdo_pgsql</span></a></li></ul></li><li>SQLite
+   <ul><li><a class="ext-link" href="http://php.net/pdo_sqlite"><span class="icon">pdo_sqlite</span></a> (for v3.x)</li><li><a class="ext-link" href="http://php.net/sqlite"><span class="icon">sqlite</span></a> (for v2.x)</li></ul></li></ul><p>The <tt>odbc</tt> and <tt>pdo_odbc</tt> extensions are not supported due to character  encoding and stability issues on Windows, and functionality on non-Windows  operating systems.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b40</th><td>Fixed a bug with notices being triggered when failing to connect to a SQLite database <span class="date">6/20/11</span></td></tr><tr><th>1.0.0b39</th><td>Fixed a bug with detecting some MySQL database version numbers <span class="date">5/24/11</span></td></tr><tr><th>1.0.0b38</th><td>Backwards Compatibility Break - callbacks registered to the <tt>extracted</tt> hook via <a href="#registerHookCallback"><tt>registerHookCallback()</tt></a> no longer receive the <tt>$strings</tt> parameter, instead all strings are added into the <tt>$values</tt> parameter - added <a href="#getVersion"><tt>getVersion()</tt></a>, fixed a bug with SQLite messaging, fixed a bug with <a href="#__destruct"><tt>__destruct()</tt></a>, improved handling of transactional queries, added <a href="#close"><tt>close()</tt></a>, enhanced class to throw four different exceptions for different connection errors, silenced PHP warnings upon connection error <span class="date">5/9/11</span></td></tr><tr><th>1.0.0b37</th><td>Fixed usage of the mysqli extension to only call mysqli_set_charset() if it exists <span class="date">3/4/11</span></td></tr><tr><th>1.0.0b36</th><td>Updated <a href="#escape"><tt>escape()</tt></a> and methods that use <a href="#escape"><tt>escape()</tt></a> to handle float values that don't contain a digit before or after the . <span class="date">2/1/11</span></td></tr><tr><th>1.0.0b35</th><td>Updated the class to replace <tt>LIMIT</tt> and <tt>OFFSET</tt> value placeholders in the SQL with their values before translating since most databases that translate <tt>LIMIT</tt> statements need to move or add values together <span class="date">1/11/11</span></td></tr><tr><th>1.0.0b34</th><td>Fixed a bug with creating translated prepared statements <span class="date">1/9/11</span></td></tr><tr><th>1.0.0b33</th><td>Added code to explicitly set the connection encoding for the mysql and mysqli extensions since some PHP installs don't see to fully respect <tt>SET NAMES</tt> <span class="date">12/6/10</span></td></tr><tr><th>1.0.0b32</th><td>Fixed handling auto-incrementing values for Oracle when the trigger was on <tt>INSERT OR UPDATE</tt> instead of just <tt>INSERT</tt> <span class="date">12/4/10</span></td></tr><tr><th>1.0.0b31</th><td>Fixed handling auto-incrementing values for MySQL when the <tt>INTO</tt> keyword is left out of an <tt>INSERT</tt> statement <span class="date">11/4/10</span></td></tr><tr><th>1.0.0b30</th><td>Fixed the pgsql, mssql and mysql extensions to force a new connection instead of reusing an existing one <span class="date">8/17/10</span></td></tr><tr><th>1.0.0b29</th><td>Backwards Compatibility Break - removed enableSlowQueryWarnings(), added ability to replicate via <a href="#registerHookCallback"><tt>registerHookCallback()</tt></a> <span class="date">8/10/10</span></td></tr><tr><th>1.0.0b28</th><td>Backwards Compatibility Break - removed ODBC support. Added support for the <tt>pdo_ibm</tt> extension. <span class="date">7/31/10</span></td></tr><tr><th>1.0.0b27</th><td>Fixed a bug with running multiple copies of a SQL statement with string values through a single <a href="#translatedQuery"><tt>translatedQuery()</tt></a> call <span class="date">7/14/10</span></td></tr><tr><th>1.0.0b26</th><td>Updated the class to use new <a href="fCore">fCore</a> functionality <span class="date">7/5/10</span></td></tr><tr><th>1.0.0b25</th><td>Added IBM DB2 support <span class="date">4/13/10</span></td></tr><tr><th>1.0.0b24</th><td>Fixed an auto-incrementing transaction bug with Oracle and debugging issues with all databases <span class="date">3/17/10</span></td></tr><tr><th>1.0.0b23</th><td>Resolved another bug with capturing auto-incrementing values for PostgreSQL and Oracle <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b22</th><td>Changed <a href="#clearCache"><tt>clearCache()</tt></a> to also clear the cache on the <a href="fSQLTranslation">fSQLTranslation</a> <span class="date">3/9/10</span></td></tr><tr><th>1.0.0b21</th><td>Added <a href="#execute"><tt>execute()</tt></a> for result-less SQL queries, <a href="#prepare"><tt>prepare()</tt></a> and <a href="#translatedPrepare"><tt>translatedPrepare()</tt></a> to create <a href="fStatement">fStatement</a> objects for prepared statements, support for prepared statements in <a href="#query"><tt>query()</tt></a> and <a href="#unbufferedQuery"><tt>unbufferedQuery()</tt></a>, fixed default caching key for <a href="#enableCaching"><tt>enableCaching()</tt></a> <span class="date">3/2/10</span></td></tr><tr><th>1.0.0b20</th><td>Added a parameter to <a href="#enableCaching"><tt>enableCaching()</tt></a> to provide a key token that will allow cached values to be shared between multiple databases with the same schema <span class="date">10/28/09</span></td></tr><tr><th>1.0.0b19</th><td>Added support for escaping identifiers (column and table names) to <a href="#escape"><tt>escape()</tt></a>, added support for database schemas, rewrote internal SQL string spliting <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b18</th><td>Updated the class for the new <a href="fResult">fResult</a> and <a href="fUnbufferedResult">fUnbufferedResult</a> APIs, fixed <a href="#unescape"><tt>unescape()</tt></a> to not touch NULLs <span class="date">8/12/09</span></td></tr><tr><th>1.0.0b17</th><td>Added the ability to pass an array of all values as a single parameter to <a href="#escape"><tt>escape()</tt></a> instead of one value per parameter <span class="date">8/11/09</span></td></tr><tr><th>1.0.0b16</th><td>Fixed PostgreSQL and Oracle from trying to get auto-incrementing values on inserts when explicit values were given <span class="date">8/6/09</span></td></tr><tr><th>1.0.0b15</th><td>Fixed a bug where auto-incremented values would not be detected when table names were quoted <span class="date">7/15/09</span></td></tr><tr><th>1.0.0b14</th><td>Changed <a href="#determineExtension"><tt>determineExtension()</tt></a> and <a href="#determineCharacterSet"><tt>determineCharacterSet()</tt></a> to be protected instead of private <span class="date">7/8/09</span></td></tr><tr><th>1.0.0b13</th><td>Updated <a href="#escape"><tt>escape()</tt></a> to accept arrays of values for insertion into full SQL strings <span class="date">7/6/09</span></td></tr><tr><th>1.0.0b12</th><td>Updates to <a href="#unescape"><tt>unescape()</tt></a> to improve performance <span class="date">6/15/09</span></td></tr><tr><th>1.0.0b11</th><td>Changed replacement values in preg_replace() calls to be properly escaped <span class="date">6/11/09</span></td></tr><tr><th>1.0.0b10</th><td>Changed date/time/timestamp escaping from <tt>strtotime()</tt> to <a href="fDate">fDate</a>/<a href="fTime">fTime</a>/<a href="fTimestamp">fTimestamp</a> for better localization support <span class="date">6/1/09</span></td></tr><tr><th>1.0.0b9</th><td>Fixed a bug with <a href="#escape"><tt>escape()</tt></a> where floats that start with a . were encoded as <tt>NULL</tt> <span class="date">5/9/09</span></td></tr><tr><th>1.0.0b8</th><td>Added Oracle support, change PostgreSQL code to no longer cause lastval() warnings, added support for arrays of values to <a href="#escape"><tt>escape()</tt></a> <span class="date">5/3/09</span></td></tr><tr><th>1.0.0b7</th><td>Updated for new <a href="fCore">fCore</a> API <span class="date">2/16/09</span></td></tr><tr><th>1.0.0b6</th><td>Fixed a bug with executing transaction queries when using the mysqli extension <span class="date">2/12/09</span></td></tr><tr><th>1.0.0b5</th><td>Changed @ error suppression operator to <tt>error_reporting()</tt> calls <span class="date">1/26/09</span></td></tr><tr><th>1.0.0b4</th><td>Added a few error suppression operators back in so that developers don't get errors and exceptions <span class="date">1/14/09</span></td></tr><tr><th>1.0.0b3</th><td>Removed some unnecessary error suppresion operators <span class="date">12/11/08</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug with PostgreSQL when using the PDO extension and executing an INSERT statement <span class="date">12/11/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">9/25/07</span></td></tr></table></div>
+<div class="class_variables" id="class_vars">
+<h2>Variables</h2>
+	<!-- start protected variable -->
+	<h3 id="extension" class="protected variable"><span class="resolution">-></span><span class="name">extension</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The extension to use for the database specified</p>
+						<p>Options include:  </p><ul><li><tt>'ibm_db2'</tt></li><li><tt>'mssql'</tt></li><li><tt>'mysql'</tt></li><li><tt>'mysqli'</tt></li><li><tt>'oci8'</tt></li><li><tt>'pgsql'</tt></li><li><tt>'sqlite'</tt></li><li><tt>'sqlsrv'</tt></li><li><tt>'pdo'</tt></li></ul>
+			</div>
+		<h4>Type</h4>
+		<p class="type">string</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="schema_info" class="protected variable"><span class="resolution">-></span><span class="name">schema_info</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>A cache of database-specific code</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="compose" class="protected method static"><span class="resolution">::</span><span class="name">compose()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Composes text using <a href="fText">fText</a> if loaded</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">compose</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$component</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to compose</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$component <em>[, ... ]</em></td>
+				<td class="param_description">A string or number to insert into the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The composed and possible translated message
+				</p>
+			</div>
+			<!-- end method static -->
+																													</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Configures the connection to a database - connection is not made until the first query is executed</p>
+								<p>Passing <tt>NULL</tt> to any parameter other than <tt>$type</tt> and <tt>$database</tt> will  cause the default value to be used.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$type</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$database</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$username</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$password</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$host</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$port</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$timeout</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$type</td>
+				<td class="param_description">The type of the database: <tt>'db2'</tt>, <tt>'mssql'</tt>, <tt>'mysql'</tt>, <tt>'oracle'</tt>, <tt>'postgresql'</tt>, <tt>'sqlite'</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$database</td>
+				<td class="param_description">Name of the database. If SQLite the path to the database file.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$username</td>
+				<td class="param_description">Database username - not used for SQLite</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$password</td>
+				<td class="param_description">The password for the username specified - not used for SQLite</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$host</td>
+				<td class="param_description">Database server host or IP, defaults to localhost - not used for SQLite. MySQL socket connection can be made by entering <tt>'sock:'</tt> followed by the socket path. PostgreSQL socket connection can be made by passing just <tt>'sock:'</tt>.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$port</td>
+				<td class="param_description">The port to connect to, defaults to the standard port for the database type specified - not used for SQLite</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$timeout</td>
+				<td class="param_description">The number of seconds to timeout after if a connection can not be made - not used for SQLite</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__destruct" class="protected method"><span class="resolution">-></span><span class="name">__destruct()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Closes the open database connection</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__destruct</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="clearCache" class="method"><span class="resolution">-></span><span class="name">clearCache()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Clears all of the schema info out of the object and, if set, the <a href="fCache">fCache</a> object</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">clearCache</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="close" class="method"><span class="resolution">-></span><span class="name">close()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Closes the database connection</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">close</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="connect" class="method"><span class="resolution">-></span><span class="name">connect()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Connects to the database specified, if no connection exists</p>
+								<p>This method is only intended to force a connection, all operations that  require a database connection will automatically call this method.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">connect</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fAuthorizationException">fAuthorizationException</a></dt><dd>When the username and password are not accepted</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="determineCharacterSet" class="protected method"><span class="resolution">-></span><span class="name">determineCharacterSet()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Determines the character set of a SQL Server database</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">determineCharacterSet</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="determineExtension" class="protected method"><span class="resolution">-></span><span class="name">determineExtension()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Figures out which extension to use for the database type selected</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">determineExtension</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="enableCaching" class="method"><span class="resolution">-></span><span class="name">enableCaching()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the schema info to be cached to the <a href="fCache">fCache</a> object specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableCaching</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fCache">fCache</a></span> <span class="php-var">$cache</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$key_token</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fCache">fCache</a></td>
+				<td class="param_name">$cache</td>
+				<td class="param_description">The cache to cache to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$key_token</td>
+				<td class="param_description">Internal use only! (this will be used in the cache key to uniquely identify the cache for this <a href="fDatabase">fDatabase</a> object)</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="enableDebugging" class="method"><span class="resolution">-></span><span class="name">enableDebugging()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets if debug messages should be shown</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableDebugging</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$flag</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$flag</td>
+				<td class="param_description">If debugging messages should be shown</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="escape" class="method"><span class="resolution">-></span><span class="name">escape()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Escapes a value for insertion into SQL</p>
+								<p>The valid data types are:  </p><ul><li><tt>'blob'</tt></li><li><tt>'boolean'</tt></li><li><tt>'date'</tt></li><li><tt>'float'</tt></li><li><tt>'identifier'</tt></li><li><tt>'integer'</tt></li><li><tt>'string'</tt> (also varchar, char or text)</li><li><tt>'varchar'</tt></li><li><tt>'char'</tt></li><li><tt>'text'</tt></li><li><tt>'time'</tt></li><li><tt>'timestamp'</tt></li></ul><p>In addition to being able to specify the data type, you can also pass  in an SQL statement with data type placeholders in the following form:    </p><ul><li><tt>%l</tt> for a blob</li><li><tt>%b</tt> for a boolean</li><li><tt>%d</tt> for a date</li><li><tt>%f</tt> for a float</li><li><tt>%r</tt> for an indentifier (table or column name)</li><li><tt>%i</tt> for an integer</li><li><tt>%s</tt> for a string</li><li><tt>%t</tt> for a time</li><li><tt>%p</tt> for a timestamp</li></ul><p>Depending on what <tt>$sql_or_type</tt> and <tt>$value</tt> are, the output will be  slightly different. If <tt>$sql_or_type</tt> is a data type or a single  placeholder and <tt>$value</tt> is:  </p><ul><li>a scalar value - an escaped SQL string is returned</li><li>an array - an array of escaped SQL strings is returned</li></ul><p>If <tt>$sql_or_type</tt> is a SQL string and <tt>$value</tt> is:  </p><ul><li>a scalar value - the escaped value is inserted into the SQL string</li><li>an array - the escaped values are inserted into the SQL string separated by commas</li></ul><p>If <tt>$sql_or_type</tt> is a SQL string, it is also possible to pass an array  of all values as a single parameter instead of one value per parameter.  An example would look like the following:</p><pre class="block php"><code>$db->escape(
+    "SELECT * FROM users WHERE status = %s AND authorization_level = %s",
+    array('Active', 'Admin')
+);</code></pre>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">escape</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$sql_or_type</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$sql_or_type</td>
+				<td class="param_description">This can either be the data type to escape or an SQL string with a data type placeholder - see method description</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value <em>[, ... ]</em></td>
+				<td class="param_description">The value to escape - both single values and arrays of values are supported, see method description for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The escaped value/SQL or an array of the escaped values
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="execute" class="method"><span class="resolution">-></span><span class="name">execute()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Executes one or more SQL queries without returning any results</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">execute</span><span class="php-brackets">(</span> <span class="php-vartype">string|<a href="fStatement">fStatement</a></span> <span class="php-var">$statement</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|<a href="fStatement">fStatement</a></td>
+				<td class="param_name">$statement</td>
+				<td class="param_description">One or more SQL statements in a string or an <a href="fStatement">fStatement</a> prepared statement</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value <em>[, ... ]</em></td>
+				<td class="param_description">The optional value(s) to place into any placeholders in the SQL - see <a href="#escape"><tt>escape()</tt></a> for details</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getConnection" class="method"><span class="resolution">-></span><span class="name">getConnection()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the database connection resource or object</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">getConnection</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The database connection
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getDatabase" class="method"><span class="resolution">-></span><span class="name">getDatabase()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the name of the database currently connected to</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getDatabase</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The name of the database currently connected to
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="getExtension" class="protected method"><span class="resolution">-></span><span class="name">getExtension()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Gets the php extension being used</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getExtension</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The php extension used for database interaction
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getHost" class="method"><span class="resolution">-></span><span class="name">getHost()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the host for this database</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getHost</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The host
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getPort" class="method"><span class="resolution">-></span><span class="name">getPort()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the port for this database</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getPort</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The port
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getSQLTranslation" class="method"><span class="resolution">-></span><span class="name">getSQLTranslation()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the <a href="fSQLTranslation">fSQLTranslation</a> object used for translated queries</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fSQLTranslation">fSQLTranslation</a></span> <span class="php-identifier">getSQLTranslation</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The SQL translation object
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getType" class="method"><span class="resolution">-></span><span class="name">getType()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the database type</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getType</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The database type: <tt>'mssql'</tt>, <tt>'mysql'</tt>, <tt>'postgresql'</tt> or <tt>'sqlite'</tt>
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getUsername" class="method"><span class="resolution">-></span><span class="name">getUsername()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the username for this database</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getUsername</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The username
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getVersion" class="method"><span class="resolution">-></span><span class="name">getVersion()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the version of the database system</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getVersion</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The database system version
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="inject" class="protected method"><span class="resolution">-></span><span class="name">inject()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Injects an <a href="fSQLTranslation">fSQLTranslation</a> object to handle translation</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">inject</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSQLTranslation">fSQLTranslation</a></span> <span class="php-var">$sql_translation</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSQLTranslation">fSQLTranslation</a></td>
+				<td class="param_name">$sql_translation</td>
+				<td class="param_description">The SQL translation object</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="isInsideTransaction" class="method"><span class="resolution">-></span><span class="name">isInsideTransaction()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Will indicate if a transaction is currently in progress</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isInsideTransaction</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 If a transaction has been started and not yet rolled back or committed
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="prepare" class="method"><span class="resolution">-></span><span class="name">prepare()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Prepares a single <a href="fStatement">fStatement</a> object to execute prepared statements</p>
+								<p>Identifier placeholders (%r) are not supported with prepared statements.  In addition, multiple values can not be escaped by a placeholder - only  a single value can be provided.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fStatement">fStatement</a></span> <span class="php-identifier">prepare</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$sql</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$sql</td>
+				<td class="param_description">The SQL to prepare</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 A prepared statement object that can be passed to <a href="#query"><tt>query()</tt></a>, <a href="#unbufferedQuery"><tt>unbufferedQuery()</tt></a> or <a href="#execute"><tt>execute()</tt></a>
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="preprocess" class="protected method"><span class="resolution">-></span><span class="name">preprocess()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Preprocesses SQL by escaping values, spliting queries, cleaning escaped semicolons, fixing backslashed single quotes and translating</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">preprocess</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$sql</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$values</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$translate</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">&amp;$rollback_queries</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$sql</td>
+				<td class="param_description">The SQL to process</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$values</td>
+				<td class="param_description">Literal values to escape into the SQL</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$translate</td>
+				<td class="param_description">If the SQL should be translated</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">&amp;$rollback_queries</td>
+				<td class="param_description">MySQL doesn't allow transactions around <tt>ALTER TABLE</tt> statements, and some of those require multiple statements, so this is an array of &quot;undo&quot; SQL statements</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The split out SQL queries, queries that have been translated will have a string key of a number, <tt>:</tt> and the original SQL, non-translated SQL will have a numeric key
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="query" class="method"><span class="resolution">-></span><span class="name">query()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Executes one or more SQL queries and returns the result(s)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fResult">fResult</a>|array</span> <span class="php-identifier">query</span><span class="php-brackets">(</span> <span class="php-vartype">string|<a href="fStatement">fStatement</a></span> <span class="php-var">$statement</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|<a href="fStatement">fStatement</a></td>
+				<td class="param_name">$statement</td>
+				<td class="param_description">One or more SQL statements in a string or a single <a href="fStatement">fStatement</a> prepared statement</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value <em>[, ... ]</em></td>
+				<td class="param_description">The optional value(s) to place into any placeholders in the SQL - see <a href="#escape"><tt>escape()</tt></a> for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The <a href="fResult">fResult</a> object(s) for the query
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="registerHookCallback" class="method"><span class="resolution">-></span><span class="name">registerHookCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Registers a callback for one of the various query hooks - multiple callbacks can be registered for each hook</p>
+								<p>The following hooks are available:</p><ul><li><tt>'unmodified'</tt>: The original SQL passed to <a href="fDatabase">fDatabase</a>, for prepared statements this is called just once before the <a href="fStatement">fStatement</a> object is created</li><li><tt>'extracted'</tt>: The SQL after all non-empty strings have been extracted and replaced with ordered sprintf-style placeholders</li><li><tt>'run'</tt>: After the SQL has been run</li></ul><p>Methods for the <tt>'unmodified'</tt> hook should have the following signature:  </p><ul><li><strong><tt>$database</tt></strong>:  The <a href="fDatabase">fDatabase</a> instance</li><li><strong><tt>&amp;$sql</tt></strong>:      The original, unedited SQL</li><li><strong><tt>&amp;$values</tt></strong>:   The values to be escaped into the placeholders in the SQL</li></ul><p>Methods for the <tt>'extracted'</tt> hook should have the following signature:  </p><ul><li><strong><tt>$database</tt></strong>:  The <a href="fDatabase">fDatabase</a> instance</li><li><strong><tt>&amp;$sql</tt></strong>:      The SQL with all strings removed and replaced with <tt>%1$s</tt>-style placeholders</li><li><strong><tt>&amp;$values</tt></strong>:   The values to be escaped into the placeholders in the SQL</li></ul><p>The <tt>extracted</tt> hook is the best place to modify the SQL since there is  no risk of breaking string literals. Please note that there may be empty  strings (<tt>''</tt>) present in the SQL since some databases treat those as  <tt>NULL</tt>.</p><p>Methods for the <tt>'run'</tt> hook should have the following signature:  </p><ul><li><strong><tt>$database</tt></strong>:    The <a href="fDatabase">fDatabase</a> instance</li><li><strong><tt>$query</tt></strong>:       The (string) SQL or <tt>array(0 =&gt; {<a href="fStatement">fStatement</a> object}, 1 =&gt; {values array})</tt></li><li><strong><tt>$query_time</tt></strong>:  The (float) number of seconds the query took</li><li><strong><tt>$result</tt></strong>       The <a href="fResult">fResult</a> or <a href="fUnbufferedResult">fUnbufferedResult</a> object, or <tt>FALSE</tt> if no result</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerHookCallback</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$hook</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$hook</td>
+				<td class="param_description">The hook to register for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to register - see the method description for details about the method signature</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="translatedExecute" class="method"><span class="resolution">-></span><span class="name">translatedExecute()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Translates one or more SQL statements using <a href="fSQLTranslation">fSQLTranslation</a> and executes them without returning any results</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">translatedExecute</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$sql</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$sql</td>
+				<td class="param_description">One or more SQL statements</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value <em>[, ... ]</em></td>
+				<td class="param_description">The optional value(s) to place into any placeholders in the SQL - see <a href="#escape"><tt>escape()</tt></a> for details</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="translatedPrepare" class="method"><span class="resolution">-></span><span class="name">translatedPrepare()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Translates a SQL statement and creates an <a href="fStatement">fStatement</a> object from it</p>
+								<p>Identifier placeholders (%r) are not supported with prepared statements.  In addition, multiple values can not be escaped by a placeholder - only  a single value can be provided.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fStatement">fStatement</a></span> <span class="php-identifier">translatedPrepare</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$sql</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$sql</td>
+				<td class="param_description">The SQL to prepare</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 A prepared statement object that can be passed to <a href="#query"><tt>query()</tt></a>, <a href="#unbufferedQuery"><tt>unbufferedQuery()</tt></a> or <a href="#execute"><tt>execute()</tt></a>
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="translatedQuery" class="method"><span class="resolution">-></span><span class="name">translatedQuery()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Translates one or more SQL statements using <a href="fSQLTranslation">fSQLTranslation</a> and executes them</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fResult">fResult</a>|array</span> <span class="php-identifier">translatedQuery</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$sql</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$sql</td>
+				<td class="param_description">One or more SQL statements</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value <em>[, ... ]</em></td>
+				<td class="param_description">The optional value(s) to place into any placeholders in the SQL - see <a href="#escape"><tt>escape()</tt></a> for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The <a href="fResult">fResult</a> object(s) for the query
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="unbufferedQuery" class="method"><span class="resolution">-></span><span class="name">unbufferedQuery()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Executes a single SQL statement in unbuffered mode. This is optimal for</p>
+								<p>large results sets since it does not load the whole result set into  memory first. The gotcha is that only one unbuffered result can exist at  one time. If another unbuffered query is executed, the old result will  be deleted.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fUnbufferedResult">fUnbufferedResult</a></span> <span class="php-identifier">unbufferedQuery</span><span class="php-brackets">(</span> <span class="php-vartype">string|<a href="fStatement">fStatement</a></span> <span class="php-var">$statement</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|<a href="fStatement">fStatement</a></td>
+				<td class="param_name">$statement</td>
+				<td class="param_description">A single SQL statement</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value <em>[, ... ]</em></td>
+				<td class="param_description">The optional value(s) to place into any placeholders in the SQL - see <a href="#escape"><tt>escape()</tt></a> for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The result object for the unbuffered query
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="unbufferedTranslatedQuery" class="method"><span class="resolution">-></span><span class="name">unbufferedTranslatedQuery()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Translates the SQL statement using <a href="fSQLTranslation">fSQLTranslation</a> and then executes it</p>
+								<p>in unbuffered mode. This is optimal for large results sets since it does  not load the whole result set into memory first. The gotcha is that only  one unbuffered result can exist at one time. If another unbuffered query  is executed, the old result will be deleted.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fUnbufferedResult">fUnbufferedResult</a></span> <span class="php-identifier">unbufferedTranslatedQuery</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$sql</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$sql</td>
+				<td class="param_description">A single SQL statement</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value <em>[, ... ]</em></td>
+				<td class="param_description">The optional value(s) to place into any placeholders in the SQL - see <a href="#escape"><tt>escape()</tt></a> for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The result object for the unbuffered query
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="unescape" class="method"><span class="resolution">-></span><span class="name">unescape()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Unescapes a value coming out of a database based on its data type</p>
+								<p>The valid data types are:  </p><ul><li><tt>'blob'</tt> (or <tt>'%l'</tt>)</li><li><tt>'boolean'</tt> (or <tt>'%b'</tt>)</li><li><tt>'date'</tt> (or <tt>'%d'</tt>)</li><li><tt>'float'</tt> (or <tt>'%f'</tt>)</li><li><tt>'integer'</tt> (or <tt>'%i'</tt>)</li><li><tt>'string'</tt> (also <tt>'%s'</tt>, <tt>'varchar'</tt>, <tt>'char'</tt> or <tt>'text'</tt>)</li><li><tt>'time'</tt> (or <tt>'%t'</tt>)</li><li><tt>'timestamp'</tt> (or <tt>'%p'</tt>)</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">unescape</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$data_type</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$data_type</td>
+				<td class="param_description">The data type being unescaped - see method description for valid values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value or array of values to unescape</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The unescaped value
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

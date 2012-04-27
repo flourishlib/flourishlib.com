@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fValidation – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fValidation</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fValidation">Class Documentation</a></li>
+		<li><strong><a href="/api/fValidation">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fValidation.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  			<li class="protected"><a href="#compose">compose()</a></li>
+	  	  	  			<li class="protected"><a href="#stringlike">stringlike()</a></li>
+	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li><a href="#addBooleanFields">addBooleanFields()</a></li>
+	  			<li><a href="#addCallbackRule">addCallbackRule()</a></li>
+	  			<li><a href="#addConditionalRule">addConditionalRule()</a></li>
+	  			<li><a href="#addDateFields">addDateFields()</a></li>
+	  			<li><a href="#addEmailFields">addEmailFields()</a></li>
+	  			<li><a href="#addEmailHeaderFields">addEmailHeaderFields()</a></li>
+	  			<li><a href="#addFileUploadRule">addFileUploadRule()</a></li>
+	  			<li><a href="#addFloatFields">addFloatFields()</a></li>
+	  			<li><a href="#addIntegerFields">addIntegerFields()</a></li>
+	  			<li><a href="#addOneOrMoreRule">addOneOrMoreRule()</a></li>
+	  			<li><a href="#addOnlyOneRule">addOnlyOneRule()</a></li>
+	  			<li><a href="#addRegexReplacement">addRegexReplacement()</a></li>
+	  			<li><a href="#addRegexRule">addRegexRule()</a></li>
+	  			<li><a href="#addRequiredFields">addRequiredFields()</a></li>
+	  			<li><a href="#addStringReplacement">addStringReplacement()</a></li>
+	  			<li><a href="#addURLFields">addURLFields()</a></li>
+	  			<li><a href="#addValidValuesRule">addValidValuesRule()</a></li>
+	  	  			<li><a href="#overrideFieldName">overrideFieldName()</a></li>
+	  			<li><a href="#setMessageOrder">setMessageOrder()</a></li>
+	  	  			<li><a href="#validate">validate()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fEmail">fEmail</a></li>
+		<li><a href="fGrammar">fGrammar</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fRequest">fRequest</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+		<li><a href="fUTF8">fUTF8</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b12</span></div>
+<p class="short_description">Provides validation routines for standalone forms, such as contact forms</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b12</th><td>Fixed some method signatures <span class="date">8/24/11</span></td></tr><tr><th>1.0.0b11</th><td>Fixed <a href="#addCallbackRule"><tt>addCallbackRule()</tt></a> to be able to handle multiple rules per field <span class="date">6/2/11</span></td></tr><tr><th>1.0.0b10</th><td>Fixed <a href="#addRegexRule"><tt>addRegexRule()</tt></a> to be able to handle multiple rules per field <span class="date">8/30/10</span></td></tr><tr><th>1.0.0b9</th><td>Enhanced all of the add fields methods to accept one field per parameter, or an array of fields <span class="date">6/24/10</span></td></tr><tr><th>1.0.0b8</th><td>Added/fixed support for array-syntax fields names <span class="date">6/9/10</span></td></tr><tr><th>1.0.0b7</th><td>Added the ability to pass an array of replacements to <a href="#addRegexReplacement"><tt>addRegexReplacement()</tt></a> and <a href="#addStringReplacement"><tt>addStringReplacement()</tt></a> <span class="date">5/31/10</span></td></tr><tr><th>1.0.0b6</th><td>BackwardsCompatibilityBreak - moved one-or-more required fields from <a href="#addRequiredFields"><tt>addRequiredFields()</tt></a> to <a href="#addOneOrMoreRule"><tt>addOneOrMoreRule()</tt></a>, moved conditional required fields from <a href="#addRequiredFields"><tt>addRequiredFields()</tt></a> to <a href="#addConditionalRule"><tt>addConditionalRule()</tt></a>, changed returned messages array to have field name keys - added lots of functionality <span class="date">5/26/10</span></td></tr><tr><th>1.0.0b5</th><td>Added the <tt>$return_messages</tt> parameter to <a href="#validate"><tt>validate()</tt></a> and updated code for new <a href="fValidationException">fValidationException</a> API <span class="date">9/17/09</span></td></tr><tr><th>1.0.0b4</th><td>Changed date checking from <tt>strtotime()</tt> to <a href="fTimestamp">fTimestamp</a> for better localization support <span class="date">6/1/09</span></td></tr><tr><th>1.0.0b3</th><td>Updated for new <a href="fCore">fCore</a> API <span class="date">2/16/09</span></td></tr><tr><th>1.0.0b2</th><td>Added support for validating date and URL fields <span class="date">1/23/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/14/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="compose" class="protected method static"><span class="resolution">::</span><span class="name">compose()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Composes text using <a href="fText">fText</a> if loaded</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">compose</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$component</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to compose</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$component <em>[, ... ]</em></td>
+				<td class="param_description">A string or number to insert into the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The composed and possible translated message
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="stringlike" class="protected method static"><span class="resolution">::</span><span class="name">stringlike()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Returns <tt>TRUE</tt> for non-empty strings, numbers, objects, empty numbers and string-like numbers (such as <tt>0</tt>, <tt>0.0</tt>, <tt>'0'</tt>)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">stringlike</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to check</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the value is string-like
+				</p>
+			</div>
+			<!-- end method static -->
+		</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addBooleanFields" class="method"><span class="resolution">-></span><span class="name">addBooleanFields()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds fields to be checked for 1/0, t/f, true/false, yes/no</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addBooleanFields</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addBooleanFields</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$fields</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field <em>[, ... ]</em></td>
+				<td class="param_description">A field that should contain a boolean value</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$fields</td>
+				<td class="param_description">Any number of fields that should contain a boolean value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addCallbackRule" class="method"><span class="resolution">-></span><span class="name">addCallbackRule()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a callback validation of a field, with a custom error message</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addCallbackRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$message</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field</td>
+				<td class="param_description">The field to test with the callback</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to test the value with - this callback should accept a single string parameter and return a boolean</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The error message to return if the regular expression does not match the value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addConditionalRule" class="method"><span class="resolution">-></span><span class="name">addConditionalRule()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds fields to be conditionally required if another field has any value, or specific values</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addConditionalRule</span><span class="php-brackets">(</span> <span class="php-vartype">string|array</span> <span class="php-var">$main_fields</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$conditional_values</span><span class="php-code">,</span> <span class="php-vartype">string|array</span> <span class="php-var">$conditional_fields</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|array</td>
+				<td class="param_name">$main_fields</td>
+				<td class="param_description">The fields(s) to check for a value</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$conditional_values</td>
+				<td class="param_description">If <tt>NULL</tt>, any value in the main field(s) will trigger the conditional field(s), otherwise the value must match this scalar value or be present in the array of values</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string|array</td>
+				<td class="param_name">$conditional_fields</td>
+				<td class="param_description">The field(s) that are to be required</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addDateFields" class="method"><span class="resolution">-></span><span class="name">addDateFields()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds form fields to the list of fields to be blank or a valid date</p>
+								<p>Use <a href="#addRequiredFields"><tt>addRequiredFields()</tt></a> disallow blank values.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addDateFields</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addDateFields</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$fields</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field <em>[, ... ]</em></td>
+				<td class="param_description">A field that should contain a valid date</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$fields</td>
+				<td class="param_description">Any number of fields that should contain a valid date</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addEmailFields" class="method"><span class="resolution">-></span><span class="name">addEmailFields()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds form fields to the list of fields to be blank or a valid email address</p>
+								<p>Use <a href="#addRequiredFields"><tt>addRequiredFields()</tt></a> disallow blank values.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addEmailFields</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addEmailFields</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$fields</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field <em>[, ... ]</em></td>
+				<td class="param_description">A field that should contain a valid email address</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$fields</td>
+				<td class="param_description">Any number of fields that should contain a valid email address</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addEmailHeaderFields" class="method"><span class="resolution">-></span><span class="name">addEmailHeaderFields()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds form fields to be checked for email injection</p>
+								<p>Every field that is included in email headers should be passed to this  method.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addEmailHeaderFields</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addEmailHeaderFields</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$fields</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field <em>[, ... ]</em></td>
+				<td class="param_description">A field to be checked for email injection</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$fields</td>
+				<td class="param_description">Any number of fields to be checked for email injection</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addFileUploadRule" class="method"><span class="resolution">-></span><span class="name">addFileUploadRule()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Add a file upload field to be validated using an <a href="fUpload">fUpload</a> object</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addFileUploadRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$index</span><span class="php-code">,</span> <span class="php-vartype"><a href="fUpload">fUpload</a></span> <span class="php-var">$uploader</span> <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addFileUploadRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span><span class="php-code">,</span> <span class="php-vartype"><a href="fUpload">fUpload</a></span> <span class="php-var">$uploader</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field</td>
+				<td class="param_description">The field to validate</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$index</td>
+				<td class="param_description">The index for array file upload fields</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fUpload">fUpload</a></td>
+				<td class="param_name">$uploader</td>
+				<td class="param_description">The uploader to validate the field with</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addFloatFields" class="method"><span class="resolution">-></span><span class="name">addFloatFields()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds fields to be checked for float values</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addFloatFields</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addFloatFields</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$fields</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field <em>[, ... ]</em></td>
+				<td class="param_description">A field that should contain a float value</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$fields</td>
+				<td class="param_description">Any number of fields that should contain a float value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addIntegerFields" class="method"><span class="resolution">-></span><span class="name">addIntegerFields()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds fields to be checked for integer values</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addIntegerFields</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addIntegerFields</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$fields</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field <em>[, ... ]</em></td>
+				<td class="param_description">A field that should contain an integer value</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$fields</td>
+				<td class="param_description">Any number of fields that should contain an integer value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addOneOrMoreRule" class="method"><span class="resolution">-></span><span class="name">addOneOrMoreRule()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a rule to make sure at least one field of multiple has a value</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addOneOrMoreRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$field_2</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field</td>
+				<td class="param_description">One of the fields to check for a value</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field_2 <em>[, ... ]</em></td>
+				<td class="param_description">Another field to check for a value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addOnlyOneRule" class="method"><span class="resolution">-></span><span class="name">addOnlyOneRule()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a rule to make sure at exactly one field of multiple has a value</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addOnlyOneRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$field_2</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field</td>
+				<td class="param_description">One of the fields to check for a value</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field_2 <em>[, ... ]</em></td>
+				<td class="param_description">Another field to check for a value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addRegexReplacement" class="method"><span class="resolution">-></span><span class="name">addRegexReplacement()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a call to <a class="ext-link" href="http://php.net/preg_replace"><span class="icon"><tt>preg_replace()</tt></span></a> for each message</p>
+								<p>Replacement is done right before the messages are reordered and returned.</p><p>If a message is an empty string after replacement, it will be  removed from the list of messages.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addRegexReplacement</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$search</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$replace</span> <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addRegexReplacement</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$replacements</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$search</td>
+				<td class="param_description">The PCRE regex to search for - see <a class="ext-link" href="http://php.net/pcre"><span class="icon">http://php.net/pcre</span></a> for details</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$replace</td>
+				<td class="param_description">The string to replace with - all $ and \ are used in back references and must be escaped with a \ when meant literally</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$replacements</td>
+				<td class="param_description">An associative array with keys being regular expressions to search for and values being the string to replace with</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addRegexRule" class="method"><span class="resolution">-></span><span class="name">addRegexRule()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds regular expression validation of a field, with a custom error message</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addRegexRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$regex</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$message</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field</td>
+				<td class="param_description">The field to test with the regular expression</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$regex</td>
+				<td class="param_description">The PCRE regex to search for - see <a class="ext-link" href="http://php.net/pcre"><span class="icon">http://php.net/pcre</span></a> for details</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The error message to return if the regular expression does not match the value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addRequiredFields" class="method"><span class="resolution">-></span><span class="name">addRequiredFields()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds form fields to be required</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addRequiredFields</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addRequiredFields</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$fields</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field <em>[, ... ]</em></td>
+				<td class="param_description">A field to require a value for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$fields</td>
+				<td class="param_description">Any number of fields to require a value for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addStringReplacement" class="method"><span class="resolution">-></span><span class="name">addStringReplacement()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a call to <a class="ext-link" href="http://php.net/str_replace"><span class="icon"><tt>str_replace()</tt></span></a> for each message</p>
+								<p>Replacement is done right before the messages are reordered and returned.</p><p>If a message is an empty string after replacement, it will be  removed from the list of messages.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addStringReplacement</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$search</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$replace</span> <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addStringReplacement</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$replacements</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$search</td>
+				<td class="param_description">The string to search for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$replace</td>
+				<td class="param_description">The string to replace with</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$replacements</td>
+				<td class="param_description">An associative array with keys being strings to search for and values being the string to replace with</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addURLFields" class="method"><span class="resolution">-></span><span class="name">addURLFields()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds form fields to the list of fields to be blank or a valid URL</p>
+								<p>Use <a href="#addRequiredFields"><tt>addRequiredFields()</tt></a> disallow blank values.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addURLFields</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addURLFields</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$fields</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field <em>[, ... ]</em></td>
+				<td class="param_description">A field that should contain a valid URL</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$fields</td>
+				<td class="param_description">Any number of fields that should contain a valid URL</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addValidValuesRule" class="method"><span class="resolution">-></span><span class="name">addValidValuesRule()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a rule to make sure a field has one of the specified valid values</p>
+								<p>A strict comparison will be made from the string request value to the  array of valid values.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">addValidValuesRule</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$valid_values</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field</td>
+				<td class="param_description">The field to check the value of</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$valid_values</td>
+				<td class="param_description">The valid values</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="overrideFieldName" class="method"><span class="resolution">-></span><span class="name">overrideFieldName()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Allows overriding the default name used for a field in the error message</p>
+								<p>By default, all fields are referred to by the field name run through  <a href="fGrammar#humanize"><tt>fGrammar::humanize()</tt></a>. This may not be correct for acronyms or complex  field names.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">overrideFieldName</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span> <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">overrideFieldName</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$field_names</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field</td>
+				<td class="param_description">The field to set the custom name for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The custom name for the field</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$field_names</td>
+				<td class="param_description">An associative array of custom field names where the keys are the field and the values are the names</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setMessageOrder" class="method"><span class="resolution">-></span><span class="name">setMessageOrder()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Allows setting the order that the individual errors in a message will be displayed</p>
+								<p>All string comparisons during the reordering process are done in a  case-insensitive manner.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fValidation">fValidation</a></span> <span class="php-identifier">setMessageOrder</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$match</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$match_2</span><span class="php-code">=</span>NULL [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$match</td>
+				<td class="param_description">The string match to order first</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$match_2 <em>[, ... ]</em></td>
+				<td class="param_description">The string match to order second</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The validation object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="validate" class="method"><span class="resolution">-></span><span class="name">validate()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Checks for required fields, email field formatting and email header injection using values previously set</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void|array</span> <span class="php-identifier">validate</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$return_messages</span><span class="php-code">=</span>FALSE<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$remove_field_names</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$return_messages</td>
+				<td class="param_description">If an array of validation messages should be returned instead of an exception being thrown</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$remove_field_names</td>
+				<td class="param_description">If field names should be removed from the returned messages, leaving just the message itself</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If $return_messages is TRUE, an array of validation messages will be returned
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When one of the options set for the object is violated</dd></dl>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

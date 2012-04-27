@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>CodeStandards – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="CodeStandards">Code Standards</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Files">Files</a>
+<ul>
+<li><a href="#PHPTags">PHP Tags</a></li>
+<li><a href="#LineLength">Line Length</a></li>
+<li><a href="#LineTermination">Line Termination</a></li>
+</ul>
+</li>
+<li><a href="#Formatting">Formatting</a>
+<ul>
+<li><a href="#Indenting">Indenting</a></li>
+<li><a href="#Blocks">Blocks</a></li>
+</ul>
+</li>
+<li><a href="#NamingConventions">Naming Conventions</a>
+<ul>
+<li><a href="#ClassesMethodsMembersandConstants">Classes, Methods, Members and Constants</a></li>
+<li><a href="#Variables">Variables</a></li>
+<li><a href="#Acronyms">Acronyms</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<p>
+This page covers some of the basics of the Flourish code standards.
+</p>
+
+<p>
+<em>This page is a work-in-progress and thus very incomplete.</em>
+</p>
+
+<h2 id="Files">Files</h2>
+
+<h3 id="PHPTags">PHP Tags</h3>
+
+<p>
+All PHP files should start with a long PHP tag <code>&lt;?php</code>, and <strong>omit</strong> the closing PHP tag <code>?&gt;</code>.
+</p>
+<pre class="block php"><code>&lt;?php
+class Example
+{
+	private $member = NULL;
+}</code></pre>
+
+<p>
+ Closing PHP tags are omitted because they are unnecessary and if they have any white-space after them, can prevent the modification of headers since output has already begun. In addition, files should never leave PHP and go to raw output, so the closing PHP tag should never be present. If output is required, the <code>echo</code> statement should be used instead.
+</p>
+
+<p>
+<strong>This is incorrect:</strong>
+</p>
+<pre class="block php"><code>&lt;?php
+class Example
+{
+	private $member = NULL;
+}
+?&gt;</code></pre>
+
+<p>
+ Short tags <code>&lt;?</code> and <code>&lt;?=</code> should not be used since some installations of PHP do not support them and Flourish is aimed at high compatibility.
+</p>
+
+<p>
+<strong>This is incorrect:</strong>
+</p>
+<pre class="block php"><code>&lt;?
+class Example
+{
+	private $member = NULL;
+}</code></pre>
+
+<h3 id="LineLength">Line Length</h3>
+
+<p>
+In general lines should try not to exceed 80 characters in length, however this does happen a fair amount. Use best judgment about how the code will be most readable.
+</p>
+
+<h3 id="LineTermination">Line Termination</h3>
+
+<p>
+All files should be saved in Unix format, meaning that each line should end with a single line feed (also known as an LF or <code>\n</code>).
+</p>
+
+<h2 id="Formatting">Formatting</h2>
+
+<h3 id="Indenting">Indenting</h3>
+
+<p>
+All code should be indented from the left margin by tab characters and a tab width should be set to 4 spaces. All indenting done in the middle of a line should be with spaces.
+</p>
+
+<p>
+<em>Please note that these code samples have all tabs replaced by 4 spaces because browsers default to 8 spaces per tab and the code highlighter automatically converts the tabs to spaces for proper spacing.</em>
+</p>
+<pre class="block php"><code>if ($show) {
+	$message = 'Hello';
+}</code></pre>
+
+<p>
+ Large blocks of assignments should have the operators lined up.
+</p>
+<pre class="block php"><code>$header  = 'Header';
+$body    = 'Body';
+$body   .= ' with content';
+
+$content   = array();
+$content[] = $header;
+$content[] = $body;</code></pre>
+
+<p>
+ All blocks of code, such as <code>if</code>, <code>function</code>, <code>switch</code>, <code>class</code> should have the contents indented one level. <code>switch</code> statements should have the <code>case</code> block contents indented another level:
+</p>
+<pre class="block php"><code>function calculate($output, $value)
+{
+	if ($conditional) {
+		$output += $value;
+	}
+	switch ($value) {
+		case 1:
+			$output *= 1.5;
+			break;
+	}
+}</code></pre>
+
+<p>
+ Long arrays without explicit keys and most arrays with explicit keys should have one entry per line, indented one level from the line containing the beginning of the array. When array contents are indented, all double arrows (<code>=&gt;</code>) should be lined up with spaces.
+</p>
+<pre class="block php"><code>// This is OK
+$types    = array('gif', 'jpeg', 'png');
+
+// This is hard to read and long
+$mappings = array('gif' =&gt; 'Graphics Interchange Format', 'jpeg' =&gt;
+'Joint Photographic Experts Group', 'png' =&gt; 'Portable Network Graphics');
+
+// This is much easier to read
+$mappings = array(
+	'gif'  =&gt; 'Graphics Interchange Format',
+	'jpeg' =&gt; 'Joint Photographic Experts Group',
+	'png'  =&gt; 'Portable Network Graphics' 
+);</code></pre>
+
+<h3 id="Blocks">Blocks</h3>
+
+<p>
+All classes and methods should have the opening and closing braces on their own line.
+</p>
+<pre class="block php"><code>class Example
+{
+	public function getMember()
+	{
+		return $this-&gt;member;
+	}
+}</code></pre>
+
+<p>
+ The opening brace should <strong>not</strong> be on the same line as the class or method name.
+</p>
+
+<p>
+<strong>This is incorrect:</strong>
+</p>
+<pre class="block php"><code>class Example {
+	public function getMember() {
+		return $this-&gt;member;
+	}
+}</code></pre>
+
+<p>
+ All flow-control code blocks, including <code>if</code>, <code>while</code>, <code>for</code>, <code>foreach</code>, <code>switch</code>, etc. should have the opening brace on the same line as the beginning of the statement.
+</p>
+<pre class="block php"><code>if ($conditional) {
+	$total = 1;
+} else {
+	$total = 2;
+}
+
+while ($conditional) {
+	$total++;
+	$conditional = $total % 5;
+}</code></pre>
+
+<p>
+ <strong>This is incorrect:</strong>
+</p>
+<pre class="block php"><code>if ($conditional)
+{
+	$total = 1;
+}</code></pre>
+
+<p>
+ All flow-control code block should also have a single space after the statement name before the <code>(</code> or <code>{</code>. <code>else</code> statements should have a space before and after the word. <code>else/if</code> statements should be written as <code>elseif</code>, <strong>not</strong> <code>else if</code>.
+</p>
+<pre class="block php"><code>if ($conditional) {
+	$total = 1;
+} elseif($other_condition) {
+	$total = 0;
+} else {
+	$total = 2;
+}</code></pre>
+
+<h2 id="NamingConventions">Naming Conventions</h2>
+
+<h3 id="ClassesMethodsMembersandConstants">Classes, Methods, Members and Constants</h3>
+
+<p>
+All classes are written in <code>UpperCamelCase</code>, methods are writen in <code>lowerCamelCase</code>, members are written in <code>lower_underscore_notation</code> and constants are written in <code>UPPER_UNDERSCORE_NOTATION</code>.
+</p>
+<pre class="block php"><code>&lt;?php
+class MyExample
+{
+	const MY_CONSTANT = 'constant';
+
+	private $my_member = NULL;
+
+	public function getMyMember()
+	{
+		return $this-&gt;my_member;
+	}
+}</code></pre>
+
+<h3 id="Variables">Variables</h3>
+
+<p>
+All variables are written in lower_underscore_notation.
+</p>
+<pre class="block php"><code>&lt;?php
+$my_var = 'Hello World';</code></pre>
+
+<h3 id="Acronyms">Acronyms</h3>
+
+<p>
+Acronyms in class, method and constant names are written as all uppercase. Acronyms in members and variables are written as all lowercase.
+</p>
+<pre class="block php"><code>class USPSRates
+{
+	const APO_FPO_REGEX = '#^\s*(APO|FPO)\s+([A-Z]{2})\s+#i';
+	
+	private $web_service_url;	
+
+	public function setWebServiceURL($url)
+	{
+		$this-&gt;web_service_url = $url;
+	}		
+}</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

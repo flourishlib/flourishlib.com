@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>ServerRequirements – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="ServerRequirements">Server Requirements</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#ClassSpecificRequirements">Class Specific Requirements</a></li>
+<li><a href="#ExtensionsforPerformance">Extensions for Performance</a></li>
+</ul>
+</div>
+
+<p>
+Whenever possible Flourish is coded to support any server with at least the default extensions and PHP 5.1.0 or greater. Here is a list of the default extensions used throughout the code:
+</p>
+
+<ul>
+<li><a href="http://php.net/ctype">ctype</a></li>
+<li><a href="http://php.net/iconv">iconv</a></li>
+<li><a href="http://php.net/pcre">pcre</a></li>
+<li><a href="http://php.net/session">session</a></li>
+<li><a href="http://php.net/spl">spl</a></li>
+</ul>
+
+<p>
+It is possible to disable these extensions when compiling PHP, so you will need to ensure each is installed. The simplest way is to look at the output of a script with the following contents:
+</p>
+<pre class="block php"><code>&lt;?php
+phpinfo();</code></pre>
+
+<h2 id="ClassSpecificRequirements">Class Specific Requirements</h2>
+
+<p>
+Beyond the Flourish-wide requirements there are a few non-default security- related extensions that are required for specific features. Below is a list of classes/methods and what they require.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Classes/Methods</strong></td>
+<td><strong>Extensions Required</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fCrytography#publicKeyEncrypt">fCrytography::publicKeyEncrypt()</a>, <a href="/api/fCryptography#publicKeyDecrypt">fCryptography::publicKeyDecrypt()</a></td>
+<td><a href="http://php.net/openssl">openssl</a></td>
+</tr>
+<tr>
+<td><a href="/api/fCrytography#publicKeySign">fCrytography::publicKeySign()</a>, <a href="/api/fCryptography#publicKeyVerify">fCryptography::publicKeyVerify()</a></td>
+<td><a href="http://php.net/openssl">openssl</a></td>
+</tr>
+<tr>
+<td><a href="/api/fCrytography#symmetricKeyEncrypt">fCrytography::symmetricKeyEncrypt()</a>, <a href="/api/fCryptography#symmetricKeyDecrypt">fCryptography::symmetricKeyDecrypt()</a></td>
+<td><a href="http://php.net/mcrypt">mcrypt</a></td>
+</tr>
+<tr>
+<td><a href="/api/fEmail#sign">fEmail::sign()</a>, <a href="/api/fEmail#encrypt">fEmail::encrypt()</a></td>
+<td><a href="http://php.net/openssl">openssl</a></td>
+</tr>
+<tr>
+<td><a href="/api/fSMTP#__construct">fSMTP::__construct()</a> with the <code>$secure</code> flag</td>
+<td><a href="http://php.net/openssl">openssl</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="ExtensionsforPerformance">Extensions for Performance</h2>
+
+<p>
+A few of the Flourish classes provide pure PHP implementations of functionality that is also available from extensions that are not installed by default. Below is a list of the classes and the extension that will provide better performance.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Class</strong></td>
+<td><strong>Extension</strong></td>
+</tr>
+<tr>
+<td><a href="/docs/fJSON">fJSON</a></td>
+<td><a href="http://php.net/json">json</a> (included in 5.2 by default)</td>
+</tr>
+<tr>
+<td><a href="/docs/fNumber">fNumber</a>/<a href="/docs/fMoney">fMoney</a></td>
+<td><a href="http://php.net/bc">bcmath</a></td>
+</tr>
+<tr>
+<td><a href="/docs/fUTF8">fUTF8</a></td>
+<td><a href="http://php.net/mbstring">mbstring</a></td>
+</tr>
+</tbody></table>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

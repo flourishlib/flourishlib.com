@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fFile – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fFile</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fFile">Class Documentation</a></li>
+		<li><strong><a href="/api/fFile">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fFile.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected variables">
+<h2><a href="#class_vars">Variables</a></h2>
+<ul>
+  	 		<li class="protected"><a href="#deleted">$deleted</a></li>
+	   	 		<li class="protected"><a href="#file">$file</a></li>
+	   </ul>
+</div>
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  	  	  	  	  			<li><a href="#create">create()</a></li>
+	  	  	  			<li class="protected"><a href="#determineMimeType">determineMimeType()</a></li>
+	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__clone">__clone()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li class="protected"><a href="#__sleep">__sleep()</a></li>
+	  			<li><a href="#__toString">__toString()</a></li>
+	  			<li class="protected"><a href="#__wakeup">__wakeup()</a></li>
+	  			<li><a href="#append">append()</a></li>
+	  			<li><a href="#count">count()</a></li>
+	  	  			<li class="protected"><a href="#current">current()</a></li>
+	  			<li><a href="#delete">delete()</a></li>
+	  	  			<li><a href="#duplicate">duplicate()</a></li>
+	  			<li><a href="#getExtension">getExtension()</a></li>
+	  			<li><a href="#getMimeType">getMimeType()</a></li>
+	  			<li><a href="#getMTime">getMTime()</a></li>
+	  			<li><a href="#getName">getName()</a></li>
+	  			<li><a href="#getParent">getParent()</a></li>
+	  			<li><a href="#getPath">getPath()</a></li>
+	  			<li><a href="#getSize">getSize()</a></li>
+	  			<li><a href="#isWritable">isWritable()</a></li>
+	  			<li class="protected"><a href="#key">key()</a></li>
+	  			<li><a href="#move">move()</a></li>
+	  			<li class="protected"><a href="#next">next()</a></li>
+	  			<li><a href="#output">output()</a></li>
+	  			<li><a href="#read">read()</a></li>
+	  			<li><a href="#rename">rename()</a></li>
+	  			<li class="protected"><a href="#rewind">rewind()</a></li>
+	  			<li class="protected"><a href="#tossIfDeleted">tossIfDeleted()</a></li>
+	  			<li class="protected"><a href="#valid">valid()</a></li>
+	  			<li><a href="#write">write()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fDirectory">fDirectory</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fNoRemainingException">fNoRemainingException</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fEmail">fEmail</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fImage">fImage</a></li>
+		<li><a href="fLoader">fLoader</a></li>
+		<li><a href="fMailbox">fMailbox</a></li>
+		<li><a href="fUpload">fUpload</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+	<span class="implements"> implements Iterator Countable </span>,	<span class="version">v1.0.0b39</span></div>
+<p class="short_description">Represents a file on the filesystem, also provides static file-related methods</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b39</th><td>Backwards Compatibility Break - <a href="#output"><tt>output()</tt></a> now automatically ends any open output buffering and discards the contents <span class="date">8/24/11</span></td></tr><tr><th>1.0.0b38</th><td>Added the Countable interface to the class <span class="date">6/3/11</span></td></tr><tr><th>1.0.0b37</th><td>Fixed mime type detection of BMP images <span class="date">3/7/11</span></td></tr><tr><th>1.0.0b36</th><td>Added the <tt>$remove_extension</tt> parameter to <a href="#getName"><tt>getName()</tt></a> <span class="date">1/10/11</span></td></tr><tr><th>1.0.0b35</th><td>Added calls to clearstatcache() in <a href="#append"><tt>append()</tt></a> and <a href="#write"><tt>write()</tt></a> to prevent incorrect data from being returned by <a href="#getMTime"><tt>getMTime()</tt></a> and <a href="#getSize"><tt>getSize()</tt></a> <span class="date">11/27/10</span></td></tr><tr><th>1.0.0b34</th><td>Added <a href="#getExtension"><tt>getExtension()</tt></a> <span class="date">5/10/10</span></td></tr><tr><th>1.0.0b33</th><td>Fixed another situation where <a href="#rename"><tt>rename()</tt></a> with the same name would cause the file to be deleted <span class="date">4/13/10</span></td></tr><tr><th>1.0.0b32</th><td>Fixed <a href="#rename"><tt>rename()</tt></a> to not fail when the new and old filename are the same <span class="date">3/16/10</span></td></tr><tr><th>1.0.0b31</th><td>Added <a href="#append"><tt>append()</tt></a> <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b30</th><td>Changed the way files deleted in a filesystem transaction are handled, including improvements to the exception that is thrown <span class="date">3/5/10</span></td></tr><tr><th>1.0.0b29</th><td>Fixed a couple of undefined variable errors in determineMimeTypeByContents() <span class="date">3/3/10</span></td></tr><tr><th>1.0.0b28</th><td>Added support for some JPEG files created by Photoshop <span class="date">12/16/09</span></td></tr><tr><th>1.0.0b27</th><td>Backwards Compatibility Break - renamed getFilename() to <a href="#getName"><tt>getName()</tt></a>, getFilesize() to <a href="#getSize"><tt>getSize()</tt></a>, getDirectory() to <a href="#getParent"><tt>getParent()</tt></a>, added <a href="#move"><tt>move()</tt></a> <span class="date">12/16/09</span></td></tr><tr><th>1.0.0b26</th><td>getDirectory(), getFilename() and <a href="#getPath"><tt>getPath()</tt></a> now all work even if the file has been deleted <span class="date">10/22/09</span></td></tr><tr><th>1.0.0b25</th><td>Fixed <a href="#__construct"><tt>__construct()</tt></a> to throw an <a href="fValidationException">fValidationException</a> when the file does not exist <span class="date">8/21/09</span></td></tr><tr><th>1.0.0b24</th><td>Fixed a bug where deleting a file would prevent any future operations in the same script execution on a file or directory with the same path <span class="date">8/20/09</span></td></tr><tr><th>1.0.0b23</th><td>Added the ability to skip checks in <a href="#__construct"><tt>__construct()</tt></a> for better performance in conjunction with <a href="fFilesystem#createObject"><tt>fFilesystem::createObject()</tt></a> <span class="date">8/6/09</span></td></tr><tr><th>1.0.0b22</th><td>Fixed <a href="#__toString"><tt>__toString()</tt></a> to never throw an exception <span class="date">8/6/09</span></td></tr><tr><th>1.0.0b21</th><td>Fixed a bug in <a href="#determineMimeType"><tt>determineMimeType()</tt></a> <span class="date">7/21/09</span></td></tr><tr><th>1.0.0b20</th><td>Fixed the exception message thrown by <a href="#output"><tt>output()</tt></a> when output buffering is turned on <span class="date">6/26/09</span></td></tr><tr><th>1.0.0b19</th><td><a href="#rename"><tt>rename()</tt></a> will now rename the file in its current directory if the new filename has no directory separator <span class="date">5/4/09</span></td></tr><tr><th>1.0.0b18</th><td>Changed <a href="#__sleep"><tt>__sleep()</tt></a> to not reset the iterator since it can cause side-effects <span class="date">5/4/09</span></td></tr><tr><th>1.0.0b17</th><td>Added <a href="#__sleep"><tt>__sleep()</tt></a> and <a href="#__wakeup"><tt>__wakeup()</tt></a> for proper serialization with the filesystem map <span class="date">5/3/09</span></td></tr><tr><th>1.0.0b16</th><td><a href="#output"><tt>output()</tt></a> now accepts <tt>TRUE</tt> in the second parameter to use the current filename as the attachment filename <span class="date">3/23/09</span></td></tr><tr><th>1.0.0b15</th><td>Added support for mime type detection of MP3s based on the MPEG-2 (as opposed to MPEG-1) standard <span class="date">3/23/09</span></td></tr><tr><th>1.0.0b14</th><td>Fixed a bug with detecting the mime type of some MP3s <span class="date">3/22/09</span></td></tr><tr><th>1.0.0b13</th><td>Fixed a bug with overwriting files via <a href="#rename"><tt>rename()</tt></a> on Windows <span class="date">3/11/09</span></td></tr><tr><th>1.0.0b12</th><td>Backwards compatibility break - Changed the second parameter of <a href="#output"><tt>output()</tt></a> from <tt>$ignore_output_buffer</tt> to <tt>$filename</tt> <span class="date">3/5/09</span></td></tr><tr><th>1.0.0b11</th><td>Changed <a href="#__clone"><tt>__clone()</tt></a> and <a href="#duplicate"><tt>duplicate()</tt></a> to copy file permissions to the new file <span class="date">1/5/09</span></td></tr><tr><th>1.0.0b10</th><td>Fixed <a href="#duplicate"><tt>duplicate()</tt></a> so an exception is not thrown when no parameters are passed <span class="date">1/5/09</span></td></tr><tr><th>1.0.0b9</th><td>Removed the dependency on <a href="fBuffer">fBuffer</a> <span class="date">1/5/09</span></td></tr><tr><th>1.0.0b8</th><td>Added the Iterator interface, <a href="#output"><tt>output()</tt></a> and <a href="#getMTime"><tt>getMTime()</tt></a> <span class="date">12/17/08</span></td></tr><tr><th>1.0.0b7</th><td>Removed some unnecessary error suppresion operators <span class="date">12/11/08</span></td></tr><tr><th>1.0.0b6</th><td>Added the <a href="#__clone"><tt>__clone()</tt></a> method that duplicates the file on the filesystem when cloned <span class="date">12/11/08</span></td></tr><tr><th>1.0.0b5</th><td>Fixed detection of mime type for JPEG files with Exif information <span class="date">12/4/08</span></td></tr><tr><th>1.0.0b4</th><td>Changed the constructor to ensure the path is to a file and not directory <span class="date">11/24/08</span></td></tr><tr><th>1.0.0b3</th><td>Fixed mime type detection of Microsoft Office files <span class="date">11/23/08</span></td></tr><tr><th>1.0.0b2</th><td>Made <a href="#rename"><tt>rename()</tt></a> and <a href="#write"><tt>write()</tt></a> return the object for method chaining <span class="date">11/22/08</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/14/07</span></td></tr></table></div>
+<div class="genealogy">	
+	<h2>Genealogy</h2>
+		<div class="child_classes">
+	<h3>Child Classes</h3>
+	<dl>
+		<dt><a href="fImage">fImage</a></dt>
+	<dd>Represents an image on the filesystem, also provides image manipulation functionality</dd>
+		</dl>
+	</div>
+	</div>	
+<div class="class_variables" id="class_vars">
+<h2>Variables</h2>
+	<!-- start protected variable -->
+	<h3 id="deleted" class="protected variable"><span class="resolution">-></span><span class="name">deleted</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>A backtrace from when the file was deleted</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">array</p>
+	</div>
+	<!-- end variable -->
+	<!-- start protected variable -->
+	<h3 id="file" class="protected variable"><span class="resolution">-></span><span class="name">file</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable">	
+					<div class="variable_description">
+							<p>The full path to the file</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">string</p>
+	</div>
+	<!-- end variable -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+						<!-- start method static -->
+			<h3 id="create" class="method static"><span class="resolution">::</span><span class="name">create()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Creates a file on the filesystem and returns an object representing it.</p>
+								<p>This operation will be reverted by a filesystem transaction being rolled back.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">create</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file_path</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$contents</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file_path</td>
+				<td class="param_description">The path to the new file</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$contents</td>
+				<td class="param_description">The contents to write to the file, must be a non-NULL value to be written</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When no file was specified or the file already exists</dd></dl>
+							<h4>Overridden By</h4>
+				<div class="overridden">
+					<dl>
+												<dt><a href="fImage#create"><tt>fImage::create()</tt></a></dt>
+												<dd>Creates an image on the filesystem and returns an object representing it</dd>
+																	</dl>
+				</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="determineMimeType" class="protected method static"><span class="resolution">::</span><span class="name">determineMimeType()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Determines the file's mime type by either looking at the file contents or matching the extension</p>
+								<p>Please see the <a href="#getMimeType"><tt>getMimeType()</tt></a> description for details about how the  mime type is determined and what mime types are detected.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">determineMimeType</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$contents</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The file to check the mime type for - must be a valid filesystem path if no <tt>$contents</tt> are provided, otherwise just a filename</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$contents</td>
+				<td class="param_description">The first 4096 bytes of the file content - the <tt>$file</tt> parameter only need be a filename if this is provided</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The mime type of the file
+				</p>
+			</div>
+			<!-- end method static -->
+																				</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+						<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Creates an object to represent a file on the filesystem</p>
+								<p>If multiple <a href="fFile">fFile</a> objects are created for a single file, they will  reflect changes in each other including rename and delete actions.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$file</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$skip_checks</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The path to the file</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$skip_checks</td>
+				<td class="param_description">If file checks should be skipped, which improves performance, but may cause undefined behavior - only skip these if they are duplicated elsewhere</td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When no file was specified, the file does not exist or the path specified is not a file</dd></dl>
+							<h4>Overridden By</h4>
+				<div class="overridden">
+					<dl>
+												<dt><a href="fImage#__construct"><tt>fImage::__construct()</tt></a></dt>
+												<dd>Creates an object to represent an image on the filesystem</dd>
+																	</dl>
+				</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__clone" class="protected method"><span class="resolution">-></span><span class="name">__clone()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Duplicates a file in the current directory when the object is cloned</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">__clone</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The new <a href="fFile">fFile</a> object
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__sleep" class="protected method"><span class="resolution">-></span><span class="name">__sleep()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>The iterator information doesn't need to be serialized since a resource can't be</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">__sleep</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The instance variables to serialize
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="__toString" class="method"><span class="resolution">-></span><span class="name">__toString()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the filename of the file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">__toString</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The filename
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__wakeup" class="protected method"><span class="resolution">-></span><span class="name">__wakeup()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Re-inserts the file back into the filesystem map when unserialized</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__wakeup</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="append" class="method"><span class="resolution">-></span><span class="name">append()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Appends the provided data to the file</p>
+								<p>If a filesystem transaction is in progress and is rolled back, this  data will be removed.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">append</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$data</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$data</td>
+				<td class="param_description">The data to append to the file</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The file object, to allow for method chaining
+				</p>
+							<h4>Overridden By</h4>
+				<div class="overridden">
+					<dl>
+												<dt><a href="fImage#append"><tt>fImage::append()</tt></a></dt>
+												<dd>Prevents a programmer from trying to append an image</dd>
+																	</dl>
+				</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="count" class="method"><span class="resolution">-></span><span class="name">count()</span> <span class="visibility">public</span><span class="implements"> implements Countable</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the number of lines in the file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">count</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The number of lines in the file
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start protected method -->
+			<h3 id="current" class="protected method"><span class="resolution">-></span><span class="name">current()</span> <span class="visibility">internal public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the current line of the file (required by iterator interface)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">current</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The current row
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNoRemainingException">fNoRemainingException</a></dt><dd>When there are no remaining lines in the file</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="delete" class="method"><span class="resolution">-></span><span class="name">delete()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Deletes the current file</p>
+								<p>This operation will NOT be performed until the filesystem transaction  has been committed, if a transaction is in progress. Any non-Flourish  code (PHP or system) will still see this file as existing until that  point.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">delete</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="duplicate" class="method"><span class="resolution">-></span><span class="name">duplicate()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Creates a new file object with a copy of this file</p>
+								<p>If no directory is specified, the file is created with a new name in  the current directory. If a new directory is specified, you must also  indicate if you wish to overwrite an existing file with the same name  in the new directory or create a unique name.</p><p>This operation will be reverted by a filesystem transaction being rolled  back.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">duplicate</span><span class="php-brackets">(</span> <span class="php-vartype">string|<a href="fDirectory">fDirectory</a></span> <span class="php-var">$new_directory</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$overwrite</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|<a href="fDirectory">fDirectory</a></td>
+				<td class="param_name">$new_directory</td>
+				<td class="param_description">The directory to duplicate the file into if different than the current directory</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$overwrite</td>
+				<td class="param_description">If a new directory is specified, this indicates if a file with the same name should be overwritten.</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The new <a href="fFile">fFile</a> object
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getExtension" class="method"><span class="resolution">-></span><span class="name">getExtension()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the file extension</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getExtension</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The extension of the file
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getMimeType" class="method"><span class="resolution">-></span><span class="name">getMimeType()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the file's mime type</p>
+								<p>This method will attempt to look at the file contents and the file  extension to determine the mime type. If the file contains binary  information, the contents will be used for mime type verification,  however if the contents appear to be plain text, the file extension  will be used.</p><p>The following mime types are supported. All other binary file types  will be returned as <tt>application/octet-stream</tt> and all other text files  will be returned as <tt>text/plain</tt>.</p><p><strong>Archive:</strong>  </p><ul><li><tt>application/x-bzip2</tt> BZip2 file</li><li><tt>application/x-compress</tt> Compress (*nix) file</li><li><tt>application/x-gzip</tt> GZip file</li><li><tt>application/x-rar-compressed</tt> Rar file</li><li><tt>application/x-stuffit</tt> StuffIt file</li><li><tt>application/x-tar</tt> Tar file</li><li><tt>application/zip</tt> Zip file</li></ul><p><strong>Audio:</strong>  </p><ul><li><tt>audio/x-flac</tt> FLAC audio</li><li><tt>audio/mpeg</tt> MP3 audio</li><li><tt>audio/mp4</tt> MP4 (AAC) audio</li><li><tt>audio/vorbis</tt> Ogg Vorbis audio</li><li><tt>audio/x-wav</tt> WAV audio</li><li><tt>audio/x-ms-wma</tt> Windows media audio</li></ul><p><strong>Document:</strong>  </p><ul><li><tt>application/vnd.ms-excel</tt> Excel (2000, 2003 and 2007) file</li><li><tt>application/pdf</tt> PDF file</li><li><tt>application/vnd.ms-powerpoint</tt> Powerpoint (2000, 2003, 2007) file</li><li><tt>text/rtf</tt> RTF file</li><li><tt>application/msword</tt> Word (2000, 2003 and 2007) file</li></ul><p><strong>Image:</strong>  </p><ul><li><tt>image/x-ms-bmp</tt> BMP file</li><li><tt>application/postscript</tt> EPS file</li><li><tt>image/gif</tt> GIF file</li><li><tt>application/vnd.microsoft.icon</tt> ICO file</li><li><tt>image/jpeg</tt> JPEG file</li><li><tt>image/png</tt> PNG file</li><li><tt>image/tiff</tt> TIFF file</li><li><tt>image/svg+xml</tt> SVG file</li></ul><p><strong>Text:</strong>  </p><ul><li><tt>text/css</tt> CSS file</li><li><tt>text/csv</tt> CSV file</li><li><tt>text/html</tt> (X)HTML file</li><li><tt>text/calendar</tt> iCalendar file</li><li><tt>application/javascript</tt> Javascript file</li><li><tt>application/x-perl</tt> Perl file</li><li><tt>application/x-httpd-php</tt> PHP file</li><li><tt>application/x-python</tt> Python file</li><li><tt>application/rss+xml</tt> RSS feed</li><li><tt>application/x-ruby</tt> Ruby file</li><li><tt>text/tab-separated-values</tt> TAB file</li><li><tt>text/x-vcard</tt> VCard file</li><li><tt>application/xhtml+xml</tt> XHTML (Real) file</li><li><tt>application/xml</tt> XML file</li></ul><p><strong>Video/Animation:</strong>  </p><ul><li><tt>video/x-msvideo</tt> AVI video</li><li><tt>application/x-shockwave-flash</tt> Flash movie</li><li><tt>video/x-flv</tt> Flash video</li><li><tt>video/x-ms-asf</tt> Microsoft ASF video</li><li><tt>video/mp4</tt> MP4 video</li><li><tt>video/ogg</tt> OGM and Ogg Theora video</li><li><tt>video/quicktime</tt> Quicktime video</li><li><tt>video/x-ms-wmv</tt> Windows media video</li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getMimeType</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The mime type of the file
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getMTime" class="method"><span class="resolution">-></span><span class="name">getMTime()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the last modification time of the file</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fTimestamp">fTimestamp</a></span> <span class="php-identifier">getMTime</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The timestamp of when the file was last modified
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getName" class="method"><span class="resolution">-></span><span class="name">getName()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the filename (i.e. does not include the directory)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getName</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$remove_extension</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$remove_extension</td>
+				<td class="param_description">If the extension should be removed from the filename</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The filename of the file
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getParent" class="method"><span class="resolution">-></span><span class="name">getParent()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the directory the file is located in</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fDirectory">fDirectory</a></span> <span class="php-identifier">getParent</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The directory containing the file
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getPath" class="method"><span class="resolution">-></span><span class="name">getPath()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the file's current path (directory and filename)</p>
+								<p>If the web path is requested, uses translations set with  <a href="fFilesystem#addWebPathTranslation"><tt>fFilesystem::addWebPathTranslation()</tt></a></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getPath</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$translate_to_web_path</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$translate_to_web_path</td>
+				<td class="param_description">If the path should be the web path</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The path (directory and filename) for the file
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getSize" class="method"><span class="resolution">-></span><span class="name">getSize()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the size of the file</p>
+								<p>The return value may be incorrect for files over 2GB on 32-bit OSes.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer|string</span> <span class="php-identifier">getSize</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$format</span><span class="php-code">=</span>FALSE<span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$decimal_places</span><span class="php-code">=</span>1 <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$format</td>
+				<td class="param_description">If the filesize should be formatted for human readability</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$decimal_places</td>
+				<td class="param_description">The number of decimal places to format to (if enabled)</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If formatted a string with filesize in b/kb/mb/gb/tb, otherwise an integer
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="isWritable" class="method"><span class="resolution">-></span><span class="name">isWritable()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Check to see if the current file is writable</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">isWritable</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the file is writable
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start protected method -->
+			<h3 id="key" class="protected method"><span class="resolution">-></span><span class="name">key()</span> <span class="visibility">internal public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the current one-based line number (required by iterator interface)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">key</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The current line number
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNoRemainingException">fNoRemainingException</a></dt><dd>When there are no remaining lines in the file</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="move" class="method"><span class="resolution">-></span><span class="name">move()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Moves the current file to a different directory</p>
+								<p>Please note that <a href="#rename"><tt>rename()</tt></a> will rename a file in its directory or rename  it into a different directory.</p><p>If the current file's filename already exists in the new directory and  the overwrite flag is set to false, the filename will be changed to a  unique name.</p><p>This operation will be reverted if a filesystem transaction is in  progress and is later rolled back.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">move</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDirectory">fDirectory</a>|string</span> <span class="php-var">$new_directory</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$overwrite</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDirectory">fDirectory</a>|string</td>
+				<td class="param_name">$new_directory</td>
+				<td class="param_description">The directory to move this file into</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$overwrite</td>
+				<td class="param_description">If the current filename already exists in the new directory, <tt>TRUE</tt> will cause the file to be overwritten, <tt>FALSE</tt> will cause the new filename to change</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The file object, to allow for method chaining
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When the directory passed is not a directory or is not readable</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start protected method -->
+			<h3 id="next" class="protected method"><span class="resolution">-></span><span class="name">next()</span> <span class="visibility">internal public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Advances to the next line in the file (required by iterator interface)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">next</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNoRemainingException">fNoRemainingException</a></dt><dd>When there are no remaining lines in the file</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="output" class="method"><span class="resolution">-></span><span class="name">output()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Prints the contents of the file</p>
+								<p>This method is primarily intended for when PHP is used to control access  to files.</p><p>Be sure to close the session, if open, to prevent performance issues.  Any open output buffers are automatically closed and discarded.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">output</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$headers</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$filename</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$headers</td>
+				<td class="param_description">If HTTP headers for the file should be included</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$filename</td>
+				<td class="param_description">Present the file as an attachment instead of just outputting type headers - if a string is passed, that will be used for the filename, if <tt>TRUE</tt> is passed, the current filename will be used</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The file object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="read" class="method"><span class="resolution">-></span><span class="name">read()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Reads the data from the file</p>
+								<p>Reads all file data into memory, use with caution on large files!</p><p>This operation will read the data that has been written during the  current transaction if one is in progress.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">read</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$data</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$data</td>
+				<td class="param_description">The data to write to the file</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The contents of the file
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="rename" class="method"><span class="resolution">-></span><span class="name">rename()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Renames the current file</p>
+								<p>If the filename already exists and the overwrite flag is set to false,  a new filename will be created.</p><p>This operation will be reverted if a filesystem transaction is in  progress and is later rolled back.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">rename</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$new_filename</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$overwrite</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$new_filename</td>
+				<td class="param_description">The new full path to the file or a new filename in the current directory</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$overwrite</td>
+				<td class="param_description">If the new filename already exists, <tt>TRUE</tt> will cause the file to be overwritten, <tt>FALSE</tt> will cause the new filename to change</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The file object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="rewind" class="protected method"><span class="resolution">-></span><span class="name">rewind()</span> <span class="visibility">internal public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Rewinds the file handle (required by iterator interface)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">rewind</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="tossIfDeleted" class="protected method"><span class="resolution">-></span><span class="name">tossIfDeleted()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method">
+							<div class="method_description">
+									<p>Throws an <a href="fProgrammerException">fProgrammerException</a> if the file has been deleted</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">tossIfDeleted</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="valid" class="protected method"><span class="resolution">-></span><span class="name">valid()</span> <span class="visibility">internal public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns if the file has any lines left (required by iterator interface)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">valid</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the iterator is still valid
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="write" class="method"><span class="resolution">-></span><span class="name">write()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Writes the provided data to the file</p>
+								<p>Requires all previous data to be stored in memory if inside a  transaction, use with caution on large files!</p><p>If a filesystem transaction is in progress and is rolled back, the  previous data will be restored.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fFile">fFile</a></span> <span class="php-identifier">write</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$data</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$data</td>
+				<td class="param_description">The data to write to the file</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The file object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fAuthorization – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fAuthorization</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fAuthorization">Class Documentation</a></li>
+		<li><strong><a href="/api/fAuthorization">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fAuthorization.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#addNamedIPRange">addNamedIPRange()</a></li>
+	  			<li><a href="#checkACL">checkACL()</a></li>
+	  			<li><a href="#checkAuthLevel">checkAuthLevel()</a></li>
+	  			<li><a href="#checkIP">checkIP()</a></li>
+	  			<li><a href="#checkLoggedIn">checkLoggedIn()</a></li>
+	  			<li><a href="#destroyUserInfo">destroyUserInfo()</a></li>
+	  			<li><a href="#getLoginPage">getLoginPage()</a></li>
+	  			<li><a href="#getRequestedURL">getRequestedURL()</a></li>
+	  			<li><a href="#getUserACLs">getUserACLs()</a></li>
+	  			<li><a href="#getUserAuthLevel">getUserAuthLevel()</a></li>
+	  			<li><a href="#getUserToken">getUserToken()</a></li>
+	  			<li><a href="#requireACL">requireACL()</a></li>
+	  			<li><a href="#requireAuthLevel">requireAuthLevel()</a></li>
+	  			<li><a href="#requireLoggedIn">requireLoggedIn()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li><a href="#setAuthLevels">setAuthLevels()</a></li>
+	  			<li><a href="#setLoginPage">setLoginPage()</a></li>
+	  			<li><a href="#setRequestedURL">setRequestedURL()</a></li>
+	  			<li><a href="#setUserACLs">setUserACLs()</a></li>
+	  			<li><a href="#setUserAuthLevel">setUserAuthLevel()</a></li>
+	  			<li><a href="#setUserToken">setUserToken()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fSession">fSession</a></li>
+		<li><a href="fURL">fURL</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b6</span></div>
+<p class="short_description">Allows defining and checking user authentication via ACLs, authorization levels or a simple logged in/not logged in scheme</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b6</th><td>Fixed <a href="#checkIP"><tt>checkIP()</tt></a> to not trigger a notice when <tt>$_SERVER['REMOTE_ADDR']</tt> is not set <span class="date">5/10/11</span></td></tr><tr><th>1.0.0b5</th><td>Added <a href="#getLoginPage"><tt>getLoginPage()</tt></a> <span class="date">3/9/10</span></td></tr><tr><th>1.0.0b4</th><td>Updated class to use new <a href="fSession">fSession</a> API <span class="date">10/23/09</span></td></tr><tr><th>1.0.0b3</th><td>Updated class to use new <a href="fSession">fSession</a> API <span class="date">5/8/09</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug with using named IP ranges in <a href="#checkIP"><tt>checkIP()</tt></a> <span class="date">1/10/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/14/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="addNamedIPRange" class="method static"><span class="resolution">::</span><span class="name">addNamedIPRange()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Adds a named IP address or range, or array of addresses and/or ranges</p>
+								<p>This method allows <a href="#checkIP"><tt>checkIP()</tt></a> to be called with a name instead of the  actual IPs.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">addNamedIPRange</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$ip_ranges</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The name to give the IP addresses/ranges</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$ip_ranges</td>
+				<td class="param_description">This can be string (or array of strings) of the IPs or IP ranges to restrict to - please see <a href="#checkIP"><tt>checkIP()</tt></a> for format details</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="checkACL" class="method static"><span class="resolution">::</span><span class="name">checkACL()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Checks to see if the logged in user meets the requirements of the ACL specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">checkACL</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$resource</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$permission</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$resource</td>
+				<td class="param_description">The resource we are checking permissions for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$permission</td>
+				<td class="param_description">The permission to require from the user</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the user has the required permissions
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="checkAuthLevel" class="method static"><span class="resolution">::</span><span class="name">checkAuthLevel()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Checks to see if the logged in user has the specified auth level</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">checkAuthLevel</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$level</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$level</td>
+				<td class="param_description">The level to check against the logged in user's level</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the user has the required auth level
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="checkIP" class="method static"><span class="resolution">::</span><span class="name">checkIP()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Checks to see if the user is from the IPs or IP ranges specified</p>
+								<p>The <tt>$ip_ranges</tt> parameter can be either a single string, or an array of  strings, each of which should be in one of the following formats:   </p><ul><li>A single IP address:
+   <ul><li>192.168.1.1</li><li>208.77.188.166</li></ul></li><li>A CIDR range
+   <ul><li>192.168.1.0/24</li><li>208.77.188.160/28</li></ul></li><li>An IP/subnet mask combination
+   <ul><li>192.168.1.0/255.255.255.0</li><li>208.77.188.160/255.255.255.240</li></ul></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">checkIP</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$ip_ranges</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$ip_ranges</td>
+				<td class="param_description">A string (or array of strings) of the IPs or IP ranges to restrict to - see method description for details</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the user is coming from (one of) the IPs or ranges specified
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="checkLoggedIn" class="method static"><span class="resolution">::</span><span class="name">checkLoggedIn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Checks to see if the user has an auth level or ACLs defined</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">checkLoggedIn</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					If the user is logged in
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="destroyUserInfo" class="method static"><span class="resolution">::</span><span class="name">destroyUserInfo()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Destroys the user's auth level and/or ACLs</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">destroyUserInfo</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getLoginPage" class="method static"><span class="resolution">::</span><span class="name">getLoginPage()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the login page set via setLoginPage()</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getLoginPage</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					The login page users are redirected to if they don't have the required authorization
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getRequestedURL" class="method static"><span class="resolution">::</span><span class="name">getRequestedURL()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the URL requested before the user was redirected to the login page</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getRequestedURL</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$clear</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$default_url</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$clear</td>
+				<td class="param_description">If the requested url should be cleared from the session after it is retrieved</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$default_url</td>
+				<td class="param_description">The default URL to return if the user was not redirected</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The URL that was requested before they were redirected to the login page
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getUserACLs" class="method static"><span class="resolution">::</span><span class="name">getUserACLs()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets the ACLs for the logged in user</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">getUserACLs</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					The logged in user's ACLs
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getUserAuthLevel" class="method static"><span class="resolution">::</span><span class="name">getUserAuthLevel()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets the authorization level for the logged in user</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getUserAuthLevel</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					The logged in user's auth level
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getUserToken" class="method static"><span class="resolution">::</span><span class="name">getUserToken()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Gets the value that was set as the user token, <tt>NULL</tt> if no token has been set</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">getUserToken</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					The user token that had been set, <tt>NULL</tt> if none
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="requireACL" class="method static"><span class="resolution">::</span><span class="name">requireACL()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Redirect the user to the login page if they do not have the permissions required</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">requireACL</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$resource</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$permission</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$resource</td>
+				<td class="param_description">The resource we are checking permissions for</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$permission</td>
+				<td class="param_description">The permission to require from the user</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="requireAuthLevel" class="method static"><span class="resolution">::</span><span class="name">requireAuthLevel()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Redirect the user to the login page if they do not have the auth level required</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">requireAuthLevel</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$level</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$level</td>
+				<td class="param_description">The level to check against the logged in user's level</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="requireLoggedIn" class="method static"><span class="resolution">::</span><span class="name">requireLoggedIn()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Redirect the user to the login page if they do not have an auth level or ACLs</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">requireLoggedIn</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setAuthLevels" class="method static"><span class="resolution">::</span><span class="name">setAuthLevels()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the authorization levels to use for level checking</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setAuthLevels</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$levels</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$levels</td>
+				<td class="param_description">An associative array of <tt>(string) {level} =&gt; (integer) {value}</tt>, for each level</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setLoginPage" class="method static"><span class="resolution">::</span><span class="name">setLoginPage()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the login page to redirect users to</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setLoginPage</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$url</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$url</td>
+				<td class="param_description">The URL of the login page</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setRequestedURL" class="method static"><span class="resolution">::</span><span class="name">setRequestedURL()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the restricted URL requested by the user</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setRequestedURL</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$url</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$url</td>
+				<td class="param_description">The URL to save as the requested URL</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setUserACLs" class="method static"><span class="resolution">::</span><span class="name">setUserACLs()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the ACLs for the logged in user.</p>
+								<p>Array should be formatted like:</p><pre class="block "><code>array (
+    (string) {resource name} => array(
+        (mixed) {permission}, ...
+    ), ...
+)</code></pre><p>The resource name or the permission may be the single character <tt>'*'</tt>  which acts as a wildcard.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setUserACLs</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$acls</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$acls</td>
+				<td class="param_description">The logged in user's ACLs - see method description for format</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setUserAuthLevel" class="method static"><span class="resolution">::</span><span class="name">setUserAuthLevel()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the authorization level for the logged in user</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setUserAuthLevel</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$level</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$level</td>
+				<td class="param_description">The logged in user's auth level</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setUserToken" class="method static"><span class="resolution">::</span><span class="name">setUserToken()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets some piece of information to use to identify the current user</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setUserToken</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$token</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$token</td>
+				<td class="param_description">The user's token. This could be a user id, an email address, a user object, etc.</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

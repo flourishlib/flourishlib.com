@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fURL – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fURL">fURL</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fURL">Class Documentation</a></strong></li>
+<li><a href="/api/fURL">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fURL.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#GettingURLInformation">Getting URL Information</a></li>
+<li><a href="#ModifyingtheQueryString">Modifying the Query String</a></li>
+<li><a href="#Redirection">Redirection</a></li>
+<li><a href="#URLCreation">URL Creation</a></li>
+</ul>
+</div>
+
+<p>
+The fURL class provides a simple and useful set of features for dealing with URLs in your site or application.
+</p>
+
+<h2 id="GettingURLInformation">Getting URL Information</h2>
+
+<p>
+There are a few static methods that allow retrieval of URL information. All of these static methods return information about the URL as requested by the browser. All server-side rewrites are ignored.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fURL#get"><code>get()</code></a></td>
+<td><em>Returns the current URL minus the query string and domain name</em></td>
+</tr>
+<tr>
+<td><a href="/api/fURL#getQueryString"><code>getQueryString()</code></a></td>
+<td><em>Returns the current query string</em></td>
+</tr>
+<tr>
+<td><a href="/api/fURL#getWithQueryString"><code>getWithQueryString()</code></a></td>
+<td><em>Returns the current URL minus the domain name</em></td>
+</tr>
+<tr>
+<td><a href="/api/fURL#getDomain"><code>getDomain()</code></a></td>
+<td><em>Returns the current domain name with protocol prefix</em></td>
+</tr>
+</tbody></table>
+
+<p>
+Here are examples of them being used:
+</p>
+<pre class="block php"><code>// Since all of the methods are static, no instance of the fURL object is required
+$url    = fURL::get();
+$qs     = fURL::getQueryString();
+$url_qs = fURL::getWithQueryString();
+$domain = fURL::getDomain();</code></pre>
+
+<h2 id="ModifyingtheQueryString">Modifying the Query String</h2>
+
+<p>
+Beyond simply retrieving information about the URL, the fURL class also provides some functionality to modify the query string.
+</p>
+
+<p>
+The <a href="/api/fURL#replaceInQueryString"><code>replaceInQueryString()</code></a> and <a href="/api/fURL#removeFromQueryString"><code>removeFromQueryString()</code></a> methods allow addition/replacement and deletion of a values in the query string, respectively. Similar to the various <code>get</code> methods, these methods work with the URL before any server-side rewrites were applied.
+</p>
+
+<p>
+<code>replaceInQueryString()</code> takes two parameters, <code>$key</code> and <code>$value</code>. Any existing value for the key will be replaced. If no value exists for the key, the key will be added with the new value. Here is the method in use:
+</p>
+<pre class="block php"><code>// The following code assumes the query string is: example=one&amp;example_2=false
+
+// $new_qs would end up being: example=one&amp;example_2=false&amp;example_3=today
+$new_qs  = fURL::replaceInQueryString('example_3', 'today');
+
+// $new_qs would end up being: example=two&amp;example_2=false
+$new_qs  = fURL::replaceInQueryString('example', 'two');</code></pre>
+
+<p>
+ <code>removeFromQueryString()</code> takes any number of parameters with each one being a <code>GET</code> key/field. Any matching key in the query string will be removed. Here is an example of the method in action:
+</p>
+<pre class="block php"><code>// The following code assumes the query string is: example=one&amp;example_2=false
+
+// $new_qs would end up being: example=one
+$new_qs  = fURL::removeFromQueryString('example_2');</code></pre>
+
+<h2 id="Redirection">Redirection</h2>
+
+<p>
+The <a href="/api/fURL#redirect"><code>redirect()</code></a> method was built to simplify the task of redirecting a user to another web page. Simply pass the name of the site/page to redirect to as the only parameter and the method will determine the type of link it is (relative, web server absolute, etc.).
+</p>
+
+<p>
+Since headers can only be sent before content, you will either need to ensure no content has been sent to the user yet, or that <a href="http://php.net/outcontrol">output buffering</a> has been enabled. The <a href="/docs/fBuffer">fBuffer</a> class may be of interest if you are going to use output buffering.
+</p>
+
+<p>
+The method will redirect to almost any URL provided, and will do so in standard-compliant way by sending a fully-formed (including protocol and domain name) URL in the HTTP headers. Here are some examples of how to use the <code>redirect()</code> method:
+</p>
+<pre class="block php"><code>// Redirect to an absolute web server path
+fURL::redirect('/supplemental/example.php');
+
+// Redirect to a relative page
+fURL::redirect('example.php');
+
+// Redirect to the current page with a different query string
+fURL::redirect('?parameter=TRUE');
+
+// Redirect to a fully-formed URL
+fURL::redirect('http://example.com');
+fURL::redirect('https://example.com/example.php');</code></pre>
+
+<h2 id="URLCreation">URL Creation</h2>
+
+<p>
+When creating websites with friendly URLs it is useful to be able to convert the title of something into a human-readable url without having to worry about punctuation or characters with diacritics creating those nasty hexadecimal codes.
+</p>
+
+<p>
+The <a href="/api/fURL#makeFriendly"><code>makeFriendly()</code></a> method performs this URL creation task. You can pass in any UTF-8 string and you will get back a URL made up of lowercase letters, numbers and the underscore character. All characters with diacritics will be converted to their plain counterparts.
+</p>
+
+<p>
+Here are some examples:
+</p>
+<pre class="block php"><code>// $url will be set to: /users/view/1/john_smith
+$url = '/users/view/1/' . fURL::makeFriendly('John Smith');
+
+// $url will be set to: /users/view/2/renee_smith
+$url = '/users/view/2/' . fURL::makeFriendly('Rene Smith');
+
+// $url will be set to: /news/view/1/notice_this_title_will_work_fine
+$url = '/news/view/1/' . fURL::makeFriendly('Notice: This Title Will Work Fine!');</code></pre>
+
+<p>
+ It is possible to limit the character length of the generated string by passing a number to the optional second parameter <code>$max_length</code>.
+</p>
+<pre class="block php"><code>// Limit the URL to 40 characters
+$limited_url = fURL::makeFriendly('This is a test of limiting the length of a URL', 40);</code></pre>
+
+<p>
+ By default <a href="/api/fURL#makeFriendly"><code>makeFriendly()</code></a> uses the <code>_</code> character to separate words. The optional third parameter, <code>$delimiter</code>, allows for changing this. If no length restriction is desired, the <code>$delimiter</code> can be passed as the second parameter.
+</p>
+<pre class="block php"><code>// Limit the URL to 40 characters and use - for the delimiter
+$limited_url = fURL::makeFriendly('This is a test of length limiting and using a different delimiter', 40, '-');
+
+// Use - for the delimiter
+$limited_url = fURL::makeFriendly('This is a test of using a separate delimiter', '-');</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

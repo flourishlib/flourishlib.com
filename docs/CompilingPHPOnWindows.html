@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>CompilingPHPOnWindows – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="CompilingPHPOnWindows">Compiling PHP On Windows</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#PHP53">PHP 5.3</a></li>
+<li><a href="#PHP52">PHP 5.2</a></li>
+</ul>
+</div>
+
+<p>
+<em>The following instructions were last updated in June 2011, and may be out of date.</em>
+</p>
+
+<p>
+The following instructions are meant to help provide a guide for getting started with compiling PHP, or PHP extensions, on Windows. If you are looking for a non-standard PHP extension, Pierre Joye maintains builds of many at <a href="http://www.php.net/">http://www.php.net/</a>pierre/. The official Windows builds are available at <a href="http://windows.php.net/download/">http://windows.php.net/download/</a> and include many of the most common extensions.
+</p>
+
+<p>
+Many extensions will mention vc6, vc9, x86, x64, nts or ts in their filenames. The official builds of PHP 5.3 are compiled using Microsoft Visual C++ 2008 (v9.0), also known as VC9. PHP 5.2 is compiled using Microsoft Visual C++ 6.0, also known as VC6. Currently there is no official 64-bit (x64) version of PHP for Windows, so all official build are 32-bit, also referred to as x86. Windows PHP builds are either thread-safe (TS), or non-thread-safe (NTS). Extensions need to be compiled with the same compiler (VC6 or VC9) for the same architecture (x86 or x64) and with the same threading configuration (ts or nts) as the main PHP install.
+</p>
+
+<h2 id="PHP53">PHP 5.3</h2>
+
+<p>
+To build PHP 5.3 and compile extensions that will be compatible with the official releases, you will need the following software installed. Please be sure to install the Windows SDK <strong>BEFORE</strong> Visual Studio or else you will run into issues with libraries being overwritten by older versions.
+</p>
+
+<p>
+Please be sure to use the exact versions listen here for compatibility.
+</p>
+
+<ul>
+<li><a href="http://www.microsoft.com/downloads/en/details.aspx?familyid=e6e1c3df-a74f-4207-8586-711ebe331cdc&amp;displaylang=en">Windows SDK v6.1</a></li>
+<li><a href="http://download.microsoft.com/download/A/5/4/A54BADB6-9C3F-478D-8657-93B3FC9FE62D/vcsetup.exe">Microsoft Visual C++ 2008 Express Edition</a> (free)</li>
+<li><a href="http://windows.php.net/download/">PHP Source Code</a></li>
+<li><a href="http://windows.php.net/downloads/php-sdk/">PHP Compilation Dependencies and SDK Build Tools</a></li>
+</ul>
+
+<h2 id="PHP52">PHP 5.2</h2>
+
+<p>
+To build PHP 5.2 and compile extensions that will be compatible with the official releases, you will need the following to be installed. Unfortunately there is no free version of Visual C++ 6.0 and the Windows SDK is no longer officially distributed.
+</p>
+
+<ul>
+<li><a href="http://www.microsoft.com/msdownload/platformsdk/sdkupdate/psdk-full.htm">Windows Platform SDK February 2003 Edition</a></li>
+<li>Microsoft Visual C++ 6.0 (commercial only)</li>
+<li><a href="http://www.microsoft.com/downloads/en/details.aspx?familyid=a8494edb-2e89-4676-a16a-5c5477cb9713&amp;displaylang=en">Microsoft Visual C++ 6.0 SP2</a> (free update)</li>
+<li><a href="http://windows.php.net/download/">PHP Source Code</a></li>
+<li><a href="http://deioncube.in/files/Extensions/Tools/LibsVc6/">PHP Compilation Dependencies</a></li>
+<li><em>More to come...</em></li>
+</ul>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

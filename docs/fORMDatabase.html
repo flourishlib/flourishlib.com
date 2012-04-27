@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMDatabase – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fORMDatabase">fORMDatabase</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fORMDatabase">Class Documentation</a></strong></li>
+<li><a href="/api/fORMDatabase">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMDatabase.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#fDatabaseRegistry">fDatabase Registry</a></li>
+<li><a href="#MultipleDatabaseSupport">Multiple Database Support</a>
+<ul>
+<li><a href="#VerticalPartitioning">Vertical Partitioning</a></li>
+<li><a href="#Master-SlaveSetups">Master-Slave Setups</a></li>
+</ul>
+</li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><strong>fORMDatabase</strong></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fORMDatabase class provides database-related functionality to the Flourish ORM. End-developers will use the class to attach <a href="/docs/fDatabase">fDatabase</a> objects for the rest of ORM.
+</p>
+
+<h2 id="fDatabaseRegistry">fDatabase Registry</h2>
+
+<p>
+Since an ORM by definition maps objects to a database, it is obvious that an instance of the <a href="/docs/fDatabase">fDatabase</a> class will be needed for all database operations. To make an instance of <a href="/docs/fDatabase">fDatabase</a> available to all of the ORM classes, pass it to the static method <a href="/api/fORMDatabase#attach"><code>attach()</code></a>.
+</p>
+<pre class="block php"><code>fORMDatabase::attach(new fDatabase('postgresql', 'database', 'username', 'password'));</code></pre>
+
+<p>
+ When writing code for the ORM that requires use of the database class, the static method <a href="/api/fORMDatabase#retrieve"><code>retrieve()</code></a> will return the instance set with <code>attach()</code>.
+</p>
+<pre class="block php"><code>$result = fORMDatabase::retrieve()-&gt;translatedQuery(&quot;SELECT * FROM users&quot;);</code></pre>
+
+<h2 id="MultipleDatabaseSupport">Multiple Database Support</h2>
+
+<p>
+Multiple databases are support by the Flourish ORM, both in master-slave and vertical partitioning setups.
+</p>
+
+<h3 id="VerticalPartitioning">Vertical Partitioning</h3>
+
+<p>
+Vertical partitioning is when different tables are split up over multiple databases or servers. For instance, perhaps all users and permissions are stored on one database server and all orders and products are stored on another.
+</p>
+
+<p>
+In this type of a setup, it is possible to attach more than one databases for the ORM by passing a second parameter, <code>$name</code>, to the static method <a href="/api/fORMDatabase#attach"><code>attach()</code></a>.
+</p>
+<pre class="block php"><code>// Attach the users db as the default
+fORMDatabase::attach($users_db);
+// Attach the ecommerce db with the name &quot;ecommerce_db&quot;
+fORMDatabase::attach($ecommerce_db, 'ecommerce_db');</code></pre>
+
+<p>
+ Now individual classes can be mapped to the database by calling <a href="/api/fORM#mapClassToDatabase">fORM::mapClassToDatabase()</a>.
+</p>
+<pre class="block php"><code>fORM::mapClassToDatabase('User', 'ecommerce_db');</code></pre>
+
+<h3 id="Master-SlaveSetups">Master-Slave Setups</h3>
+
+<p>
+When a database cluster is set up to use a master-slave setup, one database will be designated the master and one or more as slaves. Flourish allows for such a setup with <a href="/api/fORMDatabase#attach"><code>attach()</code></a> by specifying the third parameter, <code>$role</code>. The <code>$role</code> parameter defaults to <code>both</code>, which means the server will be used for reading and writing. To attach the master server, set the <code>$role</code> to <code>write</code>. For the slave, set the <code>$role</code> to <code>read</code>.
+</p>
+<pre class="block php"><code>// Attach the master for writing and a slave for reading
+fORMDatabase::attach($master_db, 'default', 'write');
+fORMDatabase::attach($random_slave_db, 'default', 'read');</code></pre>
+
+<p>
+ It is also possible to combine vertical partitioning with master-slave setups by specifying a <code>$name</code> for the database other than <code>default</code>.
+</p>
+
+<p>
+As implied by the slave database variable <code>$random_slave_db</code> in the code example, <a href="/api/fORMDatabase#attach"><code>attach()</code></a> <strong>will not</strong> accept multiple databases for the <code>read</code> role and random pick one. For setups where there is more than one slave, code must be manually written to select a slave and provide it to the <code>attach()</code> method.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

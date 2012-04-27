@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fAuthorization – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fAuthorization">fAuthorization</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fAuthorization">Class Documentation</a></strong></li>
+<li><a href="/api/fAuthorization">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fAuthorization.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Setup">Setup</a></li>
+<li><a href="#AuthorizationLevels">Authorization Levels</a></li>
+<li><a href="#AccessControlLists">Access Control Lists</a></li>
+<li><a href="#LoggingIn">Logging In</a></li>
+<li><a href="#CheckingStatus">Checking Status</a></li>
+<li><a href="#RemoteIPChecking">Remote IP Checking</a></li>
+<li><a href="#LoggingOut">Logging Out</a></li>
+<li><a href="#PreventingPrivilegeEscalationSecurity">Preventing Privilege Escalation (Security)</a></li>
+</ul>
+</div>
+
+<p>
+The fAuthorization class is a static class provides functionality to restrict access to pages based on either simple a authorization level or more complex access control lists (ACLs).
+</p>
+
+<h2 id="Setup">Setup</h2>
+
+<p>
+Since the class is static, no instantiation is required, however to use the features some setup will need to be performed. The only setup common to using either authorization levels or ACLs is to set up a login page. For maintainability, I recommend you perform your setup in a common configuration like described on the <a href="/docs/GettingStarted#CreateaConfigurationScript">Getting Started</a> page:
+</p>
+<pre class="block php"><code>// Set up a login page in your local.config.php
+fAuthorization::setLoginPage('/login/');</code></pre>
+
+<p>
+The login page URL should be an absolute URL, relative to the domain name.
+</p>
+
+<p>
+If need be, the login page URL can be retrieved with the static method <a href="/api/fAuthorization#getLoginPage"><code>getLoginPage()</code></a>.
+</p>
+<pre><code>fURL::redirect(fAuthorization::getLoginPage());</code></pre>
+
+<h2 id="AuthorizationLevels">Authorization Levels</h2>
+
+<p>
+The simplest way to control access to pages is to use authorization levels. Each user is assigned a single authorization level and can view any page that requires that level or a level below. 
+</p>
+
+<p>
+After you have <a href="#Setup">setup your login page</a>, you are going to need to define the different authorization levels. Just like with the login page, you will probably want to place these in a common configuration file. Here is a simple example:
+</p>
+<pre class="block php"><code>fAuthorization::setAuthLevels(
+    array(
+        'admin' =&gt; 100,
+        'user'  =&gt; 50,
+        'guest' =&gt; 25
+    )
+);</code></pre>
+
+<p>
+ Youll notice that each authorization level is assigned a number. If a user has a number that is the same or above the required level, they can view a page. If not, they will be redirected to the login page.
+</p>
+
+<p>
+The <a href="/api/fAuthorization#setUserAuthLevel"><code>setUserAuthLevel()</code></a> method provides the functionality to assign an authorization level to a user when they log in:
+</p>
+<pre class="block php"><code>// This would be executed after the username and password were verified
+fAuthorization::setUserAuthLevel('admin');</code></pre>
+
+<p>
+ To actually require an authorization level you will need to call <a href="/api/fAuthorization#requireAuthLevel"><code>requireAuthLevel()</code></a> at the top of your page:
+</p>
+<pre class="block php"><code>fAuthorization::requireAuthLevel('user');</code></pre>
+
+<p>
+ If you wish to use a users authorization level to control other aspects of your site, you can use the <a href="/api/fAuthorization#checkAuthLevel"><code>checkAuthLevel()</code></a> method:
+</p>
+<pre class="block php"><code>if (fAuthorization::checkAuthLevel('admin')) {
+    // Execute admin specific code
+}</code></pre>
+
+<p>
+ Last, but not least, if you need to get the users authorization level, that can be accomplished by calling <a href="/api/fAuthorization#getUserAuthLevel"><code>getUserAuthLevel()</code></a>:
+</p>
+<pre class="block php"><code>$auth_level = fAuthorization::getUserAuthLevel();</code></pre>
+
+<h2 id="AccessControlLists">Access Control Lists</h2>
+
+<p>
+Access control lists (ACLs) allow for more fine-grained permissions than authorization levels. With ACLs you associate resource names with specific permissions. For a user to be able to access a page they need to have the required permission for the resource specified. 
+</p>
+
+<p>
+ACLs do not require any setup beyond assigning the users ACLs when they log in. Also note that the string <code>'*'</code> acts as a wildcard when doing resource and permission comparisons.
+</p>
+<pre class="block php"><code>// This would be executed after the username and password were verified
+fAuthorization::setUserACLs(
+    array(
+        'posts'  =&gt; array('*'),
+        'users'  =&gt; array('add', 'edit', 'delete'),
+        'groups' =&gt; array('add'),
+        '*'      =&gt; array('list')
+    )
+);</code></pre>
+
+<p>
+ The above user ACLs would imply the user has permissions to: do anything with posts; add, edit and delete users; add groups and list anything.
+</p>
+
+<p>
+To require a user have a specific ACL to view a page, use the method <a href="/api/fAuthorization#requireACL"><code>requireACL()</code></a> at the top of a page:
+</p>
+<pre class="block php"><code>fAuthorization::requireACL('users', 'list');</code></pre>
+
+<p>
+ The above code would require a user to have the <code>list</code> permission for the <code>users</code> resource in order to view the page.
+</p>
+
+<p>
+In addition to control page views, ACLs can be useful for controlling access on a smaller level. If you wish to perform a conditional branch based on a users ACLs you can use the <a href="/api/fAuthorization#checkACL"><code>checkACL()</code></a> method:
+</p>
+<pre class="block php"><code>if (fAuthorization::checkACL('users', 'edit')) {
+    // Code to be executed for users who can edit users
+}</code></pre>
+
+<p>
+ If you need to get a list of all ACLs assigned to the current user (in the same array format they are set), you can use the <a href="/api/fAuthorization#getUserACLs"><code>getUserACLs()</code></a> method:
+</p>
+<pre class="block php"><code>$user_acls = fAuthorization::getUserACLs();</code></pre>
+
+<h2 id="LoggingIn">Logging In</h2>
+
+<p>
+Once you have decided if you wish to go with authorization levels or ACLs you can move on to actually logging the user in.
+</p>
+
+<p>
+Sometimes when a user visits the login page, they will have entered the URL manually, or will have followed a link. In this sort of situation you will need a default page to redirect them to. The rest of the time users will usually get directed to the login page because they tried to access a restricted page. You can get this information with the <a href="/api/fAuthorization#getRequestedURL"><code>getRequestedURL()</code></a> method. 
+</p>
+
+<p>
+<a href="/api/fAuthorization#getRequestedURL"><code>getRequestedURL()</code></a> requires a single parameter, <code>$clear</code>, which controls if the requested URL is erased when returned, or if it is to be left for later access. A second, optional, parameter is the default URL to use if the user was not redirected to the login page.
+</p>
+
+<p>
+Here is an example of logging a user in and redirecting them to the requested page (or the home page if no page was requested):
+</p>
+<pre class="block php"><code>if ('login' == $action &amp;&amp; fRequest::isPost()) {
+    if ($email == 'john@example.com' &amp;&amp; sha1($password) == '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8') {
+        fAuthorization::setUserAuthLevel('admin');
+        fURL::redirect(fAuthorization::getRequestedURL(TRUE, '/'));
+    }
+}</code></pre>
+
+<p>
+ Please note that the code above is simplified to demonstration, please check out the <a href="/docs/fCryptography">fCryptography</a> Class for information on hashing passwords.
+</p>
+
+<p>
+If for some reason you need to manually set the requested URL, that can be accomplished with the <a href="/api/fAuthorization#setRequestedURL"><code>setRequestedURL()</code></a> method.
+</p>
+
+<p>
+In addition, it is usually necessary to remember some sort of information about the user that is logging in so you can retrieve their information on other pages. The <a href="/api/fAuthorization#setUserToken"><code>setUserToken()</code></a> and <a href="/api/fAuthorization#getUserToken"><code>getUserToken()</code></a> methods allow storing some sort of user identifier and getting it back later. Here is the above example with the user token code added:
+</p>
+<pre class="block php"><code>if ('login' == $action &amp;&amp; fRequest::isPost()) {
+    if ($email == 'john@example.com' &amp;&amp; sha1($password) == '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8') {
+        fAuthorization::setUserAuthLevel('admin');
+        fAuthorization::setUserToken('john@example.com');
+        fURL::redirect(fAuthorization::getRequestedURL(TRUE, '/'));
+    }
+}</code></pre>
+
+<h2 id="CheckingStatus">Checking Status</h2>
+
+<p>
+If you are using either authorization levels or access control lists, there are two simple methods that can be used to tell if a user is logged in. To require a user is logged in to view a page you will want to use the <a href="/api/fAuthorization#requireLoggedIn"><code>requireLoggedIn()</code></a>, whereas if you want to create conditions based on whether or not the user is logged in you can use the <a href="/api/fAuthorization#checkLoggedIn"><code>checkLoggedIn()</code></a> method:
+</p>
+<pre class="block php"><code>// Require a user is logged in
+fAuthorization::requireLoggedIn();
+
+// Branch based on the users login status
+if (fAuthorization::checkLoggedIn()) {
+    // Code to execute if the user is logged in
+}</code></pre>
+
+<h2 id="RemoteIPChecking">Remote IP Checking</h2>
+
+<p>
+Sometimes it may be a requirement to only execute code if the remote connection is coming from a specific IP address or range. The method <a href="/api/fAuthorization#checkIP"><code>checkIP()</code></a> provides this functionality. A single parameter <code>$ip_ranges</code> is required, which should like the IP address, <a href="http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">CIDR range</a> or IP/subnet-mask combination to check for. It is also possible to pass an array of any valid IP/range descriptors.
+</p>
+<pre class="block php"><code>// Check for the IP 192.168.1.1
+if (fAuthorization::checkIP('192.168.1.1')) {
+    // ...
+}
+
+// Check for the IPs 192.168.1.1-255
+if (fAuthorization::checkIP('192.168.1.0/24')) {
+    // ...
+}
+
+// Check for the IPs 192.168.1.1-255
+if (fAuthorization::checkIP('192.168.1.0/255.255.255.0')) {
+    // ...
+}
+
+// Check for the IPs 192.168.1.1-255 or 192.168.2.1
+if (fAuthorization::checkIP(array('192.168.1.0/24', '192.168.2.1'))) {
+    // ...
+}</code></pre>
+
+<p>
+ It is also possible to create named IPs/ranges using the method <a href="/api/fAuthorization#addNamedIPRange"><code>addNamedIPRange()</code></a>. Simply define the <code>$name</code> and <code>$ip_ranges</code> and then you can use that name with <code>checkIP()</code>:
+</p>
+<pre class="block php"><code>// Create a named IP/range
+fAuthorization::addNamedIPRange('office', '192.168.1.0/24');
+
+// Check the named IP/range
+if (fAuthorization::checkIP('office')) {
+    // ...
+}</code></pre>
+
+<h2 id="LoggingOut">Logging Out</h2>
+
+<p>
+When a user logs out, it is important that their authorization level or ACLs are erased. This is quite simple to do using the <a href="/api/fAuthorization#destroyUserInfo"><code>destroyUserInfo()</code></a> method:
+</p>
+<pre class="block php"><code>fAuthorization::destroyUserInfo();</code></pre>
+
+<h2 id="PreventingPrivilegeEscalationSecurity">Preventing Privilege Escalation (Security)</h2>
+
+<p>
+One of the simplest ways for an attacker to gain unauthorized privileges is via session fixation. An attack would be executed by sending a link with a known session ID to a user and then waiting for them to log in. Once the user has logged in, the attacker can send the same session ID and receive the privileges of the user. Below is an example:
+</p>
+<pre><code>http://example.com/login.php?PHPSESSID=abcdef1234567890</code></pre>
+
+<p>
+ <em>By default <a href="/docs/fSession">fSession</a> prevents such an attack by <a href="/docs/fSession#PreventingSessionFixationSecurity">requiring that session IDs be passed in cookies</a>, however it is theoretically possible runtime configuration of the session.use_only_cookies INI setting could be disabled.</em>
+</p>
+
+<p>
+To prevent attacks based on knowledge of the users session ID, fAuthorization automatically regenerates the session ID via <a href="http://php.net/session_regenerate_id"><code>session_regenerate_id()</code></a> whenever <a href="/api/fAuthorization#setUserACLs"><code>setUserACLs()</code></a>, <a href="/api/fAuthorization#setUserAuthLevel"><code>setUserAuthLevel()</code></a> or <a href="/api/fAuthorization#setUserToken"><code>setUserToken()</code></a> is called. The attacker wont know the newly regenerated ID, and wont be able to access the users account.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

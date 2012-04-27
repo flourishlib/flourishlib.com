@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fNumber – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fNumber</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fNumber">Class Documentation</a></li>
+		<li><strong><a href="/api/fNumber">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fNumber.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  	  			<li><a href="#baseConvert">baseConvert()</a></li>
+	  	  	  	  	  	  	  	  	  	  	  	  	  	  	  			<li><a href="#pi">pi()</a></li>
+	  	  	  			<li><a href="#registerFormatCallback">registerFormatCallback()</a></li>
+	  			<li><a href="#registerUnformatCallback">registerUnformatCallback()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  	  	  	  	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li><a href="#__toString">__toString()</a></li>
+	  			<li><a href="#abs">abs()</a></li>
+	  			<li><a href="#add">add()</a></li>
+	  	  			<li><a href="#ceil">ceil()</a></li>
+	  			<li><a href="#div">div()</a></li>
+	  			<li><a href="#eq">eq()</a></li>
+	  			<li><a href="#floor">floor()</a></li>
+	  			<li><a href="#fmod">fmod()</a></li>
+	  			<li><a href="#format">format()</a></li>
+	  			<li><a href="#getScale">getScale()</a></li>
+	  			<li><a href="#gt">gt()</a></li>
+	  			<li><a href="#gte">gte()</a></li>
+	  			<li><a href="#lt">lt()</a></li>
+	  			<li><a href="#lte">lte()</a></li>
+	  			<li><a href="#mod">mod()</a></li>
+	  			<li><a href="#mul">mul()</a></li>
+	  			<li><a href="#neg">neg()</a></li>
+	  	  			<li><a href="#pow">pow()</a></li>
+	  			<li><a href="#powmod">powmod()</a></li>
+	  	  	  	  			<li><a href="#round">round()</a></li>
+	  			<li><a href="#sign">sign()</a></li>
+	  			<li><a href="#sqrt">sqrt()</a></li>
+	  			<li><a href="#sub">sub()</a></li>
+	  			<li><a href="#trunc">trunc()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fLoader">fLoader</a></li>
+		<li><a href="fMoney">fMoney</a></li>
+		<li><a href="fORMColumn">fORMColumn</a></li>
+		<li><a href="fSchema">fSchema</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b3</span></div>
+<p class="short_description">Provides large/precise number support</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b3</th><td>Added the <tt>$remove_zero_fraction</tt> parameter to <a href="#format"><tt>format()</tt></a> <span class="date">2/2/11</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a bug with parsing decimal numbers in scientific notation <span class="date">4/13/10</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">7/21/08</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="baseConvert" class="method static"><span class="resolution">::</span><span class="name">baseConvert()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Converts any positive integer between any two bases ranging from <tt>2</tt> to <tt>16</tt></p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">baseConvert</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$number</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$from_base</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$to_base</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$number</td>
+				<td class="param_description">The positive integer to convert</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$from_base</td>
+				<td class="param_description">The base to convert from - must be between <tt>2</tt> and <tt>16</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$to_base</td>
+				<td class="param_description">The base to convert to - must be between <tt>2</tt> and <tt>16</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The number converted to the new base
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="pi" class="method static"><span class="resolution">::</span><span class="name">pi()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns the value for pi with a scale of up to 500</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">pi</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal to return</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					Pi
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerFormatCallback" class="method static"><span class="resolution">::</span><span class="name">registerFormatCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows setting a callback to translate or modify any return values from format()</p>
+								<p>The callback should accept two parameters:</p><ul><li><tt>$value</tt>: the string value of the number</li><li><tt>$remove_zero_fraction</tt>: a boolean indicating if a zero fraction should be removed</li></ul><p>The callback should return a string, the formatted <tt>$value</tt>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerFormatCallback</span><span class="php-brackets">(</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to pass the <a href="fNumber">fNumber</a> value to - see method description for parameters</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerUnformatCallback" class="method static"><span class="resolution">::</span><span class="name">registerUnformatCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Allows setting a callback to clean any formatted values so they can be properly parsed - useful for languages where <tt>,</tt> is used as the decimal point</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerUnformatCallback</span><span class="php-brackets">(</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to pass formatted strings to. Should accept a formatted string and return a string the is a valid number using <tt>.</tt> as the decimal point.</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+						</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+						<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Creates a large/precise number</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$value</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value for the number - any valid PHP integer or float format including values with <tt>e</tt> exponents</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of digits after the decimal place, defaults to number of digits in <tt>$value</tt></td>
+			  </tr>
+						</table>
+			</div>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$value</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="__toString" class="method"><span class="resolution">-></span><span class="name">__toString()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Converts the object to an string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">__toString</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="abs" class="method"><span class="resolution">-></span><span class="name">abs()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the absolute value of this number</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">abs</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal - overrides the scale for this number</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The absolute number
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="add" class="method"><span class="resolution">-></span><span class="name">add()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds two numbers together</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">add</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$addend</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$addend</td>
+				<td class="param_description">The addend</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal - overrides the scale for this number</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The sum
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$addend</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="ceil" class="method"><span class="resolution">-></span><span class="name">ceil()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Rounds the number to the next highest integer</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">ceil</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The next highest integer
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="div" class="method"><span class="resolution">-></span><span class="name">div()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Divides this number by the one passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">div</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$divisor</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$divisor</td>
+				<td class="param_description">The divisor</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal - overrides the scale for this number</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The quotient
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$divisor</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="eq" class="method"><span class="resolution">-></span><span class="name">eq()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Indicates if this value is equal to the one passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">eq</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$number</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$number</td>
+				<td class="param_description">The number to compare to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of decimal places to compare - will use all available if not specified</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this number is equal to the one passed
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$number</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="floor" class="method"><span class="resolution">-></span><span class="name">floor()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Rounds the number to the next lowest integer</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">floor</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The next lowest integer
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="fmod" class="method"><span class="resolution">-></span><span class="name">fmod()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the float remainder of dividing this number by the divisor provided</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">fmod</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$divisor</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$divisor</td>
+				<td class="param_description">The divisor</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal - overrides the scale for this number</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The remainder
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$divisor</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="format" class="method"><span class="resolution">-></span><span class="name">format()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Formats the number to include thousands separators</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">format</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$remove_zero_fraction</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$remove_zero_fraction</td>
+				<td class="param_description">If <tt>TRUE</tt> and all digits after the decimal place are <tt>0</tt>, the decimal place and all zeros are removed</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The formatted value
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getScale" class="method"><span class="resolution">-></span><span class="name">getScale()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the scale of this number</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">getScale</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The scale of this number
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="gt" class="method"><span class="resolution">-></span><span class="name">gt()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Indicates if this value is greater than the one passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">gt</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$number</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$number</td>
+				<td class="param_description">The number to compare to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of decimal places to compare - will use all available if not specified</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this number is less than the one passed
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$number</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="gte" class="method"><span class="resolution">-></span><span class="name">gte()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Indicates if this value is greater than or equal to the one passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">gte</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$number</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$number</td>
+				<td class="param_description">The number to compare to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of decimal places to compare - will use all available if not specified</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this number is greater than or equal to the one passed
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$number</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="lt" class="method"><span class="resolution">-></span><span class="name">lt()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Indicates if this value is less than the one passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">lt</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$number</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$number</td>
+				<td class="param_description">The number to compare to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of decimal places to compare - will use all available if not specified</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this number is less than the one passed
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$number</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="lte" class="method"><span class="resolution">-></span><span class="name">lte()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Indicates if this value is less than or equal to the one passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">lte</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$number</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$number</td>
+				<td class="param_description">The number to compare to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of decimal places to compare - will use all available if not specified</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 If this number is less than or equal to the one passed
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$number</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="mod" class="method"><span class="resolution">-></span><span class="name">mod()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the remainder of dividing this number by the divisor provided. All floats are converted to integers.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">mod</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$divisor</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$divisor</td>
+				<td class="param_description">The divisor - will be converted to an integer if it is a float</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The remainder
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$divisor</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="mul" class="method"><span class="resolution">-></span><span class="name">mul()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Multiplies two numbers</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">mul</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$multiplier</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$multiplier</td>
+				<td class="param_description">The multiplier</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal - overrides the scale for this number</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The product
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$multiplier</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="neg" class="method"><span class="resolution">-></span><span class="name">neg()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Negates this number</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">neg</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal - overrides the scale for this number</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The negated number
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="pow" class="method"><span class="resolution">-></span><span class="name">pow()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Raise this number to the power specified</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">pow</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$exponent</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$exponent</td>
+				<td class="param_description">The power to raise to - all non integer values will be truncated to integers</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal - overrides the scale for this number</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The product
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$exponent</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="powmod" class="method"><span class="resolution">-></span><span class="name">powmod()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Gets the remainder of this integer number raised to the integer <tt>$exponent</tt>, divided by the integer <tt>$modulus</tt></p>
+								<p>This method is faster than doing <tt>$num-&gt;pow($exponent)-&gt;mod($modulus)</tt>  and is primarily useful for cryptographic functionality.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">powmod</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$exponent</span><span class="php-code">,</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$modulus</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$exponent</td>
+				<td class="param_description">The power to raise to - all non integer values will be truncated to integers</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$modulus</td>
+				<td class="param_description">The value to divide by - all non integer values will be truncated to integers</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The remainder
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$exponent</tt> or <tt>$modulus</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="round" class="method"><span class="resolution">-></span><span class="name">round()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Rounds this number to the specified number of digits after the decimal - negative scales round the number by places to the left of the decimal</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">round</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after (or before if negative) the decimal to round to</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The rounded result
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="sign" class="method"><span class="resolution">-></span><span class="name">sign()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the sign of the number</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">sign</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 <tt>-1</tt> if negative, <tt>0</tt> if zero, <tt>1</tt> if positive
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="sqrt" class="method"><span class="resolution">-></span><span class="name">sqrt()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the square root of this number</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">sqrt</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal - overrides the scale for this number</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The square root
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="sub" class="method"><span class="resolution">-></span><span class="name">sub()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Subtracts two numbers</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">sub</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fNumber">fNumber</a>|string</span> <span class="php-var">$subtrahend</span><span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fNumber">fNumber</a>|string</td>
+				<td class="param_name">$subtrahend</td>
+				<td class="param_description">The subtrahend</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after the decimal - overrides the scale for this number</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The difference
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When <tt>$subtrahend</tt> is not a valid number</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="trunc" class="method"><span class="resolution">-></span><span class="name">trunc()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Scales (truncates or expands) the number to the specified number of digits after the decimal - negative scales round the number by places to the left of the decimal</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fNumber">fNumber</a></span> <span class="php-identifier">trunc</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$scale</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$scale</td>
+				<td class="param_description">The number of places after (or before if negative) the decimal</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The square root
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

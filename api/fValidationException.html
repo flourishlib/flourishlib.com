@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fValidationException – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fValidationException</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fValidationException">Class Documentation</a></li>
+		<li><strong><a href="/api/fValidationException">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fValidationException.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected variables static">
+<h2><a href="#class_vars_static">Static Variables</a></h2>
+<ul>
+  	 		<li class="protected"><a href="#field_format">$field_format</a></li>
+	   </ul>
+</div>
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  			<li><a href="#formatField">formatField()</a></li>
+	  			<li><a href="#removeFieldNames">removeFieldNames()</a></li>
+	  			<li><a href="#setFieldFormat">setFieldFormat()</a></li>
+	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  	  	  	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fExpectedException">fExpectedException</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fActiveRecord">fActiveRecord</a></li>
+		<li><a href="fCryptography">fCryptography</a></li>
+		<li><a href="fDate">fDate</a></li>
+		<li><a href="fDirectory">fDirectory</a></li>
+		<li><a href="fEmail">fEmail</a></li>
+		<li><a href="fFile">fFile</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fImage">fImage</a></li>
+		<li><a href="fMailbox">fMailbox</a></li>
+		<li><a href="fNumber">fNumber</a></li>
+		<li><a href="fORMColumn">fORMColumn</a></li>
+		<li><a href="fORMDate">fORMDate</a></li>
+		<li><a href="fORMFile">fORMFile</a></li>
+		<li><a href="fORMMoney">fORMMoney</a></li>
+		<li><a href="fORMOrdering">fORMOrdering</a></li>
+		<li><a href="fORMRelated">fORMRelated</a></li>
+		<li><a href="fORMValidation">fORMValidation</a></li>
+		<li><a href="fPagination">fPagination</a></li>
+		<li><a href="fRequest">fRequest</a></li>
+		<li><a href="fSMTP">fSMTP</a></li>
+		<li><a href="fTime">fTime</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+		<li><a href="fUpload">fUpload</a></li>
+		<li><a href="fValidation">fValidation</a></li>
+		<li><a href="fXML">fXML</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b4</span></div>
+<p class="short_description">An exception caused by a data not matching a rule or set of rules</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b4</th><td>Added support for nested error arrays <span class="date">10/3/10</span></td></tr><tr><th>1.0.0b3</th><td>Added <a href="#removeFieldNames"><tt>removeFieldNames()</tt></a> <span class="date">5/26/10</span></td></tr><tr><th>1.0.0b2</th><td>Added a custom <a href="#__construct"><tt>__construct()</tt></a> to handle arrays of messages <span class="date">9/17/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/14/07</span></td></tr></table></div>
+<div class="genealogy">	
+	<h2>Genealogy</h2>
+		<div class="class_tree">
+		<h3>Class Tree</h3>
+		<pre class="class_tree">Exception
+   |
+   --<a href="fException">fException</a>
+      |
+      --<a href="fExpectedException">fExpectedException</a>
+         |
+         --fValidationException</pre>
+	</div>
+		<div class="inherited_variables">
+	<h3>Inherited Variables</h3>
+		<dl>
+		<dt class="protected">$code</dt>
+	<dd class="protected"> </dd>
+		<dt class="protected">$file</dt>
+	<dd class="protected"> </dd>
+		<dt class="protected">$line</dt>
+	<dd class="protected"> </dd>
+		<dt class="protected">$message</dt>
+	<dd class="protected"> </dd>
+		<dt class="private">$previous</dt>
+	<dd class="private"> </dd>
+		<dt class="private">$string</dt>
+	<dd class="private"> </dd>
+		<dt class="private">$trace</dt>
+	<dd class="private"> </dd>
+		</dl>
+		</div>
+		<div class="inherited_methods">
+	<h3>Inherited Methods</h3>
+		<dl>
+	  	  <dt class="public"><a href="fException#__construct"><tt>fException::__construct()</tt></a></dt>
+	  <dd class="public">Sets the message for the exception, allowing for string interpolation and internationalization</dd>
+	  	  <dt class="public"><a href="fException#__get"><tt>fException::__get()</tt></a></dt>
+	  <dd class="public">All requests that hit this method should be requests for callbacks</dd>
+	  	  <dt class="protected"><a href="fException#compose"><tt>fException::compose()</tt></a></dt>
+	  <dd class="protected">Composes text using <a href="fText">fText</a> if loaded</dd>
+	  	  <dt class="protected"><a href="fException#dump"><tt>fException::dump()</tt></a></dt>
+	  <dd class="protected">Creates a string representation of any variable using predefined strings for booleans, <tt>NULL</tt> and empty strings</dd>
+	  	  <dt class="public"><a href="fException#formatTrace"><tt>fException::formatTrace()</tt></a></dt>
+	  <dd class="public">Gets the backtrace to currently called exception</dd>
+	  	  <dt class="protected"><a href="fException#getCSSClass"><tt>fException::getCSSClass()</tt></a></dt>
+	  <dd class="protected">Returns the CSS class name for printing information about the exception</dd>
+	  	  <dt class="protected"><a href="fException#prepare"><tt>fException::prepare()</tt></a></dt>
+	  <dd class="protected">Prepares content for output into HTML</dd>
+	  	  <dt class="public"><a href="fException#printMessage"><tt>fException::printMessage()</tt></a></dt>
+	  <dd class="public">Prints the message inside of a div with the class being 'exception %THIS_EXCEPTION_CLASS_NAME%'</dd>
+	  	  <dt class="public"><a href="fException#printTrace"><tt>fException::printTrace()</tt></a></dt>
+	  <dd class="public">Prints the backtrace to currently called exception inside of a pre tag with the class being 'exception %THIS_EXCEPTION_CLASS_NAME% trace'</dd>
+	  	  <dt class="public"><a href="fException#registerCallback"><tt>fException::registerCallback()</tt></a></dt>
+	  <dd class="public">Adds a callback for when certain types of exceptions are created</dd>
+	  	  <dt class="public"><a href="fException#reorderMessage"><tt>fException::reorderMessage()</tt></a></dt>
+	  <dd class="public">Reorders list items in the message based on simple string matching</dd>
+	  	  <dt class="public"><a href="fException#setMessage"><tt>fException::setMessage()</tt></a></dt>
+	  <dd class="public">Allows the message to be overwriten</dd>
+	  	  <dt class="public"><a href="fException#splitMessage"><tt>fException::splitMessage()</tt></a></dt>
+	  <dd class="public">Splits an exception with an HTML list into multiple strings each containing part of the original message</dd>
+	  	</dl>
+		<dl>
+	  	  <dt class="public">constructor __construct ( [$message = ], [$code = ], [$previous = ] )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">__clone (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">__toString (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getCode (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getFile (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getLine (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getMessage (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getPrevious (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getTrace (  )</dt>
+	  <dd class="public"></dd>
+	  	  <dt class="public">getTraceAsString (  )</dt>
+	  <dd class="public"></dd>
+	  	</dl>
+		</div>
+	</div>	
+<div class="class_variables static" id="class_vars_static">
+<h2>Static Variables</h2>
+	<!-- start protected variable static -->
+	<h3 id="field_format" class="protected variable static"><span class="resolution">::</span><span class="name">$field_format</span> <span class="visibility">protected</span></h3>
+	<div class="protected variable static">    
+					<div class="variable_description">
+							<p>The formatting string to use for field names</p>
+			</div>
+		<h4>Type</h4>
+		<p class="type">string</p>
+	</div>
+	<!-- end variable static -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="formatField" class="method static"><span class="resolution">::</span><span class="name">formatField()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Accepts a field name and formats it based on the formatting string set via setFieldFormat()</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">formatField</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$field</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$field</td>
+				<td class="param_description">The name of the field to format</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The formatted field name
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="removeFieldNames" class="method static"><span class="resolution">::</span><span class="name">removeFieldNames()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Removes the field names from normal validation messages, leaving just the message part</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">removeFieldNames</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$messages</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$messages</td>
+				<td class="param_description">The messages to remove the field names from</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The messages without field names
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="setFieldFormat" class="method static"><span class="resolution">::</span><span class="name">setFieldFormat()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Set the format to be applied to all field names used in fValidationExceptions</p>
+								<p>The format should contain exactly one <tt>%s</tt>  <a class="ext-link" href="http://php.net/sprintf"><span class="icon"><tt>sprintf()</tt></span></a> conversion specification, which will  be replaced with the field name. Any literal <tt>%</tt> characters should be  written as <tt>%%</tt>.</p><p>The default format is just <tt>%s: </tt>, which simply inserts a <tt>:</tt> and space  after the field name.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setFieldFormat</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$format</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$format</td>
+				<td class="param_description">A string to format the field name with - <tt>%s</tt> will be replaced with the field name</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+	</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the message for the exception, allowing for custom formatting beyond <a href="fException">fException</a></p>
+								<p>If this method receives exactly two parameters, a string and an array,  the string will be used as a message in a HTML <tt>&lt;p&gt;</tt> tag and the array  will be turned into an unorder list <tt>&lt;ul&gt;</tt> tag with each element in the  array being an <tt>&lt;li&gt;</tt> tag. It is possible to pass an optional exception  code as a third parameter.</p><p>The following PHP:</p><pre class="block php"><code>throw new fValidationException(
+    'The following problems were found:',
+    array(
+        'Please provide your name',
+        'Please provide your email address'
+    )
+);</code></pre><p>Would create the message:</p><pre class="block html"><code><p>The following problems were found:</p>
+<ul>
+    <li>Please provide your name</li>
+    <li>Please provide your email address</li>
+</ul></code></pre><p>If the parameters are anything else, they will be passed to  <a href="fException#__construct"><tt>fException::__construct()</tt></a>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fException">fException</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">=</span>''<span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$sub_messages</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$code</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The beginning message for the exception. This will be placed in a <tt>&lt;p&gt;</tt> tag.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$sub_messages</td>
+				<td class="param_description">An array of strings to place in a <tt>&lt;ul&gt;</tt> tag</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$code</td>
+				<td class="param_description">The optional exception code</td>
+			  </tr>
+						</table>
+			</div>
+							<h4>Overrides</h4>
+				<div class="overrides">
+					<dl>
+						<dt><a href="fException#__construct"><tt>fException::__construct()</tt></a></dt>
+												<dd>Sets the message for the exception, allowing for string interpolation and internationalization</dd>
+											</dl>
+				</div>
+		</div>
+		<!-- end method -->	
+						</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

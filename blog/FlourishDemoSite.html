@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Flourish Demo Site – Blog – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="FlourishDemoSite">Flourish Demo Site</h1>
+
+<p>
+If you've never worked with Flourish before, getting started building a site may seem a little daunting. Included below is the description and source code for a production site written with Flourish and SQLite.
+</p>
+
+<p>
+The <a href="http://northshorewebgeeks.com">northshorewebgeeks.com</a> site provides a simple list of upcoming and past meetups for the North Shore Web Geeks meetup. Rather than hand-editing the HTML and RSS feeds, Flourish was set up to provide a simple CMS to easily update the information.
+</p>
+
+<h2 id="SourceCode">Source Code</h2>
+
+<p>
+The source code for the demo can be found in the <a href="https://github.com/flourishlib/flourish-demo-site">flourish-demo-site
+repository</a> on Github. Github has a nice little code browser, so you can view the code without downloading or cloning.
+</p>
+
+<h2 id="Routing">Routing</h2>
+
+<p>
+The site is fairly simple, so I set up Apache with <a href="http://httpd.apache.org/docs/2.0/mod/mod_rewrite.html">mod_rewrite</a> to create some nice, clean URLs:
+</p>
+<pre><code>/                     # -&gt; index.php  : Home/main page
+/rss                  # -&gt; index.php  : RSS feed
+/manage               # -&gt; manage.php : Lists all meetups
+/manage/add           # -&gt; manage.php : Allows adding a meetup
+/manage/{date}/edit   # -&gt; manage.php : Allows editing a meetup
+/manage/{date}/delete # -&gt; manage.php : Allows deleting a meetup
+/log_in               # -&gt; login.php  : Allows a user to log in
+/log_out              # -&gt; login.php  : Lets the user log out
+/sup/*                # -&gt; sup/*      : Static files including CSS and images</code></pre>
+
+<p>
+ Anything other than those URLs will cause the page at <code>views/404.php</code> to be shown.
+</p>
+
+<h2 id="DirectoryStructure">Directory Structure</h2>
+
+<p>
+The files on the filesystem are organized in the following structure:
+</p>
+<pre><code>/                     # The three php scripts that handle requests
+/inc/                 # The bootstrap script init.php and config file
+/inc/classes/         # The ORM classes
+/inc/flourish/        # Flourish classes
+/storage/db/          # The SQLite database the source .sql file
+/storage/session/     # The PHP session files
+/sup/css/             # The CSS files
+/sup/img/             # The images
+/views/               # The HTML templates for the site</code></pre>
+
+<h2 id="RequestHandling">Request Handling</h2>
+
+<p>
+As requests are received, they are routed the appropriate PHP page by <code>mod_rewrite</code>, however each of these pages first runs the bootstrapping code in <code>inc/</code>. Here is an example of the execution order:
+</p>
+<pre><code>config.php -&gt; init.php -&gt; manage.php</code></pre>
+
+<h2 id="LiveInstance">Live Instance</h2>
+
+<p>
+<em>There used to be a live instance of the site running, but it has since been removed.</em>
+</p>
+
+<h2 id="Installation">Installation</h2>
+
+<p>
+If you wish to run the demo site on your own server, youll need to download the source from github and recursively <code>chmod</code> the <code>storage</code> directory to <code>777</code>. This allows the web server to write to the SQLite database and session directory.
+</p>
+<pre><code>chmod -R 777 /path/to/flourish_demo_site/storage</code></pre>
+
+<p>
+ All files included with the demo site, except for graphics and CSS files, are licensed under the MIT license. Graphics and CSS files are only provided for demo purposes. Please see the <code>license.txt</code> file for more details.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fUnbufferedResult – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fUnbufferedResult">fUnbufferedResult</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fResult">Class Documentation</a></strong></li>
+<li><a href="/api/fResult">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fResult.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Creation">Creation</a></li>
+<li><a href="#RowFormat">Row Format</a></li>
+<li><a href="#UnescapingData">Unescaping Data</a></li>
+<li><a href="#Iteration">Iteration</a></li>
+<li><a href="#Exceptions">Exceptions</a></li>
+<li><a href="#QueryInfo">Query Info</a></li>
+</ul>
+
+<h2 id="DatabaseClasses">Database Classes </h2>
+
+<ul>
+<li><a href="/docs/fDatabase">fDatabase</a></li>
+<li><a href="/docs/fNoRowsException">fNoRowsException</a></li>
+<li><a href="/docs/fResult">fResult</a></li>
+<li><a href="/docs/fSQLException">fSQLException</a></li>
+<li><a href="/docs/fSQLTranslation">fSQLTranslation</a></li>
+<li><a href="/docs/fSQLSchemaTranslation">fSQLSchemaTranslation</a></li>
+<li><a href="/docs/fSchema">fSchema</a></li>
+<li><a href="/docs/fStatement">fStatement</a></li>
+<li><strong>fUnbufferedResult</strong></li>
+</ul>
+</div>
+
+<p>
+The fUnbufferedResult class is an iterable result object that is returned when an SQL query is executed. It contains similar information to <a href="/docs/fResult">fResult</a>, however some features are missing due to the nature of the results not being buffered. The quality of being unbuffered causes this object to use less memory than an <a href="/docs/fResult">fResult</a> object.
+</p>
+
+<h2 id="Creation">Creation</h2>
+
+<p>
+The fUnbufferedResult class can be created by executing the methods <a href="/api/fDatabase#unbufferedQuery">fDatabase::unbufferedQuery()</a> or <a href="/api/fDatabase#unbufferedTranslatedQuery">fDatabase::unbufferedTranslatedQuery()</a>.
+</p>
+<pre class="block php"><code>// Creation of fUnbufferedResult from a normal query
+$result = $db-&gt;unbufferedQuery(&quot;SELECT * FROM users&quot;);
+
+// Creation of an fUnbufferedResult object from a translated query
+$result2 = $db-&gt;unbufferedTranslatedQuery(&quot;SELECT * FROM users LIMIT 5&quot;);</code></pre>
+
+<h2 id="RowFormat">Row Format</h2>
+
+<p>
+By default when retrieving rows from an unbuffered result object, they are returned as associative arrays. In the case of Oracle databases, where columns are case-insensitive, the array keys are lowercase.
+</p>
+
+<p>
+It is possible to retrieve <code>stdClass</code> objects back for each row instead of associative arrays. This is done by calling the method <a href="/api/fUnbufferedResult#asObjects"><code>asObjects()</code></a>. The method returns the fUnbufferedResult object, allowing for method chaining:
+</p>
+<pre class="block php"><code>// Set the result to return objects
+$res = $db-&gt;unbufferedQuery(&quot;SELECT * FROM users&quot;)-&gt;asObjects();</code></pre>
+
+<p>
+ <em>If you are looking for objects with more functionality, please see <a href="/docs/fActiveRecord">fActiveRecord</a>.</em>
+</p>
+
+<h2 id="UnescapingData">Unescaping Data</h2>
+
+<p>
+While it is certainly possible to manually unescape data from a result set, one row and column at a time, unescaping the whole result is often much easier. The method <a href="/api/fUnbufferedResult#unescape"><code>unescape()</code></a> accepts an associative array of the column name as the key and the data type as the value. This method should be called before any rows are fetched.
+</p>
+<pre class="block php"><code>$result = $db-&gt;unbufferedQuery(&quot;SELECT * FROM users&quot;);
+$result-&gt;unescape(array(
+    'first_name'       =&gt; 'string',
+    'last_name'        =&gt; 'string',
+    'is_authenticated' =&gt; 'boolean',
+    'last_login'       =&gt; 'timestamp'
+));
+
+foreach ($result as $row) {
+    // $row now contains the data in native PHP data types
+}</code></pre>
+
+<h2 id="Iteration">Iteration</h2>
+
+<p>
+The fUnbufferedResult class implements the Iterator interface, which means that you can use the <code>foreach</code> construct to loop through all resulting rows. Below is an example of iterating over a result:
+</p>
+<pre class="block php"><code>$result = $db-&gt;unbufferedQuery(&quot;SELECT * FROM users&quot;);
+
+foreach ($result as $row) {
+    echo $row['name'] . '&lt;br /&gt;';
+}</code></pre>
+
+<p>
+ If the result did not return any rows, the <code>foreach</code> construct will not be looped at all and the execution of the code will continue. If you wish to execute different code if no rows are returned, see the next section about <a href="#Exceptions">exceptions</a>.
+</p>
+
+<p>
+If you wish to to manual iteration you can use the <a href="/api/fUnbufferedResult#fetchRow"><code>fetchRow()</code></a> and <a href="/api/fUnbufferedResult#valid"><code>valid()</code></a> methods as shown below:
+</p>
+<pre class="block php"><code>// Iteration using valid() and fetchRow()
+while ($result-&gt;valid()) {
+    $row = $result-&gt;fetchRow();
+}</code></pre>
+
+<h2 id="Exceptions">Exceptions</h2>
+
+<p>
+As mentioned in the last section, if you iterate through the result and no rows are returned, nothing will happen. If you do need to execute different code when no rows are returned, you will want to call the <a href="/api/fUnbufferedResult#tossIfNoRows"><code>tossIfNoRows()</code></a> to cause an <a href="/docs/fNoRowsException">fNoRowsException</a> to be thrown:
+</p>
+<pre class="block php"><code>try {
+    $result = $db-&gt;unbufferedQuery(&quot;SELECT * FROM users&quot;);
+    $result-&gt;tossIfNoRows();
+    ?&gt;
+    &lt;h1&gt;Users&lt;/h1&gt;
+    &lt;?
+    foreach ($result as $row) {
+        echo $row['name'] . '&lt;br /&gt;';
+    }
+} catch (fNoRowsException $e) {
+    ?&gt;
+    &lt;p&gt;No users were found&lt;/p&gt;
+    &lt;?php
+}</code></pre>
+
+<p>
+ In addition to calling <code>tossIfNoRows()</code>, an <a href="/docs/fNoRowsException">fNoRowsException</a> will be thrown if any Iterator interface methods (such as <code>current()</code>, <code>next()</code>, etc) or <code>fetchRow()</code> is called on a result object which returned no rows.
+</p>
+
+<h2 id="QueryInfo">Query Info</h2>
+
+<p>
+Since fUnbufferedResult does not use buffering, only a fraction of the information about a query is available compared to the <a href="/docs/fResult">fResult</a> class.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fUnbufferedResult#getSQL"><code>getSQL()</code></a></td>
+<td>Returns the SQL statement executed for this result</td>
+</tr>
+<tr>
+<td><a href="/api/fUnbufferedResult#getUntranslatedSQL"><code>getUntranslatedSQL()</code></a></td>
+<td>Returns the SQL from before translation happened - only applicable for results from <a href="/api/fUnbufferedResult#unbufferedTranslatedQuery"><code>unbufferedTranslatedQuery()</code></a></td>
+</tr>
+</tbody></table>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

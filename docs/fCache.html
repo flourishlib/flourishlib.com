@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fCache – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fCache">fCache</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fCache">Class Documentation</a></strong></li>
+<li><a href="/api/fCache">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fCache.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a>
+<ul>
+<li><a href="#APCBackend">APC Backend</a></li>
+<li><a href="#DatabaseBackend">Database Backend</a></li>
+<li><a href="#DirectoryBackend">Directory Backend</a></li>
+<li><a href="#FileBackend">File Backend</a></li>
+<li><a href="#MemcacheBackend">Memcache Backend</a></li>
+<li><a href="#RedisBackend">Redis Backend</a></li>
+<li><a href="#XCacheBackend">XCache Backend</a></li>
+</ul>
+</li>
+<li><a href="#SettingValues">Setting Values</a></li>
+<li><a href="#GettingValues">Getting Values</a></li>
+<li><a href="#DeletingValues">Deleting Values</a></li>
+<li><a href="#ClearingtheCache">Clearing the Cache</a></li>
+</ul>
+</div>
+
+<p>
+The fCache class provides a consistent caching interface that can use the <a href="#APCBackend">APC</a>, <a href="#DatabaseBackend">database</a>, <a href="#DirectoryBackend">directory</a>, <a href="#FileBackend">file</a>, <a href="#MemcacheBackend">Memcache</a>, <a href="#RedisBackend">Redis</a> or <a href="#XCacheBackend">XCache</a> backends. It can be used to cache any end-developer data, but can also be used by the <a href="/docs/fDatabase">fDatabase</a>, <a href="/docs/fSQLTranslation">fSQLTranslation</a> and <a href="/docs/fSchema">fSchema</a> classes.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+Creating an instance of fCache requires a <code>$type</code>, and possibly a <code>$data_store</code> and <code>$options</code>. The following types are supported. The <code>$data_store</code> and <code>$config</code> parameters are explained for each backend separately.
+</p>
+
+<ul>
+<li><a href="#APCBackend"><code>apc</code></a></li>
+<li><a href="#DatabaseBackend"><code>database</code></a></li>
+<li><a href="#DirectoryBackend"><code>directory</code></a></li>
+<li><a href="#FileBackend"><code>file</code></a></li>
+<li><a href="#MemcacheBackend"><code>memcache</code></a></li>
+<li><a href="#RedisBackend"><code>redis</code></a></li>
+<li><a href="#XCacheBackend"><code>xcache</code></a></li>
+</ul>
+
+<h3 id="APCBackend">APC Backend</h3>
+
+<p>
+Using <a href="http://us.php.net/ref.apc">APC</a> for the backend only requires the <code>$type</code> parameter be set to <code>'apc'</code>. The <code>$data_store</code> and <code>$config</code> parameters are unused.
+</p>
+<pre class="block php"><code>$cache = new fCache('apc');</code></pre>
+
+<p>
+ APC is best suited for smaller values where performance is of utmost concern.
+</p>
+
+<p>
+<em>Please note that APC shares values server-wide, so cache keys should be appropriately unique in case there are multiple sites being hosted on the same server.</em>
+</p>
+
+<h3 id="DatabaseBackend">Database Backend</h3>
+
+<p>
+Using a database for the backend requires the <code>$type</code> parameter be set to <code>'database'</code> and the <code>$data_store</code> be an <a href="/docs/fDatabase">fDatabase</a> object. The <code>$config</code> parameter must be an array with the following keys:
+</p>
+
+<ul>
+<li><code>table</code>: The database table to use for caching</li>
+<li><code>key_column</code>: The column to store the cache key in - must support at least 250 character strings</li>
+<li><code>value_column</code>: The column to store the serialized value in - this should probably be a TEXT column to support large values, or BLOB if binary serialization is used</li>
+<li><code>value_data_type</code>: If a BLOB column is being used for the <code>value_column</code>, this should be set to <code>'blob'</code>, otherwise <code>'string'</code></li>
+<li><code>ttl_column</code>: The column to store the expiration timestamp of the cached entry - this should be an integer</li>
+</ul>
+<pre class="block php"><code>$db = new fDatabase('mysql', 'mydb', 'username', 'password');
+$config = array(
+    'table'           =&gt; 'sessions',
+    'key_column'      =&gt; 'session_id',
+    'value_column'    =&gt; 'values',
+    'value_data_type' =&gt; 'string',
+    'ttl_column'      =&gt; 'expiration'
+);
+$cache = new fCache('database', $db, $config);</code></pre>
+
+<p>
+ Each value is stored in a separate row in the table. A database backend is useful for caching values that need to be shared across servers.
+</p>
+
+<h3 id="DirectoryBackend">Directory Backend</h3>
+
+<p>
+Using a directory for the backend requires the <code>$type</code> parameter be set to <code>'directory'</code> and the <code>$data_store</code> be the path to a directory that is writable. The <code>$config</code> parameter is unused.
+</p>
+<pre class="block php"><code>$cache = new fCache('directory', '/path/to/dir');</code></pre>
+
+<p>
+ A directory backend is generally useful for caching larger values on a single server.
+</p>
+
+<p>
+Each value in a directory cache is stored in a separate file, with the filenames being hashes of the cache key. The first line of the file is the integer unix timestamp of when the value expires. All subsequent lines in the file are part of the value. An expiration timestamp of <code>0</code> indicates no expiration.
+</p>
+
+<h3 id="FileBackend">File Backend</h3>
+
+<p>
+For file caches, the <code>$type</code> should be <code>'file'</code> and the <code>$data_store</code> should be a file path. The <code>$config</code> parameter is unused. 
+</p>
+<pre class="block php"><code>$cache = new fCache('file', '/path/to/cache');</code></pre>
+
+<p>
+ A file backend is most useful for simple single-server caching that requires no extra hosting infrastructure or uncommon PHP extensions.
+</p>
+
+<p>
+All values are stored in a serialized array containing the keys, values and expiration timestamps. 
+</p>
+
+<h3 id="MemcacheBackend">Memcache Backend</h3>
+
+<p>
+For <a href="http://www.danga.com/memcached/">memcache</a> caches, the <code>$type</code> should be set to <code>'memcache'</code> and the <code>$data_store</code> should be a <a href="http://php.net/memcache">Memcache</a> or <a href="http://php.net/memcached">Memcached</a> object. The <code>$config</code> parameter is unused.
+</p>
+<pre class="block php"><code>// Using the memcache extension
+$memcache = new Memcache();
+$memcache-&gt;connect('localhost', 11211);
+$cache = new fCache('memcache', $memcache);
+
+// Using the memcached extension
+$memcached = new Memcached();
+$memcached-&gt;addServer('localhost', 11211);
+$cache = new fCache('memcache', $memcached);</code></pre>
+
+<p>
+ A memcache backend is useful for caching all sorts of different values, often for larger sites or sites with multiple web servers.
+</p>
+
+<h3 id="RedisBackend">Redis Backend</h3>
+
+<p>
+For <a href="http://redis.io">Redis</a> caches, the <code>$type</code> should be set to <code>'redis'</code> and the <code>$data_store</code> should be an instance of the <code>Redis</code> class from the <a href="https://github.com/nicolasff/phpredis">phpredis extension</a>. The <code>$config</code> parameter is unused.
+</p>
+<pre class="block php"><code>$redis = new Redis();
+$redis-&gt;connect('localhost');
+$cache = new fCache('redis', $redis);</code></pre>
+
+<p>
+ A redis backend is useful for caching all sorts of different values, often for larger sites or sites with multiple web servers.
+</p>
+
+<h3 id="XCacheBackend">XCache Backend</h3>
+
+<p>
+For <a href="http://xcache.lighttpd.net/">XCache</a> caches, the <code>$type</code> should be set to <code>'xcache'</code>. The <code>$data_store</code> and <code>$config</code> parameters are unused.
+</p>
+<pre class="block php"><code>$cache = new fCache('xcache');</code></pre>
+
+<p>
+ XCache is best suited for smaller values where performance is of utmost concern.
+</p>
+
+<p>
+<em>Please note that XCache shares values server-wide, so cache keys should be appropriately unique in case there are multiple sites being hosted on the same server.</em>
+</p>
+
+<h2 id="SettingValues">Setting Values</h2>
+
+<p>
+The method <a href="/api/fCache#set"><code>set()</code></a> accepts a <code>$key</code>, <code>$value</code> and optional <code>$ttl</code> (time-to-live). The <code>$key</code> should be a string of 250 characters or less, and the <code>$value</code> should be any PHP data type that can be serialized. <em>The main PHP data type that can not be serialized in a <code>resource</code>.</em>
+</p>
+
+<p>
+The <code>$key</code> and <code>$value</code> combination will be stored in the cache permanently, unless a <code>$ttl</code> is provided. The <code>$ttl</code> is the number of seconds the cached <code>$value</code> will be accessible. Values with a <code>$ttl</code> will be cleaned up by whatever back-end is providing the cache. <em>Warning: the APC back-end currently functions in such a way that the <code>$ttl</code> will be ignored when getting a value in the same script execution that it is set.</em>
+</p>
+
+<p>
+<em>Please note that all PHP values are serialized before being stored in the cache. This ensures that the exact same value that goes into the cache will come back out, even if the back-end only supports basic types such as strings and integers.</em>
+</p>
+<pre class="block php"><code>// This value will last until explicitly deleted or the cache is cleared
+$cache-&gt;set('computed_value', $computed_value);
+
+// This value will last for 60 seconds
+$cache-&gt;set('other_computed_value', $other_computed_value, 60);</code></pre>
+
+<p>
+ It is also possible to only set a value if the <code>$key</code> does not already exist in the cache. This is performed using the <a href="/api/fCache#add"><code>add()</code></a> method. <code>add()</code> takes the exact same parameters as <code>set()</code>, however it returns a boolean indicating if the value was added.
+</p>
+<pre class="block php"><code>if ($cache-&gt;add('master_value', $master_value)) {
+    // Compute a related value and store it also
+}</code></pre>
+
+<h2 id="GettingValues">Getting Values</h2>
+
+<p>
+The method <a href="/api/fCache#get"><code>get()</code></a> takes the <code>$key</code> to retrieve the value for, and an optional <code>$default</code> to return if the <code>$key</code> is not set. If <code>$default</code> is not specified, <code>NULL</code> will be returned for any <code>$key</code> that is not currently set.
+</p>
+<pre class="block php"><code>// This will return NULL if there is no value for 'computed_value'
+$cached_value = $cache-&gt;get('computed_value');
+
+// This will return 10 if there is no value for 'computed_value'
+$cached_value = $cache-&gt;get('computed_value', 10);</code></pre>
+
+<h2 id="DeletingValues">Deleting Values</h2>
+
+<p>
+Values can be deleted individually from the cache by calling the method <a href="/api/fCache#delete"><code>delete()</code></a> and passing the <code>$key</code> to delete.
+</p>
+<pre class="block php"><code>$cache-&gt;delete('computed_value');</code></pre>
+
+<h2 id="ClearingtheCache">Clearing the Cache</h2>
+
+<p>
+In addition to deleting specific cache entries, it is also possible to clear all of the entries in the cache. <strong>This will <em>delete all key/value pairs in your cache</em>, and depending on your cache type, may affect all other websites on the same server or all web servers.</strong>
+</p>
+
+<p>
+<em>Please note that the XCache back-end may require an administrator login and password to clear the cache. This setting, and the login/password settings are controlled by ini settings.</em>
+</p>
+<pre class="block php"><code>$cache-&gt;clear();</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

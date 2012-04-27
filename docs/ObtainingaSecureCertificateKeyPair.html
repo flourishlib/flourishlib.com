@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>ObtainingaSecureCertificateKeyPair – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="ObtainingaSecureCertificateKeyPair">Obtaining a Secure Certificate/Key Pair</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#GeneratingaCertificatewithOpenSSL">Generating a Certificate with OpenSSL</a></li>
+<li><a href="#12">Creating a PKCS! File from a Private Key and Public Certificate</a></li>
+<li><a href="#12">Creating a Private Key and Public Certificate from a PKCS! File</a></li>
+</ul>
+</div>
+
+<p>
+When dealing with <a href="http://en.wikipedia.org/wiki/Public-key_cryptography">public-
+key encryption</a> using the <a href="/docs/fCryptography">fCryptography</a> class or sending secure emails via the <a href="/docs/fEmail">fEmail</a> class, you will need an <a href="http://en.wikipedia.org/wiki/X509">x509
+public-key certificate</a> and a PEM-encoded private key.
+</p>
+
+<p>
+Certificate authorities offer certificates that will validate your identity by the public, however, self-generated keys can be used for any purposes where identity verification is not important, just encryption.
+</p>
+
+<p>
+<a href="http://www.instantssl.com/ssl-certificate-products/free-email-certificate.html">InstantSSL</a> and <a href="https://www.startssl.com/">StartSSL</a> offer certificates for free, while <a href="http://www.verisign.com/products-services/security-services/pki/pki-application/email-digital-id/index.html">VeriSign</a> and many others offer them for a fee. Most of these services tend to install the certificate in your browser, and thus only work with some browsers. As of January 2010, Google Chrome seems to be the only major browser not providing this functionality. Also, since the private key/certificate is installed in your browser, you'll need to figure out how to use your browser to export the <code>.p12</code> file.
+</p>
+
+<p>
+<em>Self-signed certificates are not recommended for a secure connection (https://) on a public web server since browsers will not recognize you as an authorized certificate authority (CA) and warning messages will be displayed.</em>
+</p>
+
+<h2 id="GeneratingaCertificatewithOpenSSL">Generating a Certificate with OpenSSL</h2>
+
+<p>
+There are various methods to generate a self-signed SSL certificate, however one of the simplest to explain in using the <a href="http://www.openssl.org">OpenSSL</a> executable. Most Linux/BSD distributions and OSX all have it installed by default while Windows users can <a href="http://www.slproweb.com/products/Win32OpenSSL.html">download an installer</a> or use it through <a href="http://cygwin.com">Cygwin</a>. If you run the Windows installer, be sure to open a command prompt and <code>cd</code> to the <code>{install_dir}\bin</code> before executing these commands. 
+</p>
+
+<p>
+First, lets generate the private key file (it will be output in PEM format) by executing the following command:
+</p>
+<pre><code>openssl genrsa -des3 -out private.key 1024</code></pre>
+
+<p>
+ The output will look something like the text below and will prompt for a passphrase (and a repeat). This is essential for restricting access to the key if it is stored on the same server as the encrypted data.
+</p>
+<pre><code>Generating RSA private key, 1024 bit long modulus
+.....................................++++++
+........................++++++
+e is 65537 (0x10001)
+Enter pass phrase for private.key:
+Verifying - Enter pass phrase for private.key:</code></pre>
+
+<p>
+ Next we need to create a certificate signing request (CSR) which is used to generate the certificate:
+</p>
+<pre><code>openssl req -new -x509 -key private.key -out public.crt</code></pre>
+
+<p>
+ You will be asked a series of questions used for identifying the owner of the certificate (in this case, you). Below is an example with my answers in bold:
+</p>
+<pre class="wiki output">Enter pass phrase for private.key:
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:<strong>US</strong>
+State or Province Name (full name) [Some-State]:<strong>Massachusetts</strong>
+Locality Name (eg, city) []:<strong>Newburyport</strong>
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:<strong>Flourish</strong>
+Organizational Unit Name (eg, section) []:<strong>Web Development</strong>
+Common Name (eg, YOUR name) []:<strong>William Bond</strong>
+Email Address []:<strong>will@flourishlib.com</strong></pre>
+<p>
+ When performing public-key encryption with the <a href="/docs/fCryptography">fCryptography</a> you will need the <code>public.crt</code> and <code>private.key</code> files.
+</p>
+
+<h2 id="12">Creating a PKCS! File from a Private Key and Public Certificate</h2>
+
+<p>
+If you are going to use the certificate you generated with the <a href="/docs/fEmail">fEmail</a> class you will need <code>public.crt</code> for the web server and a <a href="http://en.wikipedia.org/wiki/PKCS12">PKCS#12</a> formatted file for your email program. You can generate the PKCS!#12 file by executing the following:
+</p>
+<pre><code>openssl pkcs12 -export -inkey private.key -in public.crt -out private_public.p12 -name &quot;Flourish Certificate&quot;</code></pre>
+
+<p>
+ Notice that the PKCS!#12 file contains both the public and the private keys. You will asked for a password for the PKCS!#12 file, which you will also have to provide to the email program you use it with:
+</p>
+<pre><code>Enter pass phrase for private.key:
+Enter Export Password:
+Verifying - Enter Export Password:</code></pre>
+
+<h2 id="12">Creating a Private Key and Public Certificate from a PKCS! File</h2>
+
+<p>
+Depending on where you obtain a secure certificate from, you may only receive a .p12 file since it contains both the private key and public certificate. If you are going to use this certificate with <a href="/docs/fCryptography">fCryptography</a> or <a href="/docs/fEmail">fEmail</a> you are going to need the private key and public certificate separated into individual files in specific formats.
+</p>
+
+<p>
+The following command will export a <code>public.crt</code> file from an PKCS!#12 named <code>private_public.p12</code>:
+</p>
+<pre><code>openssl pkcs12 -in private_public.p12 -clcerts -nokeys | openssl x509 -out public.crt</code></pre>
+
+<p>
+ Youll be asked for the .p12 files password:
+</p>
+<pre><code>Enter Import Password:
+MAC verified OK</code></pre>
+
+<p>
+ Next, well export a <code>private.key</code> file from the same .p12 file:
+</p>
+<pre><code>openssl pkcs12 -in private_public.p12 -nocerts -nodes | openssl rsa -des3 -out private.key</code></pre>
+
+<p>
+ First you will be prompted for the .p12 password, after which you will be prompted for the private key password (with repeat).
+</p>
+<pre><code>Enter Import Password:
+MAC verified OK
+writing RSA key
+Enter PEM pass phrase:
+Verifying - Enter PEM pass phrase:</code></pre>
+
+<p>
+ You will now have <code>public.crt</code> and <code>private.key</code> files for use with <a href="/docs/fCryptography">fCryptography</a> and <a href="/docs/fEmail">fEmail</a>.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

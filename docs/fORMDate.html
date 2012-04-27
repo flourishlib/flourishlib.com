@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMDate – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fORMDate">fORMDate</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fORMDate">Class Documentation</a></strong></li>
+<li><a href="/api/fORMDate">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMDate.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#DateCreatedColumns">Date Created Columns</a></li>
+<li><a href="#DateUpdatedColumns">Date Updated Columns</a></li>
+<li><a href="#TimezoneColumns">Timezone Columns</a></li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><strong>fORMDate</strong></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><a href="/docs/fORMOrdering">fORMOrdering</a></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fORMDate class is an ORM plugin to provide additional functionality for date and time columns.
+</p>
+
+<h2 id="DateCreatedColumns">Date Created Columns</h2>
+
+<p>
+The static method <a href="/api/fORMDate#configureDateCreatedColumn"><code>configureDateCreatedColumn()</code></a> sets an active record class to automatically set a <code>date</code>, <code>time</code> or <code>timestamp</code> column to the date/time when the record is first saved in the database.
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMDate::configureDateCreatedColumn($this, 'date_created');
+    }
+}</code></pre>
+
+<h2 id="DateUpdatedColumns">Date Updated Columns</h2>
+
+<p>
+The static method <a href="/api/fORMDate#configureDateUpdatedColumn"><code>configureDateUpdatedColumn()</code></a> sets an active record class to automatically set a <code>date</code>, <code>time</code> or <code>timestamp</code> column to the current date/time each time the record is saved in the database.
+</p>
+<pre class="block php"><code>class User extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMDate::configureDateUpdatedColumn($this, 'last_edited');
+    }
+}</code></pre>
+
+<h2 id="TimezoneColumns">Timezone Columns</h2>
+
+<p>
+Since not all supported databases support timezone information in timestamp columns, the fORMDate class allows associating a timestamp column with another column to store the timezone name. The static method <a href="/api/fORMDate#configureTimezoneColumn"><code>configureTimezoneColumn()</code></a> accepts three parameters, the <code>$class</code>, the <code>$timestamp_column</code> and the <code>$timezone_column</code>.
+</p>
+<pre class="block php"><code>class NewsArticle extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMDate::configureTimezoneColumn($this, 'date_posted', 'timezone_posted');
+    }
+}</code></pre>
+
+<p>
+ The timezone column will be used to store the timezone stored in any <a href="/docs/fTimestamp">fTimestamp</a> objects that are set to the timestamp column. If a new timestamp is set, it will be combined with the existing timezone into a new <a href="/docs/fTimestamp">fTimestamp</a> object. The object will be stored in the timestamp column. If a new timezone is set, it will be combined with the existing timestamp and the new <a href="/docs/fTimestamp">fTimestamp</a> object will be stored in the timestamp column.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

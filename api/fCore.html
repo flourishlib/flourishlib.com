@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fCore – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fCore</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fCore">Class Documentation</a></li>
+		<li><strong><a href="/api/fCore">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fCore.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#backtrace">backtrace()</a></li>
+	  			<li><a href="#call">call()</a></li>
+	  			<li><a href="#callback">callback()</a></li>
+	  			<li><a href="#checkOS">checkOS()</a></li>
+	  			<li><a href="#checkVersion">checkVersion()</a></li>
+	  			<li><a href="#configureSMTP">configureSMTP()</a></li>
+	  			<li><a href="#debug">debug()</a></li>
+	  			<li><a href="#disableContext">disableContext()</a></li>
+	  			<li><a href="#dump">dump()</a></li>
+	  			<li><a href="#enableDebugging">enableDebugging()</a></li>
+	  			<li><a href="#enableDynamicConstants">enableDynamicConstants()</a></li>
+	  			<li><a href="#enableErrorHandling">enableErrorHandling()</a></li>
+	  			<li><a href="#enableExceptionHandling">enableExceptionHandling()</a></li>
+	  			<li><a href="#expose">expose()</a></li>
+	  			<li><a href="#getDebug">getDebug()</a></li>
+	  			<li class="protected"><a href="#handleError">handleError()</a></li>
+	  			<li class="protected"><a href="#handleException">handleException()</a></li>
+	  			<li><a href="#registerDebugCallback">registerDebugCallback()</a></li>
+	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  			<li class="protected"><a href="#sendMessagesOnShutdown">sendMessagesOnShutdown()</a></li>
+	  			<li><a href="#startErrorCapture">startErrorCapture()</a></li>
+	  			<li><a href="#stopErrorCapture">stopErrorCapture()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fEmail">fEmail</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fCache">fCache</a></li>
+		<li><a href="fCookie">fCookie</a></li>
+		<li><a href="fCryptography">fCryptography</a></li>
+		<li><a href="fDatabase">fDatabase</a></li>
+		<li><a href="fDate">fDate</a></li>
+		<li><a href="fDirectory">fDirectory</a></li>
+		<li><a href="fEmail">fEmail</a></li>
+		<li><a href="fFile">fFile</a></li>
+		<li><a href="fImage">fImage</a></li>
+		<li><a href="fMailbox">fMailbox</a></li>
+		<li><a href="fORMDatabase">fORMDatabase</a></li>
+		<li><a href="fResult">fResult</a></li>
+		<li><a href="fSMTP">fSMTP</a></li>
+		<li><a href="fSQLTranslation">fSQLTranslation</a></li>
+		<li><a href="fStatement">fStatement</a></li>
+		<li><a href="fTemplating">fTemplating</a></li>
+		<li><a href="fTime">fTime</a></li>
+		<li><a href="fTimestamp">fTimestamp</a></li>
+		<li><a href="fUTF8">fUTF8</a></li>
+		<li><a href="fUnbufferedResult">fUnbufferedResult</a></li>
+		<li><a href="fXML">fXML</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b24</span></div>
+<p class="short_description">Provides low-level debugging, error and exception functionality</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b24</th><td>Backwards Compatibility Break - moved detectOpcodeCache() to <a href="fLoader#hasOpcodeCache"><tt>fLoader::hasOpcodeCache()</tt></a> <span class="date">8/26/11</span></td></tr><tr><th>1.0.0b23</th><td>Backwards Compatibility Break - changed the email subject of error/exception emails to include relevant file info, instead of the timestamp, for better email message threading <span class="date">6/20/11</span></td></tr><tr><th>1.0.0b22</th><td>Fixed a bug with dumping arrays containing integers <span class="date">5/26/11</span></td></tr><tr><th>1.0.0b21</th><td>Changed <a href="#startErrorCapture"><tt>startErrorCapture()</tt></a> to allow &quot;stacking&quot; it via multiple calls, fixed a couple of bugs with <a href="#dump"><tt>dump()</tt></a> mangling strings in the form <tt>int(1)</tt>, fixed mispelling of <tt>occurred</tt> <span class="date">5/9/11</span></td></tr><tr><th>1.0.0b20</th><td>Backwards Compatibility Break - Updated <a href="#expose"><tt>expose()</tt></a> to not wrap the data in HTML when running via CLI, and instead just append a newline <span class="date">2/24/11</span></td></tr><tr><th>1.0.0b19</th><td>Added detection of AIX to <a href="#checkOS"><tt>checkOS()</tt></a> <span class="date">1/19/11</span></td></tr><tr><th>1.0.0b18</th><td>Updated <a href="#expose"><tt>expose()</tt></a> to be able to accept multiple parameters <span class="date">1/10/11</span></td></tr><tr><th>1.0.0b17</th><td>Fixed a bug with <a href="#backtrace"><tt>backtrace()</tt></a> triggering notices when an argument is not UTF-8 <span class="date">8/17/10</span></td></tr><tr><th>1.0.0b16</th><td>Added the <tt>$types</tt> and <tt>$regex</tt> parameters to <a href="#startErrorCapture"><tt>startErrorCapture()</tt></a> and the <tt>$regex</tt> parameter to <a href="#stopErrorCapture"><tt>stopErrorCapture()</tt></a> <span class="date">8/9/10</span></td></tr><tr><th>1.0.0b15</th><td>Added <a href="#startErrorCapture"><tt>startErrorCapture()</tt></a> and <a href="#stopErrorCapture"><tt>stopErrorCapture()</tt></a> <span class="date">7/5/10</span></td></tr><tr><th>1.0.0b14</th><td>Changed <a href="#enableExceptionHandling"><tt>enableExceptionHandling()</tt></a> to only call <a href="fException#printMessage"><tt>fException::printMessage()</tt></a> when the destination is not <tt>html</tt> and no callback has been defined, added <a href="#configureSMTP"><tt>configureSMTP()</tt></a> to allow using <a href="fSMTP">fSMTP</a> for error and exception emails <span class="date">6/4/10</span></td></tr><tr><th>1.0.0b13</th><td>Added the <tt>$backtrace</tt> parameter to <a href="#backtrace"><tt>backtrace()</tt></a> <span class="date">3/5/10</span></td></tr><tr><th>1.0.0b12</th><td>Added <a href="#getDebug"><tt>getDebug()</tt></a> to check for the global debugging flag, added more specific BSD checks to <a href="#checkOS"><tt>checkOS()</tt></a> <span class="date">3/2/10</span></td></tr><tr><th>1.0.0b11</th><td>Added detectOpcodeCache() <span class="date">10/6/09</span></td></tr><tr><th>1.0.0b10</th><td>Fixed <a href="#expose"><tt>expose()</tt></a> to properly display when output includes non-UTF-8 binary data <span class="date">6/29/09</span></td></tr><tr><th>1.0.0b9</th><td>Added <a href="#disableContext"><tt>disableContext()</tt></a> to remove context info for exception/error handling, tweaked output for exceptions/errors <span class="date">6/28/09</span></td></tr><tr><th>1.0.0b8</th><td><a href="#enableErrorHandling"><tt>enableErrorHandling()</tt></a> and <a href="#enableExceptionHandling"><tt>enableExceptionHandling()</tt></a> now accept multiple email addresses, and a much wider range of emails <span class="date">6/1/09</span></td></tr><tr><th>1.0.0b7</th><td><a href="#backtrace"><tt>backtrace()</tt></a> now properly replaces document root with {doc_root} on Windows <span class="date">5/2/09</span></td></tr><tr><th>1.0.0b6</th><td>Fixed a bug with getting the server name for error messages when running on the command line <span class="date">3/11/09</span></td></tr><tr><th>1.0.0b5</th><td>Fixed a bug with checking the error/exception destination when a log file is specified <span class="date">3/7/09</span></td></tr><tr><th>1.0.0b4</th><td>Backwards compatibility break - getOS() and getPHPVersion() removed, replaced with <a href="#checkOS"><tt>checkOS()</tt></a> and <a href="#checkVersion"><tt>checkVersion()</tt></a> <span class="date">2/16/09</span></td></tr><tr><th>1.0.0b3</th><td><a href="#handleError"><tt>handleError()</tt></a> now displays what kind of error occurred as the heading <span class="date">2/15/09</span></td></tr><tr><th>1.0.0b2</th><td>Added <a href="#registerDebugCallback"><tt>registerDebugCallback()</tt></a> <span class="date">2/7/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">9/25/07</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="backtrace" class="method static"><span class="resolution">::</span><span class="name">backtrace()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Creates a nicely formatted backtrace to the the point where this method is called</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">backtrace</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$remove_lines</span><span class="php-code">=</span>0<span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$backtrace</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$remove_lines</td>
+				<td class="param_description">The number of trailing lines to remove from the backtrace</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$backtrace</td>
+				<td class="param_description">A backtrace from <a class="ext-link" href="http://php.net/backtrace"><span class="icon"><tt>debug_backtrace()</tt></span></a> to format - this is not usually required or desired</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The formatted backtrace
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="call" class="method static"><span class="resolution">::</span><span class="name">call()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Performs a <a class="ext-link" href="http://php.net/call_user_func"><span class="icon"><tt>call_user_func()</tt></span></a>, while translating PHP 5.2 static callback syntax for PHP 5.1 and 5.0</p>
+								<p>Parameters can be passed either as a single array of parameters or as  multiple parameters.</p><pre class="block php"><code>// Passing multiple parameters in a normal fashion
+fCore::call('Class::method', TRUE, 0, 'test');
+// Passing multiple parameters in a parameters array
+fCore::call('Class::method', array(TRUE, 0, 'test'));</code></pre><p>To pass parameters by reference they must be assigned to an  array by reference and the function/method being called must accept those  parameters by reference. If either condition is not met, the parameter  will be passed by value.</p><pre class="block php"><code>// Passing parameters by reference
+fCore::call('Class::method', array(&$var1, &$var2));</code></pre>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">call</span><span class="php-brackets">(</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span><span class="php-code">=</span>array() <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The function or method to call</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters to pass to the function/method</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The return value of the called function/method
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="callback" class="method static"><span class="resolution">::</span><span class="name">callback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Translates a Class::method style static method callback to array style for compatibility with PHP 5.0 and 5.1 and built-in PHP functions</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">callback</span><span class="php-brackets">(</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">The callback to translate</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The translated callback
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="checkOS" class="method static"><span class="resolution">::</span><span class="name">checkOS()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Returns is the current OS is one of the OSes passed as a parameter</p>
+								<p>Valid OS strings are:</p><ul><li><tt>'linux'</tt></li><li><tt>'aix'</tt></li><li><tt>'bsd'</tt></li><li><tt>'freebsd'</tt></li><li><tt>'netbsd'</tt></li><li><tt>'openbsd'</tt></li><li><tt>'osx'</tt></li><li><tt>'solaris'</tt></li><li><tt>'windows'</tt></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">checkOS</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$os</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$os <em>[, ... ]</em></td>
+				<td class="param_description">The operating system to check - see method description for valid OSes</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the current OS is included in the list of OSes passed as parameters
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="checkVersion" class="method static"><span class="resolution">::</span><span class="name">checkVersion()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Checks to see if the running version of PHP is greater or equal to the version passed</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">checkVersion</span><span class="php-brackets">(</span> <span class="php-vartype"></span> <span class="php-var">$version</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"></td>
+				<td class="param_name">$version</td>
+				<td class="param_description"></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the running version of PHP is greater or equal to the version passed
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="configureSMTP" class="method static"><span class="resolution">::</span><span class="name">configureSMTP()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets an <a href="fSMTP">fSMTP</a> object to be used for sending error and exception emails</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">configureSMTP</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSMTP">fSMTP</a></span> <span class="php-var">$smtp</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$from_email</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSMTP">fSMTP</a></td>
+				<td class="param_name">$smtp</td>
+				<td class="param_description">The SMTP connection to send emails over</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$from_email</td>
+				<td class="param_description">The email address to use in the <tt>From:</tt> header</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="debug" class="method static"><span class="resolution">::</span><span class="name">debug()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Prints a debugging message if global or code-specific debugging is enabled</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">debug</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$force</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The debug message</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$force</td>
+				<td class="param_description">If debugging should be forced even when global debugging is off</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="disableContext" class="method static"><span class="resolution">::</span><span class="name">disableContext()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Disables including the context information with exception and error messages</p>
+								<p>The context information includes the following superglobals:  </p><ul><li><tt>$_SERVER</tt></li><li><tt>$_POST</tt></li><li><tt>$_GET</tt></li><li><tt>$_SESSION</tt></li><li><tt>$_FILES</tt></li><li><tt>$_COOKIE</tt></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">disableContext</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="dump" class="method static"><span class="resolution">::</span><span class="name">dump()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Creates a string representation of any variable using predefined strings for booleans, <tt>NULL</tt> and empty strings</p>
+								<p>The string output format of this method is very similar to the output of  <a class="ext-link" href="http://php.net/print_r"><span class="icon"><tt>print_r()</tt></span></a> except that the following values  are represented as special strings:    </p><ul><li><tt>TRUE</tt>: <tt>'{true}'</tt></li><li><tt>FALSE</tt>: <tt>'{false}'</tt></li><li><tt>NULL</tt>: <tt>'{null}'</tt></li><li><tt>''</tt>: <tt>'{empty_string}'</tt></li></ul>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">dump</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$data</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$data</td>
+				<td class="param_description">The value to dump</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The string representation of the value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="enableDebugging" class="method static"><span class="resolution">::</span><span class="name">enableDebugging()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Enables debug messages globally, i.e. they will be shown for any call to debug()</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableDebugging</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$flag</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$flag</td>
+				<td class="param_description">If debugging messages should be shown</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="enableDynamicConstants" class="method static"><span class="resolution">::</span><span class="name">enableDynamicConstants()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Turns on a feature where undefined constants are automatically created with the string value equivalent to the name</p>
+								<p>This functionality only works if <a href="#enableErrorHandling"><tt>enableErrorHandling()</tt></a> has been  called first. This functionality may have a very slight performance  impact since a <tt>E_STRICT</tt> error message must be captured and then a  call to <a class="ext-link" href="http://php.net/define"><span class="icon"><tt>define()</tt></span></a> is made.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableDynamicConstants</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="enableErrorHandling" class="method static"><span class="resolution">::</span><span class="name">enableErrorHandling()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Turns on developer-friendly error handling that includes context information including a backtrace and superglobal dumps</p>
+								<p>All errors that match the current  <a class="ext-link" href="http://php.net/error_reporting"><span class="icon"><tt>error_reporting()</tt></span></a> level will be  redirected to the destination and will include a full backtrace. In  addition, dumps of the following superglobals will be made to aid in  debugging:  </p><ul><li><tt>$_SERVER</tt></li><li><tt>$_POST</tt></li><li><tt>$_GET</tt></li><li><tt>$_SESSION</tt></li><li><tt>$_FILES</tt></li><li><tt>$_COOKIE</tt></li></ul><p>The superglobal dumps are only done once per page, however a backtrace  in included for each error.</p><p>If an email address is specified for the destination, only one email  will be sent per script execution. If both error and  <a href="#enableExceptionHandling">exception handling</a> are set to the same  email address, the email will contain both errors and exceptions.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableErrorHandling</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$destination</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$destination</td>
+				<td class="param_description">The destination for the errors and context information - an email address, a file path or the string <tt>'html'</tt></td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="enableExceptionHandling" class="method static"><span class="resolution">::</span><span class="name">enableExceptionHandling()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Turns on developer-friendly uncaught exception handling that includes context information including a backtrace and superglobal dumps</p>
+								<p>Any uncaught exception will be redirected to the destination specified,  and the page will execute the <tt>$closing_code</tt> callback before exiting.  The destination will receive a message with the exception messaage, a  full backtrace and dumps of the following superglobals to aid in  debugging:  </p><ul><li><tt>$_SERVER</tt></li><li><tt>$_POST</tt></li><li><tt>$_GET</tt></li><li><tt>$_SESSION</tt></li><li><tt>$_FILES</tt></li><li><tt>$_COOKIE</tt></li></ul><p>The superglobal dumps are only done once per page, however a backtrace  in included for each error.</p><p>If an email address is specified for the destination, only one email  will be sent per script execution.</p><p>If an email address is specified for the destination, only one email  will be sent per script execution. If both exception and  <a href="#enableErrorHandling">error handling</a> are set to the same  email address, the email will contain both exceptions and errors.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">enableExceptionHandling</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$destination</span><span class="php-code">,</span> <span class="php-vartype">callback</span> <span class="php-var">$closing_code</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$parameters</span><span class="php-code">=</span>array() <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$destination</td>
+				<td class="param_description">The destination for the exception and context information - an email address, a file path or the string <tt>'html'</tt></td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$closing_code</td>
+				<td class="param_description">This callback will happen after the exception is handled and before page execution stops. Good for printing a footer. If no callback is provided and the exception extends <a href="fException">fException</a>, <a href="fException#printMessage"><tt>fException::printMessage()</tt></a> will be called.</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$parameters</td>
+				<td class="param_description">The parameters to send to <tt>$closing_code</tt></td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="expose" class="method static"><span class="resolution">::</span><span class="name">expose()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Prints the dump() of a value</p>
+								<p>The dump will be printed in a <tt>&lt;pre&gt;</tt> tag with the class <tt>exposed</tt> if  PHP is running anywhere but via the command line (cli). If PHP is  running via the cli, the data will be printed, followed by a single  line break (<tt>\n</tt>).</p><p>If multiple parameters are passed, they are exposed as an array.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">expose</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$data</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$data <em>[, ... ]</em></td>
+				<td class="param_description">The value to show</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="getDebug" class="method static"><span class="resolution">::</span><span class="name">getDebug()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>If debugging is enabled</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">getDebug</span><span class="php-brackets">(</span> <span class="php-vartype">boolean</span> <span class="php-var">$force</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$force</td>
+				<td class="param_description">If debugging is forced</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If debugging is enabled
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="handleError" class="protected method static"><span class="resolution">::</span><span class="name">handleError()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Handles an error, creating the necessary context information and sending it to the specified destination</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">handleError</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$error_number</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$error_string</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$error_file</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">integer</span> <span class="php-var">$error_line</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$error_context</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$error_number</td>
+				<td class="param_description">The error type</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$error_string</td>
+				<td class="param_description">The message for the error</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$error_file</td>
+				<td class="param_description">The file the error occurred in</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$error_line</td>
+				<td class="param_description">The line the error occurred on</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$error_context</td>
+				<td class="param_description">A references to all variables in scope at the occurence of the error</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="handleException" class="protected method static"><span class="resolution">::</span><span class="name">handleException()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Handles an uncaught exception, creating the necessary context information, sending it to the specified destination and finally executing the closing callback</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">handleException</span><span class="php-brackets">(</span> <span class="php-vartype">object</span> <span class="php-var">$exception</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">object</td>
+				<td class="param_name">$exception</td>
+				<td class="param_description">The uncaught exception to handle</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="registerDebugCallback" class="method static"><span class="resolution">::</span><span class="name">registerDebugCallback()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Registers a callback to handle debug messages instead of the default action of calling expose() on the message</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">registerDebugCallback</span><span class="php-brackets">(</span> <span class="php-vartype">callback</span> <span class="php-var">$callback</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">callback</td>
+				<td class="param_name">$callback</td>
+				<td class="param_description">A callback that accepts a single parameter, the string debug message to handle</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="sendMessagesOnShutdown" class="protected method static"><span class="resolution">::</span><span class="name">sendMessagesOnShutdown()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sends an email or writes a file with messages generated during the page execution</p>
+								<p>This method prevents multiple emails from being sent or a log file from  being written multiple times for one script execution.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">sendMessagesOnShutdown</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="startErrorCapture" class="method static"><span class="resolution">::</span><span class="name">startErrorCapture()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Temporarily enables capturing error messages</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">startErrorCapture</span><span class="php-brackets">(</span> <span class="php-vartype">integer</span> <span class="php-var">$types</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$regex</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">integer</td>
+				<td class="param_name">$types</td>
+				<td class="param_description">The error types to capture - this should be as specific as possible - defaults to all (E_ALL | E_STRICT)</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$regex</td>
+				<td class="param_description">A PCRE regex to match against the error message</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="stopErrorCapture" class="method static"><span class="resolution">::</span><span class="name">stopErrorCapture()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Stops capturing error messages, returning all that have been captured</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array</span> <span class="php-identifier">stopErrorCapture</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$regex</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$regex</td>
+				<td class="param_description">A PCRE regex to filter messages by</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The captured error messages
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

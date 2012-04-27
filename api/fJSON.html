@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fJSON – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fJSON</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fJSON">Class Documentation</a></li>
+		<li><strong><a href="/api/fJSON">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fJSON.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="protected consts">
+<h2><a href="#class_consts">Constants</a></h2>
+<ul>
+    <li class="protected"><a href="#J_ARRAY_CLOSE">J_ARRAY_CLOSE</a></li>
+    <li class="protected"><a href="#J_ARRAY_COMMA">J_ARRAY_COMMA</a></li>
+    <li class="protected"><a href="#J_ARRAY_OPEN">J_ARRAY_OPEN</a></li>
+    <li class="protected"><a href="#J_COLON">J_COLON</a></li>
+    <li class="protected"><a href="#J_FALSE">J_FALSE</a></li>
+    <li class="protected"><a href="#J_FLOAT">J_FLOAT</a></li>
+    <li class="protected"><a href="#J_INTEGER">J_INTEGER</a></li>
+    <li class="protected"><a href="#J_KEY">J_KEY</a></li>
+    <li class="protected"><a href="#J_NULL">J_NULL</a></li>
+    <li class="protected"><a href="#J_OBJ_CLOSE">J_OBJ_CLOSE</a></li>
+    <li class="protected"><a href="#J_OBJ_COMMA">J_OBJ_COMMA</a></li>
+    <li class="protected"><a href="#J_OBJ_OPEN">J_OBJ_OPEN</a></li>
+    <li class="protected"><a href="#J_STRING">J_STRING</a></li>
+    <li class="protected"><a href="#J_TRUE">J_TRUE</a></li>
+  </ul>
+</div>
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  			<li><a href="#decode">decode()</a></li>
+	  			<li><a href="#encode">encode()</a></li>
+	  			<li><a href="#output">output()</a></li>
+	  			<li><a href="#sendHeader">sendHeader()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fUTF8">fUTF8</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fORMJSON">fORMJSON</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">static class</span>,
+		<span class="version">v1.0.0b6</span></div>
+<p class="short_description">Provides encoding and decoding for JSON</p>
+<div class="description"><p>This class is a compatibility class for the  <a class="ext-link" href="http://php.net/json"><span class="icon">json extension</span></a> on servers with PHP 5.0 or 5.1, or  servers with the json extension compiled out.</p><p>This class will handle JSON values that are not contained in an array or  object - such values are not valid according to the JSON spec, but the  functionality is included for compatiblity with the json extension.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b6</th><td>Removed <tt>e</tt> flag from preg_replace() calls <span class="date">6/8/10</span></td></tr><tr><th>1.0.0b5</th><td>Added the <a href="#output"><tt>output()</tt></a> method <span class="date">3/15/10</span></td></tr><tr><th>1.0.0b4</th><td>Fixed a bug with <a href="#decode"><tt>decode()</tt></a> where JSON objects could lose all but the first key: value pair <span class="date">5/6/09</span></td></tr><tr><th>1.0.0b3</th><td>Updated the class to be consistent with PHP 5.2.9+ for encoding and decoding invalid data <span class="date">5/4/09</span></td></tr><tr><th>1.0.0b2</th><td>Changed @ error suppression operator to <tt>error_reporting()</tt> calls <span class="date">1/26/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">7/12/08</span></td></tr></table></div>
+<div class="class_consts" id="class_consts">
+<h2>Constants</h2>
+  <!-- start protected constant -->
+<h3 id="J_ARRAY_CLOSE" class="protected constant"><span class="resolution">::</span><span class="name">J_ARRAY_CLOSE</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of ]</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_ARRAY_COMMA" class="protected constant"><span class="resolution">::</span><span class="name">J_ARRAY_COMMA</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of , in a JSON array</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_ARRAY_OPEN" class="protected constant"><span class="resolution">::</span><span class="name">J_ARRAY_OPEN</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of [</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_COLON" class="protected constant"><span class="resolution">::</span><span class="name">J_COLON</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of :</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_FALSE" class="protected constant"><span class="resolution">::</span><span class="name">J_FALSE</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of a boolean false</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_FLOAT" class="protected constant"><span class="resolution">::</span><span class="name">J_FLOAT</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of a floating value</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_INTEGER" class="protected constant"><span class="resolution">::</span><span class="name">J_INTEGER</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of an integer</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_KEY" class="protected constant"><span class="resolution">::</span><span class="name">J_KEY</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of a JSON object key</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_NULL" class="protected constant"><span class="resolution">::</span><span class="name">J_NULL</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of null</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_OBJ_CLOSE" class="protected constant"><span class="resolution">::</span><span class="name">J_OBJ_CLOSE</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of }</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_OBJ_COMMA" class="protected constant"><span class="resolution">::</span><span class="name">J_OBJ_COMMA</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of , in a JSON object</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_OBJ_OPEN" class="protected constant"><span class="resolution">::</span><span class="name">J_OBJ_OPEN</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of {</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_STRING" class="protected constant"><span class="resolution">::</span><span class="name">J_STRING</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of a string</p>
+		</div>
+</div>
+<!-- end constant -->
+  <!-- start protected constant -->
+<h3 id="J_TRUE" class="protected constant"><span class="resolution">::</span><span class="name">J_TRUE</span> <span class="visibility">internal</span></h3>
+<div class="protected constant">
+		<div class="internal_notice">
+		<p>
+			<em>Please note: this constant is primarily intended for internal 
+			use by Flourish and will normally not be useful in site/application
+			code</em>
+		</p>
+	</div>
+			<div class="constant_description">
+					<p>An abstract representation of a boolean true</p>
+		</div>
+</div>
+<!-- end constant -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start method static -->
+			<h3 id="decode" class="method static"><span class="resolution">::</span><span class="name">decode()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Decodes a JSON string into native PHP data types</p>
+								<p>This function is very strict about the format of JSON. If the string is  not a valid JSON string, <tt>NULL</tt> will be returned.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array|stdClass</span> <span class="php-identifier">decode</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$json</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$assoc</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$json</td>
+				<td class="param_description">This should be the name of a related class</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$assoc</td>
+				<td class="param_description">If this is TRUE, JSON objects will be represented as an assocative array instead of a <tt>stdClass</tt> object</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					A PHP equivalent of the JSON string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="encode" class="method static"><span class="resolution">::</span><span class="name">encode()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Encodes a PHP value into a JSON string</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">encode</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The PHP value to encode</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The JSON string that is equivalent to the PHP value
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="output" class="method static"><span class="resolution">::</span><span class="name">output()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the proper <tt>Content-Type</tt> header and outputs the value, encoded as JSON</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">output</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The PHP value to output as JSON</td>
+			  </tr>
+						</table>
+			</div>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="sendHeader" class="method static"><span class="resolution">::</span><span class="name">sendHeader()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the proper <tt>Content-Type</tt> header for UTF-8 encoded JSON</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">sendHeader</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+	</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

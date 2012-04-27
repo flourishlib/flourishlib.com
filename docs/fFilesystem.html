@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fFilesystem – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fFilesystem">fFilesystem</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fFilesystem">Class Documentation</a></strong></li>
+<li><a href="/api/fFilesystem">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fFilesystem.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#CreatingObjects">Creating Objects</a></li>
+<li><a href="#Transactions">Transactions</a></li>
+<li><a href="#FilePaths">File Paths</a>
+<ul>
+<li><a href="#HelperMethods">Helper Methods</a></li>
+<li><a href="#Translation">Translation</a></li>
+</ul>
+</li>
+<li><a href="#FileSizes">File Sizes</a></li>
+</ul>
+
+<h2 id="FilesystemClasses">Filesystem Classes </h2>
+
+<ul>
+<li><strong>fFilesystem</strong></li>
+<li><a href="/docs/fFile">fFile</a>
+<ul>
+<li><a href="/docs/fImage">fImage</a></li>
+</ul>
+</li>
+<li><a href="/docs/fDirectory">fDirectory</a></li>
+<li><a href="/docs/fUpload">fUpload</a></li>
+</ul>
+</div>
+
+<p>
+The fFilesystem class is a static class that provides filesystem level functionality, including the ability to bundle operations into transactions.
+</p>
+
+<h2 id="CreatingObjects">Creating Objects</h2>
+
+<p>
+The static method <a href="/api/fFilesystem#createObject"><code>createObject()</code></a> acts as a factory to create the appropriate filesystem object when dealing with paths that may contain a directory, image or file.
+</p>
+
+<p>
+In the case that a directory is detected, an <a href="/docs/fDirectory">fDirectory</a> object will be returned. In the case that a file that is compatible with the <a href="/docs/fImage">fImage</a> object is detected, an <a href="/docs/fImage">fImage</a> object will be returned. If neither of those conditions hold true, an <a href="/docs/fFile">fFile</a> object will be returned.
+</p>
+<pre class="block php"><code>// This would return an fImage object
+$file = fFilesystem::createObject('./path/to/image.jpg');
+
+// This would return an fFile object
+$file = fFilesystem::createObject('./path/to/info.txt');
+
+// This would return an fDirectory object
+$dir  = fFilesystem::createObject('./path/to/dir/');</code></pre>
+
+<h2 id="Transactions">Transactions</h2>
+
+<p>
+When speaking of ACID-compliant relational databases, transactions are one of the key elements. The fFilesystem class provides transaction-like functionality for filesystem operations. <em>Please note that the level of transactional features is <strong>nothing</strong> like an ACID-compliant RDBMS. If the web server crashes or exits in the middle of a transaction, the changes made to that point will be permanent. Please see below for a list of exactly what is affected by filesystem transactions.</em> 
+</p>
+
+<p>
+There are four methods used when dealing with filesystem transactions:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fFilesystem#begin"><code>begin()</code></a></td>
+<td>Begins a transaction, indicating that all following Flourish filesystem operations should be grouped together for the purposes of rolling back or committing them.</td>
+</tr>
+<tr>
+<td><a href="/api/fFilesystem#rollback"><code>rollback()</code></a></td>
+<td>Allows all changes since the transaction was started to be reversed.</td>
+</tr>
+<tr>
+<td><a href="/api/fFilesystem#commit"><code>commit()</code></a></td>
+<td>Causes all pending operations (such as deletes) to actually be performed.</td>
+</tr>
+<tr>
+<td><a href="/api/fFilesystem#isInsideTransaction"><code>isInsideTransaction()</code></a></td>
+<td>Indicates if a transaction has been started but not rolled back or committed yet.</td>
+</tr>
+</tbody></table>
+
+<p>
+Here is a list of how the various <a href="/docs/fDirectory">fDirectory</a>, <a href="/docs/fFile">fFile</a> and <a href="/docs/fImage">fImage</a> methods are affected by filesystem transactions:
+</p>
+<table><tbody>
+<tr>
+<td><strong>Method</strong></td>
+<td><strong>Active Transaction Behaviour</strong></td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#delete">fDirectory::delete()</a></td>
+<td>Directory will not be deleted from the filesystem until transaction is committed, however trying to manipulate the directory (or an sub-files or directories) via the Flourish filesystem classes will result in an exception being thrown.</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#getSize">fDirectory::getSize()</a></td>
+<td>The disk usage returned will include files that have been deleted during the current transaction and also placeholder files that have not yet been deleted.</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#rename">fDirectory::rename()</a></td>
+<td>Directory will be renamed immediately, however a small file will be written to the old directory name to allow for a rollback to revert the directory name. The small placeholder file is deleted when a transaction is committed.</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#scan">fDirectory::scan()</a></td>
+<td>A list of all file and folders contained within the directory will be returned, including files that have been deleted and placeholder files.</td>
+</tr>
+<tr>
+<td><a href="/api/fDirectory#scanRecursive">fDirectory::scanRecursive()</a></td>
+<td>A list of all file and folders contained within the directory (and all sub-directories) will be returned, including files that have been deleted and placeholder files.</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#delete">fFile::delete()</a></td>
+<td>File will not be deleted from the filesystem until transaction is committed, however trying to manipulate the file via the Flourish filesystem classes will result in an exception being thrown.</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#duplicate">fFile::duplicate()</a></td>
+<td>File will be duplicated immediately, however the copy will be deleted if the transaction is rolled back.</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#read">fFile::read()</a></td>
+<td>Will always read the most recently written file contents.</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#rename">fFile::rename()</a></td>
+<td>File will be renamed immediately, however a small file will be written to the old filename to allow for a rollback to revert the filename. The small placeholder file is deleted when a transaction is committed.</td>
+</tr>
+<tr>
+<td><a href="/api/fFile#write">fFile::write()</a></td>
+<td>The new file contents will be written to the file immediately, however the old file contents are saved to allow a rollback to restore the file to its original state. Warning: Large file contents can quickly increase the memory usage of PHP since the original contents are stored in memory.</td>
+</tr>
+<tr>
+<td><a href="/api/fImage#saveChanges">fImage::saveChanges()</a></td>
+<td>The image changes will be written to disk immediately. If the new image name is the same as the old one, the old file contents will be kept in memory in case of a rollback. If the new image name is different than the old one, the old file will be kept until the transaction is committed.</td>
+</tr>
+</tbody></table>
+
+<h2 id="FilePaths">File Paths</h2>
+
+<h3 id="HelperMethods">Helper Methods</h3>
+
+<p>
+fFilesystem provides three helper functions for dealing with file paths, <a href="/api/fFilesystem#getPathInfo"><code>getPathInfo()</code></a>, <a href="/api/fFilesystem#makeUniqueName"><code>makeUniqueName()</code></a> and <a href="/api/fFilesystem#makeURLSafe"><code>makeURLSafe()</code></a>.
+</p>
+
+<p>
+<code>getPathInfo()</code> provides basically the same functionality as the PHP function <a href="http://php.net/pathinfo">pathinfo()</a>, however it provides the <code>filename</code> element for PHP 5.1 and also returns the <code>dirname</code> element with a trailing slash.
+</p>
+
+<p>
+<code>makeUniqueName()</code> requires a single parameter, <code>$file</code>, to specify the desired filename, and optionally allows a second parameter, <code>$extension</code>, which allows a new file extension to be specified. If a file (or directory) with the path of <code>$file</code> exists, a new filename will be created by appending <code>_copy#</code>. If <code>$extension</code> is provided, the desired filename will use that extension instead of the one included in <code>$file</code>.
+</p>
+
+<p>
+<code>makeURLSafe()</code> accepts a <code>$filename</code> and changes it to only include lower case characters, numbers and the <code>_</code>, <code>-</code> and <code>.</code> characters.
+</p>
+
+<h3 id="Translation">Translation</h3>
+
+<p>
+When displaying filesystem paths to access resources on the web, translation must occur. The static method <a href="/api/fFilesystem#translateToWebPath"><code>translateToWebPath()</code></a> accepts a filesystem path and returns the equivalent web server path. By default it simply removes the <code>$_SERVER['DOCUMENT_ROOT']</code>. Additional translations can be set up by passing the <code>$search</code> string and <code>$replace</code> strings to the static method <a href="/api/fFilesystem#addWebPathTranslation"><code>addWebPathTranslation()</code></a>.
+</p>
+
+<p>
+Normally it would make sense to define the translations in the site config file, while <code>translateToWebPath()</code> would be used in the page code.
+</p>
+<pre class="block php"><code>// Config file
+fFilesystem::addWebPathTranslation('/var/www/vhosts/example.com/assets', '');</code></pre>
+<pre class="block html"><code>&lt;ul&gt;
+    &lt;?
+    foreach ($files as $file) {
+        ?&gt;
+        &lt;li&gt;&lt;a href=&quot;&lt;?php echo fFilesystem::translateToWebPath($file-&gt;getPath()) ?&gt;&quot;&gt;&lt;?php echo $file-&gt;getName() ?&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;?
+    }
+    ?&gt;
+&lt;/ul&gt;</code></pre>
+
+<h2 id="FileSizes">File Sizes</h2>
+
+<p>
+In addition to some file path helpers, fFilesystem provides two methods to assist with file size manipulation. The method <a href="/api/fFilesystem#formatFilesize"><code>formatFilesize()</code></a> accepts a filesize in bytes and will return a human-readable size such as <code>2.1tb</code> or <code>5.6mb</code>. <a href="/api/fFilesystem#convertToBytes"><code>convertToBytes()</code></a> takes a human-readable filesize such as <code>200k</code> or <code>1.3GB</code> and converts it into bytes.
+</p>
+
+<p>
+<code>formatFilesize()</code> accepts up to two parameters with the first, <code>$bytes</code>, being the filesize of the file/directory in bytes and the second optional parameter, <code>$decimal_places</code>, being the number of decimal places to show for the formatted file size.
+</p>
+
+<p>
+<code>convertToBytes()</code> accepts just a single parameters, <code>$size</code>, which can be any human-readable filesize that includes units of measure such as <code>k</code>, <code>kilo</code>, <code>m</code>, <code>mega</code>, <code>g</code>, <code>giga</code>, <code>t</code>, <code>tera</code>, <code>b</code> and <code>bytes</code>. The result of the method is the filesize converted into bytes.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

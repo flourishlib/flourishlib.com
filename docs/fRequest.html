@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fRequest – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fRequest">fRequest</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fRequest">Class Documentation</a></strong></li>
+<li><a href="/api/fRequest">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fRequest.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#GettingValues">Getting Values</a>
+<ul>
+<li><a href="#InputFilteringbyTypecastingSecurity">Input Filtering by Typecasting (Security)</a></li>
+<li><a href="#SpecialDataTypeHandling">Special Data Type Handling</a>
+<ul>
+<li><a href="#Arrays">Arrays</a></li>
+<li><a href="#Binary">Binary</a></li>
+<li><a href="#Booleans">Booleans</a></li>
+<li><a href="#DatesTimesTimestamps">Dates/Times/Timestamps</a></li>
+<li><a href="#Integers">Integers</a></li>
+<li><a href="#Strings">Strings</a></li>
+</ul>
+</li>
+<li><a href="#AllowingNull">Allowing Null</a></li>
+<li><a href="#StrictArrays">Strict Arrays</a></li>
+<li><a href="#RestrictingValidValues">Restricting Valid Values</a></li>
+<li><a href="#EscapingforHTMLOutput">Escaping for HTML Output</a></li>
+</ul>
+</li>
+<li><a href="#SettingValues">Setting Values</a></li>
+<li><a href="#ArrayDereferencing">Array Dereferencing</a></li>
+<li><a href="#PreventingCSRFSecurity">Preventing CSRF (Security)</a></li>
+<li><a href="#CheckingTheHTTPMethod">Checking The HTTP Method</a></li>
+<li><a href="#RetrievingHTTPAcceptValues">Retrieving HTTP Accept Values</a></li>
+<li><a href="#MultipleSubmitButtons">Multiple Submit Buttons</a></li>
+</ul>
+</div>
+
+<p>
+The fRequest class is a static class that allows access to data sent via <code>GET</code>, <code>POST</code>, <code>PUT</code> and <code>DELETE</code> HTTP requests. It also provides functionality to determine the HTTP method used and retrieve relevant <code>Accept</code> and <code>Accept-Language</code> values sent by the browser.
+</p>
+
+<h2 id="GettingValues">Getting Values</h2>
+
+<p>
+While fRequest does more than just get values, most developers will be primarily interested in the two methods <a href="/api/fRequest#get"><code>get()</code></a> and <a href="/api/fRequest#getValid"><code>getValid()</code></a>. Both methods pull values from the <code>$_GET</code> and <code>$_POST</code> superglobals and the <code>php://input</code> stream (for <code>PUT</code> and <code>DELETE</code> requests).
+</p>
+
+<p>
+The <code>get()</code> method will pull a value, but you can also typecast the value and provide a default. The first parameter, <code>$key</code>, specifies the key to get the value for. The second (optional) parameter, <code>$cast_to</code>, will set the data type of the value. It accepts any type string that is valid for the PHP function <code>settype()</code>. <code>NULL</code> can be used if no type casting should happen.
+</p>
+
+<p>
+The third (optional) parameter, <code>$default_value</code>, specifies what should be returned if the key is not found in <code>$_POST</code>, <code>$_GET</code> or <code>php://input</code>. The fourth (optional) parameter, <code>$use_default_for_blank</code>, causes the <code>$default</code> value to be returned if a blank string value was provided for the key, or the key is not found.
+</p>
+
+<p>
+Here are some examples:
+</p>
+<pre class="block php"><code>&lt;?php
+// The first_name field will be returned in whatever format was submitted - string or array
+$first_name = fRequest::get('first_name');
+
+// An array will always be returned, defaulting to an array of 1 if no value is provided
+$group_ids  = fRequest::get('group_ids', 'array', array(1));
+
+// Integer return value - 1 will be returned if no value, but a blank value will be cast to 0
+$user_id    = fRequest::get('user_id', 'integer', 1);
+
+// Integer return value -  1 will be returned if no value or a blank string is provided
+$total_cost = fRequest::get('total_cost', 'integer', 1, TRUE);
+?&gt;</code></pre>
+
+<h3 id="InputFilteringbyTypecastingSecurity">Input Filtering by Typecasting (Security)</h3>
+
+<p>
+An important aspect of the <a href="/api/fRequest#get"><code>get()</code></a> method is to use the <code>$cast_to</code> parameter whenever possible. This helps to restrict data coming in and is part of creating an effective solution against cross-site scripting.
+</p>
+<pre class="block php"><code>// IDs that can only ever be integers should be cast to integers
+$blog_id = fRequest::get('blog_id', 'integer');</code></pre>
+
+<p>
+ Currently the following data types are supported:
+</p>
+
+<ul>
+<li>array</li>
+<li>binary</li>
+<li>boolean</li>
+<li>date</li>
+<li>float</li>
+<li>integer</li>
+<li>integer!</li>
+<li>string</li>
+<li>time</li>
+<li>timestamp</li>
+</ul>
+
+<h3 id="SpecialDataTypeHandling">Special Data Type Handling</h3>
+
+<p>
+When accepting information from the user, different data types have to be handled differently. Of special note are arrays, binary, booleans, dates/times/timestamps, integers and strings.
+</p>
+
+<h4 id="Arrays">Arrays</h4>
+
+<p>
+For arrays, PHP will automatically create an array when input field names end with <code>[]</code>. Thus if you wanted to capture an array of groups ids, you could create a checkbox for each group id and give each one the name <code>group_ids[]</code>. When PHP parses the request data it will join all <code>group_ids[]</code> values into an array and assign it to the key <code>groups_ids</code> in the appropriate superglobal. 
+</p>
+
+<p>
+The array features mentioned above are built into PHP, however Flourish takes the array processing a step further. If a value is to be cast to an array, and is a string that contains commas, the string will be exploded on the comma character. Additionally, if an array contains a single entry of either a blank string or a <code>NULL</code> value, Flourish will return an empty array. This prevents having to manually filter arrays for meaningless values.
+</p>
+
+<p>
+See <a href="#StrictArrays">strict arrays</a> to create a single-dimensional array of a specific data type.
+</p>
+
+<h4 id="Binary">Binary</h4>
+
+<p>
+Binary data does not have any modification made to it when it is returned. There is no guarantee what encoding it will be in, and it may even contain null bytes. 
+</p>
+
+<h4 id="Booleans">Booleans</h4>
+
+<p>
+Booleans are interpreted from string values in as logical a way as possible. Empty values (according to PHPs <code>empty()</code> function) and the strings <code>'f'</code>, <code>'false'</code> and <code>'no'</code> (case-insensitive) will result in a <code>FALSE</code> value. This is obviously also the case if the key is not present in the request. Any other string value such as <code>'1'</code>, <code>'t'</code>, <code>'true'</code>, <code>'yes'</code>, etc. will be interpreted as a <code>TRUE</code> value.
+</p>
+
+<h4 id="DatesTimesTimestamps">Dates/Times/Timestamps</h4>
+
+<p>
+When the <code>date</code>, <code>time</code> and <code>timestamp</code> data types are specified, the returned values will be <a href="/docs/fDate">fDate</a>, <a href="/docs/fTime">fTime</a> and <a href="/docs/fTimestamp">fTimestamp</a> objects, respectively.
+</p>
+
+<h4 id="Integers">Integers</h4>
+
+<p>
+When the <code>integer</code> or <code>int</code> type is specified, all values are cast to a real PHP integer, except for large integer values, which are kept as strings. Large integer values are value that can not be represented by a PHP integer. If a real PHP integer is always required, the <code>integer!</code> type may be used instead. This type may cause the modification of some large integer values.
+</p>
+
+<h4 id="Strings">Strings</h4>
+
+<p>
+All strings that are passed through the <code>get()</code> method are expected to be UTF-8 and any invalid UTF-8 characters are removed by passing the data through <a href="/api/fUTF#clean">fUTF::clean()</a>. In addition to invalid UTF-8 byte sequences, all low byte non-printable characters are removed. This is true even if a value is not explicitly cast to a string, or if the string is contained inside of an array. <em>If you need raw data, use the <a href="#Binary">binary</a> type.</em>
+</p>
+
+<h3 id="AllowingNull">Allowing Null</h3>
+
+<p>
+When typecasting values, it is sometimes useful for the absence of a value to return <code>NULL</code>, while still casting all non-<code>NULL</code> values. By adding a <code>?</code> to the end of the data type, <code>NULL</code> will be returned if the key is not present in the request data, or if the value is an empty string <code>''</code>.
+</p>
+<pre class="block php"><code>// Get an integer or NULL
+$count = fRequest::get('count', 'integer?');
+
+// Get an fDate object or NULL
+$date  = fRequest::get('date', 'date?');</code></pre>
+
+<h3 id="StrictArrays">Strict Arrays</h3>
+
+<p>
+The <code>array</code> type ensures that the value returned will be an array containing string values, with an unlimited number of dimensions. It is also possible to add <code>[]</code> to the end of any other data type to return a <strong>single-dimensional</strong> array containing values of that type.
+</p>
+<pre class="block php"><code>// Return a single dimensional array of integers
+$ids = fRequest::get('ids', 'integer[]');</code></pre>
+
+<h3 id="RestrictingValidValues">Restricting Valid Values</h3>
+
+<p>
+The method <code>getValid()</code> simplifies the process a great deal by taking exactly two parameters, <code>$key</code>, the key to request the value for and <code>$valid_values</code>, an array of permissible values. If the value is not one of the valid value, the first valid value will be picked. Here is an example:
+</p>
+<pre class="block php"><code>&lt;?php
+// $action will get the value 'list' if no value was present
+$action = fRequest::getValid('action', array('list', 'search'));
+?&gt;</code></pre>
+
+<h3 id="EscapingforHTMLOutput">Escaping for HTML Output</h3>
+
+<p>
+The static methods <a href="/api/fRequest#encode"><code>encode()</code></a> and <a href="/api/fRequest#prepare"><code>prepare()</code></a> provide a simple short to calling <a href="/api/fRequest#get"><code>get()</code></a> and then wrapping the result in <a href="/api/fHTML#encode">fHTML::encode()</a> or <a href="/api/fHTML#prepare">fHTML::prepare()</a> respectively. These two methods have the exact same signature as <a href="/api/fRequest#get"><code>get()</code></a> and don't perform any processing other than passing the resulting value to <a href="/docs/fHTML">fHTML</a>.
+</p>
+<pre class="block php"><code>// Output a trusted value from the request
+echo fRequest::prepare('name');
+
+// Output an untrusted value from the request
+echo fRequest::encode('name');</code></pre>
+
+<p>
+ <em>Just as with <a href="/api/fHTML#prepare">fHTML::prepare()</a>, be sure to only ever use <a href="/api/fRequest#prepare"><code>prepare()</code></a> if the user input can be trusted. <code>prepare()</code> allows for HTML to be inserted into the page unescaped. If the input is untrusted, the <a href="/api/fRequest#encode"><code>encode()</code></a> method should be used instead.</em>
+</p>
+
+<h2 id="SettingValues">Setting Values</h2>
+
+<p>
+Sometimes when dealing with different input types, it is useful to be able to alter or fix the request data. The method <a href="/api/fRequest#set"><code>set()</code></a> allows a new value to be set to any key. It accepts two parameters, the <code>$key</code> to set and the <code>$value</code> to assign.
+</p>
+<pre class="block php"><code>if ($datetime = fRequest::get('date_time')) {
+    fRequest::set('date', date('Y-m-d', strtotime($datetime)));
+    fRequest::set('time', date('g:ia',  strtotime($datetime)));
+}</code></pre>
+
+<h2 id="ArrayDereferencing">Array Dereferencing</h2>
+
+<p>
+When a request value is an array, it is possible to use array dereference syntax in the field name to access a specific array key. This syntax works with <a href="/api/fRequest#get"><code>get()</code></a>, <a href="/api/fRequest#getValid"><code>getValid()</code></a>, <a href="/api/fRequest#set"><code>set()</code></a>, <a href="/api/fRequest#check"><code>check()</code></a>, <a href="/api/fRequest#encode"><code>encode()</code></a> and <a href="/api/fRequest#prepare"><code>prepare()</code></a>.
+</p>
+
+<p>
+An input using array notation will automatically be converted to an array when PHP processes the request. This means the following inputs:
+</p>
+<pre class="block html"><code>&lt;input name=&quot;users[first_name]&quot; value=&quot;John&quot; /&gt;
+&lt;input name=&quot;users[last_name]&quot; value=&quot;Smith&quot; /&gt;</code></pre>
+
+<p>
+ will cause the <code>$_POST</code> superglobal to contain:
+</p>
+<pre><code>array(
+    'user' =&gt; array(
+        'first_name' =&gt; 'John',
+        'last_name'  =&gt; 'Smith'
+    )
+)</code></pre>
+
+<p>
+ fRequest uses array dereference syntax that is identical to the <code>&lt;input&gt;</code> tag syntax.
+</p>
+<pre class="block php"><code>// This will echo John
+echo fRequest::get('user[first_name]');</code></pre>
+
+<p>
+ Array dereferencing can be any number of layers deep.
+</p>
+<pre class="block php"><code>echo fRequest::get('user[groups][0][name]');</code></pre>
+
+<h2 id="PreventingCSRFSecurity">Preventing CSRF (Security)</h2>
+
+<p>
+<a href="http://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross-site request forgery</a> (CSRF) is a technique where malicious websites will take advantage of the fact that a user has a valid session on a site, and will generate unauthorized requests on their behalf. These unauthorized requests can take the form of either <code>GET</code> or <code>POST</code> requests and can affect any page that does not validate the request properly.
+</p>
+
+<p>
+<code>GET</code> request exploits are very easy to implement by taking advantage of the <code>src</code> attribute of various HTML tags. Imagine the HTML below living on <code>http://example2.com</code>:
+</p>
+<pre class="block html"><code>&lt;img src=&quot;http://example.com/my_messages/delete_all.php&quot; /&gt;</code></pre>
+
+<p>
+ If the script located at <code>/my_messages/delete_all.php</code> allowed a <code>GET</code> request to cause all messages to delete and the user who visited <code>example2.com</code> was logged into <code>example.com</code>, all of their messages would be deleted.
+</p>
+
+<p>
+<code>POST</code> request exploits are slightly more difficult to take advantage of since a user will have to actually submit a form. Imagine the HTML below living on <code>http://example2.com</code>:
+</p>
+<pre class="block html"><code>&lt;p&gt;
+    Sign up for a free MP3 player!
+&lt;/p&gt;
+&lt;form action=&quot;http://example.com/my_messages/delete_all.php&quot; method=&quot;post&quot;&gt;
+    &lt;p&gt;
+        &lt;label for=&quot;email&quot;&gt;Your Email&lt;/label&gt;
+        &lt;input id=&quot;email&quot; name=&quot;email&quot; value=&quot;&quot; /&gt;   
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Sign Up!&quot; /&gt;
+    &lt;/p&gt;
+&lt;/form&gt;</code></pre>
+
+<p>
+ This form would work even if the script requires a <code>POST</code> request, however it requires convincing the user to submit a form or use javascript to automatically trigger it.
+</p>
+
+<p>
+Obviously quite a number of things can help to prevent there CSRF attacks, however the best security is implemented by giving the user a single-use crytographically random token for them to resubmit with the request. This requires that the user request the page first (to get the token) and then resubmit it.
+</p>
+
+<p>
+Since the attack relies on the user being logged in to a site in their browser, the attacking site will not be able to use a server-side request to retrieve the page, and thus the token. In addition, browsers prevent javascript from requesting pages across domains, so that precludes an attacking using it to retrieve the page and then resubmit.
+</p>
+
+<p>
+The static method <a href="/api/fRequest#generateCSRFToken"><code>generateCSRFToken()</code></a> will create a single-use token to place into a form to protect against CSRF attacks. When processing a form, the static method <a href="/api/fRequest#validateCSRFToken"><code>validateCSRFToken()</code></a> should be used to ensure the form submission is valid by passing the <code>$token</code> as the first parameter. If the token is not valid, an <a href="/docs/fValidationException">fValidationException</a> will be thrown.
+</p>
+
+<p>
+The following HTML form and corresponding PHP will ensure that only users who request the form will then be able to delete their messages.
+</p>
+<pre class="block html"><code>&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;
+    &lt;p&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Yes, delete my messages!&quot; /&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;request_token&quot; value=&quot;&lt;?php echo fRequest::generateCSRFToken() ?&gt;&quot; /&gt;
+    &lt;/p&gt;
+&lt;/form&gt;</code></pre>
+<pre class="block php"><code>if (fRequest::isPost()) {
+    try {
+        fRequest::validateCSRFToken(fRequest::get('request_token'));
+
+        // Delete all of the users messages
+        
+    } catch (fExpectedException $e) {
+        $e-&gt;printMessage();
+    }
+}</code></pre>
+
+<p>
+ By default both <code>generateCSRFToken()</code> and <code>validateCSRFToken()</code> will use the current page as the identifier to use when checking the token. If one page is submitting the value, but another is checking it, the <code>$url</code> parameter of each method can be used.
+</p>
+<pre class="block html"><code>&lt;input type=&quot;hidden&quot; name=&quot;request_token&quot; value=&quot;&lt;?php echo fRequest::generateCSRFToken('/processing_page.php') ?&gt;&quot; /&gt;</code></pre>
+<pre class="block php"><code>fRequest::validateCSRFToken(fRequest::get('request_token'), '/processing_page.php');</code></pre>
+
+<p>
+ In addition, each URL can have multiple valid tokens at one time. This ensures that tabbed browsing will not cause the user to receive error messages about unauthenticated requests.
+</p>
+
+<h2 id="CheckingTheHTTPMethod">Checking The HTTP Method</h2>
+
+<p>
+When creating RESTful applications it is useful to know the HTTP method used to request the current page. There are four methods to check each of the four HTTP methods:
+</p>
+<table><tbody>
+<tr>
+<td><strong>HTTP Method</strong></td>
+<td><strong>!fRequest Method</strong></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><a href="/api/fRequest#isGet"><code>isGet()</code></a></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><a href="/api/fRequest#isPost"><code>isPost()</code></a></td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><a href="/api/fRequest#isPut"><code>isPut()</code></a></td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><a href="/api/fRequest#isDelete"><code>isDelete()</code></a></td>
+</tr>
+</tbody></table>
+
+<p>
+Since browsers only currently support <code>GET</code> and <code>POST</code> method, <code>isPost()</code> will commonly be the only one used unless creating a RESTful API.
+</p>
+<pre class="block php"><code>if (fRequest::isPost()) {
+    // Perform constructive/destructive action
+}</code></pre>
+
+<p>
+ It is also possible to see if a request was made via AJAX by using the static method <a href="/api/fRequest#isAjax"><code>isAjax()</code></a>. This checks the <code>HTTP_X_REQUESTED_WITH</code> HTTP header to see if it is set to <code>xmlhttprequest</code>.
+</p>
+<pre class="block php"><code>if (fRequest::isAjax()) {
+    // Perform partial interaction
+}</code></pre>
+
+<h2 id="RetrievingHTTPAcceptValues">Retrieving HTTP Accept Values</h2>
+
+<p>
+When building applications or sites that deliver different formats or translations of content, the HTTP <code>Accept</code> and <code>Accept-Language</code> headers include important information about what the client expects in response.
+</p>
+
+<p>
+The <code>Accept</code> header includes a list of acceptable mime-types that the client expects in return. In addition, the HTTP spec includes a <code>q</code> value to indicate which mime-types are preferred over others. The <code>Accept-Language</code> header include a similar list for the language of the response. <code>Accept-Language</code> value can also include a <code>q</code> value for each language.
+</p>
+
+<p>
+The static methods <a href="/api/fRequest#getAcceptTypes"><code>getAcceptTypes()</code></a> and <a href="/api/fRequest#getAcceptLanguages"><code>getAcceptLanguages()</code></a> will each return a list of the acceptable mime-types and languages, respectively, ordered by the <code>q</code> values for each.
+</p>
+<pre class="block php"><code>$mime_types = fRequest::getAcceptTypes();
+$languages  = fRequest::getAcceptLanguages();</code></pre>
+
+<p>
+ If no accepts headers are sent by the client, an empty array will be returned.
+</p>
+
+<p>
+It is also possible to provide a list of valid accept types or languages and pick the clients preferred one by using the methods <a href="/api/fRequest#getBestAcceptType"><code>getBestAcceptType()</code></a> and <a href="/api/fRequest#getBestAcceptLanguage"><code>getBestAcceptLanguage()</code></a>.
+</p>
+
+<p>
+Each method accepts a single parameter, an ordered array of the mime type or languages supported by your application. The type or language with the highest <code>q</code> value for the client will be returned.
+</p>
+<pre class="block php"><code>$mime_type = fRequest::getBestAcceptType(array(
+    'application/json',
+    'text/html'
+));
+$language = fRequest::getBestAcceptLanguage(array(
+    'en-us',
+    'fr-ca'
+));</code></pre>
+
+<p>
+ If no value in the array matches, <code>FALSE</code> will be returned. If any value is acceptable, the first value in the array will be returned.
+</p>
+
+<p>
+If no array of valid values is specified, and the client accepts any value, <code>NULL</code> will be returned. Otherwise the value specified by the client with the highest <code>q</code> will be returned.
+</p>
+
+<h2 id="MultipleSubmitButtons">Multiple Submit Buttons</h2>
+
+<p>
+There are sure to be times when a user is given multiple options when submitting a form and where you dont want to require the user to have javascript enabled in their browser. The <a href="/api/fRequest#overrideAction"><code>overrideAction()</code></a> method allows for a form to have multiple submit buttons and for them to trigger different functionality. 
+</p>
+
+<p>
+This solution stems from the problem that the only way to tell which submit button was click is that buttons name and value pair is added to the <code>GET</code> or <code>POST</code> data, while all other submit buttons are ignored. Rather than requiring the developer to manually check for specific values when creating multiple submit buttons, <a href="/api/fRequest#overrideAction"><code>overrideAction()</code></a> allows the name of a submit button to be set to <code>action::{action_to_trigger}</code>.
+</p>
+
+<p>
+If a submit button with a name as above is clicked and <a href="/api/fRequest#overrideAction"><code>overrideAction()</code></a> is called in the destination page, the <code>action</code> parameter of <code>$_GET</code> or <code>$_POST</code> will all be overridden with this action. 
+</p>
+
+<p>
+Here is an example:
+</p>
+<pre class="block html"><code>&lt;form action=&quot;&lt;?php echo fURL::get() ?&gt;&quot; method=&quot;post&quot;&gt;
+    ...
+    &lt;p&gt;
+        &lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;delete&quot; /&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Yes, delete this user&quot; /&gt;
+        &lt;input type=&quot;submit&quot; name=&quot;action::list&quot; value=&quot;No, keep this user&quot; /&gt;
+    &lt;/p&gt;
+&lt;/form&gt;</code></pre>
+
+<p>
+ And the PHP to handle the form submission:
+</p>
+<pre class="block php"><code>// We will call overrideAction() as the very first thing so everything else see the modified `$_POST` superglobal
+fRequest::overrideAction();
+
+// Get the action to execute
+$action = fRequest::get('action');</code></pre>
+
+<p>
+ If the user were to click <code>Yes, delete this user</code> then the action <code>remove</code> would be executed, however if the user clicked <code>No, keep this user</code> then the <code>list</code> action would be executed.
+</p>
+
+<p>
+It is also possible to pass a redirection URL to <a href="/api/fRequest#overrideAction"><code>overrideAction()</code></a>. If the string <code>%action%</code> is found in the redirection URL, it will be replaced with the overridden action. Here is an example:
+</p>
+<pre class="block php"><code>// Redirect the user to /admin/users/{action} if an overridden action is posted
+fRequest::overrideAction('/admin/users/%action%');</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

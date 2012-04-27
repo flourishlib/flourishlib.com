@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fUnbufferedResult – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fUnbufferedResult</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fUnbufferedResult">Class Documentation</a></li>
+		<li><strong><a href="/api/fUnbufferedResult">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fUnbufferedResult.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  			<li class="protected"><a href="#compose">compose()</a></li>
+	  	  	  	  	  	  	  	  	  	  	  	  			<li><a href="#silenceNotices">silenceNotices()</a></li>
+	  	  	  	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li class="protected"><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__destruct">__destruct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li><a href="#asObjects">asObjects()</a></li>
+	  	  			<li class="protected"><a href="#current">current()</a></li>
+	  			<li><a href="#fetchRow">fetchRow()</a></li>
+	  			<li class="protected"><a href="#getResult">getResult()</a></li>
+	  			<li><a href="#getSQL">getSQL()</a></li>
+	  			<li><a href="#getUntranslatedSQL">getUntranslatedSQL()</a></li>
+	  			<li class="protected"><a href="#key">key()</a></li>
+	  			<li class="protected"><a href="#next">next()</a></li>
+	  			<li class="protected"><a href="#rewind">rewind()</a></li>
+	  			<li class="protected"><a href="#setResult">setResult()</a></li>
+	  			<li class="protected"><a href="#setSQL">setSQL()</a></li>
+	  			<li class="protected"><a href="#setUntranslatedSQL">setUntranslatedSQL()</a></li>
+	  	  			<li><a href="#tossIfNoRows">tossIfNoRows()</a></li>
+	  			<li><a href="#unescape">unescape()</a></li>
+	  			<li><a href="#valid">valid()</a></li>
+	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fNoRemainingException">fNoRemainingException</a></li>
+		<li><a href="fNoRowsException">fNoRowsException</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+	<span class="implements"> implements Iterator </span>,	<span class="version">v1.0.0b13</span></div>
+<p class="short_description">Representation of an unbuffered result from a query against the <a href="fDatabase">fDatabase</a> class</p>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b13</th><td>Added a workaround for iconv having issues in MAMP 1.9.4+ <span class="date">7/26/11</span></td></tr><tr><th>1.0.0b12</th><td>Fixed MSSQL to have a properly reset row array, added <a href="#silenceNotices"><tt>silenceNotices()</tt></a>, fixed pdo_dblib on Windows when using the Microsoft DBLib driver <span class="date">5/9/11</span></td></tr><tr><th>1.0.0b11</th><td>Fixed some bugs with the mysqli extension and prepared statements <span class="date">8/28/10</span></td></tr><tr><th>1.0.0b10</th><td>Backwards Compatibility Break - removed ODBC support <span class="date">7/31/10</span></td></tr><tr><th>1.0.0b9</th><td>Added IBM DB2 support <span class="date">4/13/10</span></td></tr><tr><th>1.0.0b8</th><td>Added support for prepared statements <span class="date">3/2/10</span></td></tr><tr><th>1.0.0b7</th><td>Fixed a bug with decoding MSSQL national column when using an ODBC connection <span class="date">9/18/09</span></td></tr><tr><th>1.0.0b6</th><td>Added the method <a href="#unescape"><tt>unescape()</tt></a>, changed <a href="#tossIfNoRows"><tt>tossIfNoRows()</tt></a> to return the object for chaining <span class="date">8/12/09</span></td></tr><tr><th>1.0.0b5</th><td>Added the method <a href="#asObjects"><tt>asObjects()</tt></a> to allow for returning objects instead of associative arrays <span class="date">6/23/09</span></td></tr><tr><th>1.0.0b4</th><td>Fixed a bug with not properly converting SQL Server text to UTF-8 <span class="date">6/18/09</span></td></tr><tr><th>1.0.0b3</th><td>Added support for Oracle, various bug fixes <span class="date">5/4/09</span></td></tr><tr><th>1.0.0b2</th><td>Updated for new <a href="fCore">fCore</a> API <span class="date">2/16/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">5/7/08</span></td></tr></table></div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="compose" class="protected method static"><span class="resolution">::</span><span class="name">compose()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Composes text using <a href="fText">fText</a> if loaded</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">compose</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$component</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to compose</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$component <em>[, ... ]</em></td>
+				<td class="param_description">A string or number to insert into the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The composed and possible translated message
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="silenceNotices" class="method static"><span class="resolution">::</span><span class="name">silenceNotices()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Turns off notices about broken database extensions much as the MSSQL DBLib driver</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">silenceNotices</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+				</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start protected method -->
+			<h3 id="__construct" class="protected method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Configures the result set</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fUnbufferedResult">fUnbufferedResult</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fDatabase">fDatabase</a></span> <span class="php-var">$database</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$character_set</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fDatabase">fDatabase</a></td>
+				<td class="param_name">$database</td>
+				<td class="param_description">The database object this result was created from</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$character_set</td>
+				<td class="param_description">MSSQL only: the character set to transcode from since MSSQL doesn't do UTF-8</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__destruct" class="protected method"><span class="resolution">-></span><span class="name">__destruct()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Frees up the result object</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">__destruct</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="asObjects" class="method"><span class="resolution">-></span><span class="name">asObjects()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the object to return rows as objects instead of associative arrays (the default)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fUnbufferedResult">fUnbufferedResult</a></span> <span class="php-identifier">asObjects</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The result object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start protected method -->
+			<h3 id="current" class="protected method"><span class="resolution">-></span><span class="name">current()</span> <span class="visibility">internal public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the current row in the result set (required by iterator interface)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array|stdClass</span> <span class="php-identifier">current</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The current row
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNoRemainingException">fNoRemainingException</a></dt><dd>When there are no rows left in the result</dd> <dt><a href="fNoRowsException">fNoRowsException</a></dt><dd>When the query did not return any rows</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="fetchRow" class="method"><span class="resolution">-></span><span class="name">fetchRow()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the row next row in the result set (where the pointer is currently assigned to)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">array|stdClass</span> <span class="php-identifier">fetchRow</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The next row in the result
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNoRemainingException">fNoRemainingException</a></dt><dd>When there are no rows left in the result</dd> <dt><a href="fNoRowsException">fNoRowsException</a></dt><dd>When the query did not return any rows</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="getResult" class="protected method"><span class="resolution">-></span><span class="name">getResult()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the result</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">mixed</span> <span class="php-identifier">getResult</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The result of the query
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getSQL" class="method"><span class="resolution">-></span><span class="name">getSQL()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the SQL used in the query</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getSQL</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The SQL used in the query
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="getUntranslatedSQL" class="method"><span class="resolution">-></span><span class="name">getUntranslatedSQL()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns the SQL as it was before translation</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getUntranslatedSQL</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The SQL from before translation
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start protected method -->
+			<h3 id="key" class="protected method"><span class="resolution">-></span><span class="name">key()</span> <span class="visibility">internal public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the current row number (required by iterator interface)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">integer</span> <span class="php-identifier">key</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The current row number
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNoRemainingException">fNoRemainingException</a></dt><dd>When there are no rows left in the result</dd> <dt><a href="fNoRowsException">fNoRowsException</a></dt><dd>When the query did not return any rows</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start protected method -->
+			<h3 id="next" class="protected method"><span class="resolution">-></span><span class="name">next()</span> <span class="visibility">internal public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Advances to the next row in the result (required by iterator interface)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">next</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+													<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNoRemainingException">fNoRemainingException</a></dt><dd>When there are no rows left in the result</dd> <dt><a href="fNoRowsException">fNoRowsException</a></dt><dd>When the query did not return any rows</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="rewind" class="protected method"><span class="resolution">-></span><span class="name">rewind()</span> <span class="visibility">internal public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Rewinds the query (required by iterator interface)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">rewind</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="setResult" class="protected method"><span class="resolution">-></span><span class="name">setResult()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets the result from the query</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setResult</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$result</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$result</td>
+				<td class="param_description">The result from the query</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="setSQL" class="protected method"><span class="resolution">-></span><span class="name">setSQL()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets the SQL used in the query</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setSQL</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$sql</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$sql</td>
+				<td class="param_description">The SQL used in the query</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="setUntranslatedSQL" class="protected method"><span class="resolution">-></span><span class="name">setUntranslatedSQL()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Sets the SQL from before translation</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">setUntranslatedSQL</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$untranslated_sql</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$untranslated_sql</td>
+				<td class="param_description">The SQL from before translation</td>
+			  </tr>
+						</table>
+			</div>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="tossIfNoRows" class="method"><span class="resolution">-></span><span class="name">tossIfNoRows()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Throws an fNoResultException if the query did not return any rows</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fUnbufferedResult">fUnbufferedResult</a></span> <span class="php-identifier">tossIfNoRows</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to use for the exception if there are no rows in this result set</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The result object, to allow for method chaining
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fNoRowsException">fNoRowsException</a></dt><dd>When the query did not return any rows</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="unescape" class="method"><span class="resolution">-></span><span class="name">unescape()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the result object to unescape all values as they are retrieved from the object</p>
+								<p>The data types should be from the list of types supported by  <a href="fDatabase#unescape"><tt>fDatabase::unescape()</tt></a>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fUnbufferedResult">fUnbufferedResult</a></span> <span class="php-identifier">unescape</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$column_data_type_map</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$column_data_type_map</td>
+				<td class="param_description">An associative array with column names as the keys and the data types as the values</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The result object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="valid" class="method"><span class="resolution">-></span><span class="name">valid()</span> <span class="visibility">public</span><span class="implements"> implements Iterator</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Returns if the query has any rows left</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">valid</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 If the iterator is still valid
+				</p>
+		</div>
+		<!-- end method -->	
+			</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Do You Use ODBC? – Blog – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="DoYouUseODBC">Do You Use ODBC?</h1>
+
+<p>
+Recently I've been running into more issues with ODBC not properly handling UTF-8 and blob data across the various databases that Flourish supports. I'm very strongly considering dropping ODBC support due to the fact that:
+</p>
+
+<ul>
+<li>None of the ODBC database drivers pass the tests on any OS but Windows</li>
+<li>There is no way to tell DB2 to use the UTF-8 encoding with ODBC</li>
+<li>Oracle via ODBC fails with UTF-8 so some characters must be escaped using <code>CHR()</code></li>
+<li><code>CURRENT_TIMESTAMP</code> isn't implemented for Oracle when using ODBC</li>
+<li>The <code>pdo_odbc</code> driver in PHP 5.3 returns seemingly random data from an MSSQL blob column</li>
+</ul>
+
+<p>
+Does anyone currently use an ODBC connection with <a href="/docs/fDatabase">fDatabase</a>?
+</p>
+
+<h2 id="Update">Update</h2>
+
+<p>
+<em>7/31/10</em> - As of revision 879, ODBC support is no longer provided in any of Flourish's database classes. ODBC support was removed since it was holding back perfect UTF-8 support, caused stability issues on some servers and did not appear to be used by anyone.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

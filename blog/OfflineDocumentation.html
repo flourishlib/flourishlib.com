@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Offline Documentation – Blog – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="OfflineDocumentation">Offline Documentation</h1>
+
+<p>
+After a handful of requests, I finally took some time this weekend to create some offline documentation for Flourish. Starting with r879, every SVN commit and every time a class documentation page is updated, a single HTML page is created that contains all of the class documentation, API reference, and relevant general documentation.
+</p>
+<div style="text-align: center; margin: 2em 0;"><a href="http://docs.flourishlib.com/single_page_docs/flourish_r880.html"><img src="http://static.flourishlib.com/offline_docs.png" alt="Offline Documentation Preview" style="border: 6px solid #b7b7b7;" /></a></div>
+<p>
+ The file uses the <a href="http://en.wikipedia.org/wiki/Data_URI_scheme">data URI scheme</a> to allow for a single file containing all HTML, images, CSS and javascript. As long as you aren't using Internet Explorer, you'll even see the Flourish favicon.
+</p>
+
+<p>
+Unfortunately, IE6 and IE7 don't support the data URI scheme and thus may not show all images. You probably won't want to use IE anyway, since it can't handle the 4mb of HTML without slowing to a crawl. Chrome, Firefox, Opera and Safari all seem to perform just great.
+</p>
+
+<p>
+Head on over to the <a href="/docs">Documentation page</a> to grab a copy while it's hot!
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

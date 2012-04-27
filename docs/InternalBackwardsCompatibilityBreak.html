@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>InternalBackwardsCompatibilityBreak – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="InternalBackwardsCompatibilityBreaks">Internal Backwards Compatibility Breaks</h1>
+
+<p>
+<em>See also non-internal <a href="/docs/BackwardsCompatibilityBreak">backwards compatibility breaks</a></em>
+</p>
+
+<p>
+Public methods flagged with the PHPDoc tag <code>@internal</code> and all protected methods and attributes are considered internal to Flourish and are subject to change even in minor revisions or during the beta. Below is a list of changes that affect internal code.
+</p>
+
+<p>
+Normally this list will only be applicable if you write ORM plugins or mess around with the ORM internals.
+</p>
+
+<h2 id="Revision881"><a href="https://github.com/flourishlib/flourish-classes/commit/89cc8eeb">Revision 881</a></h2>
+
+<p>
+Changed <a href="/api/fORM#parseMethod">fORM::parseMethod()</a> to not underscorize the subject of the method.
+</p>
+
+<h2 id="Revision867"><a href="https://github.com/flourishlib/flourish-classes/commit/6d3c4b62">Revision 867</a></h2>
+
+<p>
+Changed the structure of the array returned from <a href="/api/fSQLTranslation#translate">fSQLTranslation::translate()</a> to include a number plus <code>:</code> before the original SQL in the array keys.
+</p>
+
+<h2 id="Revision720"><a href="https://github.com/flourishlib/flourish-classes/commit/30b77654">Revision 720</a></h2>
+
+<p>
+Removed:
+</p>
+
+<ul>
+<li><code>fORMDatabase::addTableToKeys()</code></li>
+<li><code>fORMDatabase::addTableToValues()</code></li>
+<li><code>fORMDatabase::escapeBySchema()</code></li>
+<li><code>fORMDatabase::escapeByType()</code></li>
+</ul>
+
+<p>
+Rewrote:
+</p>
+
+<ul>
+<li><code>fORMDatabase::createHavingClause()</code> to <a href="/api/fORMDatabase#addHavingClause">fORMDatabase::addHavingClause()</a></li>
+<li><code>fORMDatabase::createOrderByClause()</code> to <a href="/api/fORMDatabase#addOrderByClause">fORMDatabase::addOrderByClause()</a></li>
+<li><code>fORMDatabase::insertFromAndGroupByClauses()</code> to <a href="/api/fORMDatabase#injectFromAndGroupByClauses">fORMDatabase::injectFromAndGroupByClauses()</a></li>
+</ul>
+
+<p>
+Added the <code>$schema</code> parameter to the beginning of:
+</p>
+
+<ul>
+<li><a href="/api/fORMSchema#getRoute">fORMSchema::getRoute()</a></li>
+<li><a href="/api/fORMSchema#getRouteName">fORMSchema::getRouteName()</a></li>
+<li><a href="/api/fORMSchema#getRoutes">fORMSchema::getRoutes()</a></li>
+<li><a href="/api/fORMSchema#isOneToOne">fORMSchema::isOneToOne()</a></li>
+</ul>
+
+<p>
+Added the <code>$class</code> parameter to the beginning of <a href="/api/fORMRelated#storeManyToMany">fORMRelated::storeManyToMany()</a> 
+</p>
+
+<h2 id="Revision659"><a href="https://github.com/flourishlib/flourish-classes/commit/fbe71f0b">Revision 659</a></h2>
+
+<p>
+<a href="/api/fORMRelated#createRecord">fORMRelated::createRecord()</a> now has an extra parameter in the middle, <code>$related_records</code>. <code>fORMRelated::storeOneToMany()</code> was renamed to <a href="/api/fORMRelated#storeOneToStar">fORMRelated::storeOneToStar()</a>.
+</p>
+
+<h2 id="Revision639"><a href="https://github.com/flourishlib/flourish-classes/commit/b68ba1c1">Revision 639</a></h2>
+
+<p>
+Changed <a href="/api/fActiveRecord#hash">fActiveRecord::hash()</a> from a protected method to a static public/internal method that requires the class name for non-<a href="/docs/fActiveRecord">fActiveRecord</a> values
+</p>
+
+<h2 id="Revision616"><a href="https://github.com/flourishlib/flourish-classes/commit/3bca645f">Revision 616</a></h2>
+
+<p>
+The method signatures for <a href="/api/fORMRelated#validate">fORMRelated::validate()</a> and <a href="/api/fORMValidation#validateRelated">fORMValidation::validateRelated()</a> changed
+</p>
+
+<h2 id="Revision603"><a href="https://github.com/flourishlib/flourish-classes/commit/35163816">Revision 603</a></h2>
+
+<p>
+The following methods no longer accept an object instance, just a class name:
+</p>
+
+<ul>
+<li><a href="/api/fORM#checkHookCallback">fORM::checkHookCallback()</a></li>
+<li><a href="/api/fORM#getActiveRecordMethod">fORM::getActiveRecordMethod()</a></li>
+<li><a href="/api/fORM#getColumnName">fORM::getColumnName()</a></li>
+<li><a href="/api/fORM#getRecordName">fORM::getRecordName()</a></li>
+<li><a href="/api/fORM#replicate">fORM::replicate()</a></li>
+<li><a href="/api/fORM#tablize">fORM::tablize()</a></li>
+</ul>
+
+<ul>
+<li><a href="/api/fORMRelated#associateRecords">fORMRelated::associateRecords()</a></li>
+<li><a href="/api/fORMRelated#buildRecords">fORMRelated::buildRecords()</a></li>
+<li><a href="/api/fORMRelated#countRecords">fORMRelated::countRecords()</a></li>
+<li><a href="/api/fORMRelated#createRecord">fORMRelated::createRecord()</a></li>
+<li><a href="/api/fORMRelated#determineRequestFilter">fORMRelated::determineRequestFilter()</a></li>
+<li><a href="/api/fORMRelated#flagForAssociation">fORMRelated::flagForAssociation()</a></li>
+<li><a href="/api/fORMRelated#getOrderBys">fORMRelated::getOrderBys()</a></li>
+<li><a href="/api/fORMRelated#getPrimaryKeys">fORMRelated::getPrimaryKeys()</a></li>
+<li><a href="/api/fORMRelated#getRelatedRecordName">fORMRelated::getRelatedRecordName()</a></li>
+<li><a href="/api/fORMRelated#linkRecords">fORMRelated::linkRecords()</a></li>
+<li><a href="/api/fORMRelated#overrideRelatedRecordName">fORMRelated::overrideRelatedRecordName()</a></li>
+<li><a href="/api/fORMRelated#populateRecords">fORMRelated::populateRecords()</a></li>
+<li><a href="/api/fORMRelated#reflect">fORMRelated::reflect()</a></li>
+<li><a href="/api/fORMRelated#setCount">fORMRelated::setCount()</a></li>
+<li><a href="/api/fORMRelated#setPrimaryKeys">fORMRelated::setPrimaryKeys()</a></li>
+<li><a href="/api/fORMRelated#setRecordSet">fORMRelated::setRecordSet()</a></li>
+<li><a href="/api/fORMRelated#store">fORMRelated::store()</a></li>
+<li><a href="/api/fORMRelated#validate">fORMRelated::validate()</a></li>
+</ul>
+
+<ul>
+<li><a href="/api/fORMValidation#reorderMessages">fORMValidation::reorderMessages()</a></li>
+<li><a href="/api/fORMValidation#validateRelated">fORMValidation::validateRelated()</a></li>
+</ul>
+
+<h2 id="Revision593"><a href="https://github.com/flourishlib/flourish-classes/commit/daf1327e">Revision 593</a></h2>
+
+<p>
+Renamed <code>fORMRelated::setRecords()</code> to <a href="/api/fORMRelated#setRecordSet">fORMRelated::setRecordSet()</a> and <code>fORMRelated::tallyRecords()</code> to <a href="/api/fORMRelated#setCount">fORMRelated::setCount()</a> 
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

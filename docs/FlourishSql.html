@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>FlourishSql – General Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="FlourishSQL">Flourish SQL</h1>
+<div class="sidebar">
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#SupportedDatabaseVersions">Supported Database Versions</a></li>
+<li><a href="#Limitations">Limitations</a></li>
+<li><a href="#Usage">Usage</a></li>
+<li><a href="#DataTypes">Data Types</a></li>
+<li><a href="#BooleanValues">Boolean Values</a></li>
+<li><a href="#Transactions">Transactions</a></li>
+<li><a href="#DataManipulationStatements">Data Manipulation Statements</a>
+<ul>
+<li><a href="#Operators">Operators</a></li>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Expressions">Expressions</a></li>
+<li><a href="#Joins">Joins</a>
+<ul>
+<li><a href="#OtherJoinTypes">Other Join Types</a></li>
+</ul>
+</li>
+<li><a href="#Clauses">Clauses</a></li>
+</ul>
+</li>
+<li><a href="#DataDefinitionStatements">Data Definition Statements</a>
+<ul>
+<li><a href="#CreateTable">Create Table</a></li>
+<li><a href="#AlterTable">Alter Table</a>
+<ul>
+<li><a href="#RenameTable">Rename Table</a></li>
+<li><a href="#AddColumn">Add Column</a></li>
+<li><a href="#RenameColumn">Rename Column</a></li>
+<li><a href="#DropColumn">Drop Column</a></li>
+<li><a href="#SetColumnType">Set Column Type</a></li>
+<li><a href="#SetDefault">Set Default</a></li>
+<li><a href="#DropDefault">Drop Default</a></li>
+<li><a href="#SetNotNull">Set Not Null</a></li>
+<li><a href="#DropNotNull">Drop Not Null</a></li>
+<li><a href="#SetCheckConstraint">Set Check Constraint</a></li>
+<li><a href="#DropCheckConstraint">Drop Check Constraint</a></li>
+<li><a href="#AddPrimaryKey">Add Primary Key</a></li>
+<li><a href="#DropPrimaryKey">Drop Primary Key</a></li>
+<li><a href="#AddForeignKey">Add Foreign Key</a></li>
+<li><a href="#DropForeignKey">Drop Foreign Key</a></li>
+<li><a href="#AddUnique">Add Unique</a></li>
+<li><a href="#DropUnique">Drop Unique</a></li>
+</ul>
+</li>
+<li><a href="#CommentonColumn">Comment on Column</a></li>
+<li><a href="#DropTable">Drop Table</a></li>
+<li><a href="#CreateIndex">Create Index</a></li>
+<li><a href="#DropIndex">Drop Index</a></li>
+<li><a href="#ForeignKeySupport">Foreign Key Support</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<p>
+One of the aims of Flourish is to make a portable PHP library so that applications can be deployed on different servers with little to no changes. With the multitude of database servers available and different platforms, one of the main hurdles for portability is the different dialects of SQL.
+</p>
+
+<p>
+Flourish SQL has grown a common subset of the SQL dialects supported by IBM DB2, Microsoft SQL Server, MySQL, PostgreSQL and SQLite, with a few additions for ease-of-use. This document describes what features and syntax are supported across all databases.
+</p>
+
+<p>
+In the Flourish SQL column you will find the supported syntax for a function, data type, etc. The other columns contain a <code>✓</code> if the syntax is the same, or the database-specific syntax highlighted in red.
+</p>
+
+<h2 id="SupportedDatabaseVersions">Supported Database Versions</h2>
+
+<p>
+The information on this page is targeted at the following database versions, or newer editions:
+</p>
+
+<ul>
+<li><strong>DB2:</strong> 9.x</li>
+<li><strong>MSSQL:</strong> Server 2005</li>
+<li><strong>MySQL:</strong> 5.0</li>
+<li><strong>Oracle:</strong> 10g</li>
+<li><strong>PostgreSQL:</strong> 8.0</li>
+<li><strong>SQLite:</strong> 2.8.17 <em>(v2)</em>, 3.2.8 <em>(v3)</em></li>
+</ul>
+
+<h2 id="Limitations">Limitations</h2>
+
+<p>
+If targeting MSSQL or DB2, please be aware that <code>UNIQUE</code> constraints only allow a single <code>NULL</code> value to be present in all rows. To work around this, split the column in to a separate table and use a foreign key to associate it to the original table.
+</p>
+
+<p>
+Oracle does not support the <code>ON UPDATE</code> clause for foreign keys. MSSQL does not allow <code>ON UPDATE CASCADE</code> or <code>ON DELETE CASCADE</code> clauses for foreign keys that could cause cycles during handling. This is often caused by multiple columns in a table referencing the same foreign table.
+</p>
+
+<p>
+MySQL, DB2, Oracle and MSSQL all have various constraints on <code>TEXT</code> and <code>BLOB</code> data types. To achieve cross-database support, be sure not to do the following with such columns:
+</p>
+
+<ul>
+<li>Set a <code>DEFAULT</code> value</li>
+<li>Use them in a <code>GROUP BY</code> clause</li>
+<li>Use them as a <code>PRIMARY KEY</code> or <code>FOREIGN KEY</code></li>
+<li>Use them in a <code>UNIQUE</code> constraint</li>
+</ul>
+
+<p>
+Since <a href="/docs/fRecordSet">fRecordSet</a> uses <code>GROUP BY</code> clauses to allow for selection of records by values in related tables, it is highly recommended that <code>TEXT</code> and <code>BLOB</code> columns always be split out into a separate table and to use a foreign key to associate it with the original table. The Flourish ORM has strong support to easily retrieving such related records.
+</p>
+
+<h2 id="Usage">Usage</h2>
+
+<p>
+The following Flourish SQL is supported when calling the <a href="/api/fDatabase#translatedQuery">fDatabase::translatedQuery()</a> and <a href="/api/fDatabase#unbufferedTranslatedQuery">fDatabase::unbufferedTranslatedQuery()</a> methods. The <a href="/docs/fDatabase#Cross-DatabaseSQL">Cross-Database SQL section</a> of the <a href="/docs/fDatabase">fDatabase</a> page has more information.
+</p>
+
+<h2 id="DataTypes">Data Types</h2>
+
+<p>
+Most dialects of SQL support a large number of common data types, however a things like booleans, binary data and dates and times are often different. Here is an outline of the data types supported by Flourish SQL:
+</p>
+<table class="wiki sql">
+	<tr>
+		<th class="flourish">Flourish SQL</th>
+		<th>DB2</th>
+		<th>MSSQL</th>
+		<th>MySQL</th>
+		<th>Oracle</th>
+		<th>PostgreSQL</th>
+		<th>SQLite</th>
+	</tr>
+	<tr>
+		<td class="flourish">smallint</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">integer</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">bigint</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">integer</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">integer autoincrement primary key</td>
+		<td class="different">integer generated by default as identity primary key</td>
+		<td class="different">integer identity(1) primary key</td>
+		<td class="different">integer auto_increment primary key</td>
+		<td class="different">integer + sequence + trigger</td>
+		<td class="different">serial primary key</td>
+		<td class="different">integer primary key autoincrement</td>
+	</tr>
+	<tr>
+		<td class="flourish">float</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">real</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">decimal</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">char</td>
+		<td>✓</td>
+		<td class="different">nchar</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">varchar</td>
+		<td>✓</td>
+		<td class="different">nvarchar</td>
+		<td>✓</td>
+		<td class="different">varchar2</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">text</td>
+		<td class="different">clob</td>
+		<td class="different">ntext</td>
+		<td class="different">mediumtext</td>
+		<td class="different">clob</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">blob</td>
+		<td>✓</td>
+		<td class="different">image</td>
+		<td class="different">longblob</td>
+		<td>✓</td>
+		<td class="different">bytea</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">timestamp</td>
+		<td>✓</td>
+		<td class="different">datetime</td>
+		<td class="different">datetime</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">date</td>
+		<td>✓</td>
+		<td class="different">date for 2008, datetime for 2005</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">time</td>
+		<td>✓</td>
+		<td class="different">time for 2008, datetime for 2005</td>
+		<td>✓</td>
+		<td class="different">timestamp</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">boolean</td>
+		<td class="different">char(1)</td>
+		<td class="different">bit</td>
+		<td>✓</td>
+		<td class="different">number(1)</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+</table>
+<p>
+ In all cases except for the <code>date</code> and <code>time</code> are the data types consistent across the databases. MSSQL does not support <code>date</code> or <code>time</code>, so the more precise <code>datetime</code> is used instead. Oracle does not support <code>time</code> and uses <code>timestamp</code> instead. In both cases, the unnecessary portions are removed by the <a href="/api/fDatabase#unescape"><code>unescape()</code></a> method of <a href="/docs/fDatabase">fDatabase</a>.
+</p>
+
+<p>
+One other thing to note is the apparent perfect compatibility for SQLite data types. This is not because the SQLite data types were chosen as the basis for Flourish SQL, but rather that SQLite is loosely-typed and allows anything to be entered for a data type.
+</p>
+
+<h2 id="BooleanValues">Boolean Values</h2>
+
+<p>
+Since boolean fields are implemented quite differently across databases, it comes as no surprise that there are different values to use for boolean fields:
+</p>
+<table class="wiki sql">
+	<tr>
+		<th class="flourish">Flourish SQL</th>
+		<th>DB2</th>
+		<th>MSSQL</th>
+		<th>MySQL</th>
+		<th>Oracle</th>
+		<th>PostgreSQL</th>
+		<th>SQLite</th>
+	</tr>
+	<tr>
+		<td class="flourish">TRUE</td>
+		<td class="different">'1'</td>
+		<td class="different">'1'</td>
+		<td>✓</td>
+		<td class="different">1</td>
+		<td>✓</td>
+		<td class="different">'1'</td>
+	</tr>
+	<tr>
+		<td class="flourish">FALSE</td>
+		<td class="different">'0'</td>
+		<td class="different">'0'</td>
+		<td>✓</td>
+		<td class="different">0</td>
+		<td>✓</td>
+		<td class="different">'0'</td>
+	</tr>
+</table>
+<h2 id="Transactions">Transactions</h2>
+
+<p>
+Transaction control differs slightly among the supported databases:
+</p>
+<table class="wiki sql">
+	<tr>
+		<th class="flourish">Flourish SQL</th>
+		<th>DB2</th>
+		<th>MSSQL</th>
+		<th>MySQL</th>
+		<th>Oracle</th>
+		<th>PostgreSQL</th>
+		<th>SQLite</th>
+	</tr>
+	<tr>
+		<td class="flourish">BEGIN</td>
+		<td class="different">auto-commit disabled</td>
+		<td class="different">BEGIN TRANSACTION</td>
+		<td>✓</td>
+		<td class="different">auto-commit disabled</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">COMMIT</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">ROLLBACK</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">SAVEPOINT <em>savepoint_name</em></td>
+		<td>✓</td>
+		<td class="different">SAVE TRANSACTION <em>savepoint_name</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">ROLLBACK TO SAVEPOINT <em>savepoint_name</em></td>
+		<td>✓</td>
+		<td class="different">ROLLBACK TRANSACTION <em>savepoint_name</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+</table>
+<h2 id="DataManipulationStatements">Data Manipulation Statements</h2>
+
+<p>
+The following constructs are are used with the data manipulation language (DML) statements in SQL. Such statements include <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code> and <code>DELETE</code>.
+</p>
+
+<h3 id="Operators">Operators</h3>
+
+<p>
+Operators are fairly consistent across the different databases, with the exception of the concatenation operator. Please note that <code>||</code> works for concatenation in MySQL <strong><em>only</em></strong> when MySQL is in ANSI mode (Flourish automatically switches into ANSI mode when a connection to a MySQL database is initiated).
+</p>
+<table class="wiki sql">
+	<tr>
+		<th class="flourish">Flourish SQL</th>
+		<th>DB2</th>
+		<th>MSSQL</th>
+		<th>MySQL</th>
+		<th>Oracle</th>
+		<th>PostgreSQL</th>
+		<th>SQLite</th>
+	</tr>
+	<tr>
+		<th colspan="7" class="spanner">
+			Mathematical Operators
+		</th>
+	</tr>
+	<tr>
+		<td class="flourish">+</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">-</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">/</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">*</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">%</td>
+		<td class="different">mod()</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">mod()</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<th colspan="7" class="spanner">
+			String Operators
+		</th>
+	</tr>
+	<tr>
+		<td class="flourish">|| <em>(concatenation)</em></td>
+		<td>✓</td>
+		<td class="different">+</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<th colspan="7" class="spanner">
+			Comparison Operators
+		</th>
+	</tr>
+	<tr>
+		<td class="flourish">&lt;</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">&gt;</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">&lt;=</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">&gt;=</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">&lt;&gt; <em>(inequality)</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">!=</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">=</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">IN</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">NOT IN</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">IS <em>(equality with NULL)</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">IS NOT <em>(inequality with NULL)</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">LIKE <em>(case insensitive)</em></td>
+		<td class="different">lower(value) LIKE lower(pattern)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">lower(value) LIKE lower(pattern)</td>
+		<td class="different">ILIKE</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<th colspan="7" class="spanner">
+			Boolean Operators
+		</th>
+	</tr>
+	<tr>
+		<td class="flourish">AND</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">OR</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+</table>
+<h3 id="Functions">Functions</h3>
+
+<p>
+There a quite a few functions that are consistent across the different databases:
+</p>
+<table class="wiki sql">
+	<tr>
+		<th class="flourish">Flourish SQL</th>
+		<th>DB2</th>
+		<th>MSSQL</th>
+		<th>MySQL</th>
+		<th>Oracle</th>
+		<th>PostgreSQL</th>
+		<th>SQLite</th>
+	</tr>
+	<tr>
+		<th colspan="7" class="spanner">
+			Mathematical Functions
+		</th>
+	</tr>
+	<tr>
+		<td class="flourish">abs(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">acos(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">asin(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">atan(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">atan2(x, y)</td>
+		<td>✓</td>
+		<td class="different">atn2(x, y)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">ceil(x)</td>
+		<td class="different">ceiling(x)</td>
+		<td class="different">ceiling(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>                  
+	<tr>
+		<td class="flourish">ceiling(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">ceil(x)</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">cos(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">cot(x)</td>
+		<td class="different">(1/tan(x))</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">(1/tan(x))</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">degrees(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">(x * 57.295779513083)</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr> 
+	<tr>
+		<td class="flourish">exp(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">floor(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">ln(x)</td>
+		<td>✓</td>
+		<td class="different">log(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">log(b, x)</td>
+		<td class="different">(ln(x)/ln(b))</td>
+		<td class="different">(log(x)/log(b))</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">pi()</td>
+		<td class="different">3.14159265358979</td>
+		<td>✓</td>
+		<td class="different">(pi()+0.0000000000000)</td>
+		<td class="different">3.14159265358979</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">power(x, y)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">radians(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">(x * 0.017453292519943)</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">random()</td>
+		<td class="different">rand()</td>
+		<td class="different">rand()</td>
+		<td class="different">rand()</td>
+		<td class="different">(abs( dbms_random.random ) / 2147483647)</td>
+		<td>✓</td>
+		<td class="different">(abs( random()) / 9223372036854775807)</td>
+	</tr>
+	<tr>
+		<td class="flourish">round(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">sign(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">sqrt(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">sin(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<td class="flourish">tan(x)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">PHP Callback</td>
+	</tr>
+	<tr>
+		<th colspan="7" class="spanner">
+			Aggregate Functions
+		</th>
+	</tr>
+	<tr>
+		<td class="flourish">avg(l)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">count(l)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">max(l)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">min(l)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">sum(l)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<th colspan="7" class="spanner">
+			String Functions
+		</th>
+	</tr>
+	<tr>
+		<td class="flourish">trim(s)</td>
+		<td>✓</td>
+		<td class="different">rtrim(ltrim(s))</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">rtrim(s)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">ltrim(s)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">upper(s)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>      
+	<tr>
+		<td class="flourish">lower(s)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">substr(s, start, length)</td>
+		<td class="different">substring(s, start, length, CODEUNITS32)</td>
+		<td class="different">substring(s, start, length)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">replace(s, find, replace)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">length(s)</td>
+		<td class="different">character_length(s, CODEUNITS32)</td>
+		<td class="different">len(s)</td>
+		<td class="different">char_length(s)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">coalesce(a, b,...)</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>  
+	<tr>
+		<th colspan="7" class="spanner">
+			Date/Time Functions
+		</th>
+	</tr>
+	<tr>
+		<td class="flourish">CURRENT_TIMESTAMP</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td class="different">datetime( CURRENT_TIMESTAMP, 'localtime')</td>
+	</tr>
+</table>
+<p>
+ A quick scan of the SQLite column indicates that the trigonometric functions are all implemented as PHP callbacks. SQLite made the decision to include only specific functions in the supported SQL dialect, however they added support for hooks into other programming languages. Flourish uses this ability to provide support for trigonometric functions.
+</p>
+
+<h3 id="Expressions">Expressions</h3>
+
+<p>
+There are a few expressions that are consistent across databases:
+</p>
+<table class="wiki sql">
+	<tr>
+		<th class="flourish">Flourish SQL</th>
+		<th>DB2</th>
+		<th>MSSQL</th>
+		<th>MySQL</th>
+		<th>Oracle</th>
+		<th>PostgreSQL</th>
+		<th>SQLite</th>
+	</tr>
+	<tr>
+		<td class="flourish">BETWEEN</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">CASE <em>(simple)</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">CASE <em>(complex)</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+</table>
+<h3 id="Joins">Joins</h3>
+
+<p>
+There are quite a few different types of join supported by the four different databases, however the common join functionality is a small subset. Note that all joins except <code>CROSS</code> and <code>,</code> require use of an <code>ON</code> clause, while <code>CROSS</code> and <code>,</code> can not use an <code>ON</code> clause.
+</p>
+<table class="wiki sql">
+	<tr>
+		<th class="flourish">Flourish SQL</th>
+		<th>DB2</th>
+		<th>MSSQL</th>
+		<th>MySQL</th>
+		<th>Oracle</th>
+		<th>PostgreSQL</th>
+		<th>SQLite</th>
+	</tr>
+	<tr>
+		<td class="flourish">, <em>(cross join)</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">CROSS JOIN</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">[INNER] JOIN</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">LEFT [OUTER] JOIN</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+</table>
+<p>
+ The brackets indicate the words <code>OUTER</code> and <code>INNER</code> are optional.
+</p>
+
+<h4 id="OtherJoinTypes">Other Join Types</h4>
+
+<p>
+You may notice the lack of a <code>FULL [OUTER] JOIN</code>, <code>RIGHT [OUTER] JOIN</code>, the keyword <code>NATURAL</code> and <code>USING</code> clauses. Unfortunately DB2, MySQL and SQLite do not support <code>FULL</code> joins, SQLite does not support <code>RIGHT</code> joins and DB2 and MSSQL do not support <code>NATURAL</code> joins. <code>USING (col, ...)</code> clauses are not supported by MSSQL.
+</p>
+
+<p>
+<code>FULL</code> joins can be achieved by a somewhat complex combination of a <code>SELECT</code> from the first table with extra columns <code>UNION</code>ed with an <code>INNER JOIN</code>, <code>UNION</code>ed with a <code>SELECT</code> from the second table with extra columns.
+</p>
+
+<p>
+<code>RIGHT</code> joins can be performed by switching the order of the tables in the <code>FROM</code> clause.
+</p>
+
+<p>
+<code>NATURAL</code> joins are just shorthand for the common columns between tables, so all that needs to be done is an <code>INNER</code> join with manually specified columns in the <code>ON</code> condition.
+</p>
+
+<p>
+<code>USING</code> clauses can be approximated with a <code>ON</code> condition, however the <code>USING</code> operator ensures that only one copy of each column is included in the returned rows, whereas <code>ON</code> does not. 
+</p>
+
+<h3 id="Clauses">Clauses</h3>
+
+<p>
+There are a few clauses that are supported across all databases:
+</p>
+<table class="wiki sql">
+	<tr>
+		<th class="flourish">Flourish SQL</th>
+		<th>DB2</th>
+		<th>MSSQL</th>
+		<th>MySQL</th>
+		<th>Oracle</th>
+		<th>PostgreSQL</th>
+		<th>SQLite</th>
+	</tr>
+	<tr>
+		<td class="flourish">DISTINCT <em>(follows SELECT)</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+        <tr>
+		<td class="flourish">ALL <em>(follows SELECT)</em></td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+        <tr>
+		<td class="flourish">LIMIT <em>(without an offset)</em></td>
+		<td class="different">FETCH FIRST n ROWS ONLY</td>
+		<td class="different">TOP</td>
+		<td>✓</td>
+		<td class="different">subquery with rownum clause</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">LIMIT/OFFSET</td>
+		<td class="different">subquery with row_number() clause and removal of extra column via PHP</td>
+		<td class="different">subquery with row_number() clause and removal of extra column via PHP</td>
+		<td>✓</td>
+		<td class="different">nested subqueries with rownum clauses and removal of extra column via PHP</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">UNION</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+	<tr>
+		<td class="flourish">UNION ALL</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+		<td>✓</td>
+	</tr>
+</table>
+<h2 id="DataDefinitionStatements">Data Definition Statements</h2>
+
+<p>
+The following are the supported data definition language (DDL) statements in Flourish SQL. Some examples of DDL statements include <code>CREATE TABLE</code>, <code>ALTER TABLE</code> and <code>CREATE INDEX</code>.
+</p>
+
+<p>
+While DML statements between the supported databases tend to be fairly consistent, DDL statements tend to be much more varied. For instance, all of the supported databases use different constructs to achieve auto-incrementing primary keys.
+</p>
+
+<p>
+The following grammars will show the supported Flourish SQL syntax, but do not cover exactly what is run for each type of database. To see what processing takes place, please see the <a href="/docs/fSQLSchemaTranslation">fSQLSchemaTranslation</a> source code, or call <a href="/api/fDatabase#enableDebugging">fDatabase::enableDebugging()</a> before executing DDL statements.
+</p>
+
+<h3 id="CreateTable">Create Table</h3>
+
+<p>
+The following syntax is supported for <code>CREATE TABLE</code> statements. By strictly following this syntax, and using the <a href="#DataTypes">data types previously
+defined</a>, <code>CREATE TABLE</code> statements should work identically across all six supported database systems.
+</p>
+<pre><code>CREATE TABLE table_name ( 
+    {
+        column_name data_type [ DEFAULT default_value ] [ column_constraint [ ... ] ] |
+        table_constraint
+    }, ...
+)</code></pre>
+
+<p>
+ where <em>column_constraint</em> is:
+</p>
+<pre><code>{
+    NOT NULL | 
+    NULL | 
+    UNIQUE |
+    [ AUTOINCREMENT ] PRIMARY KEY |
+    CHECK ( column_name IN ( value1 [, value2 [, ... ] ] ) ) |
+    REFERENCES referenced_table ( referenced_column ) [ ON DELETE action ]
+}</code></pre>
+
+<p>
+ <em>table_constraint</em> is:
+</p>
+<pre><code>{
+    UNIQUE ( column_name [, ... ] ) |
+    PRIMARY KEY ( column_name [, ... ] ) |
+    CHECK ( column_name IN ( value1 [, value2 [, ... ] ] ) ) |
+    FOREIGN KEY ( column_name ) REFERENCES referenced_table ( referenced_column )
+        [ ON DELETE action ]
+}</code></pre>
+
+<p>
+ and <em>action</em> is:
+</p>
+<pre><code>{ RESTRICT | CASCADE | SET NULL | NO ACTION }</code></pre>
+
+<h3 id="AlterTable">Alter Table</h3>
+
+<p>
+The <code>ALTER TABLE</code> statements are some of the most powerful aspects of Flourish SQL since the native support for <code>ALTER TABLE</code> varies wildly between databases. In addition to varying syntax, many databases require explicit constraint names for dropping <code>UNIQUE</code>, <code>CHECK</code>, <code>FOREIGN KEY</code> and <code>PRIMARY KEY</code> constraints. These constraint names are usually generated by the system and are not consistent across different databases.
+</p>
+
+<p>
+To solve these problems, <a href="/docs/fSQLSchemaTranslation">fSQLSchemaTranslation</a> introspects the database and alters the SQL statements to work with the different database engines. In some cases multiple SQL statements must be executed. <a href="/docs/fSQLSchemaTranslation">fSQLSchemaTranslation</a> is written in such a way that each of the statements listen below should be individually atomic. Thus, if the statement fails, the database should remain at the state before the statement was executed.
+</p>
+
+<p>
+PostgreSQL, SQLite and MSSQL all fully support transactions for DDL statements, which makes this easy. For DB2, most DDL statements run within a transaction, and the one that doesn't (<code>REORG TABLE</code>) is only executed once the primary statement succeeds. For Oracle, all of these statement correspond to a single SQL statement, so the statement will either succeed or fail. MySQL requires storing rollback statements for all database operations, and such statements are run if a statement fails. The <a href="/docs/Tests">tests</a> for Flourish include a bunch of tests to ensure that statements are run atomically.
+</p>
+
+<p>
+The syntax is strongly based on PostgreSQL's <code>ALTER TABLE</code> statements, since they are powerful and succinct. Users who are more familiar with other database systems, especially SQLite and MySQL, will hopefully find these statement significantly easier to use than native commands.
+</p>
+
+<p>
+Of special note among the supported database systems is SQLite, since it only natively supports renaming tables and adding columns for version 3.x and nothing for version 2.x. Flourish does a fairly significant amount of work for SQLite, which includes:
+</p>
+
+<ol>
+<li>parsing the existing table structure</li>
+<li>modifying it into a new temporary table</li>
+<li>transferring table contents to the temporary table</li>
+<li>dropping the original table</li>
+<li>renaming the temporary table to the original table name</li>
+</ol>
+
+<p>
+Some of these steps require significant sub-steps, such as in SQLite 2, where table renaming does not exists. Luckily SQLite allows DDL statements within transactions, so everything is safe, but <code>ALTER TABLE</code> statements may run more slowly because of the extensive amount of work required.
+</p>
+
+<h4 id="RenameTable">Rename Table</h4>
+<pre><code>ALTER TABLE table_name RENAME TO new_table_name</code></pre>
+
+<p>
+ An <a href="/docs/fSQLException">fSQLException</a> will be thrown if a table with the new name already exists.
+</p>
+
+<h4 id="AddColumn">Add Column</h4>
+<pre><code>ALTER TABLE table_name ADD COLUMN column_name data_type [ DEFAULT default_value ] [ column_constraint [ ... ] ]</code></pre>
+
+<p>
+ The <code>data_type</code>, <code>default_value</code> and <code>column_constraint</code> values are all exactly the same as those for <a href="#CreateTable">Create Table</a> statements. An <a href="/docs/fSQLException">fSQLException</a> will be thrown if a column with the same name already exists or there is an error in the column definition.
+</p>
+
+<h4 id="RenameColumn">Rename Column</h4>
+<pre><code>ALTER TABLE table_name RENAME COLUMN column_name TO new_column_name</code></pre>
+
+<p>
+ An <a href="/docs/fSQLException">fSQLException</a> will be thrown if a column with the new name already exists.
+</p>
+
+<h4 id="DropColumn">Drop Column</h4>
+<pre><code>ALTER TABLE table_name DROP COLUMN column_name</code></pre>
+
+<p>
+ Any <code>UNIQUE</code>, <code>FOREIGN KEY</code> or <code>PRIMARY KEY</code> constraints that involve this column will also be dropped. An <a href="/docs/fSQLException">fSQLException</a> will be thrown if the column does not exist.
+</p>
+
+<h4 id="SetColumnType">Set Column Type</h4>
+<pre><code>ALTER TABLE table_name ALTER COLUMN column_name TYPE data_type</code></pre>
+
+<p>
+ For many of the supported databases, there are restrictions about what data types can be automatically converted. In general it is safe to change the data type to increase the size, such as making a <code>VARCHAR</code> longer, or changing from an <code>INTEGER</code> to a <code>BIGINT</code>.
+</p>
+
+<p>
+For more drastic data type changes, it is normally necessary to:
+</p>
+
+<ol>
+<li>Create a new column</li>
+<li>Assign values to the new column from the old column, using a <code>CAST()</code> statement</li>
+<li>Drop the old column</li>
+<li>Rename the new column to the old column</li>
+<li>Re-create <code>UNIQUE</code>, <code>FOREIGN KEY</code> and <code>PRIMARY KEY</code> constraints that existed on the old column</li>
+</ol>
+
+<h4 id="SetDefault">Set Default</h4>
+<pre><code>ALTER TABLE table_name ALTER COLUMN column_name SET DEFAULT default_value</code></pre>
+
+<p>
+ Sets the default value for a column, overriding any previous value. Some databases only support constant values for <code>default_value</code>. For example, not all databases allow setting <code>CURRENT_TIMESTAMP()</code> to be a default value since it is a function.
+</p>
+
+<h4 id="DropDefault">Drop Default</h4>
+<pre><code>ALTER TABLE table_name ALTER COLUMN column_name DROP DEFAULT</code></pre>
+
+<p>
+ Drops the default value for a column. This statement will succeed even if no default value exists.
+</p>
+
+<h4 id="SetNotNull">Set Not Null</h4>
+<pre><code>ALTER TABLE table_name ALTER COLUMN column_name SET NOT NULL [ DEFAULT default_value ]</code></pre>
+
+<p>
+ Sets a column to not allow <code>NULL</code> values, and optionally sets the default value for a column. This statement will succeed even if the column already restricts <code>NULL</code> values.
+</p>
+
+<p>
+This combined form of <code>SET NOT NULL</code> and <code>SET DEFAULT</code> is useful to support <code>NOT NULL DEFAULT ''</code> configurations on Oracle databases, where blank strings are automatically converted to <code>NULL</code>. <code>NOT NULL DEFAULT ''</code> is useful for writing simpler SQL statements since it is no longer necessary to specially test for <code>NULL</code> values via <code>(column_name IS NULL OR column_name = '')</code>.
+</p>
+
+<h4 id="DropNotNull">Drop Not Null</h4>
+<pre><code>ALTER TABLE table_name ALTER COLUMN column_name DROP NOT NULL</code></pre>
+
+<p>
+ Changes a column to allow <code>NULL</code> values. For most databases this will not succeed on columns that are part of a <code>PRIMARY KEY</code> constraint. This statement will succeed even if the column already allows <code>NULL</code>s.
+</p>
+
+<h4 id="SetCheckConstraint">Set Check Constraint</h4>
+<pre><code>ALTER TABLE table_name ALTER COLUMN column_name SET CHECK IN (string_value [, ... ] )</code></pre>
+
+<p>
+ Creates a <code>CHECK(column_name IN ('string value', 'string value'))</code> check constraint for the column. This check constraint will override any existing check constraint.
+</p>
+
+<p>
+MySQL doesn't support <code>CHECK</code> constraints, but the <code>ENUM()</code> data type is basically a check constraint for a set of string values. Thus for MySQL, this statement will turn a <code>VARCHAR</code> column into an <code>ENUM()</code> column with the strings provided.
+</p>
+
+<h4 id="DropCheckConstraint">Drop Check Constraint</h4>
+<pre><code>ALTER TABLE table_name ALTER COLUMN column_name DROP CHECK</code></pre>
+
+<p>
+ Drop the <code>CHECK</code> constraint for a column. An <a href="/docs/fSQLException">fSQLException</a> will be thrown if no check constraint exists.
+</p>
+
+<p>
+MySQL doesn't support <code>CHECK</code> constraints, but the <code>ENUM()</code> data type is basically a check constraint for a set of string values. Thus the only cross- database compatible <code>CHECK</code> constraint is <code>CHECK(column_name IN ('string value', 'string value 2'))</code>, which will be automatically converted to an <code>ENUM()</code> for MySQL. Consequently, when <code>DROP CHECK</code> is called for MySQL, an <code>ENUM()</code> column will be coverted to a <code>VARCHAR</code>.
+</p>
+
+<h4 id="AddPrimaryKey">Add Primary Key</h4>
+<pre><code>ALTER TABLE table_name ADD PRIMARY KEY (column_name [, ... ] ) [ AUTOINCREMENT ]</code></pre>
+
+<p>
+ Creates a primary key for <code>table_name</code> with the columns specified. An <a href="/docs/fSQLException">fSQLException</a> will be thrown if a primary key already exists.
+</p>
+
+<p>
+If only one column is specified and the <code>AUTOINCREMENT</code> keyword is provided, the column will be configured to automatically created auto-incrementing integer values when no value is provided. The actual implementation of <code>AUTOINCREMENT</code> varies widely between databases. Please see <a href="#DataTypes">Data Types</a> for details.
+</p>
+
+<h4 id="DropPrimaryKey">Drop Primary Key</h4>
+<pre><code>ALTER TABLE table_name DROP PRIMARY KEY</code></pre>
+
+<p>
+ Drops the primary key for <code>table_name</code>. Any foreign keys that reference this primary key will also be dropped. An <a href="/docs/fSQLException">fSQLException</a> will be thrown if a primary key does not exist.
+</p>
+
+<h4 id="AddForeignKey">Add Foreign Key</h4>
+<pre><code>ALTER TABLE table_name ADD FOREIGN KEY (column_name) REFERENCES foreign_table(foreign_column) [ ON DELETE action ]</code></pre>
+
+<p>
+ Adds a foreign key to the column specified. Currently, Flourish as a whole, only supports single-column foreign key constraints. This restriction is also present for this <code>ALTER TABLE</code> statement. The valid <code>action</code> values are the same as those supported by <a href="#CreateTable">Create Table</a>. An <a href="/docs/fSQLException">fSQLException</a> will be thrown if a foreign key already exist.
+</p>
+
+<p>
+Since DB2 and Oracle do not fully support <code>ON UPDATE</code> clauses, such a clause will be automatically removed for those databases.
+</p>
+
+<h4 id="DropForeignKey">Drop Foreign Key</h4>
+<pre><code>ALTER TABLE table_name DROP FOREIGN KEY (column_name)</code></pre>
+
+<p>
+ Drops the foreign key for the column specified. Currently, Flourish as a whole, only supports single-column foreign key constraints. An <a href="/docs/fSQLException">fSQLException</a> will be thrown if a foreign key does not exist.
+</p>
+
+<h4 id="AddUnique">Add Unique</h4>
+<pre><code>ALTER TABLE table_name ADD UNIQUE (column_name [, ... ] )</code></pre>
+
+<p>
+ Adds a unique constraint to the column(s) specified. Some databases, such as MSSQL and DB2, treat a <code>NULL</code> value as a distinct value, only allowing one per column. PostgreSQL, SQLite, Oracle and MySQL treat <code>NULL</code> specially and allow any number of <code>NULL</code>s in a unique column.
+</p>
+
+<h4 id="DropUnique">Drop Unique</h4>
+<pre><code>ALTER TABLE table_name DROP UNIQUE (column_name [, ... ] )</code></pre>
+
+<p>
+ Drop the unique constraint that exists for the column(s) specified. Any foreign keys that reference this unique constraint will also be dropped. An <a href="/docs/fSQLException">fSQLException</a> will be thrown if a <code>UNIQUE</code> constraint does not exist for the column(s) specified.
+</p>
+
+<h3 id="CommentonColumn">Comment on Column</h3>
+<pre><code>COMMENT ON COLUMN table_name.column_name IS 'Comment value'</code></pre>
+
+<p>
+ For SQLite, this statement adds an inline SQL comment at the end of the line that defines the column. All other databases have a native system for storing comments.
+</p>
+
+<h3 id="DropTable">Drop Table</h3>
+<pre><code>DROP TABLE table_name</code></pre>
+
+<h3 id="CreateIndex">Create Index</h3>
+
+<p>
+The following syntax is supported for <code>CREATE INDEX</code> statements.
+</p>
+<pre><code>CREATE [ UNIQUE ] INDEX index_name ON table_name ( column_name [, ... ] ) </code></pre>
+
+<h3 id="DropIndex">Drop Index</h3>
+<pre><code>DROP INDEX index_name</code></pre>
+
+<h3 id="ForeignKeySupport">Foreign Key Support</h3>
+
+<p>
+All of the databases supported by Flourish support foreign key constraints through some method. By using <code>translatedQuery()</code> to execute <code>CREATE TABLE</code> statements, you can be sure that foreign keys will be enforced.
+</p>
+
+<p>
+PostgreSQL, MSSQL, Oracle and DB2 support foreign keys completely natively. MySQL supports them natively as long as the InnoDB engine type is specified in the <code>CREATE TABLE</code> statement. This is automatically added when using <code>translatedQuery()</code>.
+</p>
+
+<p>
+SQLite supports the syntax, however enforcement before version 3.6.19 has to be done through triggers. <code>translatedQuery()</code> will create the necessary triggers to enforce foreign key constraints on an SQLite database.
+</p>
+
+<p>
+Please note that Oracle does not support <code>ON UPDATE</code> clauses, and DB2 only supports the <code>NO ACTION</code> and <code>RESTRICT</code> actions for <code>ON UPDATE</code> clauses. Because of these limitations, it is best to avoid <code>ON UPDATE</code> clauses for cross-database applications.
+</p>
+
+<p>
+In addition, Flourish is designed to support only single-column foreign keys. While most databases support multi-column foreign keys, Flourish's SQLite foreign key trigger generation only supports a single column. In addition, the <code>ALTER TABLE</code> through Flourish SQL is only designed and tested against single- column foreign keys.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

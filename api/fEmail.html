@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fEmail – API Reference – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/api.js"></script><h1>fEmail</h1>
+<div class="sidebar">
+<div class="resources">
+	<h2>Class Resources</h2>
+	<ul>
+		<li><a href="/docs/fEmail">Class Documentation</a></li>
+		<li><strong><a href="/api/fEmail">API Reference</a></strong></li>
+		<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fEmail.php">Source Code</a></li>
+	</ul>
+</div>
+<!-- end resources -->
+<div class="consts">
+<h2><a href="#class_consts">Constants</a></h2>
+<ul>
+    <li><a href="#EMAIL_REGEX">EMAIL_REGEX</a></li>
+    <li><a href="#NAME_EMAIL_REGEX">NAME_EMAIL_REGEX</a></li>
+  </ul>
+</div>
+<div class="methods static">
+<h2><a href="#class_methods_static">Static Methods</a></h2>
+<ul>
+  	  	  	  	  	  	  	  	  	  			<li class="protected"><a href="#combineNameEmail">combineNameEmail()</a></li>
+	  			<li class="protected"><a href="#compose">compose()</a></li>
+	  	  			<li><a href="#fixQmail">fixQmail()</a></li>
+	  			<li class="protected"><a href="#getFQDN">getFQDN()</a></li>
+	  	  	  			<li class="protected"><a href="#reset">reset()</a></li>
+	  	  	  	  	  	  	  	  	  	  			<li class="protected"><a href="#stringlike">stringlike()</a></li>
+	  			<li><a href="#unindentExpand">unindentExpand()</a></li>
+	  </ul>
+</div>
+<div class="methods">
+<h2><a href="#class_methods">Methods</a></h2>
+<ul>
+  			<li><a href="#__construct">__construct()</a></li>
+	  			<li class="protected"><a href="#__get">__get()</a></li>
+	  			<li><a href="#addAttachment">addAttachment()</a></li>
+	  			<li><a href="#addBCCRecipient">addBCCRecipient()</a></li>
+	  			<li><a href="#addCCRecipient">addCCRecipient()</a></li>
+	  			<li><a href="#addCustomHeader">addCustomHeader()</a></li>
+	  			<li><a href="#addRecipient">addRecipient()</a></li>
+	  			<li><a href="#addRelatedFile">addRelatedFile()</a></li>
+	  			<li><a href="#clearRecipients">clearRecipients()</a></li>
+	  	  	  			<li><a href="#encrypt">encrypt()</a></li>
+	  	  	  			<li><a href="#loadBody">loadBody()</a></li>
+	  			<li><a href="#loadHTMLBody">loadHTMLBody()</a></li>
+	  	  			<li><a href="#send">send()</a></li>
+	  			<li><a href="#setBody">setBody()</a></li>
+	  			<li><a href="#setBounceToEmail">setBounceToEmail()</a></li>
+	  			<li><a href="#setFromEmail">setFromEmail()</a></li>
+	  			<li><a href="#setHTMLBody">setHTMLBody()</a></li>
+	  			<li><a href="#setReplyToEmail">setReplyToEmail()</a></li>
+	  			<li><a href="#setSenderEmail">setSenderEmail()</a></li>
+	  			<li><a href="#setSubject">setSubject()</a></li>
+	  			<li><a href="#sign">sign()</a></li>
+	  	  	  </ul>
+</div>
+<div class="uses">
+<h2>Uses</h2>
+<ul>
+		<li><a href="fConnectivityException">fConnectivityException</a></li>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fCryptography">fCryptography</a></li>
+		<li><a href="fEnvironmentException">fEnvironmentException</a></li>
+		<li><a href="fFile">fFile</a></li>
+		<li><a href="fFilesystem">fFilesystem</a></li>
+		<li><a href="fProgrammerException">fProgrammerException</a></li>
+		<li><a href="fUTF8">fUTF8</a></li>
+		<li><a href="fValidationException">fValidationException</a></li>
+	  </ul>
+</div>
+<div class="usedby">
+<h2>Used By</h2>
+<ul>
+		<li><a href="fCore">fCore</a></li>
+		<li><a href="fLoader">fLoader</a></li>
+		<li><a href="fMailbox">fMailbox</a></li>
+		<li><a href="fSMTP">fSMTP</a></li>
+		<li><a href="fValidation">fValidation</a></li>
+	  </ul>
+</div>
+</div>
+<div class="meta">
+	<span class="type">class</span>,
+		<span class="version">v1.0.0b30</span></div>
+<p class="short_description">Allows creating and sending a single email containing plaintext, HTML, attachments and S/MIME encryption</p>
+<div class="description"><p>Please note that this class uses the <a class="ext-link" href="http://php.net/function.mail"><span class="icon"><tt>mail()</tt></span></a>  function by default. Developers that are sending multiple emails, or need  SMTP support, should use <a href="fSMTP">fSMTP</a> with this class.</p><p>This class is implemented to use the UTF-8 character encoding. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p></div>
+<div class="changes"><strong>Changes:</strong> <table cellspacing="0"><tr><th>1.0.0b30</th><td>Changed methods to return instance for method chaining <span class="date">9/12/11</span></td></tr><tr><th>1.0.0b29</th><td>Changed <a href="#combineNameEmail"><tt>combineNameEmail()</tt></a> to be a static method and to be exposed publicly for use by other classes <span class="date">7/26/11</span></td></tr><tr><th>1.0.0b28</th><td>Fixed <a href="#addAttachment"><tt>addAttachment()</tt></a> and <a href="#addRelatedFile"><tt>addRelatedFile()</tt></a> to properly handle duplicate filenames <span class="date">5/17/11</span></td></tr><tr><th>1.0.0b27</th><td>Fixed a bug with generating FQDNs on some Windows machines <span class="date">2/24/11</span></td></tr><tr><th>1.0.0b26</th><td>Added addCustomerHeader() <span class="date">2/2/11</span></td></tr><tr><th>1.0.0b25</th><td>Fixed a bug with finding the FQDN on non-Windows machines <span class="date">1/19/11</span></td></tr><tr><th>1.0.0b24</th><td>Backwards Compatibility Break - the <tt>$contents</tt> parameter of <a href="#addAttachment"><tt>addAttachment()</tt></a> is now first instead of third, <a href="#addAttachment"><tt>addAttachment()</tt></a> will now accept <a href="fFile">fFile</a> objects for the <tt>$contents</tt> parameter, added <a href="#addRelatedFile"><tt>addRelatedFile()</tt></a> <span class="date">12/1/10</span></td></tr><tr><th>1.0.0b23</th><td>Fixed a bug on Windows where emails starting with a <tt>.</tt> would have the <tt>.</tt> removed <span class="date">9/11/10</span></td></tr><tr><th>1.0.0b22</th><td>Revamped the FQDN code and added <a href="#getFQDN"><tt>getFQDN()</tt></a> <span class="date">9/7/10</span></td></tr><tr><th>1.0.0b21</th><td>Added a check to prevent permissions warnings when getting the FQDN on Windows machines <span class="date">9/2/10</span></td></tr><tr><th>1.0.0b20</th><td>Fixed <a href="#send"><tt>send()</tt></a> to only remove the name of a recipient when dealing with the <tt>mail()</tt> function on Windows and to leave it when using <a href="fSMTP">fSMTP</a> <span class="date">6/22/10</span></td></tr><tr><th>1.0.0b19</th><td>Changed <a href="#send"><tt>send()</tt></a> to return the message id for the email, fixed the email regexes to require [] around IPs <span class="date">5/5/10</span></td></tr><tr><th>1.0.0b18</th><td>Fixed the name of the static method <a href="#unindentExpand"><tt>unindentExpand()</tt></a> <span class="date">4/28/10</span></td></tr><tr><th>1.0.0b17</th><td>Added the static method <a href="#unindentExpand"><tt>unindentExpand()</tt></a> <span class="date">4/26/10</span></td></tr><tr><th>1.0.0b16</th><td>Added support for sending emails via <a href="fSMTP">fSMTP</a> <span class="date">4/20/10</span></td></tr><tr><th>1.0.0b15</th><td>Added the <tt>$unindent_expand_constants</tt> parameter to <a href="#setBody"><tt>setBody()</tt></a>, added <a href="#loadBody"><tt>loadBody()</tt></a> and <a href="#loadHTMLBody"><tt>loadHTMLBody()</tt></a>, fixed HTML emails with attachments <span class="date">3/14/10</span></td></tr><tr><th>1.0.0b14</th><td>Changed <a href="#send"><tt>send()</tt></a> to not double <tt>.</tt>s at the beginning of lines on Windows since it seemed to break things rather than fix them <span class="date">3/5/10</span></td></tr><tr><th>1.0.0b13</th><td>Fixed the class to work when safe mode is turned on <span class="date">10/23/09</span></td></tr><tr><th>1.0.0b12</th><td>Removed duplicate MIME-Version headers that were being included in S/MIME encrypted emails <span class="date">10/5/09</span></td></tr><tr><th>1.0.0b11</th><td>Updated to use the new <a href="fValidationException">fValidationException</a> API <span class="date">9/17/09</span></td></tr><tr><th>1.0.0b10</th><td>Fixed a bug with sending both an HTML and a plaintext body <span class="date">6/18/09</span></td></tr><tr><th>1.0.0b9</th><td>Fixed a bug where the MIME headers were not being set for all emails <span class="date">6/12/09</span></td></tr><tr><th>1.0.0b8</th><td>Added the method <a href="#clearRecipients"><tt>clearRecipients()</tt></a> <span class="date">5/29/09</span></td></tr><tr><th>1.0.0b7</th><td>Email names with UTF-8 characters are now properly encoded <span class="date">5/8/09</span></td></tr><tr><th>1.0.0b6</th><td>Fixed a bug where &lt;&gt; quoted email addresses in validation messages were not showing <span class="date">3/27/09</span></td></tr><tr><th>1.0.0b5</th><td>Updated for new <a href="fCore">fCore</a> API <span class="date">2/16/09</span></td></tr><tr><th>1.0.0b4</th><td>The recipient error message in validate() no longer contains a typo <span class="date">2/9/09</span></td></tr><tr><th>1.0.0b3</th><td>Fixed a bug with missing content in the <a href="fValidationException">fValidationException</a> thrown by validate() <span class="date">1/14/09</span></td></tr><tr><th>1.0.0b2</th><td>Fixed a few bugs with sending S/MIME encrypted/signed emails <span class="date">1/10/09</span></td></tr><tr><th>1.0.0b</th><td>The initial implementation <span class="date">6/23/08</span></td></tr></table></div>
+<div class="class_consts" id="class_consts">
+<h2>Constants</h2>
+<!-- start constant -->
+<h3 id="EMAIL_REGEX" class="constant"><span class="resolution">::</span><span class="name">EMAIL_REGEX</span></h3>
+<div class="constant">
+			<div class="constant_description">
+					<p>A regular expression to match an email address, exluding those with comments and folding whitespace</p>
+				<p>The matches will be:   </p><ul><li><tt>[0]</tt>: The whole email address</li><li><tt>[1]</tt>: The name before the <tt>@</tt></li><li><tt>[2]</tt>: The domain/ip after the <tt>@</tt></li></ul>
+		</div>
+</div>
+<!-- end constant -->
+<!-- start constant -->
+<h3 id="NAME_EMAIL_REGEX" class="constant"><span class="resolution">::</span><span class="name">NAME_EMAIL_REGEX</span></h3>
+<div class="constant">
+			<div class="constant_description">
+					<p>A regular expression to match a <tt>name &lt;email&gt;</tt> string, exluding those with comments and folding whitespace</p>
+				<p>The matches will be:  </p><ul><li><tt>[0]</tt>: The whole name and email address</li><li><tt>[1]</tt>: The name</li><li><tt>[2]</tt>: The whole email address</li><li><tt>[3]</tt>: The email username before the <tt>@</tt></li><li><tt>[4]</tt>: The email domain/ip after the <tt>@</tt></li></ul>
+		</div>
+</div>
+<!-- end constant -->
+</div>
+<div class="class_methods static" id="class_methods_static">
+<h2>Static Methods</h2>
+			  			  									<!-- start protected method static -->
+			<h3 id="combineNameEmail" class="protected method static"><span class="resolution">::</span><span class="name">combineNameEmail()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Turns a name and email into a <tt>&quot;name&quot; &lt;email&gt;</tt> string, or just <tt>email</tt> if no name is provided</p>
+								<p>This method will remove newline characters from the name and email, and  will remove any backslash (<tt>\</tt>) and double quote (<tt>&quot;</tt>) characters from  the name.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">combineNameEmail</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$email</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The name associated with the email address</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$email</td>
+				<td class="param_description">The email address</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The '&quot;name&quot; &lt;email&gt;' or 'email' string
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="compose" class="protected method static"><span class="resolution">::</span><span class="name">compose()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Composes text using <a href="fText">fText</a> if loaded</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">compose</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$message</span><span class="php-code">,</span> <span class="php-vartype">mixed</span> <span class="php-var">$component</span> [<span class="php-code">, ... </span>] <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$message</td>
+				<td class="param_description">The message to compose</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$component <em>[, ... ]</em></td>
+				<td class="param_description">A string or number to insert into the message</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The composed and possible translated message
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="fixQmail" class="method static"><span class="resolution">::</span><span class="name">fixQmail()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Sets the class to try and fix broken qmail implementations that add <tt>\r</tt> to <tt>\r\n</tt></p>
+								<p>Before trying to fix qmail with this method, please try using <a href="fSMTP">fSMTP</a>  to connect to <tt>localhost</tt> and pass the <a href="fSMTP">fSMTP</a> object to <a href="#send"><tt>send()</tt></a>.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">fixQmail</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="getFQDN" class="protected method static"><span class="resolution">::</span><span class="name">getFQDN()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Returns the fully-qualified domain name of the server</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">getFQDN</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					The fully-qualified domain name of the server
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="reset" class="protected method static"><span class="resolution">::</span><span class="name">reset()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method static">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>Resets the configuration of the class</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">void</span> <span class="php-identifier">reset</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start protected method static -->
+			<h3 id="stringlike" class="protected method static"><span class="resolution">::</span><span class="name">stringlike()</span> <span class="visibility">protected</span></h3>
+			<div class="protected method static">
+							<div class="method_description">
+									<p>Returns <tt>TRUE</tt> for non-empty strings, numbers, objects, empty numbers and string-like numbers (such as <tt>0</tt>, <tt>0.0</tt>, <tt>'0'</tt>)</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">boolean</span> <span class="php-identifier">stringlike</span><span class="php-brackets">(</span> <span class="php-vartype">mixed</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">mixed</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value to check</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					If the value is string-like
+				</p>
+			</div>
+			<!-- end method static -->
+			  			  									<!-- start method static -->
+			<h3 id="unindentExpand" class="method static"><span class="resolution">::</span><span class="name">unindentExpand()</span> <span class="visibility">public</span></h3>
+			<div class="method static">
+							<div class="method_description">
+									<p>Takes a block of text, unindents it and replaces {CONSTANT} tokens with the constant's value</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">unindentExpand</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$text</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$text</td>
+				<td class="param_description">The text to unindent and replace constants in</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					The unindented text
+				</p>
+			</div>
+			<!-- end method static -->
+	</div>
+<div class="class_methods" id="class_methods">
+<h2>Methods</h2>
+			  			  									<!-- start method -->
+			<h3 id="__construct" class="method"><span class="resolution">-></span><span class="name">__construct()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Initializes <a href="fEmail">fEmail</a> for creating message ids</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">__construct</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start protected method -->
+			<h3 id="__get" class="protected method"><span class="resolution">-></span><span class="name">__get()</span> <span class="visibility">internal public</span></h3>
+			<div class="protected method">
+							<div class="internal_notice">
+					<p>
+						<em>Please note: this method is <strong>public</strong>, however it is
+						primarily intended for internal use by Flourish and will normally not
+						be useful in site/application code</em>
+					</p>
+				</div>
+							<div class="method_description">
+									<p>All requests that hit this method should be requests for callbacks</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">callback</span> <span class="php-identifier">__get</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$method</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$method</td>
+				<td class="param_description">The method to create a callback for</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The callback for the method requested
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addAttachment" class="method"><span class="resolution">-></span><span class="name">addAttachment()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds an attachment to the email</p>
+								<p>If a duplicate filename is detected, it will be changed to be unique.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">addAttachment</span><span class="php-brackets">(</span> <span class="php-vartype">string|<a href="fFile">fFile</a></span> <span class="php-var">$contents</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$filename</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$mime_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|<a href="fFile">fFile</a></td>
+				<td class="param_name">$contents</td>
+				<td class="param_description">The contents of the file</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$filename</td>
+				<td class="param_description">The name to give the attachement - optional if <tt>$contents</tt> is an <a href="fFile">fFile</a> object</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$mime_type</td>
+				<td class="param_description">The mime type of the file - this allows overriding the mime type of the file if incorrectly detected</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addBCCRecipient" class="method"><span class="resolution">-></span><span class="name">addBCCRecipient()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a blind carbon copy (BCC) email recipient</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">addBCCRecipient</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$email</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$email</td>
+				<td class="param_description">The email address to BCC</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The recipient's name</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addCCRecipient" class="method"><span class="resolution">-></span><span class="name">addCCRecipient()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a carbon copy (CC) email recipient</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">addCCRecipient</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$email</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$email</td>
+				<td class="param_description">The email address to BCC</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The recipient's name</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addCustomHeader" class="method"><span class="resolution">-></span><span class="name">addCustomHeader()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Allows adding a custom header to the email</p>
+								<p>If the method is called multiple times with the same name, the last  value will be used.</p><p>Please note that this class will properly format the header, including  adding the <tt>:</tt> between the name and value and wrapping values that are  too long for a single line.</p>
+				</div>
+			<h4>Signatures</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">addCustomHeader</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$value</span> <span class="php-brackets">)</span></code>
+			</p>
+							<p class="signature">
+					<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">addCustomHeader</span><span class="php-brackets">(</span> <span class="php-vartype">array</span> <span class="php-var">$headers</span> <span class="php-brackets">)</span></code>
+				</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The name of the header</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$value</td>
+				<td class="param_description">The value of the header</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$headers</td>
+				<td class="param_description">An associative array of <tt>{name} =&gt; {value}</tt></td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addRecipient" class="method"><span class="resolution">-></span><span class="name">addRecipient()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds an email recipient</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">addRecipient</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$email</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$email</td>
+				<td class="param_description">The email address to send to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The recipient's name</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="addRelatedFile" class="method"><span class="resolution">-></span><span class="name">addRelatedFile()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds a “related” file to the email, returning the <tt>Content-ID</tt> for use in HTML</p>
+								<p>The purpose of a related file is to be able to reference it in part of  the HTML body. Image <tt>src</tt> URLs can reference a related file by starting  the URL with <tt>cid:</tt> and then inserting the <tt>Content-ID</tt>.</p><p>If a duplicate filename is detected, it will be changed to be unique.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">addRelatedFile</span><span class="php-brackets">(</span> <span class="php-vartype">string|<a href="fFile">fFile</a></span> <span class="php-var">$contents</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$filename</span><span class="php-code">=</span>NULL<span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$mime_type</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|<a href="fFile">fFile</a></td>
+				<td class="param_name">$contents</td>
+				<td class="param_description">The contents of the file</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$filename</td>
+				<td class="param_description">The name to give the attachement - optional if <tt>$contents</tt> is an <a href="fFile">fFile</a> object</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$mime_type</td>
+				<td class="param_description">The mime type of the file - this allows overriding the mime type of the file if incorrectly detected</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The fully-formed <tt>cid:</tt> URL for use in HTML <tt>src</tt> attributes
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="clearRecipients" class="method"><span class="resolution">-></span><span class="name">clearRecipients()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Removes all To, CC and BCC recipients from the email</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">clearRecipients</span><span class="php-brackets">(</span>  <span class="php-brackets">)</span></code>
+			</p>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="encrypt" class="method"><span class="resolution">-></span><span class="name">encrypt()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the email to be encrypted with S/MIME</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">encrypt</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$recipients_smime_cert_file</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$recipients_smime_cert_file</td>
+				<td class="param_description">The file path to the PEM-encoded S/MIME certificate for the recipient</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="loadBody" class="method"><span class="resolution">-></span><span class="name">loadBody()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Loads the plaintext version of the email body from a file and applies replacements</p>
+								<p>The should contain either ASCII or UTF-8 encoded text. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">loadBody</span><span class="php-brackets">(</span> <span class="php-vartype">string|<a href="fFile">fFile</a></span> <span class="php-var">$file</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$replacements</span><span class="php-code">=</span>array() <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|<a href="fFile">fFile</a></td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The plaintext version of the email body</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$replacements</td>
+				<td class="param_description">The method will search the contents of the file for each key and replace it with the corresponding value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When no file was specified, the file does not exist or the path specified is not a file</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="loadHTMLBody" class="method"><span class="resolution">-></span><span class="name">loadHTMLBody()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Loads the plaintext version of the email body from a file and applies replacements</p>
+								<p>The should contain either ASCII or UTF-8 encoded text. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">loadHTMLBody</span><span class="php-brackets">(</span> <span class="php-vartype">string|<a href="fFile">fFile</a></span> <span class="php-var">$file</span><span class="php-code">,</span> <span class="php-vartype">array</span> <span class="php-var">$replacements</span><span class="php-code">=</span>array() <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string|<a href="fFile">fFile</a></td>
+				<td class="param_name">$file</td>
+				<td class="param_description">The plaintext version of the email body</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">array</td>
+				<td class="param_name">$replacements</td>
+				<td class="param_description">The method will search the contents of the file for each key and replace it with the corresponding value</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When no file was specified, the file does not exist or the path specified is not a file</dd></dl>
+		</div>
+		<!-- end method -->	
+						<!-- start method -->
+			<h3 id="send" class="method"><span class="resolution">-></span><span class="name">send()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sends the email</p>
+								<p>The return value is the message id, which should be included as the  <tt>Message-ID</tt> header of the email. While almost all SMTP servers will not  modify this value, testing has indicated at least one (smtp.live.com  for Windows Live Mail) does.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype">string</span> <span class="php-identifier">send</span><span class="php-brackets">(</span> <span class="php-vartype"><a href="fSMTP">fSMTP</a></span> <span class="php-var">$connection</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type"><a href="fSMTP">fSMTP</a></td>
+				<td class="param_name">$connection</td>
+				<td class="param_description">The SMTP connection to send the message over</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The message id for the message - see method description for details
+				</p>
+										<h4>Throws</h4>
+				<dl class="throws"> <dt><a href="fValidationException">fValidationException</a></dt><dd>When validate() throws an exception</dd></dl>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setBody" class="method"><span class="resolution">-></span><span class="name">setBody()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the plaintext version of the email body</p>
+								<p>This method accepts either ASCII or UTF-8 encoded text. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">setBody</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$plaintext</span><span class="php-code">,</span> <span class="php-vartype">boolean</span> <span class="php-var">$unindent_expand_constants</span><span class="php-code">=</span>FALSE <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$plaintext</td>
+				<td class="param_description">The plaintext version of the email body</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">boolean</td>
+				<td class="param_name">$unindent_expand_constants</td>
+				<td class="param_description">If this is <tt>TRUE</tt>, the body will be unindented as much as possible and {CONSTANT_NAME} will be replaced with the value of the constant</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setBounceToEmail" class="method"><span class="resolution">-></span><span class="name">setBounceToEmail()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds the email address the email will be bounced to</p>
+								<p>This email address will be set to the <tt>Return-Path</tt> header.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">setBounceToEmail</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$email</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$email</td>
+				<td class="param_description">The email address to bounce to</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setFromEmail" class="method"><span class="resolution">-></span><span class="name">setFromEmail()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds the <tt>From:</tt> email address to the email</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">setFromEmail</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$email</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$email</td>
+				<td class="param_description">The email address being sent from</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The from email user's name - unfortunately on windows this is ignored</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setHTMLBody" class="method"><span class="resolution">-></span><span class="name">setHTMLBody()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the HTML version of the email body</p>
+								<p>This method accepts either ASCII or UTF-8 encoded text. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">setHTMLBody</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$html</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$html</td>
+				<td class="param_description">The HTML version of the email body</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setReplyToEmail" class="method"><span class="resolution">-></span><span class="name">setReplyToEmail()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds the <tt>Reply-To:</tt> email address to the email</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">setReplyToEmail</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$email</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$email</td>
+				<td class="param_description">The email address to reply to</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The reply-to email user's name</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setSenderEmail" class="method"><span class="resolution">-></span><span class="name">setSenderEmail()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Adds the <tt>Sender:</tt> email address to the email</p>
+								<p>The <tt>Sender:</tt> header is used to indicate someone other than the <tt>From:</tt>  address is actually submitting the message to the network.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">setSenderEmail</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$email</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$name</span><span class="php-code">=</span>NULL <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$email</td>
+				<td class="param_description">The email address the message is actually being sent from</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$name</td>
+				<td class="param_description">The sender email user's name</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="setSubject" class="method"><span class="resolution">-></span><span class="name">setSubject()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the subject of the email</p>
+								<p>This method accepts either ASCII or UTF-8 encoded text. Please see  <a href="http://flourishlib.com/docs/UTF-8">http://flourishlib.com/docs/UTF-8</a> for more information.</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">setSubject</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$subject</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$subject</td>
+				<td class="param_description">The subject of the email</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+			  			  									<!-- start method -->
+			<h3 id="sign" class="method"><span class="resolution">-></span><span class="name">sign()</span> <span class="visibility">public</span></h3>
+			<div class="method">
+							<div class="method_description">
+									<p>Sets the email to be signed with S/MIME</p>
+				</div>
+			<h4>Signature</h4>
+			<p class="signature">
+				<code><span class="php-vartype"><a href="fEmail">fEmail</a></span> <span class="php-identifier">sign</span><span class="php-brackets">(</span> <span class="php-vartype">string</span> <span class="php-var">$senders_smime_cert_file</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$senders_smime_pk_file</span><span class="php-code">,</span> <span class="php-vartype">string</span> <span class="php-var">$senders_smime_pk_password</span> <span class="php-brackets">)</span></code>
+			</p>
+						<h4>Parameters</h4>
+			<div class="parameters">
+			<table cellspacing="0">
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$senders_smime_cert_file</td>
+				<td class="param_description">The file path to the sender's PEM-encoded S/MIME certificate</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$senders_smime_pk_file</td>
+				<td class="param_description">The file path to the sender's S/MIME private key</td>
+			  </tr>
+						  <tr>
+				<td class="param_data_type">string</td>
+				<td class="param_name">$senders_smime_pk_password</td>
+				<td class="param_description">The password for the sender's S/MIME private key</td>
+			  </tr>
+						</table>
+			</div>
+										<h4>Returns</h4>
+				<p class="return">
+					 The email object, to allow for method chaining
+				</p>
+		</div>
+		<!-- end method -->	
+					</div>		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fORMOrdering – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fORMOrdering">fORMOrdering</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fORMOrdering">Class Documentation</a></strong></li>
+<li><a href="/api/fORMOrdering">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fORMOrdering.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#BasicOrderingSingle-Column">Basic Ordering (Single-Column)</a></li>
+<li><a href="#AdvancedOrderingMulti-Column">Advanced Ordering (Multi-Column)</a></li>
+</ul>
+
+<h2 id="ORMClasses">ORM Classes </h2>
+
+<ul>
+<li><a href="/docs/fActiveRecord">fActiveRecord</a></li>
+<li><a href="/docs/fRecordSet">fRecordSet</a></li>
+</ul>
+
+<ul>
+<li><a href="/docs/fORM">fORM</a></li>
+<li><a href="/docs/fORMColumn">fORMColumn</a></li>
+<li><a href="/docs/fORMDatabase">fORMDatabase</a></li>
+<li><a href="/docs/fORMDate">fORMDate</a></li>
+<li><a href="/docs/fORMFile">fORMFile</a></li>
+<li><a href="/docs/fORMJSON">fORMJSON</a></li>
+<li><a href="/docs/fORMMoney">fORMMoney</a></li>
+<li><strong>fORMOrdering</strong></li>
+<li><a href="/docs/fORMRelated">fORMRelated</a></li>
+<li><a href="/docs/fORMSchema">fORMSchema</a></li>
+<li><a href="/docs/fORMValidation">fORMValidation</a></li>
+</ul>
+</div>
+
+<p>
+The fORMOrdering class is an ORM plugin to provide record ordering functionality for <a href="/docs/fActiveRecord">fActiveRecord</a> classes.
+</p>
+
+<p>
+An ordering column is used to provide arbitrary ordering for <a href="/docs/fActiveRecord">fActiveRecord</a> objects. For a column to be an ordering column, it must be an integer column that allows for negative numbers and is part of a <code>UNIQUE</code> constraint. While an ordering value will never be negative, negative integers are used in the process of re-arranging values.
+</p>
+
+<p>
+If the column is the only column in the <code>UNIQUE</code> constraint, all records in the table will be part of one ordered set. If the column is part of a multi-column <code>UNIQUE</code> constraint, all records that have the same values for each column <em>other</em> than the ordering will be part of an ordered set.
+</p>
+
+<h2 id="BasicOrderingSingle-Column">Basic Ordering (Single-Column)</h2>
+
+<p>
+To configure a column to be treated as an ordering column, the static method <a href="/api/fORMOrdering#configureOrderingColumn"><code>configureOrderingColumn()</code></a> must be called with the <code>$class</code> to configure and the <code>$column</code> to set as an ordering column.
+</p>
+<pre class="block php"><code>class Photo extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMOrdering::configureOrderingColumn($this, 'display_order');
+    ]
+}</code></pre>
+
+<p>
+ Once a column has been set to be an ordering column, any new records inserted into the set will be automatically added at the end, unless a specific value is set for the ordering column.
+</p>
+<pre class="block php"><code>// Assuming there are no other photos, this photo would become #1
+$photo = new Photo();
+$photo-&gt;store();
+
+// This photo would be come number 2
+$photo2 = new Photo();
+$photo2-&gt;store();</code></pre>
+
+<p>
+ Whenever the value for the ordering column is changed, the records around it will be adjusted so there is always a continuous sequence of order numbers. 
+</p>
+<pre class="block php"><code>// This photo would become number 2 and $photo2 would change to number 3
+$photo3 = new Photo();
+$photo3-&gt;setDisplayOrder(2);
+$photo3-&gt;store();</code></pre>
+
+<h2 id="AdvancedOrderingMulti-Column">Advanced Ordering (Multi-Column)</h2>
+
+<p>
+Below is an example of a multi-column <code>UNIQUE</code> constraint and the dynamics related to it. Each photo is part of a photo gallery, thus it is desired to have a separate ordering for each gallery. Flourish will automatically detect that the <code>display_order</code> column is in a <code>UNIQUE</code> constraint with <code>photo_gallery_id</code> and will order each photo gallery separately.
+</p>
+<pre class="block sql"><code>CREATE TABLE photo_galleries (
+    name VARCHAR(200) PRIMARY KEY
+);
+
+CREATE TABLE photos (
+    photo_id SERIAL PRIMARY KEY,
+    photo VARCHAR(255) NOT NULL,
+    caption VARCHAR(255) NOT NULL DEFAULT '',
+    display_order INTEGER NOT NULL,
+    photo_gallery VARCHAR(200) NOT NULL REFERENCES photo_galleries(name) ON DELETE CASCADE ON UPDATE CASCADE,
+    UNIQUE(photo_gallery_id, display_order)
+);</code></pre>
+<pre class="block php"><code>class Photo extends fActiveRecord
+{
+    protected function configure()
+    {
+        fORMOrdering::configureOrderingColumn($this, 'display_order');
+    ]
+}</code></pre>
+
+<p>
+ The following example shows how photos will be ordered in their respective galleries.
+</p>
+<pre class="block php"><code>// Create the galleries to use
+$photo_gallery = new PhotoGallery();
+$photo_gallery-&gt;setName('Gallery 1');
+$photo_gallery-&gt;store();
+
+$photo_gallery2 = new PhotoGallery();
+$photo_gallery2-&gt;setName('Gallery 2');
+$photo_gallery2-&gt;store();
+
+// This photo will have its display order set to 1
+$photo = new Photo();
+$photo-&gt;setPhotoGallery('Gallery 1');
+$photo-&gt;setPhoto($photo_path);
+$photo-&gt;store();
+
+// This photo will have its display order set to 1 also, but as part of Gallery 2
+$photo2 = new Photo();
+$photo2-&gt;setPhotoGallery('Gallery 2');
+$photo2-&gt;setPhoto($photo_path);
+$photo2-&gt;store();
+
+// This photo will have its display order set to 2
+$photo3 = new Photo();
+$photo3-&gt;setPhotoGallery('Gallery 1');
+$photo3-&gt;setPhoto($photo_path);
+$photo3-&gt;store();</code></pre>
+
+<p>
+ If the gallery was changed for <code>$photo</code> to <code>Gallery 2</code>, it would be moved out of the display order of <code>Gallery 1</code> and added to the end of the display order for <code>Gallery 2</code>.
+</p>
+<pre class="block php"><code>$photo-&gt;setPhotoGallery('Gallery 2');
+$photo-&gt;store();
+
+// This would output 2 since it was added at the end of Gallery 2
+echo $photo-&gt;getDisplayOrder();</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fUnexpectedException – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fUnexpectedException">fUnexpectedException</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fUnexpectedException">Class Documentation</a></strong></li>
+<li><a href="/api/fUnexpectedException">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fUnexpectedException.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#SpecialFunctionality">Special Functionality</a></li>
+<li><a href="#ChildClasses">Child Classes</a></li>
+</ul>
+
+<h2 id="ExceptionClasses">Exception Classes </h2>
+
+<ul>
+<li><a href="/docs/fException">fException</a>
+<ul>
+<li><a href="/docs/fExpectedException">fExpectedException</a>
+<ul>
+<li><a href="/docs/fAuthorizationException">fAuthorizationException</a></li>
+<li><a href="/docs/fEmptySetException">fEmptySetException</a></li>
+<li><a href="/docs/fNoRemainingException">fNoRemainingException</a></li>
+<li><a href="/docs/fNoRowsException">fNoRowsException</a></li>
+<li><a href="/docs/fNotFoundException">fNotFoundException</a></li>
+<li><a href="/docs/fValidationException">fValidationException</a></li>
+</ul>
+</li>
+<li><strong>fUnexpectedException</strong>
+<ul>
+<li><a href="/docs/fConnectivityException">fConnectivityException</a></li>
+<li><a href="/docs/fEnvironmentException">fEnvironmentException</a></li>
+<li><a href="/docs/fProgrammerException">fProgrammerException</a></li>
+<li><a href="/docs/fSQLException">fSQLException</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<p>
+fUnexpectedException is a sub-class of <a href="/docs/fException">fException</a> meant to provide a common parent class for all exceptions that should <strong><em>not</em></strong> be expected or handled in the site/application code.
+</p>
+
+<h2 id="SpecialFunctionality">Special Functionality</h2>
+
+<p>
+All classes that extend fUnexpectedException change the functionality of the <code>printMessage()</code> method. Instead of printing the exception message, a generic error message is printed. These classes are designed to be handled by the <a href="/api/fCore#enableExceptionHandling">fCore::enableExceptionHandling()</a> method, which intercepts all uncaught exceptions and delivers the backtrace via one of three methods (see the <a href="/docs/fCore#ErrorExceptionHandling">fCore class</a> for details).
+</p>
+
+<h2 id="ChildClasses">Child Classes</h2>
+
+<p>
+Below is a list of all child classes that extend fUnexpectedException. These classes are <strong><em>not</em></strong> documented using a <em>Throws:</em> entry in the API documentation since they should <strong><em>not</em></strong> be handled via normal site/application code.
+</p>
+<table><tbody>
+<tr>
+<td><strong>Class</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+<tr>
+<td><a href="/docs/fConnectivityException">fConnectivityException</a></td>
+<td>This type of exception indicates some sort of connection error occured, whether it be with a database server, remote API, etc.</td>
+</tr>
+<tr>
+<td><a href="/docs/fEnvironmentException">fEnvironmentException</a></td>
+<td>This type of exception indicates something is wrong with the server environment that is preventing proper execution of code.</td>
+</tr>
+<tr>
+<td><a href="/docs/fProgrammerException">fProgrammerException</a></td>
+<td>This type of exception indicates that the programming building the site/application wrote invalid code, or somehow otherwise violated an expected format or sequence.</td>
+</tr>
+<tr>
+<td><a href="/docs/fSQLException">fSQLException</a></td>
+<td>This type of exception indicates an error was returned when executing an SQL query. This will not be thrown in the situation where a query returns no results, but rather when SQL syntax is incorrect.</td>
+</tr>
+</tbody></table>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

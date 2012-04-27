@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fSMTP – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fSMTP">fSMTP</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fSMTP">Class Documentation</a></strong></li>
+<li><a href="/api/fSMTP">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fSMTP.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Instantiation">Instantiation</a></li>
+<li><a href="#Authentication">Authentication</a></li>
+<li><a href="#SendingMessages">Sending Messages</a></li>
+<li><a href="#ClosingtheConnection">Closing the Connection</a></li>
+</ul>
+
+<h2 id="EmailClasses">Email Classes </h2>
+
+<ul>
+<li><a href="/docs/fEmail">fEmail</a></li>
+<li><a href="/docs/fMailbox">fMailbox</a></li>
+<li><strong>fSMTP</strong></li>
+</ul>
+</div>
+
+<p>
+The fSMTP class allows for sending emails with <a href="/docs/fEmail">fEmail</a> via an SMTP server. It supports multiple authentication methods, secure connections (including via <code>STARTTLS</code>) and increased sending performance via SMTP pipelining.
+</p>
+
+<h2 id="Instantiation">Instantiation</h2>
+
+<p>
+Creating an SMTP connection can be as simple as passing the IP address or hostname of the <code>$server</code>.
+</p>
+<pre class="block php"><code>$smtp = new fSMTP('example.com');</code></pre>
+
+<p>
+ In addition to the <code>$server</code>, it is also possible to specify the <code>$port</code>, if the connection is <code>$secure</code> and the <code>$timeout</code>.
+</p>
+<pre class="block php"><code>// This sets up fSMTP to connect to the gmail SMTP server
+// with a 5 second timeout. Gmail requires a secure connection.
+$smtp = new fSMTP('smtp.gmail.com', 465, TRUE, 5);</code></pre>
+
+<p>
+ Secure connections require the <a href="http://php.net/openssl">openssl extension</a>. If a secure connection is not requested, but the SMTP server provides <code>STARTTLS</code> functionality, fSMTP will automatically upgrade the connection to be secure.
+</p>
+
+<h2 id="Authentication">Authentication</h2>
+
+<p>
+fSMTP also supports SMTP authentication. Simple pass a <code>$username</code> and <code>$password</code> to <a href="/api/fSMTP#authenticate"><code>authenticate()</code></a>. This should be called before trying to send any emails.
+</p>
+<pre class="block php"><code>$smtp-&gt;authenticate('username', 'password');</code></pre>
+
+<p>
+ Behind the scenes, there are four authentication methods supported: digest-md5, cram-md5, plain and login. The more secure digest-md5 and cram-md5 methods will be used if possible since they do not send login credentials in the clear.
+</p>
+
+<h2 id="SendingMessages">Sending Messages</h2>
+
+<p>
+Sending messages via <a href="/docs/fEmail">fEmail</a> and fSMTP is extremely simple, just pass the fSMTP object to <a href="/api/fEmail#send">fEmail::send()</a>:
+</p>
+<pre class="block php"><code>$email-&gt;send($smtp);</code></pre>
+
+<h2 id="ClosingtheConnection">Closing the Connection</h2>
+
+<p>
+The connection to the SMTP server will be automatically closed at the end of the script. If there is a need to close it before then, simply call <a href="/api/fSMTP#close"><code>close()</code></a>.
+</p>
+<pre class="block php"><code>$smtp-&gt;close();</code></pre>
+
+<p>
+ 		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
+</p>

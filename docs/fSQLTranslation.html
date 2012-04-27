@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>fSQLTranslation – Class Documentation – Flourish</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main">
+<h1 id="fSQLTranslation">fSQLTranslation</h1>
+<div class="sidebar">
+<h2 id="ClassResources">Class Resources </h2>
+
+<ul>
+<li><strong><a href="/docs/fSQLTranslation">Class Documentation</a></strong></li>
+<li><a href="/api/fSQLTranslation">API Reference</a></li>
+<li><a href="https://github.com/flourishlib/flourish-classes/blob/master/fSQLTranslation.php">Source Code</a></li>
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+<li><a href="#Debugging">Debugging</a></li>
+<li><a href="#Caching">Caching</a></li>
+</ul>
+
+<h2 id="DatabaseClasses">Database Classes </h2>
+
+<ul>
+<li><a href="/docs/fDatabase">fDatabase</a></li>
+<li><a href="/docs/fNoRowsException">fNoRowsException</a></li>
+<li><a href="/docs/fResult">fResult</a></li>
+<li><a href="/docs/fSQLException">fSQLException</a></li>
+<li><strong>fSQLTranslation</strong></li>
+<li><a href="/docs/fSQLSchemaTranslation">fSQLSchemaTranslation</a></li>
+<li><a href="/docs/fSchema">fSchema</a></li>
+<li><a href="/docs/fStatement">fStatement</a></li>
+<li><a href="/docs/fUnbufferedResult">fUnbufferedResult</a></li>
+</ul>
+</div>
+
+<p>
+The fSQLTranslation class is an internal class used by <a href="/docs/fDatabase">fDatabase</a> for translating <a href="/docs/FlourishSql">Flourish SQL</a> into the dialect of SQL supported by the current database. To take advantage of the features of this class, be sure to call <a href="/api/fDatabase#translatedquery"><code>translatedQuery()</code></a> instead of <a href="/api/fDatabase#query"><code>query()</code></a>.
+</p>
+
+<p>
+For more information about <code>translatedQuery()</code> and <code>query()</code>, please see the <a href="/docs/fDatabase#Queries">Queries</a> section of the <a href="/docs/fDatabase">fDatabase</a> page.
+</p>
+
+<h2 id="Debugging">Debugging</h2>
+
+<p>
+The method <a href="/api/fSQLTranslation#enableDebugging"><code>enableDebugging()</code></a>, accepts a single boolean parameter to turn debugging on or off. This method is automatically passed the same value as <a href="/api/fDatabase#enableDebugging">fDatabase::enableDebugging()</a> when that is called.
+</p>
+
+<p>
+When debugging is enabled, the class will print the original and translated queries, allowing developers to track down translation issues.
+</p>
+<pre class="block php"><code>$sql_translation-&gt;enableDebugging(TRUE);</code></pre>
+
+<h2 id="Caching">Caching</h2>
+
+<p>
+Part of the functionality that fSQLTranslation provides is to provide a way to get national character data (NCHAR, NVARCHAR and NTEXT columns) out of Microsoft SQL Server. Most of the MSSQL extensions for PHP do not properly retrieve national character data since it is encoded in UCS-2, which contains <code>NULL</code> bytes. fSQLTranslation translates the SQL query to request data from such columns as binary data, which allows <code>NULL</code> bytes, and then changes the encoding to UTF-8 before being returned to the developer.
+</p>
+
+<p>
+Part of this process is to retrieve a list of all national character columns. The <a href="/api/fSQLTranslation#enableCaching"><code>enableCaching()</code></a> method accepts an instance of the <a href="/docs/fCache">fCache</a> class, and will save the appropriate database schema information so it does not need to be fetched on each page load.
+</p>
+<pre class="block php"><code>$sql_translation-&gt;enableCaching(new fCache('file', '/path/to/cache/file'));</code></pre>
+
+<p>
+ The method <a href="/api/fSQLTranslation#clearCache"><code>clearCache()</code></a> will clear out the cached information, which would be useful when the database schema changes.
+</p>
+
+<p>
+When using the <a href="/docs/ObjectRelationalMapping">Flourish ORM</a>, the <a href="/docs/fORM">fORM</a> class provides some <a href="/docs/fORM#SchemaCaching">useful caching functionality</a> that will automatically clear the cache when database errors occur.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>

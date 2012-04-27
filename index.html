@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Flourish, PHP Unframework</title>
+		<link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/css/main.css" type="text/css" media="all">
+		<link rel="stylesheet" href="/js/codemirror.css" type="text/css">
+		<script src="/js/jquery-1.7.2.min.js"></script>
+		<script src="/js/codemirror.js"></script>
+		<script src="/js/util/runmode.js"></script>
+		<script src="/js/mode/xml/xml.js"></script>
+		<script src="/js/mode/clike/clike.js"></script>
+		<script src="/js/mode/javascript/javascript.js"></script>
+		<script src="/js/mode/css/css.js"></script>
+		<script src="/js/mode/php/php.js"></script>
+		<script src="/js/mode/mysql/mysql.js"></script>
+		<script src="/js/mode/htmlmixed/htmlmixed.js"></script>
+		<script src="/js/highlight.js"></script>
+		<script src="/js/site.js"></script>
+	</head>
+	<body>
+		<header>
+			<section class="main group">
+				<a href="/"><img src="/img/logo.png" alt="Flourish" /></a>
+				<span class="tagline">PHP Unframework</span>
+				<nav class="group">
+					<a href="/docs">Documentation</a>
+					<a href="/Download">Download</a>
+					<a href="https://github.com/flourishlib/flourish-classes">Code</a>
+					<a href="https://github.com/flourishlib/flourish-classes/issues">Issues</a>
+					<a href="/Tests">Tests</a>
+					<a href="http://forum.flourishlib.com">Discussion</a>
+					<a href="/blog">Blog</a>
+				</nav>
+			</section>
+		</header>
+		<section class="main"><script src="/js/newest_tag.js"></script><div class="sidebar">
+    <div class="main_actions">
+        <a href="/docs/Download" class="newest-tag-href action">
+            Download: <strong><span class="newest-tag">–</span>.zip</strong></em>
+        </a>
+        <a href="/docs/GettingStarted" class="action">Getting Started</a>
+        <a href="/docs/HowDoI" class="action">How Do I…?</a>
+        <a href="/docs" class="action">Documentation</a>
+    </div>
+    <div class="more_info">
+        <p class="beta">
+            Flourish is currently in <strong>beta</strong>. For information about the release schedule, please see the <strong><a href="/docs/Roadmap">roadmap</a></strong>.
+        </p>
+        <h2>Thank You!</h2>
+        <p>We just wanted to say thanks to those who have contributed to the project — <a href="/docs/Support#ThankYou">see who</a>.
+        </p>
+        <p>Interested in supporting the project? Visit the <a href="/docs/Support">Support page</a>.</p>
+        <h2>Around the Web</h2>
+        <ul class="social">
+        	<li>
+        		<a href="http://twitter.com/flourishlib">
+        			<img src="/img/twitter.gif" alt="(Twitter Icon)" />
+        			Twitter
+        		</a>
+        	</li>
+        	<li>
+        		<a href="http://github.com/flourishlib/flourish">
+        			<img src="/img/github.gif" alt="(GitHub Icon)" />
+        			GitHub
+        		</a>
+        	</li>
+        	<li>
+        		<a href="http://webchat.freenode.net/?channels=#flourishlib">
+        		<img src="/img/irc.gif" alt="(IRC Icon)" />
+        		IRC
+        		</a>
+        	</li>
+        </ul>
+    </div>
+</div>
+
+<div class="intro">
+<p>
+<em>Flourish</em> provides a strong, base set of <em>PHP classes</em> that run
+<em>pretty much anywhere</em>, helping you focus on solving more interesting
+problems.
+</p>
+<p>
+Extensive documentation and a sane API help you get stuff done, whether you are
+building a new app or maintaining a legacy website.
+</p>
+</div>
+<h2 id="WhyUseFlourish">Why Use Flourish?</h2>
+<p>You will find Flourish useful if you need to write code that is any of the following:</p>
+<ul class="why_first">
+    <li>Promoted security best-practices</li>
+    <li>Consistent and easy to understand</li>
+    <li>Needs to model simple or complex databases, especially existing schemas</li>
+    <li>Works with international data</li>
+    <li>Can perform accurate math calculations</li>
+    <li>Easily manipulates images</li>
+</ul>
+<ul class="why_second">
+    <li>Able to run on different databases (MySQL, PostgreSQL, SQLite, MSSQL, Oracle, DB2)</li>
+    <li>Can be used on closed-source projects</li>
+    <li>Needs to run on different versions of PHP</li>
+    <li>Needs an architecture other than MVC</li>
+    <li>Plays nicely with other libraries and frameworks</li>
+</ul>
+<div class="why_clear"></div>
+
+<script type="text/javascript">
+<!--
+$(function(){
+    var p = $('<p>Want to see more? </p>');
+    var a = $('<a href="#">Show how to upload an image, resize it and make a thumbnail</a>');
+    a.click(function(){
+        $('#user_example').hide();
+        $('#image_example').show();
+        return false;
+    });
+    p.append(a);
+    $('#user_example').append(p);
+    
+    var p2 = $('<p>Looking for the original? </p>');
+    var a2 = $('<a href="#">Switch back to find all users and printing their names</a>');
+    a2.click(function(){
+        $('#image_example').hide();        
+        $('#user_example').show();
+        return false;
+    });
+    p2.append(a2);
+    $('#image_example').append(p2);
+
+    $('#image_example').hide();
+});
+
+-->
+</script>
+<h2>View Example Code</h2>
+<div id="user_example">
+<p>Below is an example of how to retrieve all active users from the database and print their name.</p><pre class="block php"><code>// Connect to our SQLite database
+fORMDatabase::attach(new fDatabase('sqlite', '/path/to/database'));
+
+// Create an object to represent rows in the database
+class User extends fActiveRecord {
+    // Return an iterable set of User objects
+    public static function findActive() {
+        return fRecordSet::build(
+            'User',                            // Make User objects
+            array('status=' =&gt; 'Active'),      // That are active
+            array('date_registered' =&gt; 'desc') // Ordered by registration date
+        );
+    }
+}
+
+// Loop through and display the users' names
+foreach (User::findActive() as $user) {
+    echo $user-&gt;prepareFirstName() . ' ' . $user-&gt;prepareLastName() . '&lt;br /&gt;';
+}</code></pre>
+</div>
+<div id="image_example">
+<p>This example shows how to upload an image, resize it, and make a thumbnail.</p><pre class="block php"><code>// Create an fUpload object to handle the file upload
+$uploader = new fUpload();
+
+// Require the user upload an image (with MIME type checking server-side)
+$uploader-&gt;setMIMETypes(
+	array('image/jpeg', 'image/gif', 'image/png'),
+	'Please upload a .jpg, .png, or .gif image'
+);
+
+// Move the image and then resize to fit a 500x300 canvas
+$image = $uploader-&gt;move('/path/to/images', 'image')
+                  -&gt;resize(500, 300)
+                  -&gt;saveChanges();
+
+// Create a 32x32 thumbnail of the image
+$thumb = $image-&gt;duplicate('/path/to/thumbs')
+               -&gt;cropToRatio(1,1)
+               -&gt;resize(32,32)
+               -&gt;saveChanges();</code></pre>
+</div>
+<h2 id="Features">Features</h2>
+
+<h3 id="Documentation">Documentation</h3>
+
+<ul>
+<li>It includes <a href="/docs">extensive documentation</a> covering all code, plus the API and other general PHP topics</li>
+<li>It includes <a href="/docs/Security">features and guidance to make sites more secure</a></li>
+</ul>
+
+<h3 id="Compability">Compability</h3>
+
+<ul>
+<li>It works with PHP 5.1+</li>
+<li>It loves Linux/BSD, Solaris and Windows environments</li>
+<li>It uses UTF-8 everywhere and provides <a href="/docs/fUTF8">UTF-8 functions</a> even without the <a href="http://php.net/mbstring">mbstring</a> extension</li>
+<li>It provides <a href="/docs/fNumber">precise number support</a> even without the <a href="http://php.net/bc">bcmath</a> extension</li>
+<li>It can <a href="/docs/fImage">manipulate images</a> and automatically detects if GD or ImageMagick is installed</li>
+<li>It backports some PHP 5.2+ functionality to PHP 5.1 such as <a href="/docs/fCookie">Httponly cookies</a> and <a href="/docs/fJSON">JSON</a></li>
+<li>No shell access is required, simply <a href="/docs/GettingStarted">drop the classes in and go</a></li>
+</ul>
+
+<h3 id="DatabaseORM">Database/ORM</h3>
+
+<ul>
+<li>It supports <a href="/docs/fDatabase">MySQL, PostgreSQL, SQLite, Oracle, IBM DB2 and Microsoft SQL Server</a></li>
+<li>It includes support for <a href="/docs/FlourishSql">one dialect of SQL</a> across all database types</li>
+<li>It supports almost <a href="/api/fDatabase">all extensions for the supported databases</a></li>
+<li>It includes powerful, but intuitive <a href="/docs/ObjectRelationalMapping">object-relational mapping</a> features
+<ul>
+<li>Full support and auto-exploration of <a href="/docs/fActiveRecord#RelatedRecordsOperations">foreign key relationships</a></li>
+<li>Simple, shorthand notation for <a href="/docs/fRecordSet">querying sets of records</a></li>
+<li><a href="/docs/fActiveRecord#CreatingandLoadingRecords">Multi-column primary key support</a></li>
+<li><a href="/docs/fORM#ExtendingtheORM">A simple plugin system</a> using hooks and callbacks</li>
+</ul>
+</li>
+</ul>
+
+<h3 id="AndMore">And More</h3>
+
+<ul>
+<li>It includes <a href="/docs/fCore">error/exception handling and debugging features</a> that make bug fixing much simpler </li>
+<li>It is <a href="/docs/InternationalizationLocalization">built with internationalization and localization in mind</a></li>
+<li>It is <a href="/license">licensed under the MIT license</a></li>
+</ul>
+
+<p>
+Check out the <a href="/docs">documentation</a> for a list of all of the Flourish classes.
+</p>
+		</section>
+		<footer>
+			<section class="main group">
+				© 2012 Will Bond
+			</section>
+		</footer>
+
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		var pageTracker = _gat._getTracker("UA-688035-5");
+		pageTracker._initData();
+		pageTracker._trackPageview();
+	</script>
+	<script src="http://static.getclicky.com/67539.js" type="text/javascript"></script>
+	<noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/67539-db9.gif" /></p></noscript>
+	</body>
+</html>
