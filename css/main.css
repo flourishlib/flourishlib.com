@@ -15,8 +15,8 @@
 
 html {
 	background-color: #FFF;
-	margin: 0px;
-	padding: 0px;	
+	margin: 0;
+	padding: 0;
 }
 
 body {
@@ -30,12 +30,12 @@ body {
 
 a {
 	text-decoration: none;
-	color: #678DB7; 
+	color: #678DB7;
 }
 	a:visited { text-decoration: none; color: #5C89BC; }
 	a:active  { text-decoration: none; color: #5C89BC; }
-	a:hover   { text-decoration: none; color: #4772A3; }	
-	
+	a:hover   { text-decoration: none; color: #4772A3; }
+
 a img {
 	border: none;
 }
@@ -102,11 +102,15 @@ footer {
 	padding-bottom: 10px;
 	clear: both;
 }
+	footer section.main {
+		padding-top: 10px;
+		border-top: 1px dotted #ddd;
+	}
 
 p {
 	margin-bottom: 1em;
-	margin-top: 0px;
-}	
+	margin-top: 0;
+}
 
 h1, h2, h3, h4 {
 	font-family: 'Arimo', Helvetica, Arial, sans-serif;
@@ -154,6 +158,11 @@ tt, code {
 
 th {
 	vertical-align: top;
+	text-align: left;
+}
+
+td {
+	vertical-align: top;
 }
 
 dt {
@@ -161,8 +170,8 @@ dt {
 }
 
 ul {
-	margin: 0px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 	margin-bottom: 20px;
 }
 	ul ul {
@@ -176,19 +185,24 @@ ol {
 }
 
 li {
-	margin: 0px 0px 0px 25px;
-	padding: 0px;
-}	
+	margin: 0 0 0 25px;
+	padding: 0;
+}
 
 form {
-	padding: 0px;
-	margin: 0px;
+	padding: 0;
+	margin: 0;
 }
-	
+
 input {
 	font-family: "Trebuchet MS", Arial, Verdana, sans-serif;
 	font-size: 1.0em;
 }
+	input[type="checkbox"] {
+		margin: 0;
+		position: relative;
+		top: 2px;
+	}
 
 textarea {
 	font-family: "Trebuchet MS", Arial, Verdana, sans-serif;
@@ -199,6 +213,40 @@ label {
 	font-weight: bold;
 	display: block;
 }
+	label.inline {
+		font-weight: normal;
+		display: inline;
+	}
+
+div.success,
+div.error,
+p.success,
+p.error {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-o-border-radius: 3px;
+	padding: 5px 10px;
+}
+div.success,
+p.success {
+	background-color: #f0f4e9;
+}
+div.error,
+p.error {
+	background-color: #f4ebe9;
+}
+
+	div.success p,
+	div.error p {
+		margin: 7px 0;
+	}
+
+	div.success ul,
+	div.error ul {
+		margin: 7px 0;
+		font-size: 0.9em;
+	}
 
 pre {
 	margin: 0 0 1em 0;
@@ -209,7 +257,7 @@ pre {
 }
 
 pre.cm-s-default {
-	font-family: "Consolas", "Driod Sans Mono", monospace;
+	font-family: "Consolas", "Dejavu Sans Mono", "Bitstream Vera Sans Mono", "Driod Sans Mono", "Liberation Mono", monospace;
 	font-size: 0.85em;
 }
 
@@ -217,7 +265,7 @@ pre.cm-s-default {
 
 section.main {
 	width: 960px;
-	margin: 0px auto 0px auto;
+	margin: 0 auto 0 auto;
 }
 
 div.intro {
@@ -340,8 +388,9 @@ div.main_actions a.action {
 	text-align: left;
 }
 
-a.action,
-div.action {
+div.main_actions a.action,
+div.main_actions div.action,
+a.action.newest-tag-href {
 	line-height: 1.2;
 	background-color: #8fb0d5;
 	background-image: -webkit-gradient(
@@ -370,8 +419,9 @@ div.action {
 	div.action a {
 		color: #fff;
 	}
-	a.action:hover,
-	div.action:hover {
+	div.main_actions a.action:hover,
+	div.main_actions div.action:hover,
+	a.action.newest-tag-href:hover {
 		background-color: #97b9e0;
 		background-image: -webkit-gradient(
 			linear,
@@ -403,3 +453,102 @@ ul.social {
 		ul.social li a img {
 			vertical-align: middle;
 		}
+
+div.results > em {
+	font-size: 2.0em;
+	color: #ccc;
+	font-style: normal;
+}
+
+div.results div.summary {
+	font-size: 1.1em;
+	margin-top: 20px;
+	overflow: hidden;
+	padding: 10px 20px;
+	color: #999;
+	background-color: #f3f3f3;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+	div.results div.summary div.details a {
+		color: #777;
+		font-size: 0.9em;
+	}
+
+	div.results div.summary div span {
+		color: #333;
+	}
+
+	div.results div.summary div.commit,
+	div.results div.summary div.author,
+	div.results div.summary div.date {
+		width: 25%;
+		float: left;
+		clear: left;
+	}
+
+	div.results div.summary div.details {
+		float: left;
+		width: 25%;
+	}
+
+	div.results div.summary div.passed span,
+	div.results div.summary div.failed span {
+		display: block;
+	}
+		div.results div.summary div.passed {
+			float: right;
+			width: 25%;
+		}
+		div.results div.summary div.passed span {
+			font-size: 2.0em;
+			line-height: 1.2;
+		}
+		div.results div.summary.passed span.passed {
+			color: #73ab10;
+			font-weight: bold;
+		}
+
+	div.results div.summary.failed {
+
+	}
+		div.results div.summary div.failed {
+			float: right;
+			width: 25%;
+		}
+		div.results div.summary div.failed span {
+			font-size: 2.0em;
+			line-height: 1.2;
+		}
+		div.results div.summary.failed span.failed {
+			color: #dc2b02;
+			font-weight: bold;
+		}
+
+table.test_machines {
+	width: 100%;
+}
+
+	table.test_machines tr:nth-child(2n) {
+		background-color: #f3f3f3;
+	}
+
+div.output {
+	display: none;
+	clear: both;
+	padding: 0 0 0 10px;
+	font-size: 0.85em;
+}
+	div.output span.hostname {
+		display: block;
+		padding-top: 10px;
+		font-weight: bold;
+	}
+	div.output span.totals {
+		padding-left: 20px;
+	}
+	div.output pre.error_message {
+		margin-left: 20px;
+		color: #555;
+	}
