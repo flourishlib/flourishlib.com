@@ -1,12 +1,196 @@
 RewriteEngine On
 RewriteBase /
 
+ErrorDocument 404 /NotFound.html
+ErrorDocument 403 /NotFound.html
+
 DirectorySlash Off
 
-Redirect permanent /license	                     /License
-Redirect permanent /discussion                   http://forum.flourishlib.com
+RewriteCond %{http_host}                         ^www.flourishlib.com
+RewriteRule ^(.*)                                http://flourishlib.com/$1 [R=301,L]
 
+RewriteCond %{http_host}                         ^svn.flourishlib.com
+RewriteRule ^(.*)                                https://github.com/flourishlib [R=301,L]
+
+RewriteCond %{http_host}                         ^old.svn.flourishlib.com
+RewriteRule ^(.*)                                https://github.com/flourishlib [R=301,L]
+
+RewriteCond %{http_host}                         ^bzr.flourishlib.com
+RewriteRule ^(.*)                                https://github.com/flourishlib [R=301,L]
+
+RewriteCond %{http_host}                         ^darcs.flourishlib.com
+RewriteRule ^(.*)                                https://github.com/flourishlib [R=301,L]
+
+RewriteCond %{http_host}                         ^hg.flourishlib.com
+RewriteRule ^(.*)                                https://github.com/flourishlib [R=301,L]
+
+RewriteCond %{http_host}                         ^git.flourishlib.com
+RewriteRule ^(.*)                                https://github.com/flourishlib [R=301,L]
+
+RewriteCond %{http_host}                         ^docs.flourishlib.com
+RewriteRule ^(.*)                                http://flourishlib.com/docs [R=301,L]
+
+RewriteCond %{http_host}                         ^static.flourishlib.com
+RewriteRule ^(.*)                                http://flourishlib.com [R=301,L]
+
+Redirect permanent /docs/Welcome                 /
 Redirect permanent /docs/Documentation           /docs
+Redirect permanent /docs/Download                /Download
+Redirect permanent /docs/AdvancedDownload        /Download
+Redirect permanent /download                     /Download
+Redirect permanent /docs/Support                 /Support
+Redirect permanent /docs/Tests                   /Tests
+Redirect permanent /license                      /License
+Redirect permanent /docs/About                   /About
+
+Redirect permanent /browser                      https://github.com/flourishlib/flourish-classes
+Redirect permanent /timeline                     http://activity.flourishlib.com
+Redirect permanent /discussion                   http://discussion.flourishlib.com
+Redirect permanent /newticket                    https://github.com/flourishlib/flourish-classes/issues/new
+
+Redirect permanent /ticket/202                   https://github.com/flourishlib/flourish-classes/issues/1
+Redirect permanent /ticket/230                   https://github.com/flourishlib/flourish-classes/issues/2
+Redirect permanent /ticket/369                   https://github.com/flourishlib/flourish-classes/issues/3
+Redirect permanent /ticket/418                   https://github.com/flourishlib/flourish-classes/issues/4
+Redirect permanent /ticket/440                   https://github.com/flourishlib/flourish-classes/issues/5
+Redirect permanent /ticket/485                   https://github.com/flourishlib/flourish-classes/issues/6
+Redirect permanent /ticket/492                   https://github.com/flourishlib/flourish-classes/issues/7
+Redirect permanent /ticket/515                   https://github.com/flourishlib/flourish-classes/issues/8
+Redirect permanent /ticket/523                   https://github.com/flourishlib/flourish-classes/issues/9
+Redirect permanent /ticket/531                   https://github.com/flourishlib/flourish-classes/issues/10
+Redirect permanent /ticket/537                   https://github.com/flourishlib/flourish-classes/issues/11
+Redirect permanent /ticket/538                   https://github.com/flourishlib/flourish-classes/issues/12
+Redirect permanent /ticket/539                   https://github.com/flourishlib/flourish-classes/issues/13
+Redirect permanent /ticket/540                   https://github.com/flourishlib/flourish-classes/issues/14
+Redirect permanent /ticket/546                   https://github.com/flourishlib/flourish-classes/issues/15
+Redirect permanent /ticket/568                   https://github.com/flourishlib/flourish-classes/issues/16
+Redirect permanent /ticket/573                   https://github.com/flourishlib/flourish-classes/issues/17
+Redirect permanent /ticket/579                   https://github.com/flourishlib/flourish-classes/issues/18
+Redirect permanent /ticket/585                   https://github.com/flourishlib/flourish-classes/issues/21
+Redirect permanent /ticket/601                   https://github.com/flourishlib/flourish-classes/issues/22
+Redirect permanent /ticket/602                   https://github.com/flourishlib/flourish-classes/issues/24
+Redirect permanent /ticket/603                   https://github.com/flourishlib/flourish-classes/issues/25
+Redirect permanent /ticket/615                   https://github.com/flourishlib/flourish-classes/issues/27
+Redirect permanent /ticket/619                   https://github.com/flourishlib/flourish-classes/issues/31
+Redirect permanent /ticket/753                   https://github.com/flourishlib/flourish-classes/issues/28
+Redirect permanent /ticket/752                   https://github.com/flourishlib/flourish-classes/issues/30
+Redirect permanent /ticket/750                   https://github.com/flourishlib/flourish-classes/issues/35
+Redirect permanent /ticket/749                   https://github.com/flourishlib/flourish-classes/issues/36
+Redirect permanent /ticket/748                   https://github.com/flourishlib/flourish-classes/issues/38
+Redirect permanent /ticket/747                   https://github.com/flourishlib/flourish-classes/issues/39
+Redirect permanent /ticket/746                   https://github.com/flourishlib/flourish-classes/issues/40
+Redirect permanent /ticket/745                   https://github.com/flourishlib/flourish-classes/issues/41
+Redirect permanent /ticket/744                   https://github.com/flourishlib/flourish-classes/issues/42
+Redirect permanent /ticket/743                   https://github.com/flourishlib/flourish-classes/issues/43
+Redirect permanent /ticket/742                   https://github.com/flourishlib/flourish-classes/issues/44
+Redirect permanent /ticket/741                   https://github.com/flourishlib/flourish-classes/issues/45
+Redirect permanent /ticket/740                   https://github.com/flourishlib/flourish-classes/issues/46
+Redirect permanent /ticket/656                   https://github.com/flourishlib/flourish-classes/issues/23
+Redirect permanent /ticket/668                   https://github.com/flourishlib/flourish-classes/issues/29
+Redirect permanent /ticket/662                   https://github.com/flourishlib/flourish-classes/issues/75
+Redirect permanent /ticket/663                   https://github.com/flourishlib/flourish-classes/issues/76
+Redirect permanent /ticket/665                   https://github.com/flourishlib/flourish-classes/issues/77
+Redirect permanent /ticket/666                   https://github.com/flourishlib/flourish-classes/issues/78
+Redirect permanent /ticket/669                   https://github.com/flourishlib/flourish-classes/issues/79
+Redirect permanent /ticket/670                   https://github.com/flourishlib/flourish-classes/issues/80
+Redirect permanent /ticket/671                   https://github.com/flourishlib/flourish-classes/issues/81
+Redirect permanent /ticket/672                   https://github.com/flourishlib/flourish-classes/issues/82
+Redirect permanent /ticket/674                   https://github.com/flourishlib/flourish-classes/issues/83
+Redirect permanent /ticket/675                   https://github.com/flourishlib/flourish-classes/issues/84
+Redirect permanent /ticket/676                   https://github.com/flourishlib/flourish-classes/issues/85
+Redirect permanent /ticket/677                   https://github.com/flourishlib/flourish-classes/issues/86
+Redirect permanent /ticket/678                   https://github.com/flourishlib/flourish-classes/issues/87
+Redirect permanent /ticket/679                   https://github.com/flourishlib/flourish-classes/issues/88
+Redirect permanent /ticket/680                   https://github.com/flourishlib/flourish-classes/issues/89
+Redirect permanent /ticket/681                   https://github.com/flourishlib/flourish-classes/issues/90
+Redirect permanent /ticket/682                   https://github.com/flourishlib/flourish-classes/issues/91
+Redirect permanent /ticket/684                   https://github.com/flourishlib/flourish-classes/issues/92
+Redirect permanent /ticket/685                   https://github.com/flourishlib/flourish-classes/issues/93
+Redirect permanent /ticket/688                   https://github.com/flourishlib/flourish-classes/issues/94
+Redirect permanent /ticket/690                   https://github.com/flourishlib/flourish-classes/issues/95
+Redirect permanent /ticket/691                   https://github.com/flourishlib/flourish-classes/issues/96
+Redirect permanent /ticket/694                   https://github.com/flourishlib/flourish-classes/issues/97
+Redirect permanent /ticket/695                   https://github.com/flourishlib/flourish-classes/issues/98
+Redirect permanent /ticket/696                   https://github.com/flourishlib/flourish-classes/issues/99
+Redirect permanent /ticket/697                   https://github.com/flourishlib/flourish-classes/issues/100
+Redirect permanent /ticket/698                   https://github.com/flourishlib/flourish-classes/issues/101
+Redirect permanent /ticket/699                   https://github.com/flourishlib/flourish-classes/issues/102
+Redirect permanent /ticket/700                   https://github.com/flourishlib/flourish-classes/issues/103
+Redirect permanent /ticket/722                   https://github.com/flourishlib/flourish-classes/issues/104
+Redirect permanent /ticket/723                   https://github.com/flourishlib/flourish-classes/issues/105
+Redirect permanent /ticket/724                   https://github.com/flourishlib/flourish-classes/issues/106
+Redirect permanent /ticket/725                   https://github.com/flourishlib/flourish-classes/issues/107
+Redirect permanent /ticket/726                   https://github.com/flourishlib/flourish-classes/issues/108
+Redirect permanent /ticket/728                   https://github.com/flourishlib/flourish-classes/issues/109
+Redirect permanent /ticket/729                   https://github.com/flourishlib/flourish-classes/issues/110
+Redirect permanent /ticket/730                   https://github.com/flourishlib/flourish-classes/issues/111
+Redirect permanent /ticket/731                   https://github.com/flourishlib/flourish-classes/issues/112
+Redirect permanent /ticket/732                   https://github.com/flourishlib/flourish-classes/issues/113
+Redirect permanent /ticket/733                   https://github.com/flourishlib/flourish-classes/issues/113
+Redirect permanent /ticket/734                   https://github.com/flourishlib/flourish-classes/issues/114
+Redirect permanent /ticket/735                   https://github.com/flourishlib/flourish-classes/issues/115
+Redirect permanent /ticket/736                   https://github.com/flourishlib/flourish-classes/issues/116
+Redirect permanent /ticket/737                   https://github.com/flourishlib/flourish-classes/issues/117
+Redirect permanent /ticket/738                   https://github.com/flourishlib/flourish-classes/issues/118
+Redirect permanent /ticket/739                   https://github.com/flourishlib/flourish-classes/issues/119
+Redirect permanent /ticket/622                   https://github.com/flourishlib/flourish-classes/issues/50
+Redirect permanent /ticket/623                   https://github.com/flourishlib/flourish-classes/issues/51
+Redirect permanent /ticket/629                   https://github.com/flourishlib/flourish-classes/issues/55
+Redirect permanent /ticket/624                   https://github.com/flourishlib/flourish-classes/issues/52
+Redirect permanent /ticket/631                   https://github.com/flourishlib/flourish-classes/issues/57
+Redirect permanent /ticket/633                   https://github.com/flourishlib/flourish-classes/issues/58
+Redirect permanent /ticket/639                   https://github.com/flourishlib/flourish-classes/issues/61
+Redirect permanent /ticket/627                   https://github.com/flourishlib/flourish-classes/issues/53
+Redirect permanent /ticket/635                   https://github.com/flourishlib/flourish-classes/issues/59
+Redirect permanent /ticket/628                   https://github.com/flourishlib/flourish-classes/issues/54
+Redirect permanent /ticket/636                   https://github.com/flourishlib/flourish-classes/issues/60
+Redirect permanent /ticket/641                   https://github.com/flourishlib/flourish-classes/issues/62
+Redirect permanent /ticket/647                   https://github.com/flourishlib/flourish-classes/issues/65
+Redirect permanent /ticket/648                   https://github.com/flourishlib/flourish-classes/issues/66
+Redirect permanent /ticket/650                   https://github.com/flourishlib/flourish-classes/issues/68
+Redirect permanent /ticket/630                   https://github.com/flourishlib/flourish-classes/issues/56
+Redirect permanent /ticket/642                   https://github.com/flourishlib/flourish-classes/issues/63
+Redirect permanent /ticket/643                   https://github.com/flourishlib/flourish-classes/issues/64
+Redirect permanent /ticket/649                   https://github.com/flourishlib/flourish-classes/issues/67
+Redirect permanent /ticket/703                   https://github.com/flourishlib/flourish-classes/issues/122
+Redirect permanent /ticket/702                   https://github.com/flourishlib/flourish-classes/issues/121
+Redirect permanent /ticket/709                   https://github.com/flourishlib/flourish-classes/issues/128
+Redirect permanent /ticket/704                   https://github.com/flourishlib/flourish-classes/issues/123
+Redirect permanent /ticket/708                   https://github.com/flourishlib/flourish-classes/issues/127
+Redirect permanent /ticket/701                   https://github.com/flourishlib/flourish-classes/issues/120
+Redirect permanent /ticket/705                   https://github.com/flourishlib/flourish-classes/issues/124
+Redirect permanent /ticket/706                   https://github.com/flourishlib/flourish-classes/issues/125
+Redirect permanent /ticket/707                   https://github.com/flourishlib/flourish-classes/issues/126
+Redirect permanent /ticket/710                   https://github.com/flourishlib/flourish-classes/issues/129
+Redirect permanent /ticket/711                   https://github.com/flourishlib/flourish-classes/issues/130
+Redirect permanent /ticket/712                   https://github.com/flourishlib/flourish-classes/issues/131
+Redirect permanent /ticket/718                   https://github.com/flourishlib/flourish-classes/issues/137
+Redirect permanent /ticket/717                   https://github.com/flourishlib/flourish-classes/issues/136
+Redirect permanent /ticket/716                   https://github.com/flourishlib/flourish-classes/issues/135
+Redirect permanent /ticket/720                   https://github.com/flourishlib/flourish-classes/issues/139
+Redirect permanent /ticket/719                   https://github.com/flourishlib/flourish-classes/issues/138
+Redirect permanent /ticket/715                   https://github.com/flourishlib/flourish-classes/issues/134
+Redirect permanent /ticket/714                   https://github.com/flourishlib/flourish-classes/issues/133
+Redirect permanent /ticket/713                   https://github.com/flourishlib/flourish-classes/issues/132
+Redirect permanent /ticket/664                   https://github.com/flourishlib/flourish-classes/issues/142
+Redirect permanent /ticket/683                   https://github.com/flourishlib/flourish-classes/issues/143
+Redirect permanent /ticket/754                   https://github.com/flourishlib/flourish-classes/issues/144
+Redirect permanent /ticket/755                   https://github.com/flourishlib/flourish-classes/issues/145
+Redirect permanent /ticket/757                   https://github.com/flourishlib/flourish-classes/issues/146
+Redirect permanent /ticket/758                   https://github.com/flourishlib/flourish-classes/issues/147
+Redirect permanent /ticket/760                   https://github.com/flourishlib/flourish-classes/issues/148
+Redirect permanent /ticket/761                   https://github.com/flourishlib/flourish-classes/issues/149
+Redirect permanent /ticket/762                   https://github.com/flourishlib/flourish-classes/issues/150
+Redirect permanent /ticket/763                   https://github.com/flourishlib/flourish-classes/issues/151
+Redirect permanent /ticket/764                   https://github.com/flourishlib/flourish-classes/issues/152
+
+RewriteRule ^browser/(.*)$                       https://github.com/flourishlib/flourish-classes/blob/master/$1 [R=301,L]
+
+RewriteRule ^ticket/\d$                          https://github.com/flourishlib/flourish-classes/issues [R=301,L]
+RewriteRule ^report/\d$                          https://github.com/flourishlib/flourish-classes/issues [R=301,L]
+
+RewriteRule ^discussion/\d$                      http://discussion.flourishlib.com [R=301,L]
+RewriteRule ^discussion/\d/(\d+)$                http://discussion.flourishlib.com/$1 [R=301,L]
 
 RewriteRule ^api$                                /docs [R=301,L]
 
