@@ -33,6 +33,9 @@ RewriteRule ^(.*)                                http://flourishlib.com/docs [R=
 RewriteCond %{http_host}                         ^static.flourishlib.com
 RewriteRule ^(.*)                                http://flourishlib.com [R=301,L]
 
+RewriteCond %{http_host}                         ^new.flourishlib.com
+RewriteRule ^(.*)                                http://flourishlib.com [R=301,L]
+
 Redirect permanent /docs/Welcome                 /
 Redirect permanent /docs/Documentation           /docs
 Redirect permanent /docs/Download                /Download
