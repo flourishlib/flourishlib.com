@@ -101,7 +101,7 @@ Any <code>varchar</code>, <code>char</code> or <code>text</code> field can be co
 }</code></pre>
 
 <p>
- Once a file has been configured as a file upload column, the <a href="/api/fActiveRecord#populate">fActiveRecord::populate()</a> method will automatically move any files uploaded in a field with the same as the column. It is also possible to upload a file for the column separately by calling the <code>upload</code> method for a column.
+ Once a file has been configured as a file upload column, the <a href="/api/fActiveRecord#populate">fActiveRecord::populate()</a> method will automatically move any files uploaded in a field with the same name as the column. It is also possible to upload a file for the column separately by calling the <code>upload</code> method for a column.
 </p>
 <pre class="block php"><code>$user = new User();
 if (fRequest::isPost()) {

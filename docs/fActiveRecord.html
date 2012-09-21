@@ -143,7 +143,7 @@ In addition to providing an interface to the columns in a single table, data fro
 </p>
 
 <p>
-The following discussion is built on top of the content of <a href="/docs/OrmConventions">ORM Conventions</a>. Topics include database schema structure, various notation standards and information about MySQL and SQLite databases.
+The following discussion is built on top of the content of <a href="/docs/OrmConventions">ORM Conventions</a>. Topics include database schema structure, various notation standards and information about MySQL and SQLite databases. Please be sure to read over it since it include important information, such as the fact that column and table names must use <code>underscore_notation</code> by default.
 </p>
 
 <h2 id="Setup">Setup</h2>
@@ -832,10 +832,14 @@ When a column in a table contains a <code>FOREIGN KEY</code> constraint to anoth
 </p>
 
 <p>
-For instance, the <code>resources</code> table references the <code>users</code> table via the <code>owner</code> column. Because this <code>FOREIGN KEY</code> exists, it is possible to call a <code>create</code> action to instantiate the proper <code>User</code> object. 
+For instance, the <code>resources</code> table references the <code>users</code> table via the <code>owner</code> column. Because this <code>FOREIGN KEY</code> exists, it is possible to call a <code>create</code> action to instantiate the related <code>User</code> object if one exists, or an empty <code>User</code> object if none exists.
 </p>
 <pre class="block php"><code>$resource = new Resource(1);
 $user = $resource-&gt;createUser();</code></pre>
+
+<p>
+ <em>See <a href="/docs/MethodNaming">Method Naming</a> for info about <code>create</code> and other method verbs.</em>
+</p>
 
 <h4 id="One-to-oneRelationships">One-to-one Relationships</h4>
 

@@ -377,6 +377,10 @@ When creating RESTful applications it is useful to know the HTTP method used to 
 <td>DELETE</td>
 <td><a href="/api/fRequest#isDelete"><code>isDelete()</code></a></td>
 </tr>
+<tr>
+<td>HEAD</td>
+<td><a href="/api/fRequest#isHead"><code>isHead()</code></a></td>
+</tr>
 </tbody></table>
 
 <p>
@@ -473,7 +477,7 @@ fRequest::overrideAction();
 $action = fRequest::get('action');</code></pre>
 
 <p>
- If the user were to click <code>Yes, delete this user</code> then the action <code>remove</code> would be executed, however if the user clicked <code>No, keep this user</code> then the <code>list</code> action would be executed.
+ If the user were to click <code>Yes, delete this user</code> then the action <code>delete</code> would be executed, however if the user clicked <code>No, keep this user</code> then the <code>list</code> action would be executed.
 </p>
 
 <p>

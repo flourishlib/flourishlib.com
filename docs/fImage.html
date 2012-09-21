@@ -171,7 +171,7 @@ $image3-&gt;saveChanges();</code></pre>
 <h3 id="Resizing">Resizing</h3>
 
 <p>
-<a href="/api/fImage#resize"><code>resize()</code></a> will scale the image to fit the canvas size defined by the parameters <code>$canvas_width</code> and <code>$canvas_height</code>. If either parameter is <code>empty()</code> or <code>0</code>, the image will be resized to fit the specified dimension.
+<a href="/api/fImage#resize"><code>resize()</code></a> will scale the image proportionally to fit the canvas size defined by the parameters <code>$canvas_width</code> and <code>$canvas_height</code>. That is to say, the aspect ratio of the image will be retained, and it will not be stretched in either dimension. If either parameter is <code>empty()</code> or <code>0</code>, the image will be resized to fit the one specified dimension.
 </p>
 <pre class="block php"><code>// Ensure an image is never wider than 250 pixels
 $image4 = new fImage('./example.gif');
